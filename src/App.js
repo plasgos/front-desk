@@ -9,7 +9,9 @@ const loading = (
 );
 
 // Containers
-const CheckoutPage = React.lazy(() => import("./components/CheckoutPage"));
+const CheckoutPage = React.lazy(() =>
+  import("./components/checkout-page/CheckoutPage")
+);
 
 class App extends Component {
   render() {
