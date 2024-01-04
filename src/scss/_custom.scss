@@ -1,5 +1,329 @@
 // Here you can add other styles
 
+// Here you can add other styles
+$body-bg: #fff;
+$body-color: #111;
+$grid-gutter-width: 18px;
+$theme-colors: (
+  "primary": #fa541c,
+);
+$dropdown-link-active-bg: none;
+$dropdown-link-active-color: none;
+$button-dark-bg: none;
+$subheader-height: 35px;
+$subheader-nav-min-height: 35px;
+textarea:focus,
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="datetime"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="month"]:focus,
+input[type="time"]:focus,
+input[type="week"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+input[type="tel"]:focus,
+input[type="color"]:focus,
+.uneditable-input:focus {
+  box-shadow: 0 0px 0px rgba(0, 0, 0, 0.075) inset, 0 0 0px #fa541c;
+  outline: 0 none;
+}
+$modal-sm: 375px;
+
+ul.timeline {
+  list-style-type: none;
+  position: relative;
+}
+ul.timeline:before {
+  content: " ";
+  background: #d4d9df;
+  display: inline-block;
+  position: absolute;
+  left: 20px;
+  width: 2px;
+  height: 100%;
+  z-index: 400;
+}
+ul.timeline > li {
+  margin: 15px 0;
+  padding-left: 10px;
+}
+ul.timeline > li:before {
+  content: " ";
+  background: white;
+  display: inline-block;
+  position: absolute;
+  border-radius: 50%;
+  border: 3px solid #fa541c;
+  left: 15px;
+  width: 12px;
+  height: 12px;
+  z-index: 400;
+}
+
+div.react-horizontal-scrolling-menu--scroll-container {
+  overflow-x: visible;
+}
+
+/* width */
+div.react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar {
+  height: 5px;
+}
+
+/* Track */
+div.react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+div.react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+div.react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+div.vertical-scrolling-menu {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* width */
+div.vertical-scrolling-menu::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+div.vertical-scrolling-menu::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+div.vertical-scrolling-menu::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+div.vertical-scrolling-menu::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+div.horizontal-scrolling-menu {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+/* width */
+div.horizontal-scrolling-menu::-webkit-scrollbar {
+  height: 5px;
+}
+
+/* Track */
+div.horizontal-scrolling-menu::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+div.horizontal-scrolling-menu::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 5px;
+}
+
+/* Handle on hover */
+div.horizontal-scrolling-menu::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.social-button {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 100%;
+  border: 1px solid #d9d9d9;
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 5px;
+  font-family: "Roboto", Roboto, arial, sans-serif;
+}
+.social-button:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 100%;
+}
+.social-button:focus {
+  outline: none;
+}
+.social-button:active {
+  box-shadow: inset 0 0 0 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Facebook */
+.social-button--facebook {
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  color: #4c4c4c;
+}
+.social-button--facebook:before {
+  background: url("/image/facebook.png") 4px 4px no-repeat;
+  background-repeat: no-repeat;
+  background-position: 10px 10px;
+  background-size: 17px 17px;
+}
+.social-button--facebook:hover,
+.social-button--facebook:focus {
+  border: 1px solid #e0e0e0;
+  color: #d9d9d9;
+}
+
+/* Google */
+.social-button--google {
+  background-color: #ffffff;
+  color: #4c4c4c;
+  border: 1px solid #dbdbdb;
+}
+.social-button--google:before {
+  background-image: url("/image/google.png");
+  background-repeat: no-repeat;
+  background-position: 10px 10px;
+  background-size: 17px 17px;
+}
+.social-button--google:hover,
+.social-button--google:focus {
+  border: 1px solid #e0e0e0;
+  color: #d9d9d9;
+}
+.c-subheader-nav-link {
+  height: 25px;
+  margin: 5px;
+}
+.custom-control .custom-checkbox:checked ~ .form-check-input::before {
+  background-color: green !important;
+}
+
+.custom-control .custom-checkbox:checked:focus ~ .form-check-input::before {
+  box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(0, 255, 0, 0.25);
+}
+.custom-control .custom-checkbox:focus ~ .form-check-input::before {
+  box-shadow: 0 0 0 1px #fff, 0 0 0 0.2rem rgba(0, 0, 0, 0.25);
+}
+.custom-control .custom-checkbox:active ~ .form-check-input::before {
+  background-color: #c8ffc8;
+}
+
+ol.list-ol {
+  list-style-type: none;
+  counter-reset: item;
+  padding: 0;
+  font-size: 16px;
+}
+ol.list-ol li {
+  margin: 0;
+  line-height: 2;
+}
+ol.list-ol li::before {
+  counter-increment: item;
+  padding-right: 0.6em;
+  text-align: justify;
+}
+ol.list-ol.li-1 li::before {
+  content: "1." counter(item) " ";
+}
+ol.list-ol.li-2 li::before {
+  content: "2." counter(item) " ";
+}
+ol.list-ol.li-3 li::before {
+  content: "3." counter(item) " ";
+}
+ol.list-ol.li-4 li::before {
+  content: "4." counter(item) " ";
+}
+ol.list-ol.li-5 li::before {
+  content: "5." counter(item) " ";
+}
+ol.list-ol.li-6 li::before {
+  content: "6." counter(item) " ";
+}
+ol.list-ol.li-7 li::before {
+  content: "7." counter(item) " ";
+}
+ol.list-ol.li-8 li::before {
+  content: "8." counter(item) " ";
+}
+ol.list-ol.li-9 li::before {
+  content: "9." counter(item) " ";
+}
+ol.list-ol.li-10 li::before {
+  content: "10." counter(item) " ";
+}
+ol.list-ol.li-11 li::before {
+  content: "11." counter(item) " ";
+}
+ol.list-ol.li-12 li::before {
+  content: "12." counter(item) " ";
+}
+ol.list-ol.li-13 li::before {
+  content: "13." counter(item) " ";
+}
+ol.list-ol.li-13 li::before {
+  content: "13." counter(item) " ";
+}
+ol.list-ol.li-14 li::before {
+  content: "14." counter(item) " ";
+}
+ol.list-ol.li-15 li::before {
+  content: "15." counter(item) " ";
+}
+ol.list-ol.li-16 li::before {
+  content: "16." counter(item) " ";
+}
+ol.list-ol.li-17 li::before {
+  content: "17." counter(item) " ";
+}
+.list-type-lower-alpha {
+  list-style-type: lower-alpha;
+}
+.list-type-lower-roman {
+  list-style-type: lower-roman;
+}
+ol.list-inner-ol {
+  list-style-position: inside;
+  counter-reset: item;
+  font-size: 16px;
+}
+ol.list-inner-ol li {
+  margin: 0;
+  line-height: 2;
+}
+ol.list-inner-ol li::before {
+  counter-increment: item;
+  padding-right: 0.6em;
+  text-align: justify;
+}
+ol.list-inner-ol.li-none li::before {
+  content: " ";
+}
+
+// ##################################################
+
+.bold-orange {
+  font-weight: 700;
+  color: map-get($theme-colors, "primary");
+}
+
 .heading {
   font-weight: 600;
   font-size: 24px;
@@ -12,6 +336,12 @@
 }
 
 .select-modal:hover {
-  background: orange;
+  background-color: map-get($theme-colors, "primary");
   transition: 300ms;
+  color: white;
+}
+
+.icon-hover:hover {
+  background-color: map-get($theme-colors, "primary");
+  cursor: pointer;
 }

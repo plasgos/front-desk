@@ -30,7 +30,12 @@ export const AddressReceiver = () => {
         <CRow>
           <CCol sm="12">
             <CCard style={{ borderRadius: 8 }} className="border-0 shadow-sm">
-              <CCardHeader className="sub-heading">Alamat Penerima</CCardHeader>
+              <CCardHeader
+                style={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
+                className="sub-heading"
+              >
+                Alamat Penerima
+              </CCardHeader>
               <CCardBody className="py-4">
                 <div className="d-flex align-items-center">
                   <h6 className="sub-heading mr-2 mt-2">Dyan Kastutara(Kos)</h6>
@@ -42,7 +47,12 @@ export const AddressReceiver = () => {
                   Barat DKI Jakarta 11520
                 </div>
               </CCardBody>
-              <CCardFooter>
+              <CCardFooter
+                style={{
+                  borderBottomLeftRadius: 8,
+                  borderBottomRightRadius: 8,
+                }}
+              >
                 <CButton onClick={toggle} className="mr-1 border">
                   Pilih alamat penerima
                 </CButton>

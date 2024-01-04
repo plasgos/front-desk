@@ -1,0 +1,400 @@
+[
+    {
+        "id": 2,
+        "code": "gosend",
+        "name": "GoSend",
+        "costs": [
+            {
+                "service": "gosend",
+                "service_type": "Instant",
+                "eta": "1-2 hours",
+                "price": {
+                    "admin_fee": 1000,
+                    "insurance_fee": 500,
+                    "shipping_cost": 21000,
+                    "total_cost": 22500
+                },
+                "id": 2,
+                "cost": 22500,
+                "etd": "1-2 hours",
+                "group": "instant",
+                "cod": false,
+                "drop": false,
+                "service_name": "Instant",
+                "insurance": 0,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {}
+            },
+            {
+                "service": "gosend",
+                "service_type": "SameDay",
+                "eta": "6-8 hours",
+                "price": {
+                    "admin_fee": 1000,
+                    "insurance_fee": 500,
+                    "shipping_cost": 15500,
+                    "total_cost": 17000
+                },
+                "id": 3,
+                "cost": 17000,
+                "etd": "6-8 hours",
+                "group": "same_day",
+                "cod": false,
+                "drop": false,
+                "service_name": "Same Day",
+                "insurance": 0,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {}
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "code": "grab_express",
+        "name": "Grab Express",
+        "costs": [
+            {
+                "service": "grab_express",
+                "service_type": "INSTANT",
+                "eta": "29 menit",
+                "price": {
+                    "admin_fee": 1500,
+                    "insurance_fee": 0,
+                    "shipping_cost": 20000,
+                    "total_cost": 21500
+                },
+                "id": 4,
+                "cost": 21500,
+                "etd": "29 menit",
+                "group": "instant",
+                "cod": false,
+                "drop": false,
+                "service_name": "Instant",
+                "insurance": 0,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {}
+            },
+            {
+                "service": "grab_express",
+                "service_type": "SAME_DAY",
+                "eta": "29 menit",
+                "price": {
+                    "admin_fee": 1500,
+                    "insurance_fee": 0,
+                    "shipping_cost": 20001,
+                    "total_cost": 21501
+                },
+                "id": 5,
+                "cost": 21501,
+                "etd": "29 menit",
+                "group": "same_day",
+                "cod": false,
+                "drop": false,
+                "service_name": "Same Day",
+                "insurance": 0,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {}
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "code": "anteraja",
+        "name": "AnterAja",
+        "costs": [
+            {
+                "service": "anteraja",
+                "service_name": "Reguler",
+                "service_type": "REG",
+                "insurance": "0",
+                "cost": "11500",
+                "etd": "1-2",
+                "cod": true,
+                "group": "regular",
+                "drop": false,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {
+                    "cod_fee": "0.03",
+                    "minimum_cod_fee": "2500",
+                    "insurance_fee": "0.002",
+                    "insurance_add_cost": 0
+                },
+                "id": 8,
+                "price": {
+                    "admin_fee": 0,
+                    "insurance_fee": 0,
+                    "shipping_cost": "11500",
+                    "total_cost": "11500"
+                }
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "code": "sicepat",
+        "name": "SiCepat",
+        "costs": [
+            {
+                "service": "sicepat",
+                "service_name": "SiUntung",
+                "service_type": "SIUNT",
+                "cost": "11000",
+                "etd": "1-2",
+                "cod": true,
+                "group": "regular",
+                "drop": true,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {
+                    "cod_fee": "0.03",
+                    "minimum_cod_fee": "2500",
+                    "insurance_fee": "0.0025",
+                    "insurance_add_cost": 0
+                },
+                "id": 9,
+                "price": {
+                    "admin_fee": 0,
+                    "insurance_fee": 0,
+                    "shipping_cost": "11000",
+                    "total_cost": "11000"
+                }
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "code": "jne",
+        "name": "JNE",
+        "costs": [
+            {
+                "service": "jne",
+                "service_name": "Reguler",
+                "service_type": "CTC23",
+                "cost": "10000",
+                "etd": "1-2",
+                "cod": true,
+                "group": "regular",
+                "drop": true,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {
+                    "cod_fee": "0.03",
+                    "minimum_cod_fee": "2500",
+                    "insurance_fee": "0.002",
+                    "insurance_add_cost": "5000"
+                },
+                "id": 11,
+                "price": {
+                    "admin_fee": 0,
+                    "insurance_fee": 0,
+                    "shipping_cost": "10000",
+                    "total_cost": "10000"
+                }
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "code": "sap",
+        "name": "SAP Express",
+        "costs": [
+            {
+                "service": "sap",
+                "service_name": "Reguler",
+                "service_type": "UDRREG",
+                "insurance": "0",
+                "cost": "8000",
+                "etd": "1-2",
+                "cod": true,
+                "group": "regular",
+                "drop": false,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {
+                    "cod_fee": "0.03",
+                    "minimum_cod_fee": "3000",
+                    "insurance_fee": "0.002",
+                    "insurance_add_cost": 0
+                },
+                "id": 23,
+                "price": {
+                    "admin_fee": 0,
+                    "insurance_fee": 0,
+                    "shipping_cost": "8000",
+                    "total_cost": "8000"
+                }
+            },
+            {
+                "service": "sap",
+                "service_name": "One Day",
+                "service_type": "UDRREG",
+                "insurance": "0",
+                "cost": "15000",
+                "etd": "1-2",
+                "cod": true,
+                "group": "same_day",
+                "drop": false,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {
+                    "cod_fee": "0.03",
+                    "minimum_cod_fee": "3000",
+                    "insurance_fee": "0.002",
+                    "insurance_add_cost": 0
+                },
+                "id": 21,
+                "price": {
+                    "admin_fee": 0,
+                    "insurance_fee": 0,
+                    "shipping_cost": "15000",
+                    "total_cost": "15000"
+                }
+            },
+            {
+                "service": "sap",
+                "service_name": "Same Day",
+                "service_type": "UDRREG",
+                "insurance": "0",
+                "cost": "34000",
+                "etd": "0-1",
+                "cod": true,
+                "group": "next_day",
+                "drop": false,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {
+                    "cod_fee": "0.03",
+                    "minimum_cod_fee": "3000",
+                    "insurance_fee": "0.002",
+                    "insurance_add_cost": 0
+                },
+                "id": 24,
+                "price": {
+                    "admin_fee": 0,
+                    "insurance_fee": 0,
+                    "shipping_cost": "34000",
+                    "total_cost": "34000"
+                }
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "code": "ncs",
+        "name": "NCS Courier",
+        "costs": [
+            {
+                "service": "ncs",
+                "service_name": "Reguler",
+                "service_type": "NRS",
+                "insurance": "0",
+                "cost": "9000",
+                "etd": "2-3",
+                "cod": true,
+                "group": "regular",
+                "drop": false,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {
+                    "cod_fee": "0.03",
+                    "minimum_cod_fee": "2500",
+                    "insurance_fee": "0.002",
+                    "insurance_add_cost": 0
+                },
+                "id": 25,
+                "price": {
+                    "admin_fee": 0,
+                    "insurance_fee": 0,
+                    "shipping_cost": "9000",
+                    "total_cost": "9000"
+                }
+            }
+        ]
+    },
+    {
+        "code": "tiki",
+        "name": "TIKI",
+        "costs": [
+            {
+                "service": "tiki",
+                "description": "Regular Service",
+                "cost": 9000,
+                "id": 32,
+                "cod": false,
+                "drop": true,
+                "etd": "2",
+                "name": "TIKI",
+                "service_type": "REG",
+                "service_name": "Reguler.",
+                "group": "regular",
+                "insurance": 0,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {
+                    "cod_fee": 0,
+                    "minimum_cod_fee": false,
+                    "insurance_fee": 0.002,
+                    "insurance_add_cost": 0
+                }
+            },
+            {
+                "service": "tiki",
+                "description": "Over Night Service",
+                "cost": 18000,
+                "id": 33,
+                "cod": false,
+                "drop": true,
+                "etd": "1",
+                "name": "TIKI",
+                "service_type": "ONS",
+                "service_name": "Over Night Service.",
+                "group": "next_day",
+                "insurance": 0,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {
+                    "cod_fee": 0,
+                    "minimum_cod_fee": false,
+                    "insurance_fee": 0.002,
+                    "insurance_add_cost": 0
+                }
+            }
+        ],
+        "id": 12
+    },
+    {
+        "code": "lion",
+        "name": "Lion Parcel",
+        "costs": [
+            {
+                "service": "lion",
+                "description": "Regular Service",
+                "cost": 7500,
+                "id": 39,
+                "cod": false,
+                "drop": true,
+                "etd": "1-2",
+                "name": "Lion Parcel",
+                "service_type": "REGPACK",
+                "service_name": "Reguler",
+                "group": "regular",
+                "insurance": 0,
+                "cut_off_time": null,
+                "force_insurance": false,
+                "setting": {
+                    "cod_fee": 0,
+                    "minimum_cod_fee": false,
+                    "insurance_fee": 0.003,
+                    "insurance_add_cost": 0
+                }
+            }
+        ],
+        "id": 14
+    }
+
+]
