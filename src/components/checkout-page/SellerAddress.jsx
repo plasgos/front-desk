@@ -25,17 +25,13 @@ import {
 } from "@coreui/react";
 
 import { IoStorefront } from "react-icons/io5";
-// import { CiCircleMinus } from "react-icons/ci";
-// import { CiCirclePlus } from "react-icons/ci";
+import { formatPrice } from "../../lib/format-price";
 
 export const SellerAddress = () => {
   const [modal, setModal] = useState(false);
   const [courirs, setCourirs] = useState([]);
 
-  const [valueShipping, setValueShipping] = useState({
-    name: "",
-    group: "",
-  });
+  const [valueShipping, setValueShipping] = useState("");
   const [valueCourir, setValueCourir] = useState("");
 
   const toggle = () => {
@@ -43,45 +39,25 @@ export const SellerAddress = () => {
   };
 
   const groupSelectShipping = [
-    { name: "Instant", group: "same_day" },
+    { name: "Instant", group: "instant" },
     { name: "Same Day", group: "same_day" },
     { name: "Regular", group: "regular" },
     { name: "Kargo", group: "cargo" },
   ];
 
   const handleShipping = (value, group) => {
-    setValueShipping({
-      name: value,
-      group: group,
-    });
+    setValueShipping(value);
 
-    const filteredGroups = groupSelectShipping.filter(
-      (option) => option.group === group
-    );
-
-    // Extract group names from filteredGroups
-    const groupNames = filteredGroups.map((option) => option.group);
-
-    // console.log(groupNames);
-
-    // Filter shippingData based on groupNames
     const filteredShippingData = costs
-      .filter((item) =>
-        item.costs.some((cost) => groupNames.includes(cost.group))
-      )
-      .map((item) => ({
-        ...item,
-        costs: item.costs.filter((arg) => arg.group === valueShipping.group),
+      .map((provider) => ({
+        ...provider,
+        costs: provider.costs.filter((cost) => cost.group === group),
       }))
-      .filter((cost) => cost.costs.length > 0);
+      .filter((provider) => provider.costs.length > 0);
 
-    // Display or do something with the filtered data
     console.log(filteredShippingData);
     setCourirs(filteredShippingData);
   };
-
-  // console.log(kurir);
-  // const mapKurir = kurir.map((item) => item.name);
 
   return (
     <CContainer fluid>
@@ -170,7 +146,6 @@ export const SellerAddress = () => {
                     <p className="bold-orange">Rp 250.000</p>
                   </div>
                   <div className="d-flex align-items-center">
-                    {/* <CiCircleMinus className="icon-hover" size={24} /> */}
                     <CForm action="" method="post">
                       <CInput
                         className="text-center mx-2"
@@ -182,7 +157,6 @@ export const SellerAddress = () => {
                         onChange={(e) => e.target.value}
                       />
                     </CForm>
-                    {/* <CiCirclePlus className="icon-hover" size={24} /> */}
                   </div>
                   <div className="mx-2">
                     <p>
@@ -204,9 +178,9 @@ export const SellerAddress = () => {
                       caret
                       color="primary"
                     >
-                      {valueShipping.name === ""
+                      {valueShipping === ""
                         ? "Pilih pengiriman"
-                        : valueShipping.name}
+                        : valueShipping}
                     </CDropdownToggle>
                     <CDropdownMenu style={{ width: 250 }}>
                       {groupSelectShipping.map((shipping, index) => (
@@ -236,11 +210,7 @@ export const SellerAddress = () => {
                     </CDropdownToggle>
                     <CDropdownMenu style={{ width: 250 }}>
                       {courirs.map((courir, index) => {
-                        const cost = courir.costs.map((cost, index) => (
-                          <span className="ml-2" key={index}>
-                            ({cost.cost})
-                          </span>
-                        ));
+                        const cost = courir.costs.map((cost) => cost.cost);
 
                         return (
                           <CDropdownItem
@@ -248,7 +218,7 @@ export const SellerAddress = () => {
                             onClick={() => setValueCourir(courir.name)}
                           >
                             {courir.name}
-                            {cost}
+                            <span className="ml-2">({formatPrice(cost)})</span>
                           </CDropdownItem>
                         );
                       })}
