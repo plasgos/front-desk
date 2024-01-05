@@ -51,7 +51,7 @@ export const Payment = () => {
         <CCol>
           <CCard style={{ borderRadius: 8 }} className="mt-5 shadow-sm">
             <CCardBody>
-              <div className="d-flex justify-content-between">
+              <div className="d-flex justify-content-between align-items-center">
                 <p className="sub-heading">Pilih Pembayaran</p>
 
                 <div>

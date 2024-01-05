@@ -17,8 +17,10 @@ export const Summary = () => {
     <CContainer fluid>
       <CRow>
         <CCol>
-          <CCard>
-            <CCardHeader>
+          <CCard style={{ borderRadius: 8 }} className="border-0 shadow-sm">
+            <CCardHeader
+              style={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
+            >
               <p className="sub-heading">Ringkasan Belanja</p>
             </CCardHeader>
             <CCardBody>
@@ -39,7 +41,9 @@ export const Summary = () => {
                 </p>
               </div>
             </CCardBody>
-            <CCardFooter>
+            <CCardFooter
+              style={{ borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}
+            >
               <CButton color="primary" className="btn-block">
                 Beli
               </CButton>
