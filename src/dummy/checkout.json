@@ -1,0 +1,42 @@
+{
+    "payment_method" : "Bank Transfer",
+    "payment_method_details" : "{'bank_name':'bca','account_number':'123452423232'}",
+    "orders" : [{
+        "store_id" : 2,
+        "insurance": true, // data dari costs
+        "shipping_insurance_fee": 0, // data dari costs
+        "shipping_service": "anteraja", // data dari costs
+        "shipping_service_type": "reg", // data dari costs
+        "shipping_cost": 20000, // data dari costs
+        "service_type_id": 5, // data dari costs
+        "sender" : { // data dari warehouse
+            "id": 10330,
+            "name" : "Nama Toko / Gudang",
+            "phone_number" : "08123456789",
+            "address" : "Alamat gudang",
+            "subdistrict_id" : 20,
+            "postal_code" : "12345",
+            "latitude" : "",
+            "longitude" : ""
+        },
+        "products" : [{
+            "product_id": "asd",
+            "quantity" : 10,
+            "price" : 100,
+            "cashback" : 10,
+            "description" : "",
+            "stock" : 10330
+        }],
+        "warehouse_id": 1
+    }],
+    "receiver" : { //data dari address
+        "id": 2,
+        "name" : "Nama Penerima",
+        "phone_number" : "08123456789",
+        "address" : "Alamat penerima",
+        "subdistrict_id" : 20,
+        "postal_code" : "12345",
+        "latitude" : "",
+        "longitude" : ""
+    }
+}

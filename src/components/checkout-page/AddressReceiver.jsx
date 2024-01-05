@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   CBadge,
@@ -15,9 +15,28 @@ import {
   CModalHeader,
   CRow,
 } from "@coreui/react";
+import { useDispatch, useSelector } from "react-redux";
+
+import * as actions from "../example/reducer";
 
 export const AddressReceiver = () => {
   const [modal, setModal] = useState(false);
+
+  const dispatch = useDispatch();
+  const { address } = useSelector((state) => state.example);
+
+  const getData = () => {
+    let payload = {
+      token: "xxxx",
+    };
+    dispatch(actions.getAddress(payload));
+  };
+  console.log(address);
+  useEffect(() => {
+    return () => {};
+  }, []);
+
+  console.log(address);
 
   const toggle = () => {
     setModal(!modal);
@@ -25,7 +44,9 @@ export const AddressReceiver = () => {
 
   return (
     <div>
-      <h1 className="heading">Beli Langsung</h1>
+      <h1 onClick={() => getData()} className="heading">
+        Beli Langsung
+      </h1>
       <CContainer fluid>
         <CRow>
           <CCol sm="12">

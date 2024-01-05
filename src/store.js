@@ -1,17 +1,26 @@
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from "redux";
+import createSagaMiddleware from "redux-saga";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+import createCompressor from "redux-persist-transform-compress";
+import { encryptTransform } from "redux-persist-transform-encrypt";
 
-const initialState = {
-  sidebarShow: 'responsive'
-}
+import rootSaga from "./sagas";
+import rootReducers from "./reducers";
 
-const changeState = (state = initialState, { type, ...rest }) => {
-  switch (type) {
-    case 'set':
-      return {...state, ...rest }
-    default:
-      return state
-  }
-}
+const encryptor = encryptTransform({ secretKey: "secretkey" });
+const compressor = createCompressor({});
+const sagaMiddleware = createSagaMiddleware();
+const persistConfig = {
+  transforms: [encryptor],
+  key: "root",
+  storage,
+};
+const persistedReducer = persistReducer(persistConfig, rootReducers);
+export const store = createStore(
+  persistedReducer,
+  applyMiddleware(sagaMiddleware)
+);
+export const persistor = persistStore(store, { transform: [compressor] });
 
-const store = createStore(changeState)
-export default store
+sagaMiddleware.run(rootSaga);
