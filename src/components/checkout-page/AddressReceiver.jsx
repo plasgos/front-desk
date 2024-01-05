@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import {
   CBadge,
@@ -21,8 +21,20 @@ import * as actions from "../example/reducer";
 
 export const AddressReceiver = () => {
   const [modal, setModal] = useState(false);
+  const [selectedAdress, setSelectedAdress] = useState([
+    // {
+    //   id: 0,
+    //   name: "",
+    //   phone_number: 0,
+    //   address: "",
+    //   subdistrict_id: 0,
+    //   postal_code: "",
+    // },
+  ]);
+  // const [selectedAdress, setSelectedAdress] = useState({});
 
   const dispatch = useDispatch();
+
   const { address } = useSelector((state) => state.example);
 
   const getData = () => {
@@ -31,22 +43,29 @@ export const AddressReceiver = () => {
     };
     dispatch(actions.getAddress(payload));
   };
-  console.log(address);
-  useEffect(() => {
-    return () => {};
-  }, []);
-
-  console.log(address);
 
   const toggle = () => {
     setModal(!modal);
+    getData();
   };
+
+  console.log(selectedAdress);
+
+  const onSubmit = ({ data }) => {
+    setSelectedAdress([data]);
+
+    setTimeout(() => {
+      setModal(false);
+    }, 300);
+  };
+
+  const defaultAddresses = address.data.filter(
+    (address) => address.is_default === true
+  );
 
   return (
     <div>
-      <h1 onClick={() => getData()} className="heading">
-        Beli Langsung
-      </h1>
+      <h1 className="heading">Beli Langsung</h1>
       <CContainer fluid>
         <CRow>
           <CCol sm="12">
@@ -58,15 +77,35 @@ export const AddressReceiver = () => {
                 Alamat Penerima
               </CCardHeader>
               <CCardBody className="py-4">
-                <div className="d-flex align-items-center">
-                  <h6 className="sub-heading mr-2 mt-2">Dyan Kastutara(Kos)</h6>
-                  <CBadge color="success">Utama</CBadge>
-                </div>
-                <div>085841410308</div>
-                <div>
-                  Jalan Taman Ratu Indah Blok 09/17, Kebun jeruk, Kota Jakarta
-                  Barat DKI Jakarta 11520
-                </div>
+                {selectedAdress.length < 1
+                  ? defaultAddresses.map((address) => (
+                      <div key={address.id}>
+                        <div className="d-flex align-items-center">
+                          <h6 className="sub-heading mr-2 mt-2">
+                            {address.receiver_name}
+                          </h6>
+                          {address.is_default && (
+                            <CBadge color="success">Utama</CBadge>
+                          )}
+                        </div>
+                        <div>{address.phone_number}</div>
+                        <div>{address.address}</div>
+                      </div>
+                    ))
+                  : selectedAdress.map((address) => (
+                      <div key={address.id}>
+                        <div className="d-flex align-items-center">
+                          <h6 className="sub-heading mr-2 mt-2">
+                            {address.receiver_name}
+                          </h6>
+                          {address.is_default && (
+                            <CBadge color="success">Utama</CBadge>
+                          )}
+                        </div>
+                        <div>{address.phone_number}</div>
+                        <div>{address.address}</div>
+                      </div>
+                    ))}
               </CCardBody>
               <CCardFooter
                 style={{
@@ -84,21 +123,49 @@ export const AddressReceiver = () => {
                     </h4>
                   </CModalHeader>
                   <CModalBody>
-                    <CCard className="mb-0">
-                      <CCardBody
-                        style={{ cursor: "pointer" }}
-                        className="select-modal"
-                      >
-                        <div>
-                          <h6 className="sub-heading">Dyan Kastutara(Kos)</h6>
-                          <div>085841410308</div>
-                          <div>
-                            Jalan Taman Ratu Indah Blok 09/17, Kebun jeruk, Kota
-                            Jakarta Barat DKI Jakarta 11520
-                          </div>
-                        </div>
-                      </CCardBody>
-                    </CCard>
+                    <div className="modal-overflow">
+                      {address.data.map((address) => {
+                        const selected = selectedAdress.id === address.id;
+
+                        return (
+                          <CCard
+                            key={address.id}
+                            onClick={() =>
+                              onSubmit({
+                                data: {
+                                  id: address.id,
+                                  receiver_name: address.receiver_name,
+                                  phone_number: address.phone_number,
+                                  address: address.address,
+                                  subdistrict_id: address.subdistrict_id,
+                                  postal_code: address.postal_code,
+                                  is_default: address.is_default,
+                                },
+                              })
+                            }
+                            className="mb-2"
+                          >
+                            <CCardBody
+                              style={{ cursor: "pointer" }}
+                              className={`select-modal ${
+                                selected && "bg-primary text-white"
+                              }`}
+                            >
+                              <div className="d-flex align-items-center">
+                                <h6 className="sub-heading mr-2 mt-2">
+                                  {address.receiver_name}
+                                </h6>
+                                {address.is_default && (
+                                  <CBadge color="success">Utama</CBadge>
+                                )}
+                              </div>
+                              <div>{address.phone_number}</div>
+                              <div>{address.address}</div>
+                            </CCardBody>
+                          </CCard>
+                        );
+                      })}
+                    </div>
                   </CModalBody>
                   <CModalFooter>
                     <CButton color="primary">Pilih</CButton>{" "}

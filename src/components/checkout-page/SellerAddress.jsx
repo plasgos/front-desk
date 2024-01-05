@@ -61,7 +61,7 @@ export const SellerAddress = () => {
                       </h4>
                     </CModalHeader>
                     <CModalBody>
-                      <CCard className="mb-0">
+                      <CCard className="mb-2">
                         <CCardBody
                           style={{ cursor: "pointer" }}
                           className="select-modal"

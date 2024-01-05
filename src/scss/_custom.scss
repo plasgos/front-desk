@@ -345,3 +345,9 @@ ol.list-inner-ol.li-none li::before {
   background-color: map-get($theme-colors, "primary");
   cursor: pointer;
 }
+
+.modal-overflow {
+  height: 300px;
+  width: 100%;
+  overflow-y: auto;
+}
