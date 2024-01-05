@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa6";
 
-import costs from "../../dummy/costs.json";
-
 import {
   CButton,
   CCard,
@@ -11,10 +9,6 @@ import {
   CCardHeader,
   CCol,
   CContainer,
-  CDropdown,
-  CDropdownItem,
-  CDropdownMenu,
-  CDropdownToggle,
   CForm,
   CInput,
   CModal,
@@ -25,38 +19,13 @@ import {
 } from "@coreui/react";
 
 import { IoStorefront } from "react-icons/io5";
-import { formatPrice } from "../../lib/format-price";
+import { Shipping } from "./Shipping";
 
 export const SellerAddress = () => {
   const [modal, setModal] = useState(false);
-  const [courirs, setCourirs] = useState([]);
-
-  const [valueShipping, setValueShipping] = useState("");
-  const [valueCourir, setValueCourir] = useState("");
 
   const toggle = () => {
     setModal(!modal);
-  };
-
-  const groupSelectShipping = [
-    { name: "Instant", group: "instant" },
-    { name: "Same Day", group: "same_day" },
-    { name: "Regular", group: "regular" },
-    { name: "Kargo", group: "cargo" },
-  ];
-
-  const handleShipping = (value, group) => {
-    setValueShipping(value);
-
-    const filteredShippingData = costs
-      .map((provider) => ({
-        ...provider,
-        costs: provider.costs.filter((cost) => cost.group === group),
-      }))
-      .filter((provider) => provider.costs.length > 0);
-
-    console.log(filteredShippingData);
-    setCourirs(filteredShippingData);
   };
 
   return (
@@ -169,63 +138,7 @@ export const SellerAddress = () => {
             <CCardFooter
               style={{ borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}
             >
-              <p className="sub-heading mb-2"> Pengiriman</p>
-              <div className="d-flex flex-wrap justify-content-between align-items-center">
-                <div>
-                  <CDropdown className="mt-2">
-                    <CDropdownToggle
-                      style={{ width: 250 }}
-                      caret
-                      color="primary"
-                    >
-                      {valueShipping === ""
-                        ? "Pilih pengiriman"
-                        : valueShipping}
-                    </CDropdownToggle>
-                    <CDropdownMenu style={{ width: 250 }}>
-                      {groupSelectShipping.map((shipping, index) => (
-                        <CDropdownItem
-                          key={index}
-                          onClick={() =>
-                            handleShipping(shipping.name, shipping.group)
-                          }
-                        >
-                          {shipping.name}
-                        </CDropdownItem>
-                      ))}
-                    </CDropdownMenu>
-                  </CDropdown>
-                </div>
-
-                <div>
-                  <CDropdown className="mt-2">
-                    <CDropdownToggle
-                      className="d-block"
-                      style={{ width: 250 }}
-                      caret
-                      color="primary"
-                      disabled={courirs.length < 1}
-                    >
-                      {valueCourir === "" ? "Pilih Kurir" : valueCourir}
-                    </CDropdownToggle>
-                    <CDropdownMenu style={{ width: 250 }}>
-                      {courirs.map((courir, index) => {
-                        const cost = courir.costs.map((cost) => cost.cost);
-
-                        return (
-                          <CDropdownItem
-                            key={index}
-                            onClick={() => setValueCourir(courir.name)}
-                          >
-                            {courir.name}
-                            <span className="ml-2">({formatPrice(cost)})</span>
-                          </CDropdownItem>
-                        );
-                      })}
-                    </CDropdownMenu>
-                  </CDropdown>
-                </div>
-              </div>
+              <Shipping />
             </CCardFooter>
           </CCard>
         </CCol>

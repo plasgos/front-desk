@@ -1,6 +1,8 @@
 import React from "react";
 import { AddressReceiver } from "./AddressReceiver";
 import { SellerAddress } from "./SellerAddress";
+import { Payment } from "./Payment";
+import { Summary } from "./Summary";
 
 const CheckoutPage = () => {
   return (
@@ -10,7 +12,10 @@ const CheckoutPage = () => {
           <AddressReceiver />
           <SellerAddress />
         </div>
-        <div className="col-6 col-md-4">tes</div>
+        <div className="col-6 col-md-4">
+          <Payment />
+          <Summary />
+        </div>
       </div>
     </div>
   );
