@@ -21,17 +21,7 @@ import * as actions from "../example/reducer";
 
 export const AddressReceiver = () => {
   const [modal, setModal] = useState(false);
-  const [selectedAdress, setSelectedAdress] = useState([
-    // {
-    //   id: 0,
-    //   name: "",
-    //   phone_number: 0,
-    //   address: "",
-    //   subdistrict_id: 0,
-    //   postal_code: "",
-    // },
-  ]);
-  // const [selectedAdress, setSelectedAdress] = useState({});
+  const [selectedAdress, setSelectedAdress] = useState([]);
 
   const dispatch = useDispatch();
 
