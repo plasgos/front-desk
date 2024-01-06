@@ -17,7 +17,7 @@ import {
 } from "@coreui/react";
 import { useDispatch, useSelector } from "react-redux";
 
-import * as actions from "../example/reducer";
+import * as actions from "../../redux/modules/addresses/reducer";
 
 export const AddressReceiver = () => {
   const [modal, setModal] = useState(false);
@@ -25,7 +25,7 @@ export const AddressReceiver = () => {
 
   const dispatch = useDispatch();
 
-  const { address } = useSelector((state) => state.example);
+  const { address } = useSelector((state) => state.addresses);
 
   const getData = () => {
     let payload = {
