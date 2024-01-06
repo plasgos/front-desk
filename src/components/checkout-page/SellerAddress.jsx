@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa6";
 
 import {
@@ -31,6 +31,11 @@ export const SellerAddress = () => {
 
   const { orders } = useSelector((state) => state.orders);
 
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const getData = () => {
     // let payload = {
     //   token: "xxxx",
@@ -42,7 +47,7 @@ export const SellerAddress = () => {
 
   const toggle = () => {
     setModal(!modal);
-    getData();
+    // getData();
   };
 
   return (
