@@ -1,5 +1,5 @@
 import { put } from "redux-saga/effects";
-import * as actions from "../reducer";
+import * as actions from "../actions/actions";
 import addresses from "../../../../dummy/addresses.json";
 
 function* getAddresses(values) {

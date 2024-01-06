@@ -17,7 +17,7 @@ import {
 } from "@coreui/react";
 import { useDispatch, useSelector } from "react-redux";
 
-import * as actions from "../../redux/modules/addresses/reducer";
+import * as actions from "../../redux/modules/addresses/actions/actions";
 
 export const AddressReceiver = () => {
   const [modal, setModal] = useState(false);
@@ -28,18 +28,16 @@ export const AddressReceiver = () => {
   const { address } = useSelector((state) => state.addresses);
 
   const getData = () => {
-    let payload = {
-      token: "xxxx",
-    };
-    dispatch(actions.getAddress(payload));
+    // let payload = {
+    //   token: "xxxx",
+    // };
+    dispatch(actions.getAddress());
   };
 
   const toggle = () => {
     setModal(!modal);
     getData();
   };
-
-  console.log(selectedAdress);
 
   const onSubmit = ({ data }) => {
     setSelectedAdress([data]);

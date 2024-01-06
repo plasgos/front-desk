@@ -18,14 +18,31 @@ import {
   CRow,
 } from "@coreui/react";
 
+import * as actions from "../../redux/modules/orders/actions/actions";
+
 import { IoStorefront } from "react-icons/io5";
 import { Shipping } from "./Shipping";
+import { useDispatch, useSelector } from "react-redux";
 
 export const SellerAddress = () => {
   const [modal, setModal] = useState(false);
 
+  const dispatch = useDispatch();
+
+  const { orders } = useSelector((state) => state.orders);
+
+  const getData = () => {
+    // let payload = {
+    //   token: "xxxx",
+    // };
+    dispatch(actions.getAddressStore());
+  };
+
+  console.log(orders);
+
   const toggle = () => {
     setModal(!modal);
+    getData();
   };
 
   return (

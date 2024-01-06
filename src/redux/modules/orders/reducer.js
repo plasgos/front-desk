@@ -1,7 +1,7 @@
 import types from "./types";
 
 const initialState = {
-  address: {
+  orders: {
     data: [],
     loading: false,
   },
@@ -9,24 +9,24 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.GET_ADDRESS_SUCCESS:
+    case types.GET_ADDRESSES_STORE_SUCCESS:
       return {
         ...state,
-        address: {
-          ...state.address,
+        orders: {
+          ...state.orders,
           data: action.payload,
         },
       };
-    case types.IS_LOADING_GET_ADDRESS:
+    case types.IS_LOADING_GET_ADDRESSES_STORE:
       return {
         ...state,
-        address: {
-          ...state.address,
+        orders: {
+          ...state.orders,
           loading: action.payload,
         },
       };
-    case types.RESET_ADDRESS:
-      return { ...state, address: initialState.address };
+    case types.RESET_ORDERS:
+      return { ...state, orders: initialState.orders };
     default:
       return state;
   }
