@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { FaUser } from "react-icons/fa6";
 
 import {
   CButton,
@@ -9,8 +8,6 @@ import {
   CCardHeader,
   CCol,
   CContainer,
-  CForm,
-  CInput,
   CModal,
   CModalBody,
   CModalFooter,
@@ -23,9 +20,13 @@ import * as actions from "../../redux/modules/orders/actions/actions";
 import { IoStorefront } from "react-icons/io5";
 import { Shipping } from "./Shipping";
 import { useDispatch, useSelector } from "react-redux";
+import { formatPrice } from "../../lib/format-price";
 
 export const SellerAddress = () => {
   const [modal, setModal] = useState(false);
+  const [selectWarehouse, setSelectedWarehouse] = useState([]);
+
+  console.log(selectWarehouse);
 
   const dispatch = useDispatch();
 
@@ -43,11 +44,23 @@ export const SellerAddress = () => {
     dispatch(actions.getAddressStore());
   };
 
-  console.log(orders);
-
   const toggle = () => {
     setModal(!modal);
     // getData();
+  };
+
+  const defaultWarehouses = orders.data
+    .flatMap((order) => order.Warehouses)
+    .filter((warehouse) => warehouse.is_default === true);
+
+  console.log("defaultWarehouse", defaultWarehouses);
+
+  const onSubmit = ({ data }) => {
+    setSelectedWarehouse([data]);
+
+    setTimeout(() => {
+      setModal(false);
+    }, 300);
   };
 
   return (
@@ -61,15 +74,34 @@ export const SellerAddress = () => {
               <div className="d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center">
                   <IoStorefront size={36} />
-                  <div>
-                    <div className="sub-heading ml-3">Admin</div>
-                    <div className="">
-                      <div className="ml-3">Di kirim dari :</div>
-                      <div className="ml-3">
-                        Kota Jakarta Timur, DKI Jakarta
-                      </div>
-                    </div>
-                  </div>
+
+                  {selectWarehouse.length < 1
+                    ? defaultWarehouses.map((warehouse) => (
+                        <div key={warehouse.id} className="mb-1 ml-3">
+                          <div>
+                            <div>
+                              <h6 className="sub-heading">{warehouse.name}</h6>
+                              <div>
+                                {warehouse.Subdistrict.City.name},{" "}
+                                {warehouse.Subdistrict.City.Province.name}{" "}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    : selectWarehouse.map((warehouse) => (
+                        <div key={warehouse.id} className="mb-1 ml-3">
+                          <div>
+                            <div>
+                              <h6 className="sub-heading">{warehouse.name}</h6>
+                              <div>
+                                {warehouse.Subdistrict.City.name},{" "}
+                                {warehouse.Subdistrict.City.Province.name}{" "}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
                 </div>
 
                 <div>
@@ -79,25 +111,44 @@ export const SellerAddress = () => {
                   <CModal show={modal} onClose={toggle}>
                     <CModalHeader closeButton>
                       <h4 className="text-center ml-auto">
-                        Pilih Alamat Penerima
+                        Pilih Alamat Pengiriman
                       </h4>
                     </CModalHeader>
                     <CModalBody>
-                      <CCard className="mb-2">
-                        <CCardBody
-                          style={{ cursor: "pointer" }}
-                          className="select-modal"
-                        >
-                          <div>
-                            <h6 className="sub-heading">Dyan Kastutara(Kos)</h6>
-                            <div>085841410308</div>
-                            <div>
-                              Jalan Taman Ratu Indah Blok 09/17, Kebun jeruk,
-                              Kota Jakarta Barat DKI Jakarta 11520
-                            </div>
+                      {orders.data.map((order) => {
+                        return (
+                          <div key={order.store_id}>
+                            {order.Warehouses.map((warehouse) => (
+                              <CCard
+                                onClick={() =>
+                                  onSubmit({
+                                    data: {
+                                      ...warehouse,
+                                    },
+                                  })
+                                }
+                                key={warehouse.id}
+                                className="mb-2"
+                              >
+                                <CCardBody
+                                  style={{ cursor: "pointer" }}
+                                  className="select-modal"
+                                >
+                                  <div>
+                                    <h6 className="sub-heading">
+                                      {warehouse.name}
+                                    </h6>
+                                    <div>
+                                      {warehouse.Subdistrict.City.name},{" "}
+                                      {warehouse.Subdistrict.City.Province.name}{" "}
+                                    </div>
+                                  </div>
+                                </CCardBody>
+                              </CCard>
+                            ))}
                           </div>
-                        </CCardBody>
-                      </CCard>
+                        );
+                      })}
                     </CModalBody>
                     <CModalFooter>
                       <CButton color="primary">Pilih</CButton>{" "}
@@ -110,52 +161,58 @@ export const SellerAddress = () => {
               </div>
             </CCardHeader>
             <CCardBody className="py-4">
-              <div className="d-flex align-items-center">
-                <FaUser size={50} />
-                <div className="ml-3">
-                  <div>Test #1</div>
-                  <div>1 barang (250gram)</div>
-                  <div className="bold-orange">Rp 250.000</div>
-                </div>
-              </div>
+              {orders.data.map((order) => {
+                const product = order.products.map((product) => product);
+                const subtotal = product[0].price * product[0].quantity;
 
-              <div className="d-flex justify-content-between">
-                <div>
-                  <div
-                    className="my-2 bold-orange"
-                    style={{
-                      cursor: "pointer",
-                    }}
-                  >
-                    Catatan Produk
-                  </div>
-                </div>
+                // console.log("product", product);
 
-                <div className="d-flex align-items-center">
-                  <div className="mx-2">
-                    <p className="sub-heading">subtotal</p>
-                    <p className="bold-orange">Rp 250.000</p>
-                  </div>
-                  <div className="d-flex align-items-center">
-                    <CForm action="" method="post">
-                      <CInput
-                        className="text-center mx-2"
-                        style={{ width: 60 }}
-                        type="number"
-                        id="qty"
-                        name="qty"
-                        value={1}
-                        onChange={(e) => e.target.value}
+                return (
+                  <div key={order.store_id} className="border-bottom my-3">
+                    <div className="d-flex align-items-center">
+                      <img
+                        style={{ width: 80, height: 80 }}
+                        src={order.avatar_store}
+                        alt="order"
                       />
-                    </CForm>
+                      <div className="ml-3">
+                        <div>{order.name_store}</div>
+                        <div>
+                          {product[0].quantity} Product ({product[0].weigth}{" "}
+                          gram)
+                        </div>
+                        <div className="bold-orange">
+                          {formatPrice(product[0].price)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="d-flex justify-content-between mb-2">
+                      <div style={{ marginLeft: 90 }}>
+                        <div
+                          className="my-2 bold-orange"
+                          style={{
+                            cursor: "pointer",
+                            fontSize: 14,
+                          }}
+                        >
+                          Catatan Produk <br />
+                          <span className="text-muted">
+                            " {product[0].description} "
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="d-flex align-items-center">
+                        <div className="mx-2">
+                          <p className="sub-heading">subtotal</p>
+                          <p className="bold-orange">{formatPrice(subtotal)}</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="mx-2">
-                    <p>
-                      Sisa <span style={{ fontWeight: "bold" }}>97</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </CCardBody>
             <CCardFooter
               style={{ borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}
