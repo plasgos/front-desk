@@ -53,7 +53,7 @@ export const AddressReceiver = () => {
 
   return (
     <div>
-      <h1 className="heading">Beli Langsung</h1>
+      <h1 className="heading">Checkout</h1>
       <CContainer fluid>
         <CRow>
           <CCol sm="12">

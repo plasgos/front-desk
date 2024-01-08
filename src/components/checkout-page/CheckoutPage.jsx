@@ -1,6 +1,6 @@
 import React from "react";
 import { AddressReceiver } from "./AddressReceiver";
-import { SellerAddress } from "./SellerAddress";
+import { SellerAddress } from "./SellerAddressUpdate";
 import { Payment } from "./Payment";
 import { Summary } from "./Summary";
 
