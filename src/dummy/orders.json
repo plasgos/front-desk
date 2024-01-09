@@ -247,13 +247,13 @@
           "kiriminaja_id": 2120,
           "City": {
             "id": 154,
-            "name": "Jakarta Timur 2",
+            "name": "Surabaya",
             "type": "Kota",
             "province_id": 6,
             "kiriminaja_id": 154,
             "Province": {
               "id": 6,
-              "name": "DKI Jakarta 2",
+              "name": "Surabaya",
               "kiriminaja_id": 6
             }
           }
@@ -278,13 +278,13 @@
           "kiriminaja_id": 2120,
           "City": {
             "id": 154,
-            "name": "Jakarta Timur 3",
+            "name": "Malang",
             "type": "Kota",
             "province_id": 6,
             "kiriminaja_id": 154,
             "Province": {
               "id": 6,
-              "name": "DKI Jakarta 3",
+              "name": "Malang",
               "kiriminaja_id": 6
             }
           }
@@ -299,16 +299,16 @@
     "avatar_store": "https://image-plasgos.s3-ap-southeast-1.amazonaws.com/avatar-store/default.png",
     "subdomain_store": "admin-test",
     "sender": {
-      "id": 10330,
+      "id": 10335,
       "name": "Admin ",
       "phone_number": "-",
-      "address": "Jalan Utan Kayu Raya No 68H",
+      "address": "Jalan Kayu Jati  Raya No 68H",
       "postal_code": "13120",
       "latitude": null,
       "longitude": null,
       "subdistrict_id": 2120,
       "is_default": true,
-      "store_id": 2,
+      "store_id": 3,
       "Subdistrict": {
         "id": 2120,
         "name": "Matraman",
@@ -317,7 +317,7 @@
         "kiriminaja_id": 2120,
         "City": {
           "id": 154,
-          "name": "Jakarta Timur",
+          "name": "Jakarta Selatan",
           "type": "Kota",
           "province_id": 6,
           "kiriminaja_id": 154,
@@ -458,6 +458,37 @@
             "Province": {
               "id": 6,
               "name": "DKI Jakarta",
+              "kiriminaja_id": 6
+            }
+          }
+        }
+      },
+      {
+        "id": 10367,
+        "name": "Admin TIKTOK ",
+        "phone_number": "-",
+        "address": "Jalan Kayu Jati  Raya No 68H",
+        "postal_code": "13120",
+        "latitude": null,
+        "longitude": null,
+        "subdistrict_id": 2120,
+        "is_default": false,
+        "store_id": 3,
+        "Subdistrict": {
+          "id": 2120,
+          "name": "Matraman",
+          "type": "Kecamatan",
+          "city_id": 154,
+          "kiriminaja_id": 2120,
+          "City": {
+            "id": 154,
+            "name": "Bandung",
+            "type": "Kota",
+            "province_id": 6,
+            "kiriminaja_id": 154,
+            "Province": {
+              "id": 6,
+              "name": "Bandung",
               "kiriminaja_id": 6
             }
           }

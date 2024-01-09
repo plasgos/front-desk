@@ -2,18 +2,29 @@ import { put } from "redux-saga/effects";
 import * as actions from "../actions/actions";
 import orders from "../../../../dummy/orders.json";
 
-function* getAddressesStore(values) {
+function* getOrders(values) {
   // const {payload} = values;
-  yield put(actions.setIsLoadingGetAddressStore(true));
+  yield put(actions.setIsLoadingGetOrders(true));
   try {
     // const response = yield call(axios, payload)
     // const {data} = response;
-    yield put(actions.getAddressStoreSuccess(orders));
+    yield put(actions.getOrdersSuccess(orders));
   } catch (e) {
-    yield put(actions.setIsLoadingGetAddressStore(false));
+    yield put(actions.setIsLoadingGetOrders(false));
   } finally {
-    yield put(actions.setIsLoadingGetAddressStore(false));
+    yield put(actions.setIsLoadingGetOrders(false));
   }
 }
 
-export { getAddressesStore };
+// function* setAddressStore(values) {
+//   const { payload } = values;
+//   try {
+//     // const response = yield call(axios, payload)
+//     // const {data} = response;
+//     yield put(actions.setAddressStore(payload));
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
+export { getOrders };

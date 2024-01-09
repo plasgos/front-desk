@@ -25,8 +25,6 @@ export const SellerAddress = () => {
   const [modalStates, setModalStates] = useState({});
   const [selectedWarehouse, setSelectedWarehouse] = useState({});
 
-  // console.log(selectedWarehouse);
-
   const dispatch = useDispatch();
 
   const { orders } = useSelector((state) => state.orders);
@@ -40,11 +38,18 @@ export const SellerAddress = () => {
     // let payload = {
     //   token: "xxxx",
     // };
-    dispatch(actions.getAddressStore());
+    dispatch(actions.getOrders());
+  };
+
+  const toggleModal = (store_id) => {
+    setModalStates((prevStates) => ({
+      ...prevStates,
+      [store_id]: !prevStates[store_id],
+    }));
   };
 
   const onSubmit = (data) => {
-    // console.log(data);
+    dispatch(actions.setAddressStore(data));
 
     setModalStates((prevStates) => ({
       ...prevStates,
@@ -52,32 +57,17 @@ export const SellerAddress = () => {
     }));
   };
 
+  console.log(orders);
+
   return (
     <CContainer fluid>
       <CRow>
         <CCol sm="12">
           <CCard style={{ borderRadius: 8 }} className="border-0 shadow-sm">
             {orders.data.map((order) => {
-              const toggle = () => {
-                setModalStates((prevStates) => ({
-                  ...prevStates,
-                  [order.store_id]: !prevStates[order.store_id],
-                }));
-              };
-
               const defaultWarehouse = order.Warehouses.filter(
                 (warehouse) => warehouse.is_default
               );
-
-              const onSelectWarehouse = (warehouse) => {
-                setSelectedWarehouse((prevSelectedWarehouses) => ({
-                  ...prevSelectedWarehouses,
-                  [order.store_id]: warehouse,
-                }));
-
-                console.log(selectedWarehouse);
-                toggle(); // Tutup modal setelah pemilihan gudang
-              };
 
               return (
                 <div key={order.store_id}>
@@ -107,16 +97,10 @@ export const SellerAddress = () => {
                                 </div>
                               ))
                             ) : (
-                              <div
-                                key={selectedWarehouse.store_id}
-                                className="ml-3"
-                              >
-                                {selectedWarehouse.Subdistrict.City.type}{" "}
-                                {selectedWarehouse.Subdistrict.City.name},{" "}
-                                {
-                                  selectedWarehouse.Subdistrict.City.Province
-                                    .name
-                                }
+                              <div className="ml-3">
+                                {order.sender.Subdistrict.City.type}{" "}
+                                {order.sender.Subdistrict.City.name},{" "}
+                                {order.sender.Subdistrict.City.Province.name}
                               </div>
                             )}
                           </div>
@@ -125,14 +109,14 @@ export const SellerAddress = () => {
 
                       <div>
                         <CButton
-                          onClick={toggle}
+                          onClick={() => toggleModal(order.store_id)}
                           className="mr-1 border ml-auto"
                         >
                           Pilih alamat Pengiriman
                         </CButton>
                         <CModal
                           show={modalStates[order.store_id]}
-                          onClose={toggle}
+                          onClose={() => toggleModal(order.store_id)}
                         >
                           <CModalHeader closeButton>
                             <h4 className="text-center ml-auto">
@@ -151,9 +135,7 @@ export const SellerAddress = () => {
                                     isSelected ? "bg-primary text-white" : ""
                                   }`}
                                   onClick={() =>
-                                    setSelectedWarehouse({
-                                      ...warehouse,
-                                    })
+                                    setSelectedWarehouse({ ...warehouse })
                                   }
                                 >
                                   <CCardBody
@@ -181,14 +163,15 @@ export const SellerAddress = () => {
                           </CModalBody>
                           <CModalFooter>
                             <CButton
-                              onClick={() =>
-                                onSelectWarehouse(selectedWarehouse)
-                              }
+                              onClick={() => onSubmit(selectedWarehouse)}
                               color="primary"
                             >
                               Pilih
                             </CButton>{" "}
-                            <CButton color="secondary" onClick={toggle}>
+                            <CButton
+                              color="secondary"
+                              onClick={() => toggleModal(order.store_id)}
+                            >
                               Batal
                             </CButton>
                           </CModalFooter>
@@ -201,10 +184,6 @@ export const SellerAddress = () => {
                       {order.products.map((product) => {
                         const totalPricePerItem =
                           product.price * product.quantity;
-
-                        // const totalPrice = order.products.forEach((product) => {
-                        //   const total = totalPricePerItem + product
-                        // } )
 
                         const totalWeightPerItem =
                           product.weight * product.quantity;

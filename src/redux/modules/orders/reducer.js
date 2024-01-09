@@ -9,7 +9,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.GET_ADDRESSES_STORE_SUCCESS:
+    case types.GET_ORDERS_SUCCESS:
       return {
         ...state,
         orders: {
@@ -17,7 +17,7 @@ export default (state = initialState, action) => {
           data: action.payload,
         },
       };
-    case types.IS_LOADING_GET_ADDRESSES_STORE:
+    case types.IS_LOADING_GET_ORDERS:
       return {
         ...state,
         orders: {
@@ -25,6 +25,22 @@ export default (state = initialState, action) => {
           loading: action.payload,
         },
       };
+    case types.SET_ADDRESSES_STORE:
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          data: state.orders.data.map((order) => {
+            return order.store_id === action.payload.store_id
+              ? {
+                  ...order,
+                  sender: action.payload,
+                }
+              : order;
+          }),
+        },
+      };
+
     case types.RESET_ORDERS:
       return { ...state, orders: initialState.orders };
     default:
