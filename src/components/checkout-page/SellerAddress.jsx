@@ -33,7 +33,7 @@ export const SellerAddress = () => {
 
   useEffect(() => {
     getData();
-    listOrder();
+    // listOrder();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -44,17 +44,17 @@ export const SellerAddress = () => {
     dispatch(actions.getOrders());
   };
 
-  const listOrder = () => {
-    const ordered = orders.data.map((order) => ({
-      orders: {
-        store_id: order.store_id,
-        sender: order.sender,
-        products: [order.products],
-      },
-    }));
+  // const listOrder = () => {
+  //   const ordered = orders.data.map((order) => ({
+  //     orders: {
+  //       store_id: order.store_id,
+  //       sender: order.sender,
+  //       products: [order.products],
+  //     },
+  //   }));
 
-    dispatch(setCheckout(ordered));
-  };
+  //   dispatch(setCheckout(ordered));
+  // };
 
   const toggleModal = (store_id) => {
     setModalStates((prevStates) => ({
@@ -66,29 +66,29 @@ export const SellerAddress = () => {
   const onSubmit = (data) => {
     console.log(data);
 
-    dispatch(actions.setAddressStore(data));
+    // dispatch(actions.setAddressStore(data));
 
     // TODO Push to checkout Redux
 
-    dispatch(
-      setCheckout({
-        orders: [
-          {
-            sender: {
-              id: data.id,
-              name: data.receiver_name,
-              phone_number: data.phone_number,
-              address: data.address,
-              subdistrict_id: data.subdistrict_id,
-              postal_code: data.postal_code,
-              latitude: data.latitude,
-              longitude: data.longitude,
-            },
-            products: "tes produk",
-          },
-        ],
-      })
-    );
+    // dispatch(
+    //   setCheckout({
+    //     orders: [
+    //       {
+    //         sender: {
+    //           id: data.id,
+    //           name: data.receiver_name,
+    //           phone_number: data.phone_number,
+    //           address: data.address,
+    //           subdistrict_id: data.subdistrict_id,
+    //           postal_code: data.postal_code,
+    //           latitude: data.latitude,
+    //           longitude: data.longitude,
+    //         },
+    //         products: "tes produk",
+    //       },
+    //     ],
+    //   })
+    // );
 
     setModalStates((prevStates) => ({
       ...prevStates,

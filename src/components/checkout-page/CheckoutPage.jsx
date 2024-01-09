@@ -6,7 +6,7 @@ import { Summary } from "./Summary";
 import { useSelector } from "react-redux";
 
 const CheckoutPage = () => {
-  const { checkout } = useSelector((state) => state.checkout);
+  const checkout = useSelector((state) => state.checkout);
 
   console.log("checkout", checkout);
 

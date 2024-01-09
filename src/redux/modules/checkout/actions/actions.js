@@ -1,5 +1,20 @@
 import types from "../types";
 
+export const setCheckoutOrders = (payload) => ({
+  type: types.SET_CHECKCOUT_ORDERS,
+  payload,
+});
+
+export const setCheckoutPayment = (payload) => ({
+  type: types.SET_CHECKCOUT_PAYMENT,
+  payload,
+});
+
+export const setCheckoutReceiver = (payload) => ({
+  type: types.SET_CHECKCOUT_RECEIVER,
+  payload,
+});
+
 export const setCheckout = (payload) => ({
   type: types.SET_CHECKCOUT,
   payload,

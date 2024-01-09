@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   CBadge,
@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import * as actions from "../../redux/modules/addresses/actions/actions";
 
-import { setCheckout } from "../../redux/modules/checkout/actions/actions";
+import { setCheckoutReceiver } from "../../redux/modules/checkout/actions/actions";
 
 export const AddressReceiver = () => {
   const [modal, setModal] = useState(false);
@@ -37,9 +37,13 @@ export const AddressReceiver = () => {
     dispatch(actions.getAddress());
   };
 
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const toggle = () => {
     setModal(!modal);
-    getData();
   };
 
   const onSubmit = (data) => {
@@ -49,22 +53,22 @@ export const AddressReceiver = () => {
     // TODO Push to checkout Redux
 
     dispatch(
-      setCheckout({
-        receiver: {
-          id: data.id,
-          name: data.receiver_name,
-          phone_number: data.phone_number,
-          address: data.address,
-          subdistrict_id: data.subdistrict_id,
-          postal_code: data.postal_code,
-          latitude: data.latitude,
-          longitude: data.longitude,
-        },
+      setCheckoutReceiver({
+        id: data.id,
+        name: data.receiver_name,
+        phone_number: data.phone_number,
+        address: data.address,
+        subdistrict_id: data.subdistrict_id,
+        postal_code: data.postal_code,
+        latitude: data.latitude,
+        longitude: data.longitude,
       })
     );
 
     setModal(false);
   };
+
+  // const defaultAddressesCheckout =
 
   const defaultAddresses = address.data.filter(
     (address) => address.is_default === true

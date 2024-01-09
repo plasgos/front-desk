@@ -1,4 +1,8 @@
 export default {
+  SET_CHECKCOUT_RECEIVER: "set-checkout-receiver",
+  SET_CHECKCOUT_PAYMENT: "set-checkout-payment",
+  SET_CHECKCOUT_ORDERS: "set-checkout-orders",
+
   SET_CHECKCOUT: "set-checkout",
   IS_LOADING_SET_CHECKCOUT: "set-checkout",
 
