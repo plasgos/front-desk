@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 const CheckoutPage = () => {
   const { checkout } = useSelector((state) => state.checkout);
 
-  console.log(checkout);
+  console.log("checkout", checkout);
 
   return (
     <div className="container pt-5">
