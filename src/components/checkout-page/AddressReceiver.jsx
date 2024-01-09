@@ -19,6 +19,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import * as actions from "../../redux/modules/addresses/actions/actions";
 
+import { setCheckout } from "../../redux/modules/checkout/actions/actions";
+
 export const AddressReceiver = () => {
   const [modal, setModal] = useState(false);
   const [selectedAdress, setSelectedAdress] = useState({});
@@ -43,9 +45,23 @@ export const AddressReceiver = () => {
   const onSubmit = (data) => {
     setSelectedAdress(data);
 
+    console.log(data);
     // TODO Push to checkout Redux
 
-    console.log(data);
+    dispatch(
+      setCheckout({
+        receiver: {
+          id: data.id,
+          name: data.receiver_name,
+          phone_number: data.phone_number,
+          address: data.address,
+          subdistrict_id: data.subdistrict_id,
+          postal_code: data.postal_code,
+          latitude: data.latitude,
+          longitude: data.longitude,
+        },
+      })
+    );
 
     setModal(false);
   };

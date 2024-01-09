@@ -8,11 +8,11 @@ export const getCostSuccess = (payload) => ({
   type: types.GET_COSTS_SUCCESS,
   payload,
 });
-export const setIsLoadingGetCost = (payload) => ({
+export const setIsLoadingGetCosts = (payload) => ({
   type: types.IS_LOADING_GET_COSTS,
   payload,
 });
-export const resetAddress = (payload) => ({
+export const resetCosts = (payload) => ({
   type: types.RESET_COSTS,
   payload,
 });

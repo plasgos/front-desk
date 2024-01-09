@@ -6,16 +6,16 @@ import {
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { formatPrice } from "../../lib/format-price";
-import costs from "../../dummy/costs.json";
 import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/modules/costs/actions/actions";
 
 export const Shipping = () => {
   const [courirs, setCourirs] = useState([]);
-  const [initialData, setInitialData] = useState([]);
 
   const [valueShipping, setValueShipping] = useState("");
-  const [valueCourir, setValueCourir] = useState("");
+  const [valueCourir, setValueCourir] = useState({});
+
+  console.log(valueCourir);
 
   const dispatch = useDispatch();
 
@@ -35,28 +35,23 @@ export const Shipping = () => {
   useEffect(() => {
     getCosts();
 
-    // setInitialData(costs);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(costs);
-
   useEffect(() => {
-    // Logika untuk mereset valueCourir ketika valueShipping berubah
-
     setValueCourir("");
   }, [valueShipping]);
 
   const handleShipping = (value, group) => {
     setValueShipping(value);
 
-    const filteredShippingData = initialData
+    const filteredShippingData = costs.data
       .map((provider) => ({
         ...provider,
         costs: provider.costs.filter((cost) => cost.group === group),
       }))
       .filter((provider) => provider.costs.length > 0);
 
-    console.log(filteredShippingData);
     setCourirs(filteredShippingData);
   };
 
@@ -90,7 +85,9 @@ export const Shipping = () => {
               color="primary"
               disabled={courirs.length < 1}
             >
-              {valueCourir === "" ? "Pilih Kurir" : valueCourir}
+              {Object.keys(valueCourir).length === 0
+                ? "Pilih Kurir"
+                : valueCourir.name}
             </CDropdownToggle>
             <CDropdownMenu style={{ width: 260 }}>
               {courirs.map((courir, index) => {
@@ -99,7 +96,7 @@ export const Shipping = () => {
                 return (
                   <CDropdownItem
                     key={index}
-                    onClick={() => setValueCourir(courir.name)}
+                    onClick={() => setValueCourir({ ...courir })}
                   >
                     {courir.name}
                     <span className="ml-2">({formatPrice(cost)})</span>

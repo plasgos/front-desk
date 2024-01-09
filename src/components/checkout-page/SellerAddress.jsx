@@ -17,6 +17,8 @@ import {
 
 import * as actions from "../../redux/modules/orders/actions/actions";
 
+import { setCheckout } from "../../redux/modules/checkout/actions/actions";
+
 import { Shipping } from "./Shipping";
 import { useDispatch, useSelector } from "react-redux";
 import { formatPrice } from "../../lib/format-price";
@@ -52,6 +54,26 @@ export const SellerAddress = () => {
     dispatch(actions.setAddressStore(data));
 
     // TODO Push to checkout Redux
+
+    dispatch(
+      setCheckout({
+        orders: [
+          {
+            sender: {
+              id: data.id,
+              name: data.receiver_name,
+              phone_number: data.phone_number,
+              address: data.address,
+              subdistrict_id: data.subdistrict_id,
+              postal_code: data.postal_code,
+              latitude: data.latitude,
+              longitude: data.longitude,
+            },
+            products: "tes produk",
+          },
+        ],
+      })
+    );
 
     setModalStates((prevStates) => ({
       ...prevStates,
