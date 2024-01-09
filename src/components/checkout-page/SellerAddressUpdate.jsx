@@ -57,7 +57,7 @@ export const SellerAddress = () => {
     }));
   };
 
-  console.log(orders);
+  let totalPricesPerStore = {};
 
   return (
     <CContainer fluid>
@@ -124,42 +124,42 @@ export const SellerAddress = () => {
                             </h4>
                           </CModalHeader>
                           <CModalBody>
-                            {order.Warehouses.map((warehouse) => {
-                              const isSelected =
-                                selectedWarehouse.id === warehouse.id;
+                            <div className="modal-overflow">
+                              {order.Warehouses.map((warehouse) => {
+                                const isSelected =
+                                  selectedWarehouse.id === warehouse.id;
 
-                              return (
-                                <CCard
-                                  key={warehouse.id}
-                                  className={`mb-2 ${
-                                    isSelected ? "bg-primary text-white" : ""
-                                  }`}
-                                  onClick={() =>
-                                    setSelectedWarehouse({ ...warehouse })
-                                  }
-                                >
-                                  <CCardBody
-                                    style={{ cursor: "pointer" }}
-                                    className={`select-modal ${
-                                      isSelected && "bg-primary"
-                                    }`}
+                                return (
+                                  <CCard
+                                    key={warehouse.id}
+                                    className={`mb-2 `}
+                                    onClick={() =>
+                                      setSelectedWarehouse({ ...warehouse })
+                                    }
                                   >
-                                    <div>
-                                      <h6 className="sub-heading">
-                                        {warehouse.name}
-                                      </h6>
+                                    <CCardBody
+                                      style={{ cursor: "pointer" }}
+                                      className={`select-modal ${
+                                        isSelected && "modal-selected"
+                                      }`}
+                                    >
                                       <div>
-                                        {warehouse.Subdistrict.City.name},{" "}
-                                        {
-                                          warehouse.Subdistrict.City.Province
-                                            .name
-                                        }{" "}
+                                        <h6 className="sub-heading">
+                                          {warehouse.name}
+                                        </h6>
+                                        <div>
+                                          {warehouse.Subdistrict.City.name},{" "}
+                                          {
+                                            warehouse.Subdistrict.City.Province
+                                              .name
+                                          }{" "}
+                                        </div>
                                       </div>
-                                    </div>
-                                  </CCardBody>
-                                </CCard>
-                              );
-                            })}
+                                    </CCardBody>
+                                  </CCard>
+                                );
+                              })}
+                            </div>
                           </CModalBody>
                           <CModalFooter>
                             <CButton
@@ -184,6 +184,19 @@ export const SellerAddress = () => {
                       {order.products.map((product) => {
                         const totalPricePerItem =
                           product.price * product.quantity;
+
+                        // Memeriksa apakah storeId sudah ada dalam objek totalPricesPerStore
+                        if (
+                          totalPricesPerStore.hasOwnProperty(order.store_id)
+                        ) {
+                          // Jika sudah ada, tambahkan nilai totalPricePerItem ke totalPricesPerStore[storeId]
+                          totalPricesPerStore[order.store_id] +=
+                            totalPricePerItem;
+                        } else {
+                          // Jika belum ada, inisialisasi totalPricesPerStore[storeId] dengan nilai totalPricePerItem
+                          totalPricesPerStore[order.store_id] =
+                            totalPricePerItem;
+                        }
 
                         const totalWeightPerItem =
                           product.weight * product.quantity;
@@ -233,7 +246,7 @@ export const SellerAddress = () => {
                           <div className="mx-2">
                             <p className="sub-heading">Total Pesanan</p>
                             <p className="bold-orange">
-                              {/* {totalOrderPrice} */}
+                              {formatPrice(totalPricesPerStore[order.store_id])}
                             </p>
                           </div>
                         </div>
