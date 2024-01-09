@@ -16,15 +16,4 @@ function* getOrders(values) {
   }
 }
 
-// function* setAddressStore(values) {
-//   const { payload } = values;
-//   try {
-//     // const response = yield call(axios, payload)
-//     // const {data} = response;
-//     yield put(actions.setAddressStore(payload));
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
 export { getOrders };

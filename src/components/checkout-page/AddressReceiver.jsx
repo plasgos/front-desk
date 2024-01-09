@@ -40,10 +40,10 @@ export const AddressReceiver = () => {
     getData();
   };
 
-  console.log(selectedAdress);
-
   const onSubmit = (data) => {
     setSelectedAdress(data);
+
+    // TODO Push to checkout Redux
 
     console.log(data);
 

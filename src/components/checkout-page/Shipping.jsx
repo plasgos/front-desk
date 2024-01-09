@@ -7,6 +7,8 @@ import {
 import React, { useEffect, useState } from "react";
 import { formatPrice } from "../../lib/format-price";
 import costs from "../../dummy/costs.json";
+import { useDispatch, useSelector } from "react-redux";
+import * as actions from "../../redux/modules/costs/actions/actions";
 
 export const Shipping = () => {
   const [courirs, setCourirs] = useState([]);
@@ -15,6 +17,10 @@ export const Shipping = () => {
   const [valueShipping, setValueShipping] = useState("");
   const [valueCourir, setValueCourir] = useState("");
 
+  const dispatch = useDispatch();
+
+  const { costs } = useSelector((state) => state.costs);
+
   const groupSelectShipping = [
     { name: "Instant", group: "instant" },
     { name: "Same Day", group: "same_day" },
@@ -22,12 +28,21 @@ export const Shipping = () => {
     { name: "Kargo", group: "cargo" },
   ];
 
+  const getCosts = () => {
+    dispatch(actions.getCosts());
+  };
+
   useEffect(() => {
-    setInitialData(costs);
+    getCosts();
+
+    // setInitialData(costs);
   }, []);
+
+  console.log(costs);
 
   useEffect(() => {
     // Logika untuk mereset valueCourir ketika valueShipping berubah
+
     setValueCourir("");
   }, [valueShipping]);
 
