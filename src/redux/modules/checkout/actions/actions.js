@@ -5,6 +5,16 @@ export const setCheckoutOrders = (payload) => ({
   payload,
 });
 
+export const setCheckoutSelectSender = (payload) => ({
+  type: types.SET_CHECKCOUT_SELECT_SENDER,
+  payload,
+});
+
+export const setCheckoutShipping = (payload) => ({
+  type: types.SET_CHECKCOUT_SHIPPING,
+  payload,
+});
+
 export const setCheckoutPayment = (payload) => ({
   type: types.SET_CHECKCOUT_PAYMENT,
   payload,

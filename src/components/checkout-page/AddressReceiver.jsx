@@ -39,6 +39,7 @@ export const AddressReceiver = () => {
 
   useEffect(() => {
     getData();
+    defaultAddressesCheckout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -48,9 +49,6 @@ export const AddressReceiver = () => {
 
   const onSubmit = (data) => {
     setSelectedAdress(data);
-
-    console.log(data);
-    // TODO Push to checkout Redux
 
     dispatch(
       setCheckoutReceiver({
@@ -68,11 +66,28 @@ export const AddressReceiver = () => {
     setModal(false);
   };
 
-  // const defaultAddressesCheckout =
-
   const defaultAddresses = address.data.filter(
     (address) => address.is_default === true
   );
+
+  const defaultAddressesCheckout = () => {
+    defaultAddresses.map((address) => {
+      const checkout = dispatch(
+        setCheckoutReceiver({
+          id: address.id,
+          name: address.receiver_name,
+          phone_number: address.phone_number,
+          address: address.address,
+          subdistrict_id: address.subdistrict_id,
+          postal_code: address.postal_code,
+          latitude: address.latitude,
+          longitude: address.longitude,
+        })
+      );
+
+      return checkout;
+    });
+  };
 
   return (
     <div>

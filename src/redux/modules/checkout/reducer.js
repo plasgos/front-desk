@@ -20,12 +20,38 @@ export default (state = initialState, action) => {
         ...state,
         receiver: action.payload,
       };
+    case types.SET_CHECKCOUT_SHIPPING:
+      return {
+        ...state,
+        orders: state.orders.map((order) => {
+          if (order.store_id === action.payload.store_id) {
+            return {
+              ...order,
+              ...action.payload,
+            };
+          }
+
+          return order;
+        }),
+      };
     case types.SET_CHECKCOUT_ORDERS:
       return {
         ...state,
         orders: action.payload,
       };
-
+    case types.SET_CHECKCOUT_SELECT_SENDER:
+      return {
+        ...state,
+        orders: state.orders.map((order) => {
+          return order.store_id === action.payload.store_id
+            ? {
+                ...order,
+                sender: action.payload,
+                warehouse_id: action.payload.id,
+              }
+            : order;
+        }),
+      };
     case types.SET_CHECKCOUT:
       return {
         ...state,

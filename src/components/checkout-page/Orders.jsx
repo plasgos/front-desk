@@ -15,15 +15,20 @@ import {
   CRow,
 } from "@coreui/react";
 
-import * as actions from "../../redux/modules/orders/actions/actions";
+import {
+  setAddressStore,
+  getOrders,
+} from "../../redux/modules/orders/actions/actions";
 
-import { setCheckout } from "../../redux/modules/checkout/actions/actions";
+import { setCheckoutOrders } from "../../redux/modules/checkout/actions/actions";
+
+import { setCheckoutSelectSender } from "../../redux/modules/checkout/actions/actions";
 
 import { Shipping } from "./Shipping";
 import { useDispatch, useSelector } from "react-redux";
 import { formatPrice } from "../../lib/format-price";
 
-export const SellerAddress = () => {
+export const Orders = () => {
   const [modalStates, setModalStates] = useState({});
   const [selectedWarehouse, setSelectedWarehouse] = useState({});
 
@@ -33,6 +38,7 @@ export const SellerAddress = () => {
 
   useEffect(() => {
     getData();
+    defaultCheckout();
     // listOrder();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -41,20 +47,8 @@ export const SellerAddress = () => {
     // let payload = {
     //   token: "xxxx",
     // };
-    dispatch(actions.getOrders());
+    dispatch(getOrders());
   };
-
-  // const listOrder = () => {
-  //   const ordered = orders.data.map((order) => ({
-  //     orders: {
-  //       store_id: order.store_id,
-  //       sender: order.sender,
-  //       products: [order.products],
-  //     },
-  //   }));
-
-  //   dispatch(setCheckout(ordered));
-  // };
 
   const toggleModal = (store_id) => {
     setModalStates((prevStates) => ({
@@ -65,35 +59,57 @@ export const SellerAddress = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-
-    // dispatch(actions.setAddressStore(data));
-
-    // TODO Push to checkout Redux
-
-    // dispatch(
-    //   setCheckout({
-    //     orders: [
-    //       {
-    //         sender: {
-    //           id: data.id,
-    //           name: data.receiver_name,
-    //           phone_number: data.phone_number,
-    //           address: data.address,
-    //           subdistrict_id: data.subdistrict_id,
-    //           postal_code: data.postal_code,
-    //           latitude: data.latitude,
-    //           longitude: data.longitude,
-    //         },
-    //         products: "tes produk",
-    //       },
-    //     ],
-    //   })
-    // );
+    dispatch(setAddressStore(data));
+    dispatch(
+      setCheckoutSelectSender({
+        id: data.id,
+        store_id: data.store_id,
+        name: data.name,
+        phone_number: data.phone_number,
+        address: data.address,
+        subdistrict_id: data.subdistrict_id,
+        postal_code: data.postal_code,
+        latitude: data.latitude,
+        longitude: data.longitude,
+      })
+    );
 
     setModalStates((prevStates) => ({
       ...prevStates,
       [data.store_id]: !prevStates[data.store_id],
     }));
+  };
+
+  const defaultCheckout = () => {
+    const checkoutData = orders.data.map((order) => {
+      const products = order.products.map((product) => ({
+        product_id: product.product_id,
+        quantity: product.quantity,
+        price: product.price,
+        cashback: product.cashback,
+        description: product.description,
+        stock: product.stock ? product.stock.qty : 0,
+      }));
+
+      return {
+        store_id: order.store_id,
+        sender: {
+          id: order.sender.id,
+          store_id: order.store_id,
+          name: order.sender.name,
+          phone_number: order.sender.phone_number,
+          address: order.sender.address,
+          subdistrict_id: order.sender.subdistrict_id,
+          postal_code: order.sender.postal_code,
+          latitude: order.sender.latitude,
+          longitude: order.sender.longitude,
+        },
+        products: products,
+        warehouse_id: order.sender.id,
+      };
+    });
+
+    dispatch(setCheckoutOrders(checkoutData));
   };
 
   let totalPricesPerStore = {};
@@ -102,14 +118,18 @@ export const SellerAddress = () => {
     <CContainer fluid>
       <CRow>
         <CCol sm="12">
-          <CCard style={{ borderRadius: 8 }} className="border-0 shadow-sm">
-            {orders.data.map((order) => {
-              const defaultWarehouse = order.Warehouses.filter(
-                (warehouse) => warehouse.is_default
-              );
+          {orders.data.map((order) => {
+            const defaultWarehouse = order.Warehouses.filter(
+              (warehouse) => warehouse.is_default
+            );
 
-              return (
-                <div key={order.store_id}>
+            return (
+              <CCard
+                key={order.store_id}
+                style={{ borderRadius: 8 }}
+                className="border-0 shadow-sm"
+              >
+                <div>
                   <CCardHeader
                     style={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
                   >
@@ -278,7 +298,7 @@ export const SellerAddress = () => {
                           </div>
                         );
                       })}
-                      <div className="d-flex justify-content-between border-bottom ">
+                      <div className="d-flex justify-content-between ">
                         <div></div>
 
                         <div className="d-flex align-items-center py-3">
@@ -292,15 +312,18 @@ export const SellerAddress = () => {
                       </div>
                     </div>
                   </CCardBody>
+                  <CCardFooter
+                    style={{
+                      borderBottomLeftRadius: 8,
+                      borderBottomRightRadius: 8,
+                    }}
+                  >
+                    <Shipping storeId={order.store_id} />
+                  </CCardFooter>
                 </div>
-              );
-            })}
-            <CCardFooter
-              style={{ borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}
-            >
-              <Shipping />
-            </CCardFooter>
-          </CCard>
+              </CCard>
+            );
+          })}
         </CCol>
       </CRow>
     </CContainer>
