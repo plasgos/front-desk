@@ -11,8 +11,20 @@ import {
   CRow,
 } from "@coreui/react";
 import { formatPrice } from "../../lib/format-price";
+import { useSelector } from "react-redux";
 
 export const Summary = () => {
+  const { orders } = useSelector((state) => state.checkout);
+
+  // console.log("checkout", orders);
+
+  const totalShippingCost = orders.reduce(
+    (total, order) => total + order.shipping_cost,
+    0
+  );
+
+  // console.log("Total Shipping Cost:", totalShippingCost);
+
   return (
     <CContainer fluid>
       <CRow>
@@ -31,11 +43,14 @@ export const Summary = () => {
 
               <div className="d-flex justify-content-between my-2">
                 <p>Total Ongkos Kirim</p>
-                <p className="sub-heading">{formatPrice(0)}</p>
+                <p className="sub-heading">
+                  {" "}
+                  {totalShippingCost ? formatPrice(totalShippingCost) : 0}
+                </p>
               </div>
 
               <div className="d-flex justify-content-between">
-                <p>Total Harga (1 Barang)</p>
+                <p>Total Pembayaran</p>
                 <p className="sub-heading text-primary">
                   {formatPrice(250000)}
                 </p>

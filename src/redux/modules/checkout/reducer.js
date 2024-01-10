@@ -52,14 +52,7 @@ export default (state = initialState, action) => {
             : order;
         }),
       };
-    case types.SET_CHECKCOUT:
-      return {
-        ...state,
-        checkout: {
-          ...state.checkout,
-          data: action.payload,
-        },
-      };
+
     case types.IS_LOADING_SET_CHECKCOUT:
       return {
         ...state,
@@ -68,14 +61,7 @@ export default (state = initialState, action) => {
           loading: action.payload,
         },
       };
-    case types.GET_CHECKOUT_SUCCESS:
-      return {
-        ...state,
-        checkout: {
-          ...state.checkout,
-          data: action.payload,
-        },
-      };
+
     case types.IS_LOADING_GET_CHECKOUT:
       return {
         ...state,

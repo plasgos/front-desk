@@ -5,7 +5,6 @@ export default {
   SET_CHECKCOUT_ORDERS: "set-checkout-orders",
   SET_CHECKCOUT_SELECT_SENDER: "set-checkout-select-sender",
 
-  SET_CHECKCOUT: "set-checkout",
   IS_LOADING_SET_CHECKCOUT: "set-checkout",
 
   GET_CHECKOUT: "get-checkout",

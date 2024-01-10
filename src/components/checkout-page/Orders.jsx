@@ -113,6 +113,19 @@ export const Orders = () => {
   };
 
   let totalPricesPerStore = {};
+  let totalPriceToCheckout = 0;
+
+  const calculateTotalPriceToCheckout = () => {
+    totalPriceToCheckout = Object.values(totalPricesPerStore).reduce(
+      (acc, val) => acc + val,
+      0
+    );
+  };
+
+  // Object.values(totalPricesPerStore).reduce((acc, val) => acc + val, 0);
+
+  // console.log(totalPricesPerStore);
+  // console.log(totalPriceToCheckout);
 
   return (
     <CContainer fluid>
@@ -325,6 +338,14 @@ export const Orders = () => {
             );
           })}
         </CCol>
+        {
+          (totalPriceToCheckout = Object.values(totalPricesPerStore).reduce(
+            (acc, val) => acc + val,
+            0
+          ))
+        }
+
+        <div>Total Price To Checkout: {formatPrice(totalPriceToCheckout)}</div>
       </CRow>
     </CContainer>
   );

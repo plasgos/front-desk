@@ -17,6 +17,8 @@ export const Shipping = ({ storeId }) => {
   const [valueShipping, setValueShipping] = useState("");
   const [valueCourir, setValueCourir] = useState({});
 
+  const [valueShippingToShown, setValueShippingToShown] = useState(0);
+
   const dispatch = useDispatch();
 
   const { costs } = useSelector((state) => state.costs);
@@ -39,7 +41,7 @@ export const Shipping = ({ storeId }) => {
   }, []);
 
   useEffect(() => {
-    setValueCourir("");
+    setValueCourir({});
   }, [valueShipping]);
 
   const handleShipping = (value, group) => {
@@ -56,10 +58,11 @@ export const Shipping = ({ storeId }) => {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
     setValueCourir(data);
 
     const checkout = data.costs.map((cost) => cost);
+
+    setValueShippingToShown(checkout[0].cost);
 
     dispatch(
       setCheckoutShipping({
@@ -68,7 +71,7 @@ export const Shipping = ({ storeId }) => {
         shipping_insurance_fee: checkout[0].price?.insurance_fee,
         shipping_service: checkout[0].service,
         shipping_service_type: checkout[0].service_type,
-        shipping_cost: checkout[0].price?.shipping_cost,
+        shipping_cost: checkout[0].price?.total_cost,
         service_type_id: checkout[0].id,
         drop: checkout[0].drop,
         cod: checkout[0].cod,
@@ -95,14 +98,21 @@ export const Shipping = ({ storeId }) => {
               {valueShipping === "" ? "Pilih pengiriman" : valueShipping}
             </CDropdownToggle>
             <CDropdownMenu style={{ width: 260 }}>
-              {groupSelectShipping.map((shipping, index) => (
-                <CDropdownItem
-                  key={index}
-                  onClick={() => handleShipping(shipping.name, shipping.group)}
-                >
-                  {shipping.name}
-                </CDropdownItem>
-              ))}
+              {groupSelectShipping.map((shipping, index) => {
+                const isSelected = shipping.name === valueShipping;
+
+                return (
+                  <CDropdownItem
+                    className={` ${isSelected && "bg-primary text-white"} `}
+                    key={index}
+                    onClick={() =>
+                      handleShipping(shipping.name, shipping.group)
+                    }
+                  >
+                    {shipping.name}
+                  </CDropdownItem>
+                );
+              })}
             </CDropdownMenu>
           </CDropdown>
         </div>
@@ -117,14 +127,17 @@ export const Shipping = ({ storeId }) => {
             >
               {Object.keys(valueCourir).length === 0
                 ? "Pilih Kurir"
-                : valueCourir.name}
+                : `${valueCourir.name} (${formatPrice(valueShippingToShown)})`}
             </CDropdownToggle>
             <CDropdownMenu style={{ width: 260 }}>
               {courirs.map((courir, index) => {
                 const cost = courir.costs.map((cost) => cost.cost);
 
+                const isSelected = courir.name === valueCourir.name;
+
                 return (
                   <CDropdownItem
+                    className={`${isSelected && "bg-primary text-white"}`}
                     key={index}
                     onClick={() => onSubmit({ ...courir })}
                   >

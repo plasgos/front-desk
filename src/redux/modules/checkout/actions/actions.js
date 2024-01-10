@@ -25,15 +25,6 @@ export const setCheckoutReceiver = (payload) => ({
   payload,
 });
 
-export const setCheckout = (payload) => ({
-  type: types.SET_CHECKCOUT,
-  payload,
-});
-export const setIsLoadingSetCheckout = (payload) => ({
-  type: types.IS_LOADING_SET_CHECKCOUT,
-  payload,
-});
-
 export const getCheckout = (payload) => ({
   type: types.GET_CHECKOUT,
   payload,
