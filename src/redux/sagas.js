@@ -10,6 +10,6 @@ export default function* rootSaga() {
     ...addressesWatcher,
     ...ordersWatcher,
     ...costsWatcher,
-    ...checkoutWatcher,
+    // ...checkoutWatcher,
   ]);
 }

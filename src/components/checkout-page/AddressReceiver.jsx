@@ -2,17 +2,12 @@ import React, { useEffect, useState } from "react";
 
 import {
   CBadge,
-  CButton,
   CCard,
   CCardBody,
   CCardFooter,
   CCardHeader,
   CCol,
   CContainer,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
   CRow,
 } from "@coreui/react";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,11 +15,10 @@ import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/modules/addresses/actions/actions";
 
 import { setCheckoutReceiver } from "../../redux/modules/checkout/actions/actions";
+import { ReceiverModal } from "./modal/ReceiverModal";
 
 export const AddressReceiver = () => {
-  const [modal, setModal] = useState(false);
-  const [selectedAdress, setSelectedAdress] = useState({});
-  const [isSelectedAdress, setIsSelectedAdress] = useState({});
+  const [selectedAddress, setSelectedAddress] = useState({});
 
   const dispatch = useDispatch();
 
@@ -42,29 +36,6 @@ export const AddressReceiver = () => {
     defaultAddressesCheckout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const toggle = () => {
-    setModal(!modal);
-  };
-
-  const onSubmit = (data) => {
-    setSelectedAdress(data);
-
-    dispatch(
-      setCheckoutReceiver({
-        id: data.id,
-        name: data.receiver_name,
-        phone_number: data.phone_number,
-        address: data.address,
-        subdistrict_id: data.subdistrict_id,
-        postal_code: data.postal_code,
-        latitude: data.latitude,
-        longitude: data.longitude,
-      })
-    );
-
-    setModal(false);
-  };
 
   const defaultAddresses = address.data.filter(
     (address) => address.is_default === true
@@ -103,7 +74,7 @@ export const AddressReceiver = () => {
                 Alamat Penerima
               </CCardHeader>
               <CCardBody className="py-4">
-                {Object.keys(selectedAdress).length === 0 ? (
+                {Object.keys(selectedAddress).length === 0 ? (
                   defaultAddresses.map((address) => (
                     <div key={address.id}>
                       <div className="d-flex align-items-center">
@@ -122,14 +93,14 @@ export const AddressReceiver = () => {
                   <div key={address.id}>
                     <div className="d-flex align-items-center">
                       <h6 className="sub-heading mr-2 mt-2">
-                        {selectedAdress.receiver_name}
+                        {selectedAddress.receiver_name}
                       </h6>
-                      {selectedAdress.is_default && (
+                      {selectedAddress.is_default && (
                         <CBadge color="success">Utama</CBadge>
                       )}
                     </div>
-                    <div>{selectedAdress.phone_number}</div>
-                    <div>{selectedAdress.address}</div>
+                    <div>{selectedAddress.phone_number}</div>
+                    <div>{selectedAddress.address}</div>
                   </div>
                 )}
               </CCardBody>
@@ -139,64 +110,10 @@ export const AddressReceiver = () => {
                   borderBottomRightRadius: 8,
                 }}
               >
-                <CButton onClick={toggle} className="mr-1 border">
-                  Pilih alamat penerima
-                </CButton>
-                <CModal show={modal} onClose={toggle}>
-                  <CModalHeader closeButton>
-                    <h4 className="text-center ml-auto">
-                      Pilih Alamat Penerima
-                    </h4>
-                  </CModalHeader>
-                  <CModalBody>
-                    <div className="modal-overflow">
-                      {address.data.map((address) => {
-                        const selected = isSelectedAdress.id === address.id;
-
-                        return (
-                          <CCard
-                            key={address.id}
-                            onClick={() =>
-                              setIsSelectedAdress({
-                                ...address,
-                              })
-                            }
-                            className="mb-2"
-                          >
-                            <CCardBody
-                              style={{ cursor: "pointer" }}
-                              className={`select-modal ${
-                                selected && "modal-selected"
-                              }`}
-                            >
-                              <div className="d-flex align-items-center">
-                                <h6 className="sub-heading mr-2 mt-2">
-                                  {address.receiver_name}
-                                </h6>
-                                {address.is_default && (
-                                  <CBadge color="success">Utama</CBadge>
-                                )}
-                              </div>
-                              <div>{address.phone_number}</div>
-                              <div>{address.address}</div>
-                            </CCardBody>
-                          </CCard>
-                        );
-                      })}
-                    </div>
-                  </CModalBody>
-                  <CModalFooter>
-                    <CButton
-                      onClick={() => onSubmit(isSelectedAdress)}
-                      color="primary"
-                    >
-                      Pilih
-                    </CButton>{" "}
-                    <CButton color="secondary" onClick={toggle}>
-                      Batal
-                    </CButton>
-                  </CModalFooter>
-                </CModal>
+                <ReceiverModal
+                  address={address}
+                  setSelectedAddress={setSelectedAddress}
+                />
               </CCardFooter>
             </CCard>
           </CCol>

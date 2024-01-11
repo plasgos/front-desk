@@ -1,83 +1,59 @@
 import React, { useEffect, useState } from "react";
 
 import {
-  CButton,
   CCard,
   CCardBody,
   CCardFooter,
   CCardHeader,
   CCol,
   CContainer,
-  CModal,
-  CModalBody,
-  CModalFooter,
-  CModalHeader,
   CRow,
 } from "@coreui/react";
 
-import {
-  setAddressStore,
-  getOrders,
-} from "../../redux/modules/orders/actions/actions";
+import { getOrders } from "../../redux/modules/orders/actions/actions";
 
 import { setCheckoutOrders } from "../../redux/modules/checkout/actions/actions";
 
-import { setCheckoutSelectSender } from "../../redux/modules/checkout/actions/actions";
+import { setTotalPrice } from "../../redux/modules/total-price/actions/actions";
 
 import { Shipping } from "./Shipping";
 import { useDispatch, useSelector } from "react-redux";
 import { formatPrice } from "../../lib/format-price";
+import { SenderModal } from "./modal/SenderModal";
 
 export const Orders = () => {
-  const [modalStates, setModalStates] = useState({});
   const [selectedWarehouse, setSelectedWarehouse] = useState({});
+  const [totalPriceToCheckout, setTotalPriceToCheckout] = useState(0);
 
   const dispatch = useDispatch();
 
   const { orders } = useSelector((state) => state.orders);
 
+  let totalPricesPerStore = {};
+
   useEffect(() => {
     getData();
     defaultCheckout();
-    // listOrder();
+    dispatch(setTotalPrice(totalPriceToCheckout));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [totalPriceToCheckout]);
+
+  useEffect(() => {
+    // Menghitung total harga dari setiap toko
+    const calculatedTotalPrice = Object.values(totalPricesPerStore).reduce(
+      (acc, price) => acc + price,
+      0
+    );
+
+    // Mengatur total harga ke dalam state
+    setTotalPriceToCheckout(calculatedTotalPrice);
+  }, [totalPricesPerStore]);
 
   const getData = () => {
     // let payload = {
     //   token: "xxxx",
     // };
     dispatch(getOrders());
-  };
-
-  const toggleModal = (store_id) => {
-    setModalStates((prevStates) => ({
-      ...prevStates,
-      [store_id]: !prevStates[store_id],
-    }));
-  };
-
-  const onSubmit = (data) => {
-    console.log(data);
-    dispatch(setAddressStore(data));
-    dispatch(
-      setCheckoutSelectSender({
-        id: data.id,
-        store_id: data.store_id,
-        name: data.name,
-        phone_number: data.phone_number,
-        address: data.address,
-        subdistrict_id: data.subdistrict_id,
-        postal_code: data.postal_code,
-        latitude: data.latitude,
-        longitude: data.longitude,
-      })
-    );
-
-    setModalStates((prevStates) => ({
-      ...prevStates,
-      [data.store_id]: !prevStates[data.store_id],
-    }));
   };
 
   const defaultCheckout = () => {
@@ -111,21 +87,6 @@ export const Orders = () => {
 
     dispatch(setCheckoutOrders(checkoutData));
   };
-
-  let totalPricesPerStore = {};
-  let totalPriceToCheckout = 0;
-
-  const calculateTotalPriceToCheckout = () => {
-    totalPriceToCheckout = Object.values(totalPricesPerStore).reduce(
-      (acc, val) => acc + val,
-      0
-    );
-  };
-
-  // Object.values(totalPricesPerStore).reduce((acc, val) => acc + val, 0);
-
-  // console.log(totalPricesPerStore);
-  // console.log(totalPriceToCheckout);
 
   return (
     <CContainer fluid>
@@ -180,74 +141,11 @@ export const Orders = () => {
                       </div>
 
                       <div>
-                        <CButton
-                          onClick={() => toggleModal(order.store_id)}
-                          className="mr-1 border ml-auto"
-                        >
-                          Pilih alamat Pengiriman
-                        </CButton>
-                        <CModal
-                          show={modalStates[order.store_id]}
-                          onClose={() => toggleModal(order.store_id)}
-                        >
-                          <CModalHeader closeButton>
-                            <h4 className="text-center ml-auto">
-                              Pilih Alamat Penerima
-                            </h4>
-                          </CModalHeader>
-                          <CModalBody>
-                            <div className="modal-overflow">
-                              {order.Warehouses.map((warehouse) => {
-                                const isSelected =
-                                  selectedWarehouse.id === warehouse.id;
-
-                                return (
-                                  <CCard
-                                    key={warehouse.id}
-                                    className={`mb-2 `}
-                                    onClick={() =>
-                                      setSelectedWarehouse({ ...warehouse })
-                                    }
-                                  >
-                                    <CCardBody
-                                      style={{ cursor: "pointer" }}
-                                      className={`select-modal ${
-                                        isSelected && "modal-selected"
-                                      }`}
-                                    >
-                                      <div>
-                                        <h6 className="sub-heading">
-                                          {warehouse.name}
-                                        </h6>
-                                        <div>
-                                          {warehouse.Subdistrict.City.name},{" "}
-                                          {
-                                            warehouse.Subdistrict.City.Province
-                                              .name
-                                          }{" "}
-                                        </div>
-                                      </div>
-                                    </CCardBody>
-                                  </CCard>
-                                );
-                              })}
-                            </div>
-                          </CModalBody>
-                          <CModalFooter>
-                            <CButton
-                              onClick={() => onSubmit(selectedWarehouse)}
-                              color="primary"
-                            >
-                              Pilih
-                            </CButton>{" "}
-                            <CButton
-                              color="secondary"
-                              onClick={() => toggleModal(order.store_id)}
-                            >
-                              Batal
-                            </CButton>
-                          </CModalFooter>
-                        </CModal>
+                        <SenderModal
+                          order={order}
+                          setSelectedWarehouse={setSelectedWarehouse}
+                          selectedWarehouse={selectedWarehouse}
+                        />
                       </div>
                     </div>
                   </CCardHeader>
@@ -338,14 +236,6 @@ export const Orders = () => {
             );
           })}
         </CCol>
-        {
-          (totalPriceToCheckout = Object.values(totalPricesPerStore).reduce(
-            (acc, val) => acc + val,
-            0
-          ))
-        }
-
-        <div>Total Price To Checkout: {formatPrice(totalPriceToCheckout)}</div>
       </CRow>
     </CContainer>
   );
