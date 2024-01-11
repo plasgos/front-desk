@@ -18,8 +18,6 @@ export const Summary = () => {
 
   const checkout = useSelector((state) => state.checkout);
 
-  console.log(checkout);
-
   const { totalPrice } = useSelector((state) => state.totalPrice);
 
   const totalShippingCost = orders.reduce(

@@ -28,7 +28,6 @@ export const Orders = () => {
   const dispatch = useDispatch();
 
   const { orders } = useSelector((state) => state.orders);
-
   let totalPricesPerStore = {};
 
   useEffect(() => {
