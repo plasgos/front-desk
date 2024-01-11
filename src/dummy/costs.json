@@ -119,9 +119,9 @@
         "cut_off_time": null,
         "force_insurance": false,
         "setting": {
-          "cod_fee": "0.03",
-          "minimum_cod_fee": "2500",
-          "insurance_fee": "0.002",
+          "cod_fee": 0.03,
+          "minimum_cod_fee": 2500,
+          "insurance_fee": 0.002,
           "insurance_add_cost": 0
         },
         "id": 8,
@@ -151,9 +151,9 @@
         "cut_off_time": null,
         "force_insurance": false,
         "setting": {
-          "cod_fee": "0.03",
+          "cod_fee": 0.03,
           "minimum_cod_fee": 2500,
-          "insurance_fee": "0.0025",
+          "insurance_fee": 0.0025,
           "insurance_add_cost": 0
         },
         "id": 9,
@@ -183,9 +183,9 @@
         "cut_off_time": null,
         "force_insurance": false,
         "setting": {
-          "cod_fee": "0.03",
+          "cod_fee": 0.03,
           "minimum_cod_fee": 2500,
-          "insurance_fee": "0.002",
+          "insurance_fee": 0.002,
           "insurance_add_cost": 5000
         },
         "id": 11,
@@ -216,9 +216,9 @@
         "cut_off_time": null,
         "force_insurance": false,
         "setting": {
-          "cod_fee": "0.03",
-          "minimum_cod_fee": "3000",
-          "insurance_fee": "0.002",
+          "cod_fee": 0.03,
+          "minimum_cod_fee": 3000,
+          "insurance_fee": 0.002,
           "insurance_add_cost": 0
         },
         "id": 23,
@@ -242,9 +242,9 @@
         "cut_off_time": null,
         "force_insurance": false,
         "setting": {
-          "cod_fee": "0.03",
-          "minimum_cod_fee": "3000",
-          "insurance_fee": "0.002",
+          "cod_fee": 0.03,
+          "minimum_cod_fee": 3000,
+          "insurance_fee": 0.002,
           "insurance_add_cost": 0
         },
         "id": 21,
@@ -268,8 +268,8 @@
         "cut_off_time": null,
         "force_insurance": false,
         "setting": {
-          "cod_fee": "0.03",
-          "minimum_cod_fee": "3000",
+          "cod_fee": 0.03,
+          "minimum_cod_fee": 3000,
           "insurance_fee": "0.002",
           "insurance_add_cost": 0
         },
@@ -301,9 +301,9 @@
         "cut_off_time": null,
         "force_insurance": false,
         "setting": {
-          "cod_fee": "0.03",
-          "minimum_cod_fee": "2500",
-          "insurance_fee": "0.002",
+          "cod_fee": 0.03,
+          "minimum_cod_fee": 2500,
+          "insurance_fee": 0.002,
           "insurance_add_cost": 0
         },
         "id": 25,
