@@ -12,9 +12,15 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCheckoutReceiver } from "../../../redux/modules/checkout/actions/actions";
 
-export const ReceiverModal = ({ address, setSelectedAddress }) => {
+export const ReceiverModal = ({
+  address,
+  setSelectedAddress,
+  selectedAddress,
+}) => {
   const [modal, setModal] = useState(false);
-  const [isSelectedAddress, setIsSelectedAddress] = useState({});
+  const [isSelectedAddress, setIsSelectedAddress] = useState(
+    address.data.find((address) => address.is_default)
+  );
 
   const dispatch = useDispatch();
 
@@ -46,14 +52,18 @@ export const ReceiverModal = ({ address, setSelectedAddress }) => {
       <CButton onClick={toggle} className="mr-1 border">
         Pilih alamat penerima
       </CButton>
-      <CModal show={modal} onClose={toggle}>
+      <CModal centered show={modal} onClose={toggle}>
         <CModalHeader closeButton>
           <h4 className="text-center ml-auto">Pilih Alamat Penerima</h4>
         </CModalHeader>
         <CModalBody>
           <div className="modal-overflow">
             {address.data.map((address) => {
-              const selected = isSelectedAddress.id === address.id;
+              const selected =
+                isSelectedAddress && isSelectedAddress.id === address.id;
+
+              const defaultSelected =
+                !isSelectedAddress && selectedAddress.id === address.id;
 
               return (
                 <CCard
@@ -67,7 +77,9 @@ export const ReceiverModal = ({ address, setSelectedAddress }) => {
                 >
                   <CCardBody
                     style={{ cursor: "pointer" }}
-                    className={`select-modal ${selected && "modal-selected"}`}
+                    className={` ${selected && " modal-selected"} ${
+                      defaultSelected && " modal-selected"
+                    }`}
                   >
                     <div className="d-flex align-items-center">
                       <h6 className="sub-heading mr-2 mt-2">

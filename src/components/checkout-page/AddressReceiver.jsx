@@ -18,46 +18,47 @@ import { setCheckoutReceiver } from "../../redux/modules/checkout/actions/action
 import { ReceiverModal } from "./modal/ReceiverModal";
 
 export const AddressReceiver = () => {
+  const { address } = useSelector((state) => state.addresses);
+
   const [selectedAddress, setSelectedAddress] = useState({});
 
   const dispatch = useDispatch();
 
-  const { address } = useSelector((state) => state.addresses);
-
   const getData = () => {
-    // let payload = {
-    //   token: "xxxx",
-    // };
     dispatch(actions.getAddress());
   };
 
   useEffect(() => {
+    const defaultAddress =
+      address.data && address.data.find((addr) => addr.is_default);
+    setSelectedAddress(defaultAddress || {});
+  }, [address]);
+
+  useEffect(() => {
     getData();
-    defaultAddressesCheckout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const defaultAddresses = address.data.filter(
-    (address) => address.is_default === true
-  );
+  useEffect(() => {
+    defaultAddressesCheckout();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, selectedAddress]);
 
   const defaultAddressesCheckout = () => {
-    defaultAddresses.map((address) => {
-      const checkout = dispatch(
-        setCheckoutReceiver({
-          id: address.id,
-          name: address.receiver_name,
-          phone_number: address.phone_number,
-          address: address.address,
-          subdistrict_id: address.subdistrict_id,
-          postal_code: address.postal_code,
-          latitude: address.latitude,
-          longitude: address.longitude,
-        })
-      );
+    const checkout = dispatch(
+      setCheckoutReceiver({
+        id: selectedAddress.id,
+        name: selectedAddress.receiver_name,
+        phone_number: selectedAddress.phone_number,
+        address: selectedAddress.address,
+        subdistrict_id: selectedAddress.subdistrict_id,
+        postal_code: selectedAddress.postal_code,
+        latitude: selectedAddress.latitude,
+        longitude: selectedAddress.longitude,
+      })
+    );
 
-      return checkout;
-    });
+    return checkout;
   };
 
   return (
@@ -74,35 +75,18 @@ export const AddressReceiver = () => {
                 Alamat Penerima
               </CCardHeader>
               <CCardBody className="py-4">
-                {Object.keys(selectedAddress).length === 0 ? (
-                  defaultAddresses.map((address) => (
-                    <div key={address.id}>
-                      <div className="d-flex align-items-center">
-                        <h6 className="sub-heading mr-2 mt-2">
-                          {address.receiver_name}
-                        </h6>
-                        {address.is_default && (
-                          <CBadge color="success">Utama</CBadge>
-                        )}
-                      </div>
-                      <div>{address.phone_number}</div>
-                      <div>{address.address}</div>
-                    </div>
-                  ))
-                ) : (
-                  <div key={address.id}>
-                    <div className="d-flex align-items-center">
-                      <h6 className="sub-heading mr-2 mt-2">
-                        {selectedAddress.receiver_name}
-                      </h6>
-                      {selectedAddress.is_default && (
-                        <CBadge color="success">Utama</CBadge>
-                      )}
-                    </div>
-                    <div>{selectedAddress.phone_number}</div>
-                    <div>{selectedAddress.address}</div>
+                <div key={address.id}>
+                  <div className="d-flex align-items-center">
+                    <h6 className="sub-heading mr-2 mt-2">
+                      {selectedAddress.receiver_name}
+                    </h6>
+                    {selectedAddress.is_default && (
+                      <CBadge color="success">Utama</CBadge>
+                    )}
                   </div>
-                )}
+                  <div>{selectedAddress.phone_number}</div>
+                  <div>{selectedAddress.address}</div>
+                </div>
               </CCardBody>
               <CCardFooter
                 style={{
@@ -112,6 +96,7 @@ export const AddressReceiver = () => {
               >
                 <ReceiverModal
                   address={address}
+                  selectedAddress={selectedAddress}
                   setSelectedAddress={setSelectedAddress}
                 />
               </CCardFooter>

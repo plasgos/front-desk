@@ -58,6 +58,7 @@ export const SenderModal = ({
         Pilih alamat Pengiriman
       </CButton>
       <CModal
+        centered
         show={modalStates[order.store_id]}
         onClose={() => toggleModal(order.store_id)}
       >
@@ -69,6 +70,10 @@ export const SenderModal = ({
             {order.Warehouses.map((warehouse) => {
               const isSelected = selectedWarehouse.id === warehouse.id;
 
+              const defaultSender =
+                Object.keys(selectedWarehouse).length === 0 &&
+                warehouse.is_default;
+
               return (
                 <CCard
                   key={warehouse.id}
@@ -77,7 +82,9 @@ export const SenderModal = ({
                 >
                   <CCardBody
                     style={{ cursor: "pointer" }}
-                    className={`select-modal ${isSelected && "modal-selected"}`}
+                    className={` ${isSelected && "modal-selected"} ${
+                      defaultSender && "modal-selected"
+                    } `}
                   >
                     <div>
                       <h6 className="sub-heading">{warehouse.name}</h6>

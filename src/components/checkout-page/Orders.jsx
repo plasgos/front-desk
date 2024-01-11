@@ -39,20 +39,15 @@ export const Orders = () => {
   }, [totalPriceToCheckout]);
 
   useEffect(() => {
-    // Menghitung total harga dari setiap toko
     const calculatedTotalPrice = Object.values(totalPricesPerStore).reduce(
       (acc, price) => acc + price,
       0
     );
 
-    // Mengatur total harga ke dalam state
     setTotalPriceToCheckout(calculatedTotalPrice);
   }, [totalPricesPerStore]);
 
   const getData = () => {
-    // let payload = {
-    //   token: "xxxx",
-    // };
     dispatch(getOrders());
   };
 
@@ -155,15 +150,12 @@ export const Orders = () => {
                         const totalPricePerItem =
                           product.price * product.quantity;
 
-                        // Memeriksa apakah storeId sudah ada dalam objek totalPricesPerStore
                         if (
                           totalPricesPerStore.hasOwnProperty(order.store_id)
                         ) {
-                          // Jika sudah ada, tambahkan nilai totalPricePerItem ke totalPricesPerStore[storeId]
                           totalPricesPerStore[order.store_id] +=
                             totalPricePerItem;
                         } else {
-                          // Jika belum ada, inisialisasi totalPricesPerStore[storeId] dengan nilai totalPricePerItem
                           totalPricesPerStore[order.store_id] =
                             totalPricePerItem;
                         }
