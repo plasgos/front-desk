@@ -1,468 +1,499 @@
 [
-    {
-        "store_id": 2,
-        "store": 2,
-        "name_store": "Admin",
-        "avatar_store": "https://image-plasgos.s3-ap-southeast-1.amazonaws.com/avatar-store/default.png",
-        "subdomain_store": "admin-test",
-        "sender": {
-            "id": 10330,
-            "name": "Admin ",
-            "phone_number": "-",
-            "address": "Jalan Utan Kayu Raya No 68H",
-            "postal_code": "13120",
-            "latitude": null,
-            "longitude": null,
-            "subdistrict_id": 2120,
-            "is_default": true,
-            "store_id": 2,
-            "Subdistrict": {
-                "id": 2120,
-                "name": "Matraman",
-                "type": "Kecamatan",
-                "city_id": 154,
-                "kiriminaja_id": 2120,
-                "City": {
-                    "id": 154,
-                    "name": "Jakarta Timur",
-                    "type": "Kota",
-                    "province_id": 6,
-                    "kiriminaja_id": 154,
-                    "Province": {
-                        "id": 6,
-                        "name": "DKI Jakarta",
-                        "kiriminaja_id": 6
-                    }
-                }
-            }
-        },
-        "products": [
-            {
-                "quantity": 2,
-                "description": "deskripsi",
-                "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
-                "cashback": 0,
-                "price": 250000,
-                "weight": 250,
-                "product": {
-                    "id": "561d9513-675b-487d-91ca-47cbffab7bea",
-                    "name": "Test #1",
-                    "description": "Test #1",
-                    "subdomain_product": "test-1",
-                    "price": 250000,
-                    "weight": 250,
-                    "min_order": 1,
-                    "status": "active",
-                    "is_empty": false,
-                    "condition": "Baru",
-                    "is_promoted": false,
-                    "due_promoted": null,
-                    "category_id": 2,
-                    "showcase_id": 2,
-                    "store_id": 2,
-                    "is_active": true,
-                    "is_deleted": false,
-                    "updatedAt": "2024-01-02T01:20:15.225Z",
-                    "createdAt": "2018-04-27T02:58:28.782Z",
-                    "ImageProducts": [
-                        {
-                            "id": "ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f",
-                            "url": "https://image-plasgos.s3.amazonaws.com/product/1538982230516_1524797909382_1303247_2505060b-16d0-4b78-8031-fa0ad1cb2a5a.png",
-                            "is_default": true,
-                            "square_200_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/200-square/2021/1/19/ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f.png",
-                            "square_300_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/300-square/2021/1/19/ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f.png"
-                        },
-                        {
-                            "id": "c4f24bb3-a288-41c1-a9e3-f554cf90896a",
-                            "url": "https://image-plasgos.s3.ap-southeast-1.amazonaws.com/product/1547110466108_wallpaper1491892286e618c9.jpg",
-                            "is_default": false,
-                            "square_200_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/200-square/2021/1/19/c4f24bb3-a288-41c1-a9e3-f554cf90896a.jpg",
-                            "square_300_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/300-square/2021/1/19/c4f24bb3-a288-41c1-a9e3-f554cf90896a.jpg"
-                        }
-                    ],
-                    "Stocks": [
-                        {
-                            "id": 5196,
-                            "warehouse_id": 10330,
-                            "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
-                            "qty": 100,
-                        },
-                        {
-                            "id": 5197,
-                            "warehouse_id": 10331,
-                            "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
-                            "qty": 5
-                        },
-                        {
-                            "id": 5197,
-                            "warehouse_id": 10332,
-                            "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
-                            "qty": 0,
-                        }
-                    ],,
-                    "fb_pixel": null,
-                    "landing_page": null,
-                    "whatsapp": null
-                },
-                "stock": {
-                    "id": 5196,
-                    "warehouse_id": 10330,
-                    "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
-                    "qty": 97
-                }
-            },
-            {
-                "quantity": 25,
-                "description": "",
-                "product_id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
-                "cashback": 0,
-                "price": 300,
-                "weight": 5000,
-                "product": {
-                    "id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
-                    "name": "Test #2",
-                    "description": "Test #2",
-                    "subdomain_product": "test-2",
-                    "price": 300,
-                    "weight": 200,
-                    "min_order": 25,
-                    "status": "active",
-                    "is_empty": false,
-                    "condition": "Baru",
-                    "is_promoted": false,
-                    "due_promoted": null,
-                    "category_id": 2,
-                    "showcase_id": 2,
-                    "store_id": 2,
-                    "is_active": true,
-                    "is_deleted": false,
-                    "updatedAt": "2024-01-02T01:19:47.903Z",
-                    "createdAt": "2018-04-27T03:00:54.519Z",
-                    "GrocierPrices": [
-                        {
-                            "id": 1000,
-                            "min_order": 50,
-                            "price": 250,
-                            "cashback": null
-                        },
-                        {
-                            "id": 1001,
-                            "min_order": 100,
-                            "price": 200,
-                            "cashback": null
-                        }
-                    ],
-                    "ImageProducts": [
-                        {
-                            "id": "a5bce62a-69ca-4e39-b189-1cc79ac270f6",
-                            "url": "https://image-plasgos.s3.amazonaws.com/product/1538982520163_1524798055392_book_guide_hero_books.png",
-                            "is_default": true,
-                            "square_200_url": "https://image-cache-plasgos.s3.ap-southeast-1.amazonaws.com/p/cache/200-square/2021/1/20/a5bce62a-69ca-4e39-b189-1cc79ac270f6.png",
-                            "square_300_url": "https://image-cache-plasgos.s3.ap-southeast-1.amazonaws.com/p/cache/300-square/2021/1/20/a5bce62a-69ca-4e39-b189-1cc79ac270f6.png"
-                        }
-                    ],
-                    "Stocks": [
-                        {
-                            "id": 4010,
-                            "warehouse_id": 10330,
-                            "product_id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
-                            "qty": 100,
-                        },
-                        {
-                            "id": 4011,
-                            "warehouse_id": 10331,
-                            "product_id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
-                            "qty": 10
-                        },
-                        {
-                            "id": 4012,
-                            "warehouse_id": 10332,
-                            "product_id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
-                            "qty": 0,
-                        }
-                    ],
-                },
-                "stock": {
-                    "id": 4010,
-                    "warehouse_id": 10330,
-                    "product_id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
-                    "qty": 100,
-                }
-            }
-        ],
-        "insurance": true,
-        "shipping_insurance_fee": 0,
-        "shipping_service": "grab_express",
-        "shipping_service_type": "SAME_DAY",
-        "shipping_cost": 21501,
-        "service_type_id": 5,
-        "Warehouses": [
-          {
-              "id": 10330,
-              "name": "Admin ",
-              "phone_number": "-",
-              "address": "Jalan Utan Kayu Raya No 68H",
-              "postal_code": "13120",
-              "latitude": null,
-              "longitude": null,
-              "subdistrict_id": 2120,
-              "is_default": true,
-              "store_id": 2,
-              "Subdistrict": {
-                  "id": 2120,
-                  "name": "Matraman",
-                  "type": "Kecamatan",
-                  "city_id": 154,
-                  "kiriminaja_id": 2120,
-                  "City": {
-                      "id": 154,
-                      "name": "Jakarta Timur",
-                      "type": "Kota",
-                      "province_id": 6,
-                      "kiriminaja_id": 154,
-                      "Province": {
-                          "id": 6,
-                          "name": "DKI Jakarta",
-                          "kiriminaja_id": 6
-                      }
-                  }
-              }
-          },
-          {
-              "id": 10331,
-              "name": "Admin 2",
-              "phone_number": "-",
-              "address": "Jalan 2",
-              "postal_code": "13120",
-              "latitude": null,
-              "longitude": null,
-              "subdistrict_id": 2120,
-              "is_default": true,
-              "store_id": 2,
-              "Subdistrict": {
-                  "id": 2120,
-                  "name": "Matraman 2",
-                  "type": "Kecamatan",
-                  "city_id": 154,
-                  "kiriminaja_id": 2120,
-                  "City": {
-                      "id": 154,
-                      "name": "Jakarta Timur 2",
-                      "type": "Kota",
-                      "province_id": 6,
-                      "kiriminaja_id": 154,
-                      "Province": {
-                          "id": 6,
-                          "name": "DKI Jakarta 2",
-                          "kiriminaja_id": 6
-                      }
-                  }
-              }
-          },
-          {
-              "id": 10332,
-              "name": "Admin 3",
-              "phone_number": "-",
-              "address": "Jalan 3",
-              "postal_code": "13120",
-              "latitude": null,
-              "longitude": null,
-              "subdistrict_id": 2120,
-              "is_default": true,
-              "store_id": 2,
-              "Subdistrict": {
-                  "id": 2120,
-                  "name": "Matraman 3",
-                  "type": "Kecamatan",
-                  "city_id": 154,
-                  "kiriminaja_id": 2120,
-                  "City": {
-                      "id": 154,
-                      "name": "Jakarta Timur 3",
-                      "type": "Kota",
-                      "province_id": 6,
-                      "kiriminaja_id": 154,
-                      "Province": {
-                          "id": 6,
-                          "name": "DKI Jakarta 3",
-                          "kiriminaja_id": 6
-                      }
-                  }
-              }
+  {
+    "store_id": 2,
+    "store": 2,
+    "name_store": "Admin Store",
+    "avatar_store": "https://image-plasgos.s3-ap-southeast-1.amazonaws.com/avatar-store/default.png",
+    "subdomain_store": "admin-test",
+    "sender": {
+      "id": 10330,
+      "name": "Admin ",
+      "phone_number": "-",
+      "address": "Jalan Utan Kayu Raya No 68H",
+      "postal_code": "13120",
+      "latitude": null,
+      "longitude": null,
+      "subdistrict_id": 2120,
+      "is_default": true,
+      "store_id": 2,
+      "Subdistrict": {
+        "id": 2120,
+        "name": "Matraman",
+        "type": "Kecamatan",
+        "city_id": 154,
+        "kiriminaja_id": 2120,
+        "City": {
+          "id": 154,
+          "name": "Jakarta Timur",
+          "type": "Kota",
+          "province_id": 6,
+          "kiriminaja_id": 154,
+          "Province": {
+            "id": 6,
+            "name": "DKI Jakarta",
+            "kiriminaja_id": 6
           }
-        ]
+        }
+      }
     },
-    {
-        "store_id": 3,
-        "store": 3,
-        "name_store": "Admin 3",
-        "avatar_store": "https://image-plasgos.s3-ap-southeast-1.amazonaws.com/avatar-store/default.png",
-        "subdomain_store": "admin-test",
-        "sender": {
-            "id": 10330,
-            "name": "Admin ",
-            "phone_number": "-",
-            "address": "Jalan Utan Kayu Raya No 68H",
-            "postal_code": "13120",
-            "latitude": null,
-            "longitude": null,
-            "subdistrict_id": 2120,
-            "is_default": true,
-            "store_id": 2,
-            "Subdistrict": {
-                "id": 2120,
-                "name": "Matraman",
-                "type": "Kecamatan",
-                "city_id": 154,
-                "kiriminaja_id": 2120,
-                "City": {
-                    "id": 154,
-                    "name": "Jakarta Timur",
-                    "type": "Kota",
-                    "province_id": 6,
-                    "kiriminaja_id": 154,
-                    "Province": {
-                        "id": 6,
-                        "name": "DKI Jakarta",
-                        "kiriminaja_id": 6
-                    }
-                }
-            }
-        },
-        "products": [
+    "products": [
+      {
+        "quantity": 2,
+        "description": "deskripsi",
+        "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
+        "cashback": 0,
+        "price": 250000,
+        "weight": 250,
+        "product": {
+          "id": "561d9513-675b-487d-91ca-47cbffab7bea",
+          "name": "Test #1",
+          "description": "Test #1",
+          "subdomain_product": "test-1",
+          "price": 250000,
+          "weight": 250,
+          "min_order": 1,
+          "status": "active",
+          "is_empty": false,
+          "condition": "Baru",
+          "is_promoted": false,
+          "due_promoted": null,
+          "category_id": 2,
+          "showcase_id": 2,
+          "store_id": 2,
+          "is_active": true,
+          "is_deleted": false,
+          "updatedAt": "2024-01-02T01:20:15.225Z",
+          "createdAt": "2018-04-27T02:58:28.782Z",
+          "ImageProducts": [
             {
-                "quantity": 1,
-                "description": "",
-                "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
-                "cashback": 0,
-                "price": 250000,
-                "weight": 250,
-                "product": {
-                    "id": "561d9513-675b-487d-91ca-47cbffab7bea",
-                    "name": "Test #1",
-                    "description": "Test #1",
-                    "subdomain_product": "test-1",
-                    "price": 250000,
-                    "weight": 250,
-                    "min_order": 1,
-                    "status": "active",
-                    "is_empty": false,
-                    "condition": "Baru",
-                    "is_promoted": false,
-                    "due_promoted": null,
-                    "category_id": 2,
-                    "showcase_id": 2,
-                    "store_id": 2,
-                    "is_active": true,
-                    "is_deleted": false,
-                    "updatedAt": "2024-01-02T01:20:15.225Z",
-                    "createdAt": "2018-04-27T02:58:28.782Z",
-                    "GrocierPrices": [],
-                    "ImageProducts": [
-                        {
-                            "id": "ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f",
-                            "url": "https://image-plasgos.s3.amazonaws.com/product/1538982230516_1524797909382_1303247_2505060b-16d0-4b78-8031-fa0ad1cb2a5a.png",
-                            "is_default": true,
-                            "square_200_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/200-square/2021/1/19/ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f.png",
-                            "square_300_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/300-square/2021/1/19/ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f.png"
-                        },
-                        {
-                            "id": "c4f24bb3-a288-41c1-a9e3-f554cf90896a",
-                            "url": "https://image-plasgos.s3.ap-southeast-1.amazonaws.com/product/1547110466108_wallpaper1491892286e618c9.jpg",
-                            "is_default": false,
-                            "square_200_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/200-square/2021/1/19/c4f24bb3-a288-41c1-a9e3-f554cf90896a.jpg",
-                            "square_300_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/300-square/2021/1/19/c4f24bb3-a288-41c1-a9e3-f554cf90896a.jpg"
-                        }
-                    ],
-                    "Stocks": [
-                        {
-                            "id": 5196,
-                            "warehouse_id": 10330,
-                            "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
-                            "qty": 97,
-                            "Warehouse": {
-                                "id": 10330,
-                                "name": "Admin ",
-                                "phone_number": "-",
-                                "address": "Jalan Utan Kayu Raya No 68H",
-                                "postal_code": "13120",
-                                "latitude": null,
-                                "longitude": null,
-                                "subdistrict_id": 2120,
-                                "is_default": true,
-                                "store_id": 2,
-                                "Subdistrict": {
-                                    "id": 2120,
-                                    "name": "Matraman",
-                                    "type": "Kecamatan",
-                                    "city_id": 154,
-                                    "kiriminaja_id": 2120,
-                                    "City": {
-                                        "id": 154,
-                                        "name": "Jakarta Timur",
-                                        "type": "Kota",
-                                        "province_id": 6,
-                                        "kiriminaja_id": 154,
-                                        "Province": {
-                                            "id": 6,
-                                            "name": "DKI Jakarta",
-                                            "kiriminaja_id": 6
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    ],
-                    "fb_pixel": null,
-                    "landing_page": null,
-                    "whatsapp": null
-                },
-                "stock": {
-                    "id": 5196,
-                    "warehouse_id": 10330,
-                    "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
-                    "qty": 97,
-                }
-            },
-        ],
-        "insurance": true,
-        "shipping_insurance_fee": 0,
-        "shipping_service": "grab_express",
-        "shipping_service_type": "SAME_DAY",
-        "shipping_cost": 21501,
-        "service_type_id": 5,
-        "Warehouses": [
-          {
-              "id": 10330,
-              "name": "Admin ",
-              "phone_number": "-",
-              "address": "Jalan Utan Kayu Raya No 68H",
-              "postal_code": "13120",
-              "latitude": null,
-              "longitude": null,
-              "subdistrict_id": 2120,
+              "id": "ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f",
+              "url": "https://image-plasgos.s3.amazonaws.com/product/1538982230516_1524797909382_1303247_2505060b-16d0-4b78-8031-fa0ad1cb2a5a.png",
               "is_default": true,
-              "store_id": 2,
-              "Subdistrict": {
+              "square_200_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/200-square/2021/1/19/ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f.png",
+              "square_300_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/300-square/2021/1/19/ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f.png"
+            },
+            {
+              "id": "c4f24bb3-a288-41c1-a9e3-f554cf90896a",
+              "url": "https://image-plasgos.s3.ap-southeast-1.amazonaws.com/product/1547110466108_wallpaper1491892286e618c9.jpg",
+              "is_default": false,
+              "square_200_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/200-square/2021/1/19/c4f24bb3-a288-41c1-a9e3-f554cf90896a.jpg",
+              "square_300_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/300-square/2021/1/19/c4f24bb3-a288-41c1-a9e3-f554cf90896a.jpg"
+            }
+          ],
+          "Stocks": [
+            {
+              "id": 5196,
+              "warehouse_id": 10330,
+              "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
+              "qty": 100
+            },
+            {
+              "id": 5197,
+              "warehouse_id": 10331,
+              "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
+              "qty": 5
+            },
+            {
+              "id": 5197,
+              "warehouse_id": 10332,
+              "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
+              "qty": 0
+            }
+          ],
+          "fb_pixel": null,
+          "landing_page": null,
+          "whatsapp": null
+        },
+        "stock": {
+          "id": 5196,
+          "warehouse_id": 10330,
+          "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
+          "qty": 97
+        }
+      },
+      {
+        "quantity": 25,
+        "description": "",
+        "product_id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
+        "cashback": 0,
+        "price": 300000,
+        "weight": 5000,
+        "product": {
+          "id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
+          "name": "Test #2",
+          "description": "Test #2",
+          "subdomain_product": "test-2",
+          "price": 300000,
+          "weight": 200,
+          "min_order": 25,
+          "status": "active",
+          "is_empty": false,
+          "condition": "Baru",
+          "is_promoted": false,
+          "due_promoted": null,
+          "category_id": 2,
+          "showcase_id": 2,
+          "store_id": 2,
+          "is_active": true,
+          "is_deleted": false,
+          "updatedAt": "2024-01-02T01:19:47.903Z",
+          "createdAt": "2018-04-27T03:00:54.519Z",
+          "GrocierPrices": [
+            {
+              "id": 1000,
+              "min_order": 50,
+              "price": 250,
+              "cashback": null
+            },
+            {
+              "id": 1001,
+              "min_order": 100,
+              "price": 200,
+              "cashback": null
+            }
+          ],
+          "ImageProducts": [
+            {
+              "id": "a5bce62a-69ca-4e39-b189-1cc79ac270f6",
+              "url": "https://image-plasgos.s3.amazonaws.com/product/1538982520163_1524798055392_book_guide_hero_books.png",
+              "is_default": true,
+              "square_200_url": "https://image-cache-plasgos.s3.ap-southeast-1.amazonaws.com/p/cache/200-square/2021/1/20/a5bce62a-69ca-4e39-b189-1cc79ac270f6.png",
+              "square_300_url": "https://image-cache-plasgos.s3.ap-southeast-1.amazonaws.com/p/cache/300-square/2021/1/20/a5bce62a-69ca-4e39-b189-1cc79ac270f6.png"
+            }
+          ],
+          "Stocks": [
+            {
+              "id": 4010,
+              "warehouse_id": 10330,
+              "product_id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
+              "qty": 100
+            },
+            {
+              "id": 4011,
+              "warehouse_id": 10331,
+              "product_id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
+              "qty": 10
+            },
+            {
+              "id": 4012,
+              "warehouse_id": 10332,
+              "product_id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
+              "qty": 0
+            }
+          ]
+        },
+        "stock": {
+          "id": 4010,
+          "warehouse_id": 10330,
+          "product_id": "9cdb0e4f-39d5-4fba-a06a-99aa83fa0f05",
+          "qty": 100
+        }
+      }
+    ],
+    "insurance": true,
+    "shipping_insurance_fee": 0,
+    "shipping_service": "grab_express",
+    "shipping_service_type": "SAME_DAY",
+    "shipping_cost": 21501,
+    "service_type_id": 5,
+    "Warehouses": [
+      {
+        "id": 10330,
+        "name": "Admin ",
+        "phone_number": "-",
+        "address": "Jalan Utan Kayu Raya No 68H",
+        "postal_code": "14120",
+        "latitude": null,
+        "longitude": null,
+        "subdistrict_id": 2120,
+        "is_default": true,
+        "store_id": 2,
+        "Subdistrict": {
+          "id": 2120,
+          "name": "Matraman",
+          "type": "Kecamatan",
+          "city_id": 154,
+          "kiriminaja_id": 2128,
+          "City": {
+            "id": 154,
+            "name": "Jakarta Timur",
+            "type": "Kota",
+            "province_id": 6,
+            "kiriminaja_id": 154,
+            "Province": {
+              "id": 6,
+              "name": "DKI Jakarta",
+              "kiriminaja_id": 6
+            }
+          }
+        }
+      },
+      {
+        "id": 10331,
+        "name": "Admin 2",
+        "phone_number": "-",
+        "address": "Jalan 2",
+        "postal_code": "13120",
+        "latitude": null,
+        "longitude": null,
+        "subdistrict_id": 2120,
+        "is_default": false,
+        "store_id": 2,
+        "Subdistrict": {
+          "id": 2120,
+          "name": "Matraman 2",
+          "type": "Kecamatan",
+          "city_id": 154,
+          "kiriminaja_id": 2120,
+          "City": {
+            "id": 154,
+            "name": "Surabaya",
+            "type": "Kota",
+            "province_id": 6,
+            "kiriminaja_id": 154,
+            "Province": {
+              "id": 6,
+              "name": "Surabaya",
+              "kiriminaja_id": 6
+            }
+          }
+        }
+      },
+      {
+        "id": 10332,
+        "name": "Admin 3",
+        "phone_number": "-",
+        "address": "Jalan 3",
+        "postal_code": "13120",
+        "latitude": null,
+        "longitude": null,
+        "subdistrict_id": 2120,
+        "is_default": false,
+        "store_id": 2,
+        "Subdistrict": {
+          "id": 2120,
+          "name": "Matraman 3",
+          "type": "Kecamatan",
+          "city_id": 154,
+          "kiriminaja_id": 2120,
+          "City": {
+            "id": 154,
+            "name": "Malang",
+            "type": "Kota",
+            "province_id": 6,
+            "kiriminaja_id": 154,
+            "Province": {
+              "id": 6,
+              "name": "Malang",
+              "kiriminaja_id": 6
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "store_id": 3,
+    "store": 3,
+    "name_store": "Admin 3",
+    "avatar_store": "https://image-plasgos.s3-ap-southeast-1.amazonaws.com/avatar-store/default.png",
+    "subdomain_store": "admin-test",
+    "sender": {
+      "id": 10335,
+      "name": "Admin ",
+      "phone_number": "-",
+      "address": "Jalan Kayu Jati  Raya No 68H",
+      "postal_code": "13120",
+      "latitude": null,
+      "longitude": null,
+      "subdistrict_id": 2120,
+      "is_default": true,
+      "store_id": 3,
+      "Subdistrict": {
+        "id": 2120,
+        "name": "Matraman",
+        "type": "Kecamatan",
+        "city_id": 154,
+        "kiriminaja_id": 2120,
+        "City": {
+          "id": 154,
+          "name": "Jakarta Selatan",
+          "type": "Kota",
+          "province_id": 6,
+          "kiriminaja_id": 154,
+          "Province": {
+            "id": 6,
+            "name": "DKI Jakarta",
+            "kiriminaja_id": 6
+          }
+        }
+      }
+    },
+    "products": [
+      {
+        "quantity": 1,
+        "description": "",
+        "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
+        "cashback": 0,
+        "price": 250000,
+        "weight": 250,
+        "product": {
+          "id": "561d9513-675b-487d-91ca-47cbffab7bea",
+          "name": "Test #1",
+          "description": "Test #1",
+          "subdomain_product": "test-1",
+          "price": 250000,
+          "weight": 250,
+          "min_order": 1,
+          "status": "active",
+          "is_empty": false,
+          "condition": "Baru",
+          "is_promoted": false,
+          "due_promoted": null,
+          "category_id": 2,
+          "showcase_id": 2,
+          "store_id": 2,
+          "is_active": true,
+          "is_deleted": false,
+          "updatedAt": "2024-01-02T01:20:15.225Z",
+          "createdAt": "2018-04-27T02:58:28.782Z",
+          "GrocierPrices": [],
+          "ImageProducts": [
+            {
+              "id": "ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f",
+              "url": "https://image-plasgos.s3.amazonaws.com/product/1538982230516_1524797909382_1303247_2505060b-16d0-4b78-8031-fa0ad1cb2a5a.png",
+              "is_default": true,
+              "square_200_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/200-square/2021/1/19/ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f.png",
+              "square_300_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/300-square/2021/1/19/ef0c0feb-36ef-4dd5-8713-c9b3900a7e1f.png"
+            },
+            {
+              "id": "c4f24bb3-a288-41c1-a9e3-f554cf90896a",
+              "url": "https://image-plasgos.s3.ap-southeast-1.amazonaws.com/product/1547110466108_wallpaper1491892286e618c9.jpg",
+              "is_default": false,
+              "square_200_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/200-square/2021/1/19/c4f24bb3-a288-41c1-a9e3-f554cf90896a.jpg",
+              "square_300_url": "https://image-cache-plasgos.s3.amazonaws.com/p/cache/300-square/2021/1/19/c4f24bb3-a288-41c1-a9e3-f554cf90896a.jpg"
+            }
+          ],
+          "Stocks": [
+            {
+              "id": 5196,
+              "warehouse_id": 10330,
+              "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
+              "qty": 97,
+              "Warehouse": {
+                "id": 10330,
+                "name": "Admin ",
+                "phone_number": "-",
+                "address": "Jalan Utan Kayu Raya No 68H",
+                "postal_code": "13120",
+                "latitude": null,
+                "longitude": null,
+                "subdistrict_id": 2120,
+                "is_default": true,
+                "store_id": 2,
+                "Subdistrict": {
                   "id": 2120,
                   "name": "Matraman",
                   "type": "Kecamatan",
                   "city_id": 154,
                   "kiriminaja_id": 2120,
                   "City": {
-                      "id": 154,
-                      "name": "Jakarta Timur",
-                      "type": "Kota",
-                      "province_id": 6,
-                      "kiriminaja_id": 154,
-                      "Province": {
-                          "id": 6,
-                          "name": "DKI Jakarta",
-                          "kiriminaja_id": 6
-                      }
+                    "id": 154,
+                    "name": "Jakarta Timur",
+                    "type": "Kota",
+                    "province_id": 6,
+                    "kiriminaja_id": 154,
+                    "Province": {
+                      "id": 6,
+                      "name": "DKI Jakarta",
+                      "kiriminaja_id": 6
+                    }
                   }
+                }
               }
+            }
+          ],
+          "fb_pixel": null,
+          "landing_page": null,
+          "whatsapp": null
+        },
+        "stock": {
+          "id": 5196,
+          "warehouse_id": 10330,
+          "product_id": "561d9513-675b-487d-91ca-47cbffab7bea",
+          "qty": 97
+        }
+      }
+    ],
+    "insurance": true,
+    "shipping_insurance_fee": 0,
+    "shipping_service": "grab_express",
+    "shipping_service_type": "SAME_DAY",
+    "shipping_cost": 21501,
+    "service_type_id": 5,
+    "Warehouses": [
+      {
+        "id": 10335,
+        "name": "Admin ",
+        "phone_number": "-",
+        "address": "Jalan Kayu Jati  Raya No 68H",
+        "postal_code": "13120",
+        "latitude": null,
+        "longitude": null,
+        "subdistrict_id": 2120,
+        "is_default": true,
+        "store_id": 3,
+        "Subdistrict": {
+          "id": 2120,
+          "name": "Matraman",
+          "type": "Kecamatan",
+          "city_id": 154,
+          "kiriminaja_id": 2120,
+          "City": {
+            "id": 154,
+            "name": "Jakarta Selatan",
+            "type": "Kota",
+            "province_id": 6,
+            "kiriminaja_id": 154,
+            "Province": {
+              "id": 6,
+              "name": "DKI Jakarta",
+              "kiriminaja_id": 6
+            }
           }
-        ]
-    }
+        }
+      },
+      {
+        "id": 10367,
+        "name": "Admin TIKTOK ",
+        "phone_number": "-",
+        "address": "Jalan BRAGA  Raya No 68H",
+        "postal_code": "13120",
+        "latitude": null,
+        "longitude": null,
+        "subdistrict_id": 2120,
+        "is_default": false,
+        "store_id": 3,
+        "Subdistrict": {
+          "id": 2120,
+          "name": "Matraman",
+          "type": "Kecamatan",
+          "city_id": 154,
+          "kiriminaja_id": 2120,
+          "City": {
+            "id": 154,
+            "name": "Bandung",
+            "type": "Kota",
+            "province_id": 6,
+            "kiriminaja_id": 154,
+            "Province": {
+              "id": 6,
+              "name": "Bandung",
+              "kiriminaja_id": 6
+            }
+          }
+        }
+      }
+    ]
+  }
 ]

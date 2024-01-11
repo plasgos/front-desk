@@ -1,9 +1,8 @@
-import { put, call, takeLatest } from "redux-saga/effects";
-import types from "./constant";
-import * as actions from "./reducer";
-import addresses from "../../dummy/addresses.json";
+import { put } from "redux-saga/effects";
+import * as actions from "../actions/actions";
+import addresses from "../../../../dummy/addresses.json";
 
-function* watchGetAddress(values) {
+function* getAddresses(values) {
   // const {payload} = values;
   yield put(actions.setIsLoadingGetAddress(true));
   try {
@@ -17,5 +16,4 @@ function* watchGetAddress(values) {
   }
 }
 
-const saga = [takeLatest(types.GET_ADDRESS, watchGetAddress)];
-export default saga;
+export { getAddresses };

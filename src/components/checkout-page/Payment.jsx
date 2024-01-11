@@ -19,30 +19,51 @@ import mandiri from "../../assets/mandiri.png";
 import { IoIosRadioButtonOn } from "react-icons/io";
 import { IoIosRadioButtonOff } from "react-icons/io";
 
+import { setCheckoutPayment } from "././../../redux/modules/checkout/actions/actions";
+import { useDispatch } from "react-redux";
+
 const paymentMethod = [
   {
     id: 1,
-    name: "Bank BCA",
+    bank_name: "Bank BCA",
+    account_number: 4710929832,
     logo: bca,
   },
   {
     id: 2,
-    name: "Bank BRI",
+    bank_name: "Bank BRI",
+    account_number: 99848283,
     logo: bri,
   },
   {
     id: 3,
-    name: "Bank Mandiri",
+    bank_name: "Bank Mandiri",
+    account_number: 1010101010,
     logo: mandiri,
   },
 ];
 
 export const Payment = () => {
   const [modal, setModal] = useState(false);
-  const [isSelected, setIsSelected] = useState("");
+  const [selected, setSelected] = useState({});
+  const dispatch = useDispatch();
 
   const toggle = () => {
     setModal(!modal);
+  };
+
+  const onSubmit = (data) => {
+    dispatch(
+      setCheckoutPayment({
+        payment_method: "Bank Transfer",
+        payment_method_details: {
+          bank_name: data.bank_name,
+          account_number: data.account_number,
+        },
+      })
+    );
+
+    setModal(false);
   };
 
   return (
@@ -70,7 +91,8 @@ export const Payment = () => {
 
                       <div className="d-flex flex-column px-2">
                         {paymentMethod.map((payment) => {
-                          const isActive = isSelected === payment.name;
+                          const isActive =
+                            selected.bank_name === payment.bank_name;
                           return (
                             <div
                               key={payment.id}
@@ -78,11 +100,11 @@ export const Payment = () => {
                             >
                               <img
                                 src={payment.logo}
-                                alt={payment.name}
+                                alt={payment.bank_name}
                                 style={{ width: 70, height: 30 }}
                                 className="mr-2"
                               />
-                              <p className="">{payment.name}</p>
+                              <p className="">{payment.bank_name}</p>
 
                               {isActive ? (
                                 <IoIosRadioButtonOn
@@ -92,7 +114,7 @@ export const Payment = () => {
                                 />
                               ) : (
                                 <IoIosRadioButtonOff
-                                  onClick={() => setIsSelected(payment.name)}
+                                  onClick={() => setSelected(payment)}
                                   size={24}
                                   style={{ cursor: "pointer" }}
                                   className={`ml-auto`}
@@ -104,7 +126,12 @@ export const Payment = () => {
                       </div>
                     </CModalBody>
                     <CModalFooter>
-                      <CButton color="primary">Pilih</CButton>{" "}
+                      <CButton
+                        onClick={() => onSubmit(selected)}
+                        color="primary"
+                      >
+                        Pilih
+                      </CButton>{" "}
                       <CButton color="secondary" onClick={toggle}>
                         Batal
                       </CButton>

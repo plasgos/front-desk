@@ -11,8 +11,24 @@ import {
   CRow,
 } from "@coreui/react";
 import { formatPrice } from "../../lib/format-price";
+import { useSelector } from "react-redux";
 
 export const Summary = () => {
+  const { orders } = useSelector((state) => state.checkout);
+
+  const { totalPrice } = useSelector((state) => state.totalPrice);
+
+  const totalShippingCost = orders.reduce(
+    (total, order) => total + order.shipping_cost,
+    0
+  );
+
+  const totalPayment = totalPrice + totalShippingCost;
+
+  const totalQtyItems = orders
+    .map((order) => order.products.length)
+    .reduce((total, item) => total + item, 0);
+
   return (
     <CContainer fluid>
       <CRow>
@@ -25,19 +41,24 @@ export const Summary = () => {
             </CCardHeader>
             <CCardBody>
               <div className="d-flex justify-content-between">
-                <p>Total Harga (1 Barang)</p>
-                <p className="sub-heading">{formatPrice(250000)}</p>
+                <p>Total Harga ({totalQtyItems} Produk)</p>
+                <p className="sub-heading">{formatPrice(totalPrice)}</p>
               </div>
 
               <div className="d-flex justify-content-between my-2">
                 <p>Total Ongkos Kirim</p>
-                <p className="sub-heading">{formatPrice(0)}</p>
+                <p className="sub-heading">
+                  {" "}
+                  {totalShippingCost ? formatPrice(totalShippingCost) : 0}
+                </p>
               </div>
 
               <div className="d-flex justify-content-between">
-                <p>Total Harga (1 Barang)</p>
+                <p>Total Pembayaran</p>
                 <p className="sub-heading text-primary">
-                  {formatPrice(250000)}
+                  {totalPayment
+                    ? formatPrice(totalPayment)
+                    : formatPrice(totalPrice)}
                 </p>
               </div>
             </CCardBody>
