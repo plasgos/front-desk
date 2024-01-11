@@ -16,6 +16,10 @@ import { useSelector } from "react-redux";
 export const Summary = () => {
   const { orders } = useSelector((state) => state.checkout);
 
+  const checkout = useSelector((state) => state.checkout);
+
+  console.log(checkout);
+
   const { totalPrice } = useSelector((state) => state.totalPrice);
 
   const totalShippingCost = orders.reduce(

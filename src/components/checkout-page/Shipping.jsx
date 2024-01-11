@@ -71,7 +71,7 @@ export const Shipping = ({ storeId }) => {
         shipping_insurance_fee: checkout[0].price?.insurance_fee,
         shipping_service: checkout[0].service,
         shipping_service_type: checkout[0].service_type,
-        shipping_cost: checkout[0].price?.total_cost,
+        shipping_cost: checkout[0].cost,
         service_type_id: checkout[0].id,
         drop: checkout[0].drop,
         cod: checkout[0].cod,

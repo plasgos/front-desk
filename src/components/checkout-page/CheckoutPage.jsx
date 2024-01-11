@@ -3,13 +3,8 @@ import { AddressReceiver } from "./AddressReceiver";
 import { Orders } from "./Orders";
 import { Payment } from "./Payment";
 import { Summary } from "./Summary";
-import { useSelector } from "react-redux";
 
 const CheckoutPage = () => {
-  const checkout = useSelector((state) => state.checkout);
-
-  console.log(checkout);
-
   return (
     <div className="container pt-5">
       <div className="row">
