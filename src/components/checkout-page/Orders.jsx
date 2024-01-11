@@ -150,7 +150,7 @@ export const Orders = () => {
                     </div>
                   </CCardHeader>
                   <CCardBody className="py-4">
-                    <div style={{ gap: 14 }} className="d-flex  flex-column">
+                    <div style={{ gap: 14 }} className="flex-column">
                       {order.products.map((product) => {
                         const totalPricePerItem =
                           product.price * product.quantity;
@@ -174,44 +174,43 @@ export const Orders = () => {
                         return (
                           <div
                             key={product.product_id}
-                            className="d-flex align-items-center "
+                            className="d-flex justify-content-between align-items-center my-3"
                           >
-                            <img
-                              style={{ width: 80, height: 80 }}
-                              src={product.product.ImageProducts[0].url}
-                              alt="order"
-                            />
-                            <div className="d-flex flex-column ml-3">
-                              <div>{product.product.name}</div>
-
-                              <div className="d-flex justify-content-between">
+                            <div className="d-flex">
+                              <img
+                                style={{ width: 80, height: 80 }}
+                                src={product.product.ImageProducts[0].url}
+                                alt="order"
+                              />
+                              <div className="ml-3">
+                                <div>{product.product.name}</div>
                                 <div className="bold-orange">
                                   {formatPrice(totalPricePerItem)}
                                 </div>
-
+                                {product.description ? (
+                                  <div
+                                    className="my-2 text-muted"
+                                    style={{
+                                      cursor: "pointer",
+                                    }}
+                                  >
+                                    Catatan Produk <br />"{product.description}"
+                                  </div>
+                                ) : null}
+                              </div>
+                            </div>
+                            <div className="d-flex flex-column ml-3">
+                              <div className="d-flex justify-content-between">
                                 <div className="ml-5">
                                   {product.quantity} Produk (
                                   {totalWeightPerItem} gram)
                                 </div>
                               </div>
-
-                              {product.description ? (
-                                <div
-                                  className="my-2 text-muted"
-                                  style={{
-                                    cursor: "pointer",
-                                  }}
-                                >
-                                  Catatan Produk <br />"{product.description}"
-                                </div>
-                              ) : null}
                             </div>
                           </div>
                         );
                       })}
-                      <div className="d-flex justify-content-between ">
-                        <div></div>
-
+                      <div className="d-flex justify-content-end">
                         <div className="d-flex align-items-center py-3">
                           <div className="mx-2">
                             <p className="sub-heading">Total Pesanan</p>
