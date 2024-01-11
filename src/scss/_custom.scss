@@ -353,6 +353,7 @@ ol.list-inner-ol.li-none li::before {
 }
 
 .modal-selected {
-  color: #fff; /* Warna teks (putih) */
-  background-color: map-get($theme-colors, "primary");
+  border: 2px solid #fa541c;
+  border-radius: 0.25rem;
+  // background: map-get($theme-colors, "primary");
 }
