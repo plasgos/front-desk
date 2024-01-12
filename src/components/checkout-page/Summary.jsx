@@ -15,9 +15,7 @@ import { useSelector } from "react-redux";
 
 export const Summary = () => {
   const { orders } = useSelector((state) => state.checkout);
-
   const checkout = useSelector((state) => state.checkout);
-  console.log("🚀 ~ Summary ~ checkout:", checkout);
 
   const { totalPrice } = useSelector((state) => state.totalPrice);
 
@@ -31,6 +29,10 @@ export const Summary = () => {
   const totalQtyItems = orders
     .map((order) => order.products.length)
     .reduce((total, item) => total + item, 0);
+
+  const buyValidation = orders.map((order) => order.shipping_cost);
+
+  const isAnyShippingCostUndefined = buyValidation.some((cost) => !cost);
 
   return (
     <CContainer fluid>
@@ -68,7 +70,11 @@ export const Summary = () => {
             <CCardFooter
               style={{ borderBottomLeftRadius: 8, borderBottomRightRadius: 8 }}
             >
-              <CButton color="primary" className="btn-block">
+              <CButton
+                disabled={isAnyShippingCostUndefined}
+                color="primary"
+                className="btn-block"
+              >
                 Beli
               </CButton>
             </CCardFooter>
