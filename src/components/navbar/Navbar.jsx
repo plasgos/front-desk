@@ -27,8 +27,8 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/print-out" className="nav-link">
-                Print out struk
+              <Link to="/invoice" className="nav-link">
+                Invoice
               </Link>
             </li>
           </ul>
