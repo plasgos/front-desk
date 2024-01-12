@@ -3,6 +3,7 @@ import React from "react";
 import kiriminaja from "../../assets/KiriminAja.svg";
 import jne from "../../assets/jne-logo.png";
 import Barcode from "react-barcode";
+import { CgDanger } from "react-icons/cg";
 
 const PrintOut = () => {
   return (
@@ -65,6 +66,7 @@ const PrintOut = () => {
             <div className="p-3">
               <div className="border border-dark text-center p-3 rounded">
                 <div style={{ fontStyle: "italic" }}>
+                  <CgDanger size={24} className="mr-2" />
                   Penjual tidak perlu bayar apapun ke kurir, sudah di bayarkan
                   otomatis
                 </div>
