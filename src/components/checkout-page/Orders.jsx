@@ -202,12 +202,10 @@ export const Orders = () => {
                         );
                       })}
                       <div className="d-flex justify-content-end">
-                        <div className="d-flex align-items-center py-3">
-                          <div className="mx-2">
-                            <p className="sub-heading">Total Pesanan</p>
-                            <p className="bold-orange">
-                              {formatPrice(totalPricesPerStore[order.store_id])}
-                            </p>
+                        <div>
+                          <div className="sub-heading">Total Pesanan</div>
+                          <div className="bold-orange my-2 text-right">
+                            {formatPrice(totalPricesPerStore[order.store_id])}
                           </div>
                         </div>
                       </div>

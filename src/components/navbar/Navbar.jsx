@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   return (
     <div>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">
-          Navbar
-        </a>
+      <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <Link to="/" className="nav-link">
+          Plasgos <span className="sr-only">(current)</span>
+        </Link>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-toggle="collapse"
           data-target="#navbarNav"
@@ -17,18 +17,23 @@ const Navbar = () => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              <Link to="/" class="nav-link">
-                Home <span class="sr-only">(current)</span>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav">
+            <li className="nav-item ">
+              <Link to="/" className="nav-link">
+                Home <span className="sr-only">(current)</span>
               </Link>
             </li>
-            <li class="nav-item">
-              <Link to="/checkout" class="nav-link">
+            <li className="nav-item">
+              <Link to="/checkout" className="nav-link">
                 Checkout
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/print-out" className="nav-link">
+                Print out struk
               </Link>
             </li>
           </ul>

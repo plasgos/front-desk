@@ -3,6 +3,7 @@ import { Route, Switch, BrowserRouter } from "react-router-dom";
 import "./scss/style.scss";
 import HomePage from "./components/homepage/HomePage";
 import Navbar from "./components/navbar/Navbar";
+import PrintOut from "./components/print-out/PrintOut";
 
 const loading = (
   <div className="pt-3 text-center">
@@ -27,6 +28,11 @@ class App extends Component {
                 path="/checkout"
                 name="Checkout"
                 render={(props) => <CheckoutPage {...props} />}
+              />
+              <Route
+                path="/print-out"
+                name="Checkout"
+                render={(props) => <PrintOut {...props} />}
               />
               <Route
                 path="/"

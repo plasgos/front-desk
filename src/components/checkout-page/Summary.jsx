@@ -17,6 +17,7 @@ export const Summary = () => {
   const { orders } = useSelector((state) => state.checkout);
 
   const checkout = useSelector((state) => state.checkout);
+  console.log("🚀 ~ Summary ~ checkout:", checkout);
 
   const { totalPrice } = useSelector((state) => state.totalPrice);
 
@@ -39,29 +40,29 @@ export const Summary = () => {
             <CCardHeader
               style={{ borderTopLeftRadius: 8, borderTopRightRadius: 8 }}
             >
-              <p className="sub-heading">Ringkasan Belanja</p>
+              <div className="sub-heading">Ringkasan Belanja</div>
             </CCardHeader>
             <CCardBody>
               <div className="d-flex justify-content-between">
-                <p>Total Harga ({totalQtyItems} Produk)</p>
-                <p className="sub-heading">{formatPrice(totalPrice)}</p>
+                <div>Total Harga ({totalQtyItems} Produk)</div>
+                <div className="sub-heading">{formatPrice(totalPrice)}</div>
               </div>
 
               <div className="d-flex justify-content-between my-2">
-                <p>Total Ongkos Kirim</p>
-                <p className="sub-heading">
+                <div>Total Ongkos Kirim</div>
+                <div className="sub-heading">
                   {" "}
                   {totalShippingCost ? formatPrice(totalShippingCost) : 0}
-                </p>
+                </div>
               </div>
 
               <div className="d-flex justify-content-between">
-                <p>Total Pembayaran</p>
-                <p className="sub-heading text-primary">
+                <div>Total Pembayaran</div>
+                <div className="sub-heading text-primary">
                   {totalPayment
                     ? formatPrice(totalPayment)
                     : formatPrice(totalPrice)}
-                </p>
+                </div>
               </div>
             </CCardBody>
             <CCardFooter
