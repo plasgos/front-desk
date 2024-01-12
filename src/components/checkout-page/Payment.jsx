@@ -67,7 +67,7 @@ export const Payment = () => {
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <p className="sub-heading">Pembayaran</p>
-                  <p>Transfer {selectedBank.bank_name}</p>
+                  <div>Transfer {selectedBank.bank_name}</div>
                 </div>
                 <PaymentModal
                   paymentMethod={paymentMethod}

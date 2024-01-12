@@ -8,11 +8,11 @@ const CheckoutPage = () => {
   return (
     <div className="container pt-5">
       <div className="row">
-        <div className="col-12 col-sm-6 col-md-8">
+        <div className="col-12  col-md-8">
           <AddressReceiver />
           <Orders />
         </div>
-        <div className="col-6 col-md-4">
+        <div className="col-12  col-md-4">
           <Payment />
           <Summary />
         </div>

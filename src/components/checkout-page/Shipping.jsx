@@ -91,10 +91,10 @@ export const Shipping = ({ storeId }) => {
   return (
     <div className="mb-4">
       <p className="sub-heading mb-2">Pengiriman</p>
-      <div className="d-flex flex-wrap justify-content-between align-items-center">
+      <div className="d-flex flex-wrap justify-content-lg-between justify-content-center align-items-center">
         <div>
           <CDropdown className="mt-2">
-            <CDropdownToggle style={{ width: 260 }} caret color="primary">
+            <CDropdownToggle className="btn-dropdown" caret color="primary">
               {valueShipping === "" ? "Pilih pengiriman" : valueShipping}
             </CDropdownToggle>
             <CDropdownMenu style={{ width: 260 }}>
@@ -120,7 +120,7 @@ export const Shipping = ({ storeId }) => {
         <div>
           <CDropdown className="mt-2">
             <CDropdownToggle
-              style={{ width: 260 }}
+              className="btn-dropdown"
               caret
               color="primary"
               disabled={courirs.length < 1}

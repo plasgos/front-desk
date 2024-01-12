@@ -357,3 +357,45 @@ ol.list-inner-ol.li-none li::before {
   border-radius: 0.25rem;
   // background: map-get($theme-colors, "primary");
 }
+
+// @media (min-width: 768px) {
+//   /* Ganti nilai 768px dengan breakpoint yang sesuai dengan ukuran md */
+//   .btn-dropdown {
+//     width: 320px;
+//   }
+// }
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+  .btn-dropdown {
+    width: 320px; /* Lebar 100% untuk layar kecil */
+  }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+  .btn-dropdown {
+    width: 420px; /* Lebar 240px pada layar sm */
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+  .btn-dropdown {
+    width: 400px; /* Lebar 320px pada layar md */
+  }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .btn-dropdown {
+    width: 560px; /* Lebar 400px pada layar lg */
+  }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .btn-dropdown {
+    width: 320px; /* Lebar 480px pada layar xl */
+  }
+}
