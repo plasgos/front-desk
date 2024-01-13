@@ -31,6 +31,11 @@ const Navbar = () => {
                 Invoice
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to="/package-history" className="nav-link">
+                Package History
+              </Link>
+            </li>
           </ul>
         </div>
       </nav>

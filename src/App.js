@@ -4,6 +4,12 @@ import "./scss/style.scss";
 import HomePage from "./components/homepage/HomePage";
 import Navbar from "./components/navbar/Navbar";
 import PrintOutPage from "./components/invoice/PrintOutPage";
+import { PendingPackagePage } from "./components/package-history/pending/PendingPage";
+import LayoutPackageHistory from "./components/package-history/LayoutPackageHistory";
+import { ShippingPackagePage } from "./components/package-history/shipping/ShippingPackage";
+import { DonePackagePage } from "./components/package-history/done/DonePackage";
+import { ReturnPackagePage } from "./components/package-history/return/ReturnPackage";
+import { CancelPackagePage } from "./components/package-history/cancel/CancelPackage";
 
 const loading = (
   <div className="pt-3 text-center">
@@ -34,6 +40,37 @@ class App extends Component {
                 name="Invoice"
                 render={(props) => <PrintOutPage {...props} />}
               />
+              <Route
+                path="/package-history/pending"
+                name="Package-history pending"
+                render={(props) => <PendingPackagePage {...props} />}
+              />
+              <Route
+                path="/package-history/shipping"
+                name="shipping"
+                render={(props) => <ShippingPackagePage {...props} />}
+              />
+              <Route
+                path="/package-history/done"
+                name="done"
+                render={(props) => <DonePackagePage {...props} />}
+              />
+              <Route
+                path="/package-history/return"
+                name="return"
+                render={(props) => <ReturnPackagePage {...props} />}
+              />
+              <Route
+                path="/package-history/cancel"
+                name="shipping"
+                render={(props) => <CancelPackagePage {...props} />}
+              />
+              <Route
+                path="/package-history"
+                name="Package-history"
+                render={(props) => <LayoutPackageHistory {...props} />}
+              />
+
               <Route
                 path="/"
                 name="Home"

@@ -335,14 +335,16 @@ ol.list-inner-ol.li-none li::before {
   font-size: 14px;
 }
 
-.select-modal:hover {
-  background-color: map-get($theme-colors, "primary");
+.card-selected,
+.card-hover:hover {
+  border: 1px solid #fa541c !important;
   transition: 300ms;
-  color: white;
+  color: map-get($theme-colors, "primary");
 }
 
 .icon-hover:hover {
-  background-color: map-get($theme-colors, "primary");
+  color: map-get($theme-colors, "primary");
+  transition: 300ms;
   cursor: pointer;
 }
 
@@ -357,13 +359,6 @@ ol.list-inner-ol.li-none li::before {
   border-radius: 0.25rem;
   // background: map-get($theme-colors, "primary");
 }
-
-// @media (min-width: 768px) {
-//   /* Ganti nilai 768px dengan breakpoint yang sesuai dengan ukuran md */
-//   .btn-dropdown {
-//     width: 320px;
-//   }
-// }
 
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) {
@@ -400,18 +395,12 @@ ol.list-inner-ol.li-none li::before {
   }
 }
 
-// @media print {
-//   html,
-//   body {
-//     height: 100%; /* Use 100% here to support printing more than a single page*/
-//     margin: 0 !important;
-//     padding: 0 !important;
-//     overflow: hidden;
-//   }
-// }
-
-// @media print {
-//   @page {
-//     size: landscape;
-//   }
-// }
+@media print {
+  html,
+  body {
+    height: 100%; /* Use 100% here to support printing more than a single page*/
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+  }
+}
