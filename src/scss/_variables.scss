@@ -1,5 +1,7 @@
-$colors: (
-  primary: #fa541c,
-) !default;
-$font-family-base: "Open Sauce One", "Nunito Sans", -apple-system, sans-serif;
-$font-size-base: 14;
+// Variable overrides
+$body-bg: #fff;
+$primary: #fa541c;
+$line-height-base: 1 !default;
+$header-min-height: 3rem;
+$border-radius: 0.5rem;
+$border-radius-lg: 0.5rem;
