@@ -1,5 +1,9 @@
 import React from "react";
 
+// import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-daterangepicker/daterangepicker.css";
+import DateRangePicker from "react-bootstrap-daterangepicker";
+
 import {
   CButton,
   CDropdown,
@@ -27,7 +31,9 @@ export const FilterSection = () => {
         </div>
         <div style={{ width: 200 }}>
           <CLabel className="font-weight-bold">Tanggal</CLabel>
-          <CInput type="text" />
+          <DateRangePicker>
+            <input type="text" className="form-control" />
+          </DateRangePicker>
         </div>
         <div>
           <div className="d-flex justify-content-between align-items-center">
