@@ -13,7 +13,7 @@ const PrintOutPage = () => {
 
   return (
     <div>
-      <div className="container-fluid p-3 d-flex justify-content-end border-bottom ">
+      <div className="container px-3 pb-3 d-flex justify-content-end border-bottom ">
         <CButton onClick={handlePrint} color="primary">
           Cetak
         </CButton>
