@@ -1,8 +1,8 @@
 import React from "react";
 import LayoutPackageHistory from "../LayoutPackageHistory";
-import { ButtonSection } from "../ButtonSection";
-import { FilterSection } from "../FilterSection";
-import { TablePackageHistory } from "../TablePackageHistory";
+import { ButtonSection } from "../_components/ButtonSection";
+import { FilterSection } from "../_components/FilterSection";
+import { TablePackageHistory } from "../_components/TablePackageHistory";
 
 const listSection = [
   { title: "Semua" },

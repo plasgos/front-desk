@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 
 // import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-daterangepicker/daterangepicker.css";
@@ -19,6 +19,25 @@ import { IoSearch } from "react-icons/io5";
 import { FaRegFileExcel } from "react-icons/fa";
 
 export const FilterSection = () => {
+  const [selectedDate, setSelectedDate] = useState("");
+  console.log("🚀 ~ FilterSection ~ selectedDate:", selectedDate);
+  // const inputRef = useRef(null);
+
+  const handleDateChange = (event, picker) => {
+    setSelectedDate(
+      picker.startDate.format("MM/DD/YYYY") +
+        " - " +
+        picker.endDate.format("MM/DD/YYYY")
+    );
+  };
+
+  // const handleInputChange = () => {
+  //   // Access the input value using the ref
+  //   const inputValue = inputRef.current.value;
+  //   // Do something with the input value
+  //   console.log("Input Value:", inputValue);
+  // };
+
   return (
     <div className="shadow-sm  p-3 mt-3">
       <div
@@ -31,8 +50,13 @@ export const FilterSection = () => {
         </div>
         <div style={{ width: 200 }}>
           <CLabel className="font-weight-bold">Tanggal</CLabel>
-          <DateRangePicker>
-            <input type="text" className="form-control" />
+          <DateRangePicker onApply={handleDateChange}>
+            <input
+              // ref={inputRef}
+              type="text"
+              className="form-control"
+              // onChange={handleInputChange}
+            />
           </DateRangePicker>
         </div>
         <div>

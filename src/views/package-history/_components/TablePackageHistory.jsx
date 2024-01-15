@@ -1,8 +1,8 @@
 import { CBadge } from "@coreui/react";
 import React from "react";
-import jne from "../../assets/jne-logo.png";
-import { formatPrice } from "../../lib/format-price";
-import { IoIosInformationCircleOutline } from "react-icons/io";
+import jne from "../../../assets/jne-logo.png";
+import { formatPrice } from "../../../lib/format-price";
+import { DetailsModal } from "./DetailsModal";
 
 export const TablePackageHistory = () => {
   return (
@@ -66,7 +66,7 @@ export const TablePackageHistory = () => {
             </td>
             <td className="text-center align-middle">
               <div style={{ cursor: "pointer" }}>
-                <IoIosInformationCircleOutline size={24} />
+                <DetailsModal />
               </div>
               <div>Details</div>
             </td>

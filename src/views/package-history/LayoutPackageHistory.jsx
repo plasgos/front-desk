@@ -4,7 +4,7 @@ import React from "react";
 import { CButton } from "@coreui/react";
 import { IoListSharp } from "react-icons/io5";
 import { TbPackageExport } from "react-icons/tb";
-import { Header } from "./Header";
+import { Header } from "./_components/Header";
 
 const LayoutPackageHistory = ({ children }) => {
   return (
