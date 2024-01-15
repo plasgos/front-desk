@@ -2,6 +2,7 @@ import React from "react";
 import LayoutPackageHistory from "../LayoutPackageHistory";
 import { ButtonSection } from "../ButtonSection";
 import { FilterSection } from "../FilterSection";
+import { TablePackageHistory } from "../TablePackageHistory";
 
 const listSection = [
   { title: "Semua" },
@@ -28,6 +29,7 @@ const DonePackagePage = () => {
       </div>
       <div>
         <FilterSection />
+        <TablePackageHistory />
       </div>
     </LayoutPackageHistory>
   );

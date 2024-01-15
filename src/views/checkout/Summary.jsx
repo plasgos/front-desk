@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 
 export const Summary = () => {
   const { orders } = useSelector((state) => state.checkout);
+  console.log("🚀 ~ Summary ~ orders:", orders);
 
   const { totalPrice } = useSelector((state) => state.totalPrice);
 

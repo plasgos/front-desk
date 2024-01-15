@@ -21,13 +21,13 @@ export default [
   },
   {
     _tag: "CSidebarNavItem",
-    name: "PrintOut",
+    name: "Print out",
     to: "/buyer/invoice/print",
     icon: "cil-drop",
   },
   {
     _tag: "CSidebarNavItem",
-    name: "Package-history",
+    name: "Package History",
     to: "/buyer/package-history",
     icon: "cil-drop",
   },

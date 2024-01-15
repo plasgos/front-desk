@@ -41,7 +41,7 @@ export const Header = () => {
         return (
           <Link
             key={index}
-            style={{ color: "black" }}
+            style={{ color: "black", textDecoration: "none" }}
             to={`/buyer/package-history${progress.url}`}
           >
             <div

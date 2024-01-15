@@ -61,19 +61,28 @@ export const Orders = () => {
         stock: product.stock ? product.stock.qty : 0,
       }));
 
+      const defaultWarehouses = order.Warehouses.filter(
+        (warehouse) => warehouse.is_default
+      );
+
+      const senders = defaultWarehouses.reduce((acc, defaultWarehouse) => {
+        acc[defaultWarehouse.store_id] = {
+          id: defaultWarehouse.id,
+          store_id: defaultWarehouse.store_id,
+          name: defaultWarehouse.name,
+          phone_number: defaultWarehouse.phone_number,
+          address: defaultWarehouse.address,
+          subdistrict_id: defaultWarehouse.subdistrict_id,
+          postal_code: defaultWarehouse.postal_code,
+          latitude: defaultWarehouse.latitude,
+          longitude: defaultWarehouse.longitude,
+        };
+        return acc;
+      }, {});
+
       return {
         store_id: order.store_id,
-        sender: {
-          id: order.sender.id,
-          store_id: order.store_id,
-          name: order.sender.name,
-          phone_number: order.sender.phone_number,
-          address: order.sender.address,
-          subdistrict_id: order.sender.subdistrict_id,
-          postal_code: order.sender.postal_code,
-          latitude: order.sender.latitude,
-          longitude: order.sender.longitude,
-        },
+        sender: senders[order.store_id] || null,
         products: products,
         warehouse_id: order.sender.id,
       };
