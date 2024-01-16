@@ -21,6 +21,9 @@ const PackageHistoryReturn = React.lazy(() =>
 const PackageHistoryCancel = React.lazy(() =>
   import("./views/package-history/cancel/CancelPackage")
 );
+const ShippingCost = React.lazy(() =>
+  import("./views/shipping-cost/ShippingCost")
+);
 
 const routes = [
   { path: "/", exact: true, name: "Home" },
@@ -57,6 +60,11 @@ const routes = [
     path: "/buyer/package-history",
     name: "Package-history",
     component: PackageHistory,
+  },
+  {
+    path: "/shipping-cost",
+    name: "Shipping Cost",
+    component: ShippingCost,
   },
 ];
 

@@ -32,6 +32,12 @@ export default [
     icon: "cil-drop",
   },
   {
+    _tag: "CSidebarNavItem",
+    name: "Shipping Cost",
+    to: "/shipping-cost",
+    icon: "cil-drop",
+  },
+  {
     _tag: "CSidebarNavTitle",
     _children: ["Extras"],
   },
