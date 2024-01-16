@@ -9,12 +9,15 @@ import rootSaga from "./sagas";
 import rootReducers from "./reducers";
 
 const encryptor = encryptTransform({ secretKey: "secretkey" });
-const compressor = createCompressor({});
+const compressor = createCompressor({
+  whitelist: ['login']
+});
 const sagaMiddleware = createSagaMiddleware();
 const persistConfig = {
   transforms: [encryptor],
   key: "root",
   storage,
+  whitelist: ['login']
 };
 const persistedReducer = persistReducer(persistConfig, rootReducers);
 export const store = createStore(
