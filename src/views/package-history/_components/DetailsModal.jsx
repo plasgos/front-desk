@@ -22,7 +22,7 @@ export const DetailsModal = () => {
         <IoIosInformationCircleOutline size={24} />
       </CButton>
       <CModal show={modal} onClose={toggle}>
-        <CModalHeader closeButton>Modal title</CModalHeader>
+        <CModalHeader closeButton>Details</CModalHeader>
         <CModalBody>Lorem ipsum dolor...</CModalBody>
         <CModalFooter>
           <CButton color="primary">Do Something</CButton>{" "}

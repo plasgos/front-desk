@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 
-// import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import DateRangePicker from "react-bootstrap-daterangepicker";
+import moment from "moment";
 
 import {
   CButton,
@@ -19,24 +19,15 @@ import { IoSearch } from "react-icons/io5";
 import { FaRegFileExcel } from "react-icons/fa";
 
 export const FilterSection = () => {
-  const [selectedDate, setSelectedDate] = useState("");
-  console.log("🚀 ~ FilterSection ~ selectedDate:", selectedDate);
-  // const inputRef = useRef(null);
+  const [state, setState] = useState({
+    start: moment().subtract(29, "days"),
+    end: moment(),
+  });
 
-  const handleDateChange = (event, picker) => {
-    setSelectedDate(
-      picker.startDate.format("MM/DD/YYYY") +
-        " - " +
-        picker.endDate.format("MM/DD/YYYY")
-    );
+  const { start, end } = state;
+  const handleCallback = (start, end) => {
+    setState({ start, end });
   };
-
-  // const handleInputChange = () => {
-  //   // Access the input value using the ref
-  //   const inputValue = inputRef.current.value;
-  //   // Do something with the input value
-  //   console.log("Input Value:", inputValue);
-  // };
 
   return (
     <div className="shadow-sm  p-3 mt-3">
@@ -50,13 +41,31 @@ export const FilterSection = () => {
         </div>
         <div style={{ width: 200 }}>
           <CLabel className="font-weight-bold">Tanggal</CLabel>
-          <DateRangePicker onApply={handleDateChange}>
-            <input
-              // ref={inputRef}
-              type="text"
-              className="form-control"
-              // onChange={handleInputChange}
-            />
+          <DateRangePicker
+            initialSettings={{
+              startDate: start.toDate(),
+              endDate: end.toDate(),
+              alwaysShowCalendars: true,
+              showCustomRangeLabel: false,
+              ranges: {
+                "Last 7 Days": [
+                  moment().subtract(7, "days").toDate(),
+                  moment().toDate(),
+                ],
+                "Last 30 Days": [
+                  moment().subtract(30, "days").toDate(),
+                  moment().toDate(),
+                ],
+                "Last 90 Days": [
+                  moment().subtract(90, "days").toDate(),
+                  moment().toDate(),
+                ],
+              },
+              autoApply: true,
+            }}
+            onCallback={handleCallback}
+          >
+            <input type="text" className="form-control" />
           </DateRangePicker>
         </div>
         <div>
