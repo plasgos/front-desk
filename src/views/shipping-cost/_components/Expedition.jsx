@@ -4,7 +4,7 @@ import ncs from "../../../assets/ncs-logo.png";
 
 export const Expedition = () => {
   return (
-    <div>
+    <div style={{ flexGrow: 1 }} className="shadow-sm p-3 rounded ">
       <div className="font-weight-bold mb-3">Ekspedisi</div>
       <button type="button" className="btn btn-primary">
         Regular
@@ -42,7 +42,7 @@ export const Expedition = () => {
         </div>
 
         <div>
-          <img style={{ width: 100 }} src={ncs} alt="ncs-logo" />
+          <img style={{ width: 80 }} src={ncs} alt="ncs-logo" />
         </div>
       </div>
     </div>

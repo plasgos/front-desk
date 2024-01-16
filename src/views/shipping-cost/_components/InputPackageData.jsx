@@ -3,7 +3,7 @@ import { PiArrowUDownRightFill } from "react-icons/pi";
 
 export const InputPackageData = () => {
   return (
-    <div>
+    <div className="shadow-sm p-3 rounded ">
       <div className="font-weight-bold mb-3">Masukan Data Paket</div>
       <form>
         <div className="form-group">

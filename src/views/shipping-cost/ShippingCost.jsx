@@ -6,13 +6,10 @@ const ShippingCost = () => {
   return (
     <div>
       <h4 className="font-weight-bold">Cek Ongkos Kirim</h4>
-      <div className="row">
-        <div className="col-12 mb-2 mb-md-0 col-md-6  shadow-sm p-3 rounded ">
-          <InputPackageData />
-        </div>
-        <div className="col-12 mb-2 mb-md-0 col-md-6 shadow-sm p-3 rounded ">
-          <Expedition />
-        </div>
+      <div style={{ gap: 20 }} className="d-flex flex-wrap mb-5 ">
+        <InputPackageData />
+
+        <Expedition />
       </div>
     </div>
   );
