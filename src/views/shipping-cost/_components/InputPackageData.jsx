@@ -48,12 +48,17 @@ export const InputPackageData = () => {
           <label className="font-weight-bold">Opsi Dimensi</label>
           <div className="form-check">
             <input
+              style={{ cursor: "pointer" }}
               className="form-check-input "
               type="checkbox"
               value=""
               id="dimensionInput"
             />
-            <label className="form-check-label mt-1" htmlFor="dimensionInput">
+            <label
+              style={{ cursor: "pointer" }}
+              className="form-check-label mt-1"
+              htmlFor="dimensionInput"
+            >
               Masukan Dimensi
             </label>
           </div>
@@ -71,12 +76,17 @@ export const InputPackageData = () => {
             <label className="font-weight-bold">Opsi COD</label>
             <div className="form-check">
               <input
+                style={{ cursor: "pointer" }}
                 className="form-check-input "
                 type="checkbox"
                 value=""
                 id="codCalculation"
               />
-              <label className="form-check-label mt-1" htmlFor="codCalculation">
+              <label
+                style={{ cursor: "pointer" }}
+                className="form-check-label mt-1"
+                htmlFor="codCalculation"
+              >
                 Kalkulasi COD
               </label>
             </div>
@@ -104,12 +114,17 @@ export const InputPackageData = () => {
             <label className="font-weight-bold">Opsi </label>
             <div className="form-check">
               <input
+                style={{ cursor: "pointer" }}
                 className="form-check-input "
                 type="checkbox"
                 value=""
                 id="asuransi"
               />
-              <label className="form-check-label mt-1" htmlFor="asuransi">
+              <label
+                style={{ cursor: "pointer" }}
+                className="form-check-label mt-1"
+                htmlFor="asuransi"
+              >
                 Asuransi
               </label>
             </div>
