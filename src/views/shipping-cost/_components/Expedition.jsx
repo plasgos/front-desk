@@ -4,7 +4,7 @@ import ncs from "../../../assets/ncs-logo.png";
 
 export const Expedition = () => {
   return (
-    <div style={{ flexGrow: 1 }} className="shadow-sm p-3 rounded ">
+    <div style={{ flexGrow: 1 }} className="card shadow-sm p-3 rounded ">
       <div className="font-weight-bold mb-3">Ekspedisi</div>
       <button type="button" className="btn btn-primary">
         Regular

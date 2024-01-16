@@ -39,6 +39,11 @@ body {
   // background: map-get($theme-colors, "primary");
 }
 
+.required-label::after {
+  content: " *";
+  color: red;
+}
+
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) {
   .btn-dropdown {
@@ -82,4 +87,10 @@ body {
     padding: 0 !important;
     overflow: hidden;
   }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }

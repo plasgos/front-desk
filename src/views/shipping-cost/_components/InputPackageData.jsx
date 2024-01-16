@@ -3,7 +3,7 @@ import { PiArrowUDownRightFill } from "react-icons/pi";
 
 export const InputPackageData = () => {
   return (
-    <div className="shadow-sm p-3 rounded ">
+    <div className="card shadow-sm p-3 rounded ">
       <div className="font-weight-bold mb-3">Masukan Data Paket</div>
       <form>
         <div className="form-group">
@@ -16,7 +16,7 @@ export const InputPackageData = () => {
             <input type="text" className="form-control" />
           </div>
         </div>
-        <div style={{ width: "50%" }} className="form-group  ">
+        <div style={{ width: "30%" }} className="form-group  ">
           <div className="form-group ">
             <label>Berat</label>
             <div style={{ position: "relative" }}>
@@ -31,7 +31,7 @@ export const InputPackageData = () => {
                   position: "absolute",
                   right: 0,
                   top: 5,
-                  transform: "translateX(-36px)",
+                  transform: "translateX(-10px)",
                 }}
               >
                 gram

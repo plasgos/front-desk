@@ -38,6 +38,12 @@ export default [
     icon: "cil-drop",
   },
   {
+    _tag: "CSidebarNavItem",
+    name: "Send Package",
+    to: "/send-package",
+    icon: "cil-drop",
+  },
+  {
     _tag: "CSidebarNavTitle",
     _children: ["Extras"],
   },
