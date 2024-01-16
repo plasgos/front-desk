@@ -29,8 +29,7 @@ const SendPackage = React.lazy(() =>
 );
 
 const routes = [
-  { path: "/", exact: true, name: "Home" },
-  { path: "/dashboard", name: "Dashboard", component: Dashboard },
+  { path: "/", exact: true, name: "Dashboard", component: Dashboard },
   { path: "/buyer", name: "Buyer", component: Checkout, exact: true },
   { path: "/buyer/checkout", name: "Checkout", component: Checkout },
   { path: "/buyer/invoice/print", name: "Print out", component: PrintOut },
