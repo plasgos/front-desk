@@ -24,7 +24,7 @@ export const PaymentMethod = () => {
 
   return (
     <div>
-      <div>Metode Pembayaran</div>
+      <div className="font-weight-bold">Metode Pembayaran</div>
       <form>
         <div className="form-row ">
           <div className="form-group col-md-6 mb-0">
@@ -36,7 +36,7 @@ export const PaymentMethod = () => {
               <div className="form-group mb-0">
                 <div className="form-check">
                   <input
-                    onClick={togglePickup}
+                    onChange={togglePickup}
                     style={{ cursor: "pointer", transform: "scale(1.5)" }}
                     className="form-check-input "
                     type="checkbox"
@@ -63,7 +63,7 @@ export const PaymentMethod = () => {
               <div className="form-group mb-0">
                 <div className="form-check">
                   <input
-                    onClick={toggleDropOff}
+                    onChange={toggleDropOff}
                     style={{ cursor: "pointer", transform: "scale(1.5)" }}
                     className="form-check-input "
                     type="checkbox"

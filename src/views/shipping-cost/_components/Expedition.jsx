@@ -21,7 +21,7 @@ export const Expedition = () => {
             Ongkir :{" "}
             <span
               style={{ textDecoration: "line-through" }}
-              className="text-decoration-line-through text-danger"
+              className="text-decoration-line-through text-danger mr-1"
             >
               {formatPrice(18000)}
             </span>{" "}

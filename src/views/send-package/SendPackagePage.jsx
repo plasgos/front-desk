@@ -10,14 +10,13 @@ const SendPackagePage = () => {
     <div>
       <h4 className="font-weight-bold">Kirim Paket</h4>
       <CRow>
-        <CCol md="7">
+        <CCol md="6">
           <SenderDetails />
           <ReceiverDetails />
           <ItemDetails />
         </CCol>
-        <CCol md="5">
-        <DeliveryAndPayment />
-
+        <CCol md="6">
+          <DeliveryAndPayment />
         </CCol>
       </CRow>
     </div>

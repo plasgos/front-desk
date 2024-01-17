@@ -1,115 +1,56 @@
-import React, { useState } from "react";
-import { RiErrorWarningFill } from "react-icons/ri";
+import React from "react";
 import { PaymentMethod } from "./PaymentMethod";
+import { Expeditions } from "./Expeditions";
+import { PickUpOptions } from "./PickUpOptions";
+import { TbReportMoney } from "react-icons/tb";
+import { Summary } from "./Summary";
 
 export const DeliveryAndPayment = () => {
-  const [isPickup, setIsPickup] = useState(false);
-  const [isDropOff, setIsDropOff] = useState(false);
-
-  const togglePickup = () => {
-    if (!isDropOff) {
-      setIsPickup((prev) => !prev);
-    } else if (isDropOff && !isPickup) {
-      setIsPickup(true);
-      setIsDropOff(false);
-    }
-  };
-
-  const toggleDropOff = () => {
-    if (!isPickup) {
-      setIsDropOff((prev) => !prev);
-    } else if (isPickup && !isDropOff) {
-      setIsDropOff(true);
-      setIsPickup(false);
-    }
-  };
-
   return (
-    <div style={{ flexGrow: 1 }} className="mt-3">
-      <div className="d-flex justify-content-between align-items-center my-4">
+    <div className="mt-3">
+      <div className="d-flex justify-content-between align-items-center mb-5 ">
         <div className="font-weight-bold font-lg ">Pengiriman & Pembayaran</div>
       </div>
 
       <div className="card p-3 shadow-sm">
-        <div>
-          <div>Opsi Penjemputan</div>
-          <form>
-            <div className="form-row ">
-              <div className="form-group col-md-6 mb-0">
-                <div
-                  className={`card my-3 p-3 shadow-sm ${
-                    isPickup && "border border-primary"
-                  } `}
-                >
-                  <div className="form-group mb-0">
-                    <div className="form-check">
-                      <input
-                        onClick={togglePickup}
-                        style={{ cursor: "pointer", transform: "scale(1.5)" }}
-                        className="form-check-input "
-                        type="checkbox"
-                        id="pickup"
-                        checked={isPickup}
-                      />
-                      <label
-                        style={{ cursor: "pointer" }}
-                        className="form-check-label mt-1 font-lg ml-2"
-                        htmlFor="pickup"
-                      >
-                        Pick Up
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="form-group col-md-6 mb-0 ">
-                <div
-                  className={`card my-3 p-3 shadow-sm ${
-                    isDropOff && "border border-primary"
-                  } `}
-                >
-                  <div className="form-group mb-0">
-                    <div className="form-check">
-                      <input
-                        onClick={toggleDropOff}
-                        style={{ cursor: "pointer", transform: "scale(1.5)" }}
-                        className="form-check-input "
-                        type="checkbox"
-                        id="drop-off"
-                        checked={isDropOff}
-                      />
-                      <label
-                        style={{ cursor: "pointer" }}
-                        className="form-check-label mt-1 font-lg ml-2"
-                        htmlFor="drop-off"
-                      >
-                        Drop Off
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </form>
-
-          {isPickup && (
-            <div className="card p-2 shadow-sm border-primary">
-              <div className="d-flex align-items-center">
-                <div style={{ color: "#2D61AC" }}>
-                  <RiErrorWarningFill size={24} />
-                </div>
-
-                <div className="ml-2">
-                  Paket ini akan{" "}
-                  <span className="font-weight-bold">DIAMBIL</span> oleh kurir
-                  ekspedisi yang di pilh
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        <PickUpOptions />
         <PaymentMethod />
+        <Expeditions />
       </div>
+
+      <div className="font-weight-bold mb-3">Kustom COD</div>
+      <div className="card p-3 shadow-sm">
+        <form>
+          <div className="form-group mb-0">
+            <label>
+              Ubah Nilai COD Anda (kosongi jika tidak ada perubahan)
+            </label>
+            <div style={{ position: "relative" }}>
+              <input
+                style={{ paddingLeft: 30 }}
+                type="number"
+                className="form-control "
+              />
+              <div
+                style={{ position: "absolute", top: 6, left: 8 }}
+                className="text-muted"
+              >
+                Rp.
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div className="font-weight-bold mb-3">Estimasi Biaya</div>
+      <div className="mb-3">
+        <button type="button" className="btn btn-primary  btn-block">
+          <TbReportMoney size={18} className="mr-2" />
+          Gunakan Voucher
+        </button>
+      </div>
+
+      <Summary />
     </div>
   );
 };

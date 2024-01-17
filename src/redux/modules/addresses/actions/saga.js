@@ -1,5 +1,5 @@
-import { put, call } from 'redux-saga/effects';
-import Api from '../../../../services';
+import { put, call } from "redux-saga/effects";
+import Api from "../../../../services";
 import * as actions from "../actions/actions";
 import addresses from "../../../../dummy/addresses.json";
 
@@ -19,11 +19,11 @@ function* getAddresses(values) {
 
 function* watchGetSubdistrict(values) {
   yield put(actions.setIsLoadingGetSubdistrict(true));
-  const {payload} = values;
+  const { payload } = values;
   try {
     const response = yield call(Api.addresses.subdistrict, payload);
-    const {data} = response;
-    if(data.success){
+    const { data } = response;
+    if (data.success) {
       yield put(actions.getSubdistrictSuccess(data.data));
     }
   } catch (e) {

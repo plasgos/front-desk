@@ -1,7 +1,7 @@
 import React from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
-import { LiaExchangeAltSolid } from "react-icons/lia";
 import { FaEdit } from "react-icons/fa";
+import { PickUpAddressModal } from "./modal/PickUpAddressModal";
 
 export const SenderDetails = () => {
   return (
@@ -9,10 +9,9 @@ export const SenderDetails = () => {
       <div className="d-flex justify-content-between align-items-center my-4">
         <div className="font-weight-bold font-lg">Detail Pengirim</div>
 
-        <button className="btn btn-outline-primary ">
-          <LiaExchangeAltSolid size={18} className="mr-2" />
-          <span>Ganti Pengirim</span>
-        </button>
+        <div>
+          <PickUpAddressModal />
+        </div>
       </div>
       <div className="card p-3 shadow-sm rounded">
         <div
