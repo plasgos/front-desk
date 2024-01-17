@@ -1,16 +1,89 @@
-import React from "react";
-import { FaListUl } from "react-icons/fa";
+import React, { useEffect, useState } from "react";
+import { CatalogProductsModal } from "./modal/CatalogProductsModal";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { getProducts } from "../../../redux/modules/products/actions/actions";
+import { formatPrice } from "../../../lib/format-price";
 
 export const ItemDetails = () => {
+  const [selectedProduct, setSelectedProduct] = useState({});
+  const [newWeightProduct, setNewWeightProduct] = useState(0);
+  console.log("🚀 ~ ItemDetails ~ weightProduct:", newWeightProduct);
+
+  const { products } = useSelector((state) => state.products);
+  const { data } = products;
+  const { token } = useSelector((state) => state.login);
+
+  const dispatch = useDispatch();
+
+  const getData = () => {
+    dispatch(getProducts({ token }));
+  };
+
+  useEffect(() => {
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div>
       <div className="font-weight-bold font-lg  my-4 ">Detail Barang</div>
       <div className=" card p-3 shadow-sm rounded">
         <div className="mb-3">
-          <button type="button" className="btn btn-primary  btn-block">
-            <FaListUl size={18} className="mr-2" />
-            Katalog Produk
-          </button>
+          <CatalogProductsModal
+            products={data}
+            setSelectedProduct={setSelectedProduct}
+            selectedProduct={selectedProduct}
+          />
+        </div>
+
+        <div className="d-flex justify-content-between">
+          {Object.keys(selectedProduct).length > 0 && (
+            <>
+              <div>
+                <label className="required-label">Isi Paket</label>
+                <div className="d-flex">
+                  <div className="rounded shadow-sm border p-2">
+                    <img
+                      style={{ width: 80 }}
+                      src={selectedProduct.ImageProducts[0].url}
+                      alt="product"
+                    />
+                  </div>
+                  <div className="ml-3">
+                    <div className="font-weight-bold mb-2 ">
+                      {selectedProduct.name}
+                    </div>
+                    <div className="font-weight-bold mb-2">
+                      {formatPrice(selectedProduct.price)}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label className="required-label">Jenis Barang</label>
+                <input
+                  readOnly
+                  value={selectedProduct.Category.name}
+                  type="text"
+                  className="form-control"
+                />
+                <label className="required-label mt-2">Weight</label>
+                <input
+                  onChange={(e) => setNewWeightProduct(e.target.value)}
+                  value={newWeightProduct}
+                  // defaultValue={selectedProduct.weight}
+                  type="text"
+                  className="form-control"
+                />
+
+                <label className="required-label mt-2">
+                  Jumlah Item Dalam Paket
+                </label>
+                <input type="text" className="form-control" />
+              </div>
+            </>
+          )}
         </div>
 
         <form>

@@ -6,8 +6,6 @@ import * as actions from "../redux/modules/addresses/actions/actions";
 const InputDistrict = ({ placeholder, value, onSelectDistrict }) => {
   const dispatch = useDispatch();
   const { subdistricts } = useSelector((state) => state.addresses);
-  console.log("🚀 ~ InputDistrict ~ subdistricts:", subdistricts);
-
   const [show, setShow] = useState(false);
   const [text, setText] = useState("");
   const getData = () => {

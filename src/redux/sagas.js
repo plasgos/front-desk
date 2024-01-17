@@ -4,6 +4,8 @@ import addressesWatcher from "./modules/addresses/watcher";
 import ordersWatcher from "./modules/orders/watcher";
 import costsWatcher from "./modules/costs/watcher";
 import loginWatcher from "./modules/login/watcher";
+import warehousesWatcher from "./modules/warehouses/watcher";
+import productsWatcher from "./modules/products/watcher";
 
 export default function* rootSaga() {
   yield all([
@@ -11,5 +13,7 @@ export default function* rootSaga() {
     ...ordersWatcher,
     ...costsWatcher,
     ...loginWatcher,
+    ...warehousesWatcher,
+    ...productsWatcher,
   ]);
 }

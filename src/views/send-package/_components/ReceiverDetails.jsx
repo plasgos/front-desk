@@ -6,7 +6,6 @@ export const ReceiverDetails = () => {
   const [subdistrict, setSubdistrict] = useState({});
   const [text, setText] = useState("");
   const onSetSubdistrict = (value) => {
-    console.log("🚀 ~ onSetSubdistrict ~ value:", value);
     setSubdistrict(value);
     setText(
       `${value.name}, ${value.City.type} ${value.City.name}, ${value.City.Province.name}`

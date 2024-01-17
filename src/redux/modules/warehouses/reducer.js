@@ -1,7 +1,7 @@
 import types from "./types";
 
 const initialState = {
-  products: {
+  warehouses: {
     data: [],
     loading: false,
   },
@@ -9,24 +9,24 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.GET_PRODUCTS_SUCCESS:
+    case types.GET_WAREHOUSES_SUCCESS:
       return {
         ...state,
-        products: {
-          ...state.products,
+        warehouses: {
+          ...state.warehouses,
           data: action.payload,
         },
       };
-    case types.IS_LOADING_GET_PRODUCTS:
+    case types.IS_LOADING_GET_WAREHOUSES:
       return {
         ...state,
-        products: {
-          ...state.products,
+        warehouses: {
+          ...state.warehouses,
           loading: action.payload,
         },
       };
-    case types.RESET_PRODUCTS:
-      return { ...state, products: initialState.products };
+    case types.RESET_WAREHOUSES:
+      return { ...state, warehouses: initialState.warehouses };
     default:
       return state;
   }

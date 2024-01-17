@@ -89,7 +89,7 @@ export const ReceiverModal = ({
                         <CBadge color="success">Utama</CBadge>
                       )}
                     </div>
-                    <div>{address.phone_number}</div>
+                    <div className="mb-2">{address.phone_number}</div>
                     <div>{address.address}</div>
                   </CCardBody>
                 </CCard>
