@@ -6,6 +6,8 @@ const initialState = {
   weight: 0,
   insurance: 1,
   item_value: 0,
+  orders: [],
+  receiver: {},
 };
 
 export default (state = initialState, action) => {
@@ -18,9 +20,9 @@ export default (state = initialState, action) => {
     case types.SET_DESTINATION:
       return {
         ...state,
-        destination: action.payload,
+        destination: action.payload.id,
+        receiver: action.payload.receiver,
       };
-
     case types.SET_WEIGHT_AND_PRICE:
       return {
         ...state,

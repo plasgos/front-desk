@@ -19,7 +19,7 @@ export const ItemDetails = () => {
 
   const dispatch = useDispatch();
 
-  const [debouncedWeight] = useDebounce(newWeightProduct, 3000);
+  const [debouncedWeight] = useDebounce(newWeightProduct, 1000);
 
   const getData = () => {
     dispatch(getProducts({ token }));

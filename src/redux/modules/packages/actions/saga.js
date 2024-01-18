@@ -2,7 +2,7 @@ import { put, call } from "redux-saga/effects";
 import Api from "../../../../services";
 import * as actions from "../actions/actions";
 
-function* watchGetWarehouses(values) {
+function* watchGetShippingCost(values) {
   yield put(actions.setIsLoadingGetWarehouses(true));
   const { payload } = values;
   try {
@@ -18,4 +18,4 @@ function* watchGetWarehouses(values) {
   }
 }
 
-export { watchGetWarehouses };
+export { watchGetShippingCost };

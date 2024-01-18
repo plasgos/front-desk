@@ -1,5 +1,5 @@
 import { takeLatest } from "redux-saga/effects";
 import types from "./types";
-import { watchGetWarehouses } from "./actions/saga";
+import { watchGetShippingCost } from "./actions/saga";
 
-export default [takeLatest(types.GET_WAREHOUSES, watchGetWarehouses)];
+export default [takeLatest(types.GET_SHIPPING_COST, watchGetShippingCost)];

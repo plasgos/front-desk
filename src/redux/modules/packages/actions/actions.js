@@ -12,3 +12,16 @@ export const setWeightAndPrice = (payload) => ({
   type: types.SET_WEIGHT_AND_PRICE,
   payload,
 });
+export const setOrders = (payload) => ({
+  type: types.SET_ORDERS,
+  payload,
+});
+
+export const getShippingCost = (payload) => ({
+  type: types.GET_SHIPPING_COST,
+  payload,
+});
+export const isLoadingGetShippingCost = (payload) => ({
+  type: types.IS_LOADING_GET_SHIPPING_COST,
+  payload,
+});
