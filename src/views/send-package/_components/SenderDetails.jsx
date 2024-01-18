@@ -3,10 +3,12 @@ import { FaEdit } from "react-icons/fa";
 import { PickUpAddressModal } from "./modal/PickUpAddressModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getWarehouses } from "../../../redux/modules/warehouses/actions/actions";
+import { setOrigin } from "../../../redux/modules/packages/actions/actions";
 import { CBadge, CButton } from "@coreui/react";
 
 export const SenderDetails = () => {
   const [selectedAddress, setSelectedAddress] = useState({});
+
   const { warehouses } = useSelector((state) => state.warehouses);
   const { token } = useSelector((state) => state.login);
   const { data } = warehouses;
@@ -25,6 +27,15 @@ export const SenderDetails = () => {
     const defaultAddress = data && data.find((addr) => addr.is_default);
     setSelectedAddress(defaultAddress || {});
   }, [data]);
+
+  const defaultOrigin = () => {
+    dispatch(setOrigin(selectedAddress.subdistrict_id));
+  };
+
+  useEffect(() => {
+    defaultOrigin();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, selectedAddress]);
 
   return (
     <div>

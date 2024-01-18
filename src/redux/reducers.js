@@ -8,6 +8,7 @@ import totalPriceReducer from "./modules/total-price/reducer";
 import loginReducer from "./modules/login/reducer";
 import warehousesReducer from "./modules/warehouses/reducer";
 import productsReducer from "./modules/products/reducer";
+import packagesReducer from "./modules/packages/reducer";
 
 const rootReducer = combineReducers({
   login: loginReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   totalPrice: totalPriceReducer,
   warehouses: warehousesReducer,
   products: productsReducer,
+  packages: packagesReducer,
 });
 
 export default rootReducer;

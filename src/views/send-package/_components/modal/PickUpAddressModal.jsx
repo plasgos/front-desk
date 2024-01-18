@@ -10,6 +10,8 @@ import {
 } from "@coreui/react";
 import React, { useState } from "react";
 import { LiaExchangeAltSolid } from "react-icons/lia";
+import { useDispatch } from "react-redux";
+import { setOrigin } from "../../../../redux/modules/packages/actions/actions";
 
 export const PickUpAddressModal = ({
   address,
@@ -22,8 +24,11 @@ export const PickUpAddressModal = ({
     setModal(!modal);
   };
 
+  const dispatch = useDispatch();
+
   const onSubmit = (data) => {
     setSelectedAddress(data);
+    dispatch(setOrigin(data.subdistrict_id));
 
     setModal(false);
   };

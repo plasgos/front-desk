@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
-import { InputDistrict } from "../../../components";
+import { useDispatch } from "react-redux";
+import { setDestination } from "../../../redux/modules/packages/actions/actions";
+import { InputDistrict } from "../../../components/InputDistrict";
 
-export const ReceiverDetails = () => {
-  const [subdistrict, setSubdistrict] = useState({});
-  const [text, setText] = useState("");
+const ReceiverDetails = () => {
+  const [subdistrictId, setSubdistrictId] = useState({});
   const onSetSubdistrict = (value) => {
-    setSubdistrict(value);
-    setText(
-      `${value.name}, ${value.City.type} ${value.City.name}, ${value.City.Province.name}`
-    );
+    setSubdistrictId(value);
   };
+
+  const dispatch = useDispatch();
+
+  const setDestinationToRedux = () => {
+    dispatch(setDestination(subdistrictId));
+  };
+
+  useEffect(() => {
+    setDestinationToRedux();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [subdistrictId]);
+
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center my-4">
@@ -34,11 +44,7 @@ export const ReceiverDetails = () => {
           </div>
           <div className="form-group">
             <label className="required-label">Kecamatan</label>
-            <InputDistrict
-              placeholder="Ketik Kecamatan / Kota"
-              onSelectDistrict={onSetSubdistrict}
-              value={text}
-            />
+            <InputDistrict onSelectDistrict={onSetSubdistrict} />
           </div>
           <div className="form-group">
             <label className="required-label">Alamat Penerima</label>
@@ -49,3 +55,5 @@ export const ReceiverDetails = () => {
     </div>
   );
 };
+
+export default ReceiverDetails;

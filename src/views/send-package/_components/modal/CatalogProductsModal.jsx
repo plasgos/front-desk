@@ -1,5 +1,4 @@
 import {
-  CBadge,
   CButton,
   CCard,
   CCardBody,
@@ -19,7 +18,6 @@ export const CatalogProductsModal = ({
 }) => {
   const [modal, setModal] = useState(false);
   const [isSelectedProduct, setIsSelectedProduct] = useState({});
-  console.log("🚀 ~ isSelectedAddress:", isSelectedProduct);
   const toggle = () => {
     setModal(!modal);
   };
