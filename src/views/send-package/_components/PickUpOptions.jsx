@@ -1,26 +1,25 @@
 import React, { useState } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 
+import { setPickUpOptions } from "../../../redux/modules/packages/actions/actions";
+import { useDispatch } from "react-redux";
+
 export const PickUpOptions = () => {
   const [isPickup, setIsPickup] = useState(false);
   const [isDropOff, setIsDropOff] = useState(false);
 
+  const dispatch = useDispatch();
+
   const togglePickup = () => {
-    if (!isDropOff) {
-      setIsPickup((prev) => !prev);
-    } else if (isDropOff && !isPickup) {
-      setIsPickup(true);
-      setIsDropOff(false);
-    }
+    setIsPickup(true);
+    dispatch(setPickUpOptions(false));
+    setIsDropOff(false);
   };
 
   const toggleDropOff = () => {
-    if (!isPickup) {
-      setIsDropOff((prev) => !prev);
-    } else if (isPickup && !isDropOff) {
-      setIsDropOff(true);
-      setIsPickup(false);
-    }
+    setIsDropOff(true);
+    dispatch(setPickUpOptions(true));
+    setIsPickup(false);
   };
   return (
     <div>

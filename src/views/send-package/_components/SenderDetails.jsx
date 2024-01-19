@@ -8,10 +8,10 @@ import { CBadge, CButton } from "@coreui/react";
 
 export const SenderDetails = () => {
   const [selectedAddress, setSelectedAddress] = useState({});
-
   const { warehouses } = useSelector((state) => state.warehouses);
   const { token } = useSelector((state) => state.login);
   const { data } = warehouses;
+
   const dispatch = useDispatch();
 
   const getData = () => {
@@ -29,7 +29,27 @@ export const SenderDetails = () => {
   }, [data]);
 
   const defaultOrigin = () => {
-    dispatch(setOrigin(selectedAddress.subdistrict_id));
+    dispatch(
+      setOrigin({
+        origin: {
+          district_id: selectedAddress.subdistrict_id,
+          lat: selectedAddress.latitude,
+          long: selectedAddress.longitude,
+          address: selectedAddress.address,
+        },
+        sender: {
+          id: selectedAddress.id,
+          name: selectedAddress.name,
+          phone_number: selectedAddress.phone_number,
+          address: selectedAddress.address,
+          subdistrict_id: selectedAddress.subdistrict_id,
+          postal_code: selectedAddress.postal_code,
+          latitude: selectedAddress.latitude,
+          longitude: selectedAddress.longitude,
+        },
+        // warehouse_id :
+      })
+    );
   };
 
   useEffect(() => {

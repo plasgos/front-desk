@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 
 const SendPackagePage = () => {
   const packages = useSelector((state) => state.packages);
-  console.log("🚀 ~ SendPackagePage ~ packages:", packages);
   return (
     <div>
       <h4 className="font-weight-bold">Kirim Paket</h4>

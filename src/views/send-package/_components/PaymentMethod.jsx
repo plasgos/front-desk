@@ -1,25 +1,23 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setPaymentMethod } from "../../../redux/modules/packages/actions/actions";
 
 export const PaymentMethod = () => {
   const [isCod, setIsCod] = useState(false);
   const [isNonCod, setIsNonCod] = useState(false);
 
-  const togglePickup = () => {
-    if (!isNonCod) {
-      setIsCod((prev) => !prev);
-    } else if (isNonCod && !isCod) {
-      setIsCod(true);
-      setIsNonCod(false);
-    }
+  const dispatch = useDispatch();
+
+  const toggleCod = () => {
+    setIsCod(true);
+    dispatch(setPaymentMethod(true));
+    setIsNonCod(false);
   };
 
-  const toggleDropOff = () => {
-    if (!isCod) {
-      setIsNonCod((prev) => !prev);
-    } else if (isCod && !isNonCod) {
-      setIsNonCod(true);
-      setIsCod(false);
-    }
+  const toggleNonCod = () => {
+    setIsNonCod(true);
+    dispatch(setPaymentMethod(false));
+    setIsCod(false);
   };
 
   return (
@@ -36,7 +34,7 @@ export const PaymentMethod = () => {
               <div className="form-group mb-0">
                 <div className="form-check">
                   <input
-                    onChange={togglePickup}
+                    onChange={toggleCod}
                     style={{ cursor: "pointer", transform: "scale(1.5)" }}
                     className="form-check-input "
                     type="checkbox"
@@ -63,7 +61,7 @@ export const PaymentMethod = () => {
               <div className="form-group mb-0">
                 <div className="form-check">
                   <input
-                    onChange={toggleDropOff}
+                    onChange={toggleNonCod}
                     style={{ cursor: "pointer", transform: "scale(1.5)" }}
                     className="form-check-input "
                     type="checkbox"
