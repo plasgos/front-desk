@@ -14,9 +14,9 @@ export const Expeditions = () => {
   const [isGroupSelected, setIsGroupSelected] = useState("");
 
   const [courirs, setCourirs] = useState([]);
-  console.log("🚀 ~ Expeditions ~ courirs:", courirs);
   const userData = useSelector((state) => state.login);
   const packages = useSelector((state) => state.packages);
+  console.log("🚀 ~ Expeditions ~ packages:", packages);
   const { expeditions } = packages;
   const dispatch = useDispatch();
 

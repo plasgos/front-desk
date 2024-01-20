@@ -11,4 +11,5 @@ export default {
   GET_SHIPPING_COST: "get-shipping-cost",
   GET_SHIPPING_COST_SUCCESS: "get-shipping-cost-success",
   RESET_SHIPPING: "reset-warehouses",
+  REDUCE_PRODUCT_LIST: "reduce-product-list",
 };

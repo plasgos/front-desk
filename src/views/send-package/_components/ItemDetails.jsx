@@ -4,40 +4,34 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { getProducts } from "../../../redux/modules/products/actions/actions";
 import { formatPrice } from "../../../lib/format-price";
-import { setWeightAndPrice } from "../../../redux/modules/packages/actions/actions";
+import {
+  reduceProductList,
+  setWeightAndPrice,
+} from "../../../redux/modules/packages/actions/actions";
 
 import { useDebounce } from "use-debounce";
+import { IoClose } from "react-icons/io5";
 
 export const ItemDetails = () => {
-  const [selectedProduct, setSelectedProduct] = useState({});
-  // console.log("🚀 ~ ItemDetails ~ selectedProduct:", selectedProduct);
-
+  const [selectedProduct, setSelectedProduct] = useState([]);
   // const { orders } = useSelector((state) => state.packages);
-  // console.log("🚀 ~ SenderDetails ~ orders:", orders);
-
   // const warehouseSender = orders?.map((order) => order.sender?.id);
-  // console.log("🚀 ~ ItemDetails ~ warehouseSender:", warehouseSender);
-
   // const test =
   //   selectedProduct.Stocks &&
   //   selectedProduct.Stocks.map((stock) => stock.Warehouse.id);
-  // console.log("🚀 ~ ItemDetails ~ test:", test);
-
   // const commonWarehouses =
   //   test && test.filter((warehouseId) => warehouseId === warehouseSender);
-  // console.log("🚀 ~ ItemDetails ~ commonWarehouses:", commonWarehouses);
-
-  const [newWeightProduct, setNewWeightProduct] = useState(0);
+  const [newWeightProducts, setNewWeightProducts] = useState({});
   const [qtyProduct, setQtyProduct] = useState("");
+  console.log("🚀 ~ ItemDetails ~ qtyProduct:", qtyProduct);
 
   const { products } = useSelector((state) => state.products);
-  console.log("🚀 ~ ItemDetails ~ products:", JSON.stringify(products));
   const { data } = products;
   const { token } = useSelector((state) => state.login);
 
   const dispatch = useDispatch();
 
-  const [debouncedWeight] = useDebounce(newWeightProduct, 1000);
+  // const [debouncedWeight] = useDebounce(newWeightProducts, 1000);
   const [debouncedQty] = useDebounce(qtyProduct, 1000);
 
   const getData = () => {
@@ -49,34 +43,64 @@ export const ItemDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (selectedProduct.weight !== undefined) {
-      setNewWeightProduct(selectedProduct.weight || 0);
-    }
-  }, [selectedProduct.weight]);
-
   const setItemShippingCost = () => {
-    dispatch(
-      setWeightAndPrice({
-        weight: +debouncedWeight,
-        price: selectedProduct.price,
-        product: {
-          product_id: selectedProduct.id,
-          quantity: +debouncedQty,
-          price: selectedProduct.price,
-          description: selectedProduct.description,
-        },
-      })
-    );
+    // Memastikan bahwa selectedProduct adalah array dan memiliki elemen
+    if (Array.isArray(selectedProduct) && selectedProduct.length > 0) {
+      // Iterasi melalui setiap produk dalam array
+      selectedProduct.forEach((product) => {
+        dispatch(
+          setWeightAndPrice({
+            weight: +newWeightProducts[product.id],
+
+            products: {
+              product_id: product.id,
+              quantity: +qtyProduct,
+              price: product.price,
+              description: product.description,
+              weight: newWeightProducts[product.id],
+            },
+          })
+        );
+      });
+    }
   };
 
   useEffect(() => {
     setItemShippingCost();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProduct, debouncedWeight, debouncedQty]);
+  }, [selectedProduct, newWeightProducts, qtyProduct]);
 
-  const handleWeightChange = (e) => {
-    setNewWeightProduct(e.target.value);
+  useEffect(() => {
+    if (Array.isArray(selectedProduct) && selectedProduct.length > 0) {
+      // Membuat objek baru dengan ID produk sebagai kunci dan berat sebagai nilai
+      const initialWeights = {};
+      selectedProduct.forEach((product) => {
+        initialWeights[product.id] = product.weight || "";
+      });
+      // Menetapkan nilai awal ke dalam newWeightProducts
+      setNewWeightProducts(initialWeights);
+    } else {
+      // Jika tidak ada produk yang dipilih, set newWeightProducts ke objek kosong
+      setNewWeightProducts({});
+    }
+  }, [selectedProduct]);
+
+  const handleWeightChange = (productId, event) => {
+    event.persist(); // Membuat objek synthetic event menjadi persisten
+
+    setNewWeightProducts((prevWeights) => ({
+      ...prevWeights,
+      [productId]: event.target.value,
+    }));
+  };
+
+  const handleDeleteListProduck = (id) => {
+    const updatedListProducts = selectedProduct.filter(
+      (product) => product.id !== id
+    );
+
+    setSelectedProduct(updatedListProducts);
+    dispatch(reduceProductList(id));
   };
 
   return (
@@ -91,74 +115,96 @@ export const ItemDetails = () => {
           />
         </div>
 
-        <div className="d-flex justify-content-between">
-          <div>
-            <div className="d-flex">
-              {selectedProduct.ImageProducts ? (
-                <div className="rounded shadow-sm border p-2">
-                  <img
-                    style={{ width: 80 }}
-                    src={selectedProduct.ImageProducts[0].url}
-                    alt="product"
-                  />
-                </div>
-              ) : (
-                <div className="form-group">
-                  <label className="required-label">Isi Paket</label>
-                  <input type="text" className="form-control" />
-                </div>
-              )}
-              <div className="ml-3">
-                <div className="font-weight-bold mb-2 ">
-                  {selectedProduct.name || ""}
-                </div>
-                {selectedProduct.price && (
-                  <div className="font-weight-bold mb-2">
-                    {formatPrice(selectedProduct.price)}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-          <div>
-            <form>
-              <div className="form-group">
-                <label className="required-label">Berat</label>
-                <div style={{ position: "relative" }}>
-                  <input
-                    onChange={handleWeightChange}
-                    type="number"
-                    value={newWeightProduct || ""}
-                    inputMode="numeric"
-                    className="form-control"
-                  />
+        <div style={{ maxHeight: 500, overflowY: "auto" }} className="p-3">
+          {selectedProduct && selectedProduct.length > 0 ? (
+            selectedProduct.map((product) => {
+              return (
+                <div key={product.id} className="card shadow-sm p-3">
                   <div
-                    className="text-muted"
-                    style={{
-                      position: "absolute",
-                      right: 0,
-                      top: 5,
-                      transform: "translateX(-10px)",
-                    }}
+                    onClick={() => handleDeleteListProduck(product.id)}
+                    className="d-flex justify-content-end mb-2"
                   >
-                    gram
+                    <IoClose size={24} />
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    <div className="">
+                      <div className="d-flex">
+                        {product.ImageProducts ? (
+                          <div className="rounded shadow-sm border p-2">
+                            <img
+                              style={{ width: 80 }}
+                              src={product.ImageProducts[0].url}
+                              alt="product"
+                            />
+                          </div>
+                        ) : (
+                          <div className="form-group">
+                            <label className="required-label">Isi Paket</label>
+                            <input type="text" className="form-control" />
+                          </div>
+                        )}
+                        <div className="ml-3">
+                          <div className="font-weight-bold mb-2 ">
+                            {product.name || ""}
+                          </div>
+                          {product.price && (
+                            <div className="font-weight-bold mb-2">
+                              {formatPrice(product.price)}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <form>
+                        <div className="form-group">
+                          <label className="required-label">Berat</label>
+                          <div style={{ position: "relative" }}>
+                            <input
+                              onChange={(event) =>
+                                handleWeightChange(product.id, event)
+                              }
+                              type="number"
+                              value={newWeightProducts[product.id] || ""}
+                              inputMode="numeric"
+                              className="form-control"
+                            />
+                            <div
+                              className="text-muted"
+                              style={{
+                                position: "absolute",
+                                right: 0,
+                                top: 5,
+                                transform: "translateX(-10px)",
+                              }}
+                            >
+                              gram
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="form-group">
+                          <label className="required-label mt-2">
+                            Jumlah Item Dalam Paket
+                          </label>
+                          <input
+                            onChange={(e) => setQtyProduct(e.target.value)}
+                            value={qtyProduct}
+                            type="text"
+                            className="form-control"
+                          />
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
-              </div>
-
-              <div className="form-group">
-                <label className="required-label mt-2">
-                  Jumlah Item Dalam Paket
-                </label>
-                <input
-                  onChange={(e) => setQtyProduct(e.target.value)}
-                  value={qtyProduct}
-                  type="text"
-                  className="form-control"
-                />
-              </div>
-            </form>
-          </div>
+              );
+            })
+          ) : (
+            <div className="text-center">
+              Silahlak Pilih Produk Pada Katalog Produk
+            </div>
+          )}
         </div>
       </div>
     </div>

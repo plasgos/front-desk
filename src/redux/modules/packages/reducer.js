@@ -36,12 +36,46 @@ export default (state = initialState, action) => {
       return {
         ...state,
         weight: action.payload.weight,
-        item_value: action.payload.price,
+        // item_value: action.payload.price,
+        orders: state.orders.map((order) => {
+          // Check if order already contains the product
+          const isProductInOrder =
+            order.products &&
+            order.products.some(
+              (p) => p.product_id === action.payload.products.product_id
+            );
+
+          if (isProductInOrder) {
+            // If product already exists in order, return the order without modification
+            return order;
+          }
+
+          // If order already exists, add the new product to the array
+          if (order.products) {
+            return {
+              ...order,
+              products: [...order.products, action.payload.products],
+            };
+          }
+
+          // If order doesn't exist, create a new order with the new product
+          return {
+            ...order,
+            products: [action.payload.products],
+          };
+        }),
+      };
+    case types.REDUCE_PRODUCT_LIST:
+      return {
+        ...state,
         orders: state.orders.map((order) => ({
           ...order,
-          product: action.payload.product,
+          products: order.products.filter(
+            (product) => product.product_id !== action.payload
+          ),
         })),
       };
+
     case types.SET_PICKUP_OPTIONS:
       return {
         ...state,

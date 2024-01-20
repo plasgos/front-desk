@@ -37,3 +37,7 @@ export const setIsLoadingGetShippingCost = (payload) => ({
   type: types.SET_IS_LOADING_GET_SHIPPING_COST,
   payload,
 });
+export const reduceProductList = (payload) => ({
+  type: types.REDUCE_PRODUCT_LIST,
+  payload,
+});

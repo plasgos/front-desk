@@ -14,7 +14,7 @@ import { formatPrice } from "../../../../lib/format-price";
 export const CatalogProductsModal = ({
   products,
   setSelectedProduct,
-  // selectedAddress,
+  selectedProduct,
 }) => {
   const [modal, setModal] = useState(false);
   const [isSelectedProduct, setIsSelectedProduct] = useState({});
@@ -23,7 +23,11 @@ export const CatalogProductsModal = ({
   };
 
   const onSubmit = (data) => {
-    setSelectedProduct(data);
+    const updatedSelectedProduct = [...selectedProduct];
+
+    updatedSelectedProduct.push(data);
+
+    setSelectedProduct(updatedSelectedProduct);
 
     setModal(false);
   };
