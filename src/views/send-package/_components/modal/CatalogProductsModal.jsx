@@ -25,7 +25,7 @@ export const CatalogProductsModal = ({
   const onSubmit = (data) => {
     const updatedSelectedProduct = [...selectedProduct];
 
-    updatedSelectedProduct.push(data);
+    updatedSelectedProduct.push({ ...data, quantity: 1 });
 
     setSelectedProduct(updatedSelectedProduct);
 

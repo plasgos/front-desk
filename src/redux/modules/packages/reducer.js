@@ -19,12 +19,26 @@ export default (state = initialState, action) => {
     case types.SET_ORIGIN:
       return {
         ...state,
-        origin: action.payload.origin,
         orders: [
           {
-            sender: action.payload.sender,
+            ...action.payload,
           },
         ],
+      };
+    case types.SET_SELECT_SENDER:
+      return {
+        ...state,
+        orders: state.orders.map((order) => {
+          return order.store_id === action.payload.store_id
+            ? {
+                ...order,
+                sender: action.payload,
+                warehouse_id: action.payload.id,
+              }
+            : {
+                ...order,
+              };
+        }),
       };
     case types.SET_DESTINATION:
       return {
@@ -33,35 +47,18 @@ export default (state = initialState, action) => {
         receiver: action.payload.receiver,
       };
     case types.SET_WEIGHT_AND_PRICE:
+      console.log("payload", action.payload);
+      console.log("state", state);
+
       return {
         ...state,
-        weight: action.payload.weight,
         // item_value: action.payload.price,
         orders: state.orders.map((order) => {
-          // Check if order already contains the product
-          const isProductInOrder =
-            order.products &&
-            order.products.some(
-              (p) => p.product_id === action.payload.products.product_id
-            );
+          console.log("payload", action.payload);
 
-          if (isProductInOrder) {
-            // If product already exists in order, return the order without modification
-            return order;
-          }
-
-          // If order already exists, add the new product to the array
-          if (order.products) {
-            return {
-              ...order,
-              products: [...order.products, action.payload.products],
-            };
-          }
-
-          // If order doesn't exist, create a new order with the new product
           return {
             ...order,
-            products: [action.payload.products],
+            products: action.payload,
           };
         }),
       };

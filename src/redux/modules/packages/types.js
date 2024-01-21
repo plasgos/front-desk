@@ -1,5 +1,6 @@
 export default {
   SET_ORIGIN: "set-origin",
+  SET_SELECT_SENDER: "set-select-sender",
   SET_DESTINATION: "set-destination",
   SET_WEIGHT_AND_PRICE: "set-weight-and-price",
   SET_ORDERS: "set-orders",

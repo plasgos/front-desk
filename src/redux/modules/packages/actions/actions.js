@@ -4,6 +4,10 @@ export const setOrigin = (payload) => ({
   type: types.SET_ORIGIN,
   payload,
 });
+export const setSelectSender = (payload) => ({
+  type: types.SET_SELECT_SENDER,
+  payload,
+});
 export const setDestination = (payload) => ({
   type: types.SET_DESTINATION,
   payload,

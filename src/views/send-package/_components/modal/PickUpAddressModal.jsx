@@ -11,12 +11,12 @@ import {
 import React, { useState } from "react";
 import { LiaExchangeAltSolid } from "react-icons/lia";
 import { useDispatch } from "react-redux";
-import { setOrigin } from "../../../../redux/modules/packages/actions/actions";
+import { setSelectSender } from "../../../../redux/modules/packages/actions/actions";
 
 export const PickUpAddressModal = ({
   address,
   setSelectedAddress,
-  selectedAddress,
+  defaultAddressSelected,
 }) => {
   const [modal, setModal] = useState(false);
   const [isSelectedAddress, setIsSelectedAddress] = useState({});
@@ -27,8 +27,21 @@ export const PickUpAddressModal = ({
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
+    console.log("🚀 ~ onSubmit ~ data:", data);
     setSelectedAddress(data);
-    dispatch(setOrigin(data.subdistrict_id));
+    dispatch(
+      setSelectSender({
+        id: data.id,
+        store_id: data.store_id,
+        name: data.name,
+        phone_number: data.phone_number,
+        address: data.address,
+        subdistrict_id: data.subdistrict_id,
+        postal_code: data.postal_code,
+        latitude: data.latitude,
+        longitude: data.longitude,
+      })
+    );
 
     setModal(false);
   };
@@ -49,49 +62,46 @@ export const PickUpAddressModal = ({
           <h4 className="text-center ml-auto">Alamat Pick Up</h4>
         </CModalHeader>
         <CModalBody>
-          <CModalBody>
-            <div className="modal-overflow">
-              {address.map((address) => {
-                const selected =
-                  isSelectedAddress && isSelectedAddress.id === address.id;
+          <div className="modal-overflow p-3">
+            {address.map((address) => {
+              const selected =
+                isSelectedAddress && isSelectedAddress.id === address.id;
 
-                const defaultSelected =
-                  Object.keys(isSelectedAddress).length === 0 &&
-                  selectedAddress.id === address.id;
+              const defaultSelected =
+                Object.keys(isSelectedAddress).length === 0 &&
+                defaultAddressSelected.id === address.id;
 
-                return (
-                  <CCard
-                    key={address.id}
-                    onClick={() =>
-                      setIsSelectedAddress({
-                        ...address,
-                      })
-                    }
-                    className="mb-2"
+              return (
+                <CCard
+                  key={address.id}
+                  onClick={() =>
+                    setIsSelectedAddress({
+                      ...address,
+                    })
+                  }
+                  className="mb-2"
+                >
+                  <CCardBody
+                    style={{ cursor: "pointer" }}
+                    className={` ${selected && " modal-selected"} ${
+                      defaultSelected && " modal-selected"
+                    }`}
                   >
-                    <CCardBody
-                      style={{ cursor: "pointer" }}
-                      className={` ${selected && " modal-selected"} ${
-                        defaultSelected && " modal-selected"
-                      }`}
-                    >
-                      <div className="d-flex align-items-center">
-                        <h6 className="sub-heading mr-2 mt-2">
-                          {address.name}
-                        </h6>
-                        {address.is_default && (
-                          <CBadge color="success">Utama</CBadge>
-                        )}
-                      </div>
-                      <div className="mb-2">{address.phone_number}</div>
-                      <div>{address.address}</div>
-                    </CCardBody>
-                  </CCard>
-                );
-              })}
-            </div>
-          </CModalBody>
+                    <div className="d-flex align-items-center">
+                      <h6 className="sub-heading mr-2 mt-2">{address.name}</h6>
+                      {address.is_default && (
+                        <CBadge color="success">Utama</CBadge>
+                      )}
+                    </div>
+                    <div className="mb-2">{address.phone_number}</div>
+                    <div>{address.address}</div>
+                  </CCardBody>
+                </CCard>
+              );
+            })}
+          </div>
         </CModalBody>
+
         <CModalFooter>
           <CButton onClick={() => onSubmit(isSelectedAddress)} color="primary">
             Pilih

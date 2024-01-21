@@ -7,7 +7,11 @@ import { setOrigin } from "../../../redux/modules/packages/actions/actions";
 import { CBadge, CButton } from "@coreui/react";
 
 export const SenderDetails = () => {
+  const { user } = useSelector((state) => state.login);
+
   const [selectedAddress, setSelectedAddress] = useState({});
+  const [defaultAddressSelected, setDefaultAddressSelected] = useState({});
+
   const { warehouses } = useSelector((state) => state.warehouses);
   const { token } = useSelector((state) => state.login);
   const { data } = warehouses;
@@ -25,29 +29,31 @@ export const SenderDetails = () => {
 
   useEffect(() => {
     const defaultAddress = data && data.find((addr) => addr.is_default);
-    setSelectedAddress(defaultAddress || {});
+    setDefaultAddressSelected(defaultAddress || {});
   }, [data]);
 
   const defaultOrigin = () => {
     dispatch(
       setOrigin({
-        origin: {
-          district_id: selectedAddress.subdistrict_id,
-          lat: selectedAddress.latitude,
-          long: selectedAddress.longitude,
-          address: selectedAddress.address,
-        },
+        // origin: {
+        //   district_id: selectedAddress.subdistrict_id,
+        //   lat: selectedAddress.latitude,
+        //   long: selectedAddress.longitude,
+        //   address: selectedAddress.address,
+        // },
+        store_id: user.store.id,
         sender: {
-          id: selectedAddress.id,
-          name: selectedAddress.name,
-          phone_number: selectedAddress.phone_number,
-          address: selectedAddress.address,
-          subdistrict_id: selectedAddress.subdistrict_id,
-          postal_code: selectedAddress.postal_code,
-          latitude: selectedAddress.latitude,
-          longitude: selectedAddress.longitude,
+          id: defaultAddressSelected.id,
+          store_id: user.store.id,
+          name: defaultAddressSelected.name,
+          phone_number: defaultAddressSelected.phone_number,
+          address: defaultAddressSelected.address,
+          subdistrict_id: defaultAddressSelected.subdistrict_id,
+          postal_code: defaultAddressSelected.postal_code,
+          latitude: defaultAddressSelected.latitude,
+          longitude: defaultAddressSelected.longitude,
         },
-        // warehouse_id :
+        warehouse_id: defaultAddressSelected.id,
       })
     );
   };
@@ -55,7 +61,7 @@ export const SenderDetails = () => {
   useEffect(() => {
     defaultOrigin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, selectedAddress]);
+  }, [defaultAddressSelected]);
 
   return (
     <div>
@@ -64,33 +70,58 @@ export const SenderDetails = () => {
         <div>
           <PickUpAddressModal
             address={data}
-            selectedAddress={selectedAddress}
+            defaultAddressSelected={defaultAddressSelected}
             setSelectedAddress={setSelectedAddress}
           />
         </div>
       </div>
       <div className="card p-3 shadow-sm rounded">
-        <div>
-          <div className="d-flex align-items-center">
-            <div className="font-weight-bold font-lg mr-3">
-              {selectedAddress.name}
+        {Object.keys(defaultAddressSelected).length > 0 &&
+        Object.keys(selectedAddress).length === 0 ? (
+          <div>
+            <div className="d-flex align-items-center">
+              <div className="font-weight-bold font-lg mr-3">
+                {defaultAddressSelected.name}
+              </div>
+              <div>
+                {defaultAddressSelected.is_default && (
+                  <CBadge color="success">Utama</CBadge>
+                )}
+              </div>
+              <div className="ml-auto">
+                <CButton variant="outline" color="primary">
+                  <FaEdit size={18} className="mr-2" />
+                  <span>Edit Alamat</span>
+                </CButton>
+              </div>
             </div>
-            <div>
-              {selectedAddress.is_default && (
-                <CBadge color="success">Utama</CBadge>
-              )}
-            </div>
-            <div className="ml-auto">
-              <CButton variant="outline" color="primary">
-                <FaEdit size={18} className="mr-2" />
-                <span>Edit Alamat</span>
-              </CButton>
-            </div>
-          </div>
 
-          <div className="my-2">{selectedAddress.phone_number}</div>
-          <div>{selectedAddress.address}</div>
-        </div>
+            <div className="my-2">{defaultAddressSelected.phone_number}</div>
+            <div>{defaultAddressSelected.address}</div>
+          </div>
+        ) : (
+          <div>
+            <div className="d-flex align-items-center">
+              <div className="font-weight-bold font-lg mr-3">
+                {selectedAddress.name}
+              </div>
+              <div>
+                {selectedAddress.is_default && (
+                  <CBadge color="success">Utama</CBadge>
+                )}
+              </div>
+              <div className="ml-auto">
+                <CButton variant="outline" color="primary">
+                  <FaEdit size={18} className="mr-2" />
+                  <span>Edit Alamat</span>
+                </CButton>
+              </div>
+            </div>
+
+            <div className="my-2">{selectedAddress.phone_number}</div>
+            <div>{selectedAddress.address}</div>
+          </div>
+        )}
       </div>
     </div>
   );

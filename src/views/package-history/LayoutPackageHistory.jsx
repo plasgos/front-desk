@@ -26,6 +26,7 @@ const LayoutPackageHistory = ({ children }) => {
         </nav>
       </div>
       <Header />
+
       <main className="px-3">{children}</main>
     </div>
   );

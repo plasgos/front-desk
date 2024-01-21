@@ -9,11 +9,12 @@ import {
   setWeightAndPrice,
 } from "../../../redux/modules/packages/actions/actions";
 
-import { useDebounce } from "use-debounce";
+// import { useDebounce } from "use-debounce";
 import { IoClose } from "react-icons/io5";
 
 export const ItemDetails = () => {
   const [selectedProduct, setSelectedProduct] = useState([]);
+  console.log("🚀 ~ ItemDetails ~ selectedProduct:", selectedProduct);
   // const { orders } = useSelector((state) => state.packages);
   // const warehouseSender = orders?.map((order) => order.sender?.id);
   // const test =
@@ -21,18 +22,14 @@ export const ItemDetails = () => {
   //   selectedProduct.Stocks.map((stock) => stock.Warehouse.id);
   // const commonWarehouses =
   //   test && test.filter((warehouseId) => warehouseId === warehouseSender);
-  const [newWeightProducts, setNewWeightProducts] = useState({});
-  const [qtyProduct, setQtyProduct] = useState("");
-  console.log("🚀 ~ ItemDetails ~ qtyProduct:", qtyProduct);
-
+  // const [qtyProduct, setQtyProduct] = useState("");
   const { products } = useSelector((state) => state.products);
   const { data } = products;
   const { token } = useSelector((state) => state.login);
 
   const dispatch = useDispatch();
 
-  // const [debouncedWeight] = useDebounce(newWeightProducts, 1000);
-  const [debouncedQty] = useDebounce(qtyProduct, 1000);
+  // const [debouncedQty] = useDebounce(qtyProduct, 1000);
 
   const getData = () => {
     dispatch(getProducts({ token }));
@@ -43,32 +40,23 @@ export const ItemDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const setItemShippingCost = () => {
+  const setItemShippingCost = (weights) => {
     // Memastikan bahwa selectedProduct adalah array dan memiliki elemen
     if (Array.isArray(selectedProduct) && selectedProduct.length > 0) {
       // Iterasi melalui setiap produk dalam array
-      selectedProduct.forEach((product) => {
-        dispatch(
-          setWeightAndPrice({
-            weight: +newWeightProducts[product.id],
-
-            products: {
-              product_id: product.id,
-              quantity: +qtyProduct,
-              price: product.price,
-              description: product.description,
-              weight: newWeightProducts[product.id],
-            },
-          })
-        );
+      const temp = selectedProduct.map((product) => {
+        return {
+          product_id: product.id,
+          quantity: 1,
+          price: product.price,
+          description: product.description,
+          weight: weights[product.id],
+        };
       });
+
+      dispatch(setWeightAndPrice(temp));
     }
   };
-
-  useEffect(() => {
-    setItemShippingCost();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProduct, newWeightProducts, qtyProduct]);
 
   useEffect(() => {
     if (Array.isArray(selectedProduct) && selectedProduct.length > 0) {
@@ -77,21 +65,44 @@ export const ItemDetails = () => {
       selectedProduct.forEach((product) => {
         initialWeights[product.id] = product.weight || "";
       });
-      // Menetapkan nilai awal ke dalam newWeightProducts
-      setNewWeightProducts(initialWeights);
-    } else {
-      // Jika tidak ada produk yang dipilih, set newWeightProducts ke objek kosong
-      setNewWeightProducts({});
+      setItemShippingCost(initialWeights);
     }
-  }, [selectedProduct]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedProduct.length]);
 
   const handleWeightChange = (productId, event) => {
-    event.persist(); // Membuat objek synthetic event menjadi persisten
+    // event.persist(); // Membuat objek synthetic event menjadi persisten
 
-    setNewWeightProducts((prevWeights) => ({
-      ...prevWeights,
-      [productId]: event.target.value,
-    }));
+    const newWeightChange = [];
+
+    const temp = selectedProduct.map((product) => {
+      if (product.id === productId) {
+        newWeightChange.push({
+          product_id: product.id,
+          quantity: product.quantity,
+          price: product.price,
+          description: product.description,
+          weight: Number(event.target.value || ""),
+        });
+        return {
+          ...product,
+          weight: +event.target.value,
+        };
+      }
+
+      newWeightChange.push({
+        product_id: product.id,
+        quantity: product.quantity,
+        price: product.price,
+        description: product.description,
+        weight: product.weight,
+      });
+      return product;
+    });
+
+    setSelectedProduct(temp);
+    dispatch(setWeightAndPrice(newWeightChange));
   };
 
   const handleDeleteListProduck = (id) => {
@@ -101,6 +112,38 @@ export const ItemDetails = () => {
 
     setSelectedProduct(updatedListProducts);
     dispatch(reduceProductList(id));
+  };
+
+  const handleQuantityChange = (productId, event) => {
+    const newQuantityChange = [];
+
+    const temp = selectedProduct.map((product) => {
+      if (product.id === productId) {
+        newQuantityChange.push({
+          product_id: product.id,
+          quantity: Number(event.target.value || ""),
+          price: product.price,
+          description: product.description,
+          weight: product.weight,
+        });
+        return {
+          ...product,
+          quantity: +event.target.value,
+        };
+      }
+
+      newQuantityChange.push({
+        product_id: product.id,
+        quantity: product.quantity,
+        price: product.price,
+        description: product.description,
+        weight: product.weight,
+      });
+      return product;
+    });
+
+    setSelectedProduct(temp);
+    dispatch(setWeightAndPrice(newQuantityChange));
   };
 
   return (
@@ -165,7 +208,7 @@ export const ItemDetails = () => {
                                 handleWeightChange(product.id, event)
                               }
                               type="number"
-                              value={newWeightProducts[product.id] || ""}
+                              value={product.weight || ""}
                               inputMode="numeric"
                               className="form-control"
                             />
@@ -188,8 +231,10 @@ export const ItemDetails = () => {
                             Jumlah Item Dalam Paket
                           </label>
                           <input
-                            onChange={(e) => setQtyProduct(e.target.value)}
-                            value={qtyProduct}
+                            onChange={(event) =>
+                              handleQuantityChange(product.id, event)
+                            }
+                            value={product.quantity}
                             type="text"
                             className="form-control"
                           />
