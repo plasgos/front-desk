@@ -69,15 +69,15 @@
     "postal_code": "13120",
     "latitude": null,
     "longitude": null,
-    "subdistrict_id": 2120,
+    "subdistrict_id": 2122,
     "is_default": false,
     "store_id": 2,
     "Subdistrict": {
-      "id": 2120,
+      "id": 2122,
       "name": "Matraman 3",
       "type": "Kecamatan",
       "city_id": 154,
-      "kiriminaja_id": 2120,
+      "kiriminaja_id": 2122,
       "City": {
         "id": 154,
         "name": "Malang",

@@ -14,7 +14,6 @@ import { IoClose } from "react-icons/io5";
 
 export const ItemDetails = () => {
   const [selectedProduct, setSelectedProduct] = useState([]);
-
   const { products } = useSelector((state) => state.products);
   const { data } = products;
   const { token } = useSelector((state) => state.login);
@@ -36,62 +35,70 @@ export const ItemDetails = () => {
     // Memastikan bahwa selectedProduct adalah array dan memiliki elemen
     if (Array.isArray(selectedProduct) && selectedProduct.length > 0) {
       // Iterasi melalui setiap produk dalam array
-      const temp = selectedProduct.map((product) => {
+      const productsToRedux = selectedProduct.map((product) => {
+        // const totalWeightPerProduct = product.weight * product.min_order;
+
         return {
           product_id: product.id,
-          quantity: 1,
+          min_order: product.min_order,
           price: product.price,
           description: product.description,
           weight: product.weight,
+          totalWeight: product.totalWeight,
+          totalPrice: product.totalPrice,
         };
       });
 
-      dispatch(setProducts(temp));
+      dispatch(setProducts(productsToRedux));
+    } else {
+      dispatch(setProducts([]));
     }
   };
 
   useEffect(() => {
-    if (Array.isArray(selectedProduct) && selectedProduct.length > 0) {
-      // Membuat objek baru dengan ID produk sebagai kunci dan berat sebagai nilai
-      // const initialWeights = {};
-      // selectedProduct.forEach((product) => {
-      //   initialWeights[product.id] = product.weight || "";
-      // });
-      setItemShippingCost();
-    }
+    setItemShippingCost();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProduct.length]);
+  }, [selectedProduct]);
 
   const handleWeightChange = (productId, event) => {
     const newWeightChange = [];
 
-    const temp = selectedProduct.map((product) => {
+    const updatedProducts = selectedProduct.map((product) => {
       if (product.id === productId) {
+        const totalWeightPerProduct =
+          product.min_order * Number(event.target.value || "");
+
         newWeightChange.push({
           product_id: product.id,
-          quantity: product.quantity,
+          min_order: product.min_order,
           price: product.price,
           description: product.description,
           weight: Number(event.target.value || ""),
+          totalWeight: totalWeightPerProduct,
+          totalPrice: product.totalPrice,
         });
         return {
           ...product,
           weight: Number(event.target.value),
+          totalWeight: totalWeightPerProduct,
+          totalPrice: product.totalPrice,
         };
       }
 
       newWeightChange.push({
         product_id: product.id,
-        quantity: product.quantity,
+        min_order: product.min_order,
         price: product.price,
         description: product.description,
         weight: product.weight,
+        totalWeight: product.totalWeight,
+        totalPrice: product.totalPrice,
       });
       return product;
     });
 
-    setSelectedProduct(temp);
+    setSelectedProduct(updatedProducts);
     dispatch(setProducts(newWeightChange));
   };
 
@@ -107,32 +114,44 @@ export const ItemDetails = () => {
   const handleQuantityChange = (productId, event) => {
     const newQuantityChange = [];
 
-    const temp = selectedProduct.map((product) => {
+    const updatedProducts = selectedProduct.map((product) => {
       if (product.id === productId) {
+        const totalWeightPerProduct =
+          product.weight * Number(event.target.value || "");
+
+        const totalPricePerProduct =
+          product.price * Number(event.target.value || "");
+
         newQuantityChange.push({
           product_id: product.id,
-          quantity: Number(event.target.value || ""),
+          min_order: Number(event.target.value || ""),
           price: product.price,
           description: product.description,
           weight: product.weight,
+          totalWeight: totalWeightPerProduct,
+          totalPrice: totalPricePerProduct,
         });
         return {
           ...product,
-          quantity: Number(event.target.value),
+          min_order: Number(event.target.value),
+          totalWeight: totalWeightPerProduct,
+          totalPrice: totalPricePerProduct,
         };
       }
 
       newQuantityChange.push({
         product_id: product.id,
-        quantity: product.quantity,
+        min_order: product.min_order,
         price: product.price,
         description: product.description,
         weight: product.weight,
+        totalWeight: product.totalWeight,
+        totalPrice: product.totalPrice,
       });
       return product;
     });
 
-    setSelectedProduct(temp);
+    setSelectedProduct(updatedProducts);
     dispatch(setProducts(newQuantityChange));
   };
 
@@ -150,91 +169,96 @@ export const ItemDetails = () => {
 
         <div style={{ maxHeight: 500, overflowY: "auto" }} className="p-3">
           {selectedProduct && selectedProduct.length > 0 ? (
-            selectedProduct.map((product) => {
-              return (
-                <div key={product.id} className="card shadow-sm p-3">
-                  <div
-                    onClick={() => handleDeleteListProduck(product.id)}
-                    className="d-flex justify-content-end mb-2"
-                  >
-                    <IoClose size={24} />
-                  </div>
-                  <div className="d-flex justify-content-between">
-                    <div className="">
-                      <div className="d-flex">
-                        {product.ImageProducts ? (
-                          <div className="rounded shadow-sm border p-2">
-                            <img
-                              style={{ width: 80 }}
-                              src={product.ImageProducts[0].url}
-                              alt="product"
-                            />
-                          </div>
-                        ) : (
-                          <div className="form-group">
-                            <label className="required-label">Isi Paket</label>
-                            <input type="text" className="form-control" />
-                          </div>
-                        )}
-                        <div className="ml-3">
-                          <div className="font-weight-bold mb-2 ">
-                            {product.name || ""}
-                          </div>
-                          {product.price && (
-                            <div className="font-weight-bold mb-2">
-                              {formatPrice(product.price)}
+            selectedProduct
+              .map((product) => {
+                return (
+                  <div key={product.id} className="card shadow-sm p-3">
+                    <div className="d-flex justify-content-end mb-2">
+                      <IoClose
+                        onClick={() => handleDeleteListProduck(product.id)}
+                        style={{ cursor: "pointer" }}
+                        size={24}
+                      />
+                    </div>
+                    <div className="d-flex justify-content-between">
+                      <div className="">
+                        <div className="d-flex">
+                          {product.ImageProducts ? (
+                            <div className="rounded shadow-sm border p-2">
+                              <img
+                                style={{ width: 80 }}
+                                src={product.ImageProducts[0].url}
+                                alt="product"
+                              />
+                            </div>
+                          ) : (
+                            <div className="form-group">
+                              <label className="required-label">
+                                Isi Paket
+                              </label>
+                              <input type="text" className="form-control" />
                             </div>
                           )}
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <form>
-                        <div className="form-group">
-                          <label className="required-label">Berat</label>
-                          <div style={{ position: "relative" }}>
-                            <input
-                              onChange={(event) =>
-                                handleWeightChange(product.id, event)
-                              }
-                              type="number"
-                              value={product.weight || ""}
-                              inputMode="numeric"
-                              className="form-control"
-                            />
-                            <div
-                              className="text-muted"
-                              style={{
-                                position: "absolute",
-                                right: 0,
-                                top: 5,
-                                transform: "translateX(-10px)",
-                              }}
-                            >
-                              gram
+                          <div className="ml-3">
+                            <div className="font-weight-bold mb-2 ">
+                              {product.name || ""}
                             </div>
+                            {product.price && (
+                              <div className="font-weight-bold mb-2">
+                                {formatPrice(product.price)}
+                              </div>
+                            )}
                           </div>
                         </div>
+                      </div>
+                      <div>
+                        <form>
+                          <div className="form-group">
+                            <label className="required-label">Berat</label>
+                            <div style={{ position: "relative" }}>
+                              <input
+                                onChange={(event) =>
+                                  handleWeightChange(product.id, event)
+                                }
+                                type="number"
+                                value={product.weight || ""}
+                                inputMode="numeric"
+                                className="form-control"
+                              />
+                              <div
+                                className="text-muted"
+                                style={{
+                                  position: "absolute",
+                                  right: 0,
+                                  top: 5,
+                                  transform: "translateX(-10px)",
+                                }}
+                              >
+                                gram
+                              </div>
+                            </div>
+                          </div>
 
-                        <div className="form-group">
-                          <label className="required-label mt-2">
-                            Jumlah Item Dalam Paket
-                          </label>
-                          <input
-                            onChange={(event) =>
-                              handleQuantityChange(product.id, event)
-                            }
-                            value={product.quantity}
-                            type="text"
-                            className="form-control"
-                          />
-                        </div>
-                      </form>
+                          <div className="form-group">
+                            <label className="required-label mt-2">
+                              Jumlah Item Dalam Paket
+                            </label>
+                            <input
+                              onChange={(event) =>
+                                handleQuantityChange(product.id, event)
+                              }
+                              value={product.min_order || ""}
+                              type="number"
+                              className="form-control"
+                            />
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })
+                );
+              })
+              .reverse()
           ) : (
             <div className="text-center">
               Silahlak Pilih Produk Pada Katalog Produk

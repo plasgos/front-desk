@@ -23,12 +23,27 @@ export const CatalogProductsModal = ({
   };
 
   const onSubmit = (data) => {
-    const updatedSelectedProduct = [...selectedProduct];
+    const existingProduct = selectedProduct.find(
+      (product) => product.id === data.id
+    );
+    if (existingProduct) {
+      // Jika produk dengan ID yang sama sudah ada
+      existingProduct.min_order += 1;
+      existingProduct.totalWeight += data.weight;
+      existingProduct.totalPrice += data.price;
+    } else {
+      // Jika produk dengan ID yang sama belum ada
+      const totalWeightPerProduct = data.weight * data.min_order;
+      const totalPricePerProduct = data.price * data.min_order;
 
-    updatedSelectedProduct.push({ ...data, quantity: 1 });
+      selectedProduct.push({
+        ...data,
+        totalWeight: totalWeightPerProduct,
+        totalPrice: totalPricePerProduct,
+      });
+    }
 
-    setSelectedProduct(updatedSelectedProduct);
-
+    setSelectedProduct([...selectedProduct]); // Memastikan state terupdate dengan array baru
     setModal(false);
   };
 

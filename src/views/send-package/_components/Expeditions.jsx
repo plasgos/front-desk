@@ -16,7 +16,7 @@ export const Expeditions = () => {
   const [courirs, setCourirs] = useState([]);
   const userData = useSelector((state) => state.login);
   const packages = useSelector((state) => state.packages);
-  console.log("🚀 ~ Expeditions ~ packages:", packages.orders);
+  console.log("🚀 ~ Expeditions ~ packages:", packages);
   const { expeditions } = packages;
   const dispatch = useDispatch();
 
@@ -31,12 +31,12 @@ export const Expeditions = () => {
             address: packages.origin.address,
           },
           destination: {
-            district_id: packages.destination.district_id,
-            lat: packages.destination.lat,
-            long: packages.destination.long,
-            address: packages.destination.address,
+            district_id: packages.receiver.subdistrict_id,
+            lat: packages.receiver.lat,
+            long: packages.receiver.long,
+            address: packages.receiver.address,
           },
-          weight: packages.weight,
+          weight: packages.totalWeight,
           insurance: packages.insurance,
           item_value: packages.item_value,
           store_id: userData.user.store.id,

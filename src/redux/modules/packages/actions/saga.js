@@ -6,6 +6,7 @@ import costs from "../../../../dummy/costs.json";
 function* watchGetShippingCost(values) {
   yield put(actions.setIsLoadingGetShippingCost(true));
   const { payload } = values;
+  console.log("🚀 ~ function*watchGetShippingCost ~ payload:", payload);
   try {
     // const response = yield call(Api.checkcost.multiple, payload);
     // const { data } = response;

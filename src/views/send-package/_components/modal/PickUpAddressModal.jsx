@@ -17,6 +17,7 @@ export const PickUpAddressModal = ({
   address,
   setSelectedAddress,
   defaultAddressSelected,
+  storeId,
 }) => {
   const [modal, setModal] = useState(false);
   const [isSelectedAddress, setIsSelectedAddress] = useState({});
@@ -31,15 +32,25 @@ export const PickUpAddressModal = ({
     setSelectedAddress(data);
     dispatch(
       setSelectSender({
-        id: data.id,
-        store_id: data.store_id,
-        name: data.name,
-        phone_number: data.phone_number,
-        address: data.address,
-        subdistrict_id: data.subdistrict_id,
-        postal_code: data.postal_code,
-        latitude: data.latitude,
-        longitude: data.longitude,
+        origin: {
+          district_id: data.subdistrict_id,
+          lat: data.latitude,
+          long: data.longitude,
+          address: data.address,
+        },
+        store_id: storeId,
+        sender: {
+          id: data.id,
+          store_id: storeId,
+          name: data.name,
+          phone_number: data.phone_number,
+          address: data.address,
+          subdistrict_id: data.subdistrict_id,
+          postal_code: data.postal_code,
+          latitude: data.latitude,
+          longitude: data.longitude,
+        },
+        warehouse_id: data.id,
       })
     );
 

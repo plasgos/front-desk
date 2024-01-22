@@ -2,10 +2,10 @@ import types from "./types";
 
 const initialState = {
   origin: {},
-  destination: {},
-  weight: {},
+  // destination: {},
+  totalWeight: 0,
   insurance: 1,
-  item_value: {},
+  item_value: 0,
   orders: [],
   receiver: {},
   expeditions: {
@@ -19,21 +19,25 @@ export default (state = initialState, action) => {
     case types.SET_ORIGIN:
       return {
         ...state,
+        origin: action.payload.origin,
         orders: [
           {
-            ...action.payload,
+            store_id: action.payload.store_id,
+            sender: action.payload.sender,
+            warehouse_id: action.payload.warehouse_id,
           },
         ],
       };
     case types.SET_SELECT_SENDER:
       return {
         ...state,
+        origin: action.payload.origin,
         orders: state.orders.map((order) => {
           return order.store_id === action.payload.store_id
             ? {
                 ...order,
-                sender: action.payload,
-                warehouse_id: action.payload.id,
+                sender: action.payload.sender,
+                warehouse_id: action.payload.warehouse_id,
               }
             : {
                 ...order,
@@ -43,12 +47,25 @@ export default (state = initialState, action) => {
     case types.SET_DESTINATION:
       return {
         ...state,
-        destination: action.payload.destination,
+        // destination: action.payload.destination,
         receiver: action.payload.receiver,
       };
     case types.SET_PRODUCTS:
+      const totalWeightOrders = action.payload.reduce(
+        (total, product) => total + product.totalWeight,
+        0
+      );
+
+      const totalPriceOrders = action.payload.reduce(
+        (total, product) => total + product.totalPrice,
+        0
+      );
+      console.log("🚀 ~ totalPriceOrders:", totalPriceOrders);
+
       return {
         ...state,
+        item_value: totalPriceOrders,
+        totalWeight: totalWeightOrders,
         orders: state.orders.map((order) => {
           return {
             ...order,

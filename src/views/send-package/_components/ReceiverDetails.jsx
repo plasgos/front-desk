@@ -25,17 +25,19 @@ const ReceiverDetails = () => {
   const setDestinationToRedux = () => {
     dispatch(
       setDestination({
-        destination: {
-          district_id: subdistrictId,
-          lat: undefined,
-          long: undefined,
-          address: debouncedAddress,
-        },
+        // destination: {
+        //   district_id: subdistrictId,
+        //   lat: undefined,
+        //   long: undefined,
+        //   address: debouncedAddress,
+        // },
         receiver: {
           name: debouncedReceiverName,
           phone_number: debouncednoTelp,
           address: debouncedAddress,
           subdistrict_id: subdistrictId,
+          lat: undefined,
+          long: undefined,
         },
       })
     );

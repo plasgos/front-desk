@@ -35,12 +35,12 @@ export const SenderDetails = () => {
   const defaultOrigin = () => {
     dispatch(
       setOrigin({
-        // origin: {
-        //   district_id: selectedAddress.subdistrict_id,
-        //   lat: selectedAddress.latitude,
-        //   long: selectedAddress.longitude,
-        //   address: selectedAddress.address,
-        // },
+        origin: {
+          district_id: defaultAddressSelected.subdistrict_id,
+          lat: defaultAddressSelected.latitude,
+          long: defaultAddressSelected.longitude,
+          address: defaultAddressSelected.address,
+        },
         store_id: user.store.id,
         sender: {
           id: defaultAddressSelected.id,
@@ -72,6 +72,7 @@ export const SenderDetails = () => {
             address={data}
             defaultAddressSelected={defaultAddressSelected}
             setSelectedAddress={setSelectedAddress}
+            storeId={user.store.id}
           />
         </div>
       </div>
