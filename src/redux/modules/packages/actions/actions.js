@@ -12,8 +12,8 @@ export const setDestination = (payload) => ({
   type: types.SET_DESTINATION,
   payload,
 });
-export const setWeightAndPrice = (payload) => ({
-  type: types.SET_WEIGHT_AND_PRICE,
+export const setProducts = (payload) => ({
+  type: types.SET_PRODUCTS,
   payload,
 });
 export const setOrders = (payload) => ({

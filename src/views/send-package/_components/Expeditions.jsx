@@ -16,7 +16,7 @@ export const Expeditions = () => {
   const [courirs, setCourirs] = useState([]);
   const userData = useSelector((state) => state.login);
   const packages = useSelector((state) => state.packages);
-  console.log("🚀 ~ Expeditions ~ packages:", packages);
+  console.log("🚀 ~ Expeditions ~ packages:", packages.orders);
   const { expeditions } = packages;
   const dispatch = useDispatch();
 

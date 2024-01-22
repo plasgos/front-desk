@@ -46,16 +46,10 @@ export default (state = initialState, action) => {
         destination: action.payload.destination,
         receiver: action.payload.receiver,
       };
-    case types.SET_WEIGHT_AND_PRICE:
-      console.log("payload", action.payload);
-      console.log("state", state);
-
+    case types.SET_PRODUCTS:
       return {
         ...state,
-        // item_value: action.payload.price,
         orders: state.orders.map((order) => {
-          console.log("payload", action.payload);
-
           return {
             ...order,
             products: action.payload,

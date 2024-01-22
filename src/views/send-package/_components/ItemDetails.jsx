@@ -6,7 +6,7 @@ import { getProducts } from "../../../redux/modules/products/actions/actions";
 import { formatPrice } from "../../../lib/format-price";
 import {
   reduceProductList,
-  setWeightAndPrice,
+  setProducts,
 } from "../../../redux/modules/packages/actions/actions";
 
 // import { useDebounce } from "use-debounce";
@@ -14,15 +14,7 @@ import { IoClose } from "react-icons/io5";
 
 export const ItemDetails = () => {
   const [selectedProduct, setSelectedProduct] = useState([]);
-  console.log("🚀 ~ ItemDetails ~ selectedProduct:", selectedProduct);
-  // const { orders } = useSelector((state) => state.packages);
-  // const warehouseSender = orders?.map((order) => order.sender?.id);
-  // const test =
-  //   selectedProduct.Stocks &&
-  //   selectedProduct.Stocks.map((stock) => stock.Warehouse.id);
-  // const commonWarehouses =
-  //   test && test.filter((warehouseId) => warehouseId === warehouseSender);
-  // const [qtyProduct, setQtyProduct] = useState("");
+
   const { products } = useSelector((state) => state.products);
   const { data } = products;
   const { token } = useSelector((state) => state.login);
@@ -40,7 +32,7 @@ export const ItemDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const setItemShippingCost = (weights) => {
+  const setItemShippingCost = () => {
     // Memastikan bahwa selectedProduct adalah array dan memiliki elemen
     if (Array.isArray(selectedProduct) && selectedProduct.length > 0) {
       // Iterasi melalui setiap produk dalam array
@@ -50,30 +42,28 @@ export const ItemDetails = () => {
           quantity: 1,
           price: product.price,
           description: product.description,
-          weight: weights[product.id],
+          weight: product.weight,
         };
       });
 
-      dispatch(setWeightAndPrice(temp));
+      dispatch(setProducts(temp));
     }
   };
 
   useEffect(() => {
     if (Array.isArray(selectedProduct) && selectedProduct.length > 0) {
       // Membuat objek baru dengan ID produk sebagai kunci dan berat sebagai nilai
-      const initialWeights = {};
-      selectedProduct.forEach((product) => {
-        initialWeights[product.id] = product.weight || "";
-      });
-      setItemShippingCost(initialWeights);
+      // const initialWeights = {};
+      // selectedProduct.forEach((product) => {
+      //   initialWeights[product.id] = product.weight || "";
+      // });
+      setItemShippingCost();
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProduct.length]);
 
   const handleWeightChange = (productId, event) => {
-    // event.persist(); // Membuat objek synthetic event menjadi persisten
-
     const newWeightChange = [];
 
     const temp = selectedProduct.map((product) => {
@@ -87,7 +77,7 @@ export const ItemDetails = () => {
         });
         return {
           ...product,
-          weight: +event.target.value,
+          weight: Number(event.target.value),
         };
       }
 
@@ -102,7 +92,7 @@ export const ItemDetails = () => {
     });
 
     setSelectedProduct(temp);
-    dispatch(setWeightAndPrice(newWeightChange));
+    dispatch(setProducts(newWeightChange));
   };
 
   const handleDeleteListProduck = (id) => {
@@ -128,7 +118,7 @@ export const ItemDetails = () => {
         });
         return {
           ...product,
-          quantity: +event.target.value,
+          quantity: Number(event.target.value),
         };
       }
 
@@ -143,7 +133,7 @@ export const ItemDetails = () => {
     });
 
     setSelectedProduct(temp);
-    dispatch(setWeightAndPrice(newQuantityChange));
+    dispatch(setProducts(newQuantityChange));
   };
 
   return (
