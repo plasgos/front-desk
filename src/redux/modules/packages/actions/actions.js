@@ -16,6 +16,22 @@ export const setProducts = (payload) => ({
   type: types.SET_PRODUCTS,
   payload,
 });
+export const setTotalWeightOrders = (payload) => ({
+  type: types.SET_TOTAL_WEIGHT_ORDERS,
+  payload,
+});
+export const setDimension = (payload) => ({
+  type: types.SET_DIMENSION,
+  payload,
+});
+export const setNotesPackage = (payload) => ({
+  type: types.SET_NOTES,
+  payload,
+});
+export const resetProductTotalWeight = (payload) => ({
+  type: types.RESET_PRODUCT_TOTAL_WEIGHT,
+  payload,
+});
 export const setOrders = (payload) => ({
   type: types.SET_ORDERS,
   payload,

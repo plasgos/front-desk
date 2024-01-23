@@ -3,7 +3,9 @@ import types from "./types";
 const initialState = {
   origin: {},
   // destination: {},
+  notes: "",
   totalWeight: 0,
+  dimension: {},
   insurance: 1,
   item_value: 0,
   orders: [],
@@ -60,8 +62,6 @@ export default (state = initialState, action) => {
         (total, product) => total + product.totalPrice,
         0
       );
-      console.log("🚀 ~ totalPriceOrders:", totalPriceOrders);
-
       return {
         ...state,
         item_value: totalPriceOrders,
@@ -72,6 +72,31 @@ export default (state = initialState, action) => {
             products: action.payload,
           };
         }),
+      };
+    case types.SET_TOTAL_WEIGHT_ORDERS:
+      return {
+        ...state,
+        totalWeight: action.payload,
+      };
+    case types.SET_DIMENSION:
+      return {
+        ...state,
+        dimension: {
+          ...state.dimension,
+          ...action.payload,
+        },
+      };
+    case types.RESET_PRODUCT_TOTAL_WEIGHT:
+      return {
+        ...state,
+        notes: initialState.notes,
+        totalWeight: initialState.totalWeight,
+        dimension: initialState.dimension,
+      };
+    case types.SET_NOTES:
+      return {
+        ...state,
+        notes: action.payload,
       };
     case types.REDUCE_PRODUCT_LIST:
       return {
