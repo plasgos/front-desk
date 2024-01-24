@@ -57,3 +57,7 @@ export const setIsLoadingGetShippingCost = (payload) => ({
   type: types.SET_IS_LOADING_GET_SHIPPING_COST,
   payload,
 });
+export const setSelectCourir = (payload) => ({
+  type: types.SET_SELECT_COURIR,
+  payload,
+});

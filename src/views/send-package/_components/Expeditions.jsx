@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 
 import { PiArrowsClockwiseBold } from "react-icons/pi";
 import { formatPrice } from "../../../lib/format-price";
-// import ncs from "../../../assets/ncs-logo.png";
-// import jne from "../../../assets/jne-logo.png";
-// import { RiErrorWarningFill } from "react-icons/ri";
-import { getShippingCost } from "../../../redux/modules/packages/actions/actions";
+
+import {
+  getShippingCost,
+  setSelectCourir,
+} from "../../../redux/modules/packages/actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { CButton } from "@coreui/react";
 
@@ -16,7 +17,6 @@ export const Expeditions = () => {
   const [courirs, setCourirs] = useState([]);
   const userData = useSelector((state) => state.login);
   const packages = useSelector((state) => state.packages);
-  console.log("🚀 ~ Expeditions ~ packages:", packages);
   const { expeditions } = packages;
   const dispatch = useDispatch();
 
@@ -52,6 +52,13 @@ export const Expeditions = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const groupSelectShipping = [
+    { name: "Instant", group: "instant" },
+    { name: "Same Day", group: "same_day" },
+    { name: "Regular", group: "regular" },
+    { name: "Kargo", group: "cargo" },
+  ];
+
   const handleShipping = (group) => {
     setIsGroupSelected(group);
 
@@ -65,12 +72,10 @@ export const Expeditions = () => {
     setCourirs(filteredShippingData);
   };
 
-  const groupSelectShipping = [
-    { name: "Instant", group: "instant" },
-    { name: "Same Day", group: "same_day" },
-    { name: "Regular", group: "regular" },
-    { name: "Kargo", group: "cargo" },
-  ];
+  const handleSelectCourir = (courir) => {
+    setIsSelected(courir.id);
+    dispatch(setSelectCourir(courir));
+  };
 
   return (
     <div>
@@ -114,7 +119,7 @@ export const Expeditions = () => {
                 className={`card p-3 shadow-sm ${
                   selected && "border border-primary"
                 } `}
-                onClick={() => setIsSelected(courir.id)}
+                onClick={() => handleSelectCourir(courir)}
               >
                 <div className="d-flex justify-content-between align-items-center">
                   <div>

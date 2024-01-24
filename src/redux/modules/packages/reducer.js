@@ -14,6 +14,7 @@ const initialState = {
     data: [],
     loading: false,
   },
+  selectedExpedtion: {},
 };
 
 export default (state = initialState, action) => {
@@ -127,6 +128,11 @@ export default (state = initialState, action) => {
           ...state.expeditions,
           data: action.payload,
         },
+      };
+    case types.SET_SELECT_COURIR:
+      return {
+        ...state,
+        selectedExpedtion: action.payload,
       };
     default:
       return state;

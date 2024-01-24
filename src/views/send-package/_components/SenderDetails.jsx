@@ -89,12 +89,12 @@ export const SenderDetails = () => {
                   <CBadge color="success">Utama</CBadge>
                 )}
               </div>
-              <div className="ml-auto">
+              {/* <div className="ml-auto">
                 <CButton variant="outline" color="primary">
                   <FaEdit size={18} className="mr-2" />
                   <span>Edit Alamat</span>
                 </CButton>
-              </div>
+              </div> */}
             </div>
 
             <div className="my-2">{defaultAddressSelected.phone_number}</div>

@@ -54,18 +54,24 @@ export const ItemDetails = () => {
                               />
                             </div>
                           )}
+                          <div className="ml-3">
+                            <div className="font-weight-bold mb-2 ">
+                              {product.name || ""}
+                            </div>
+                            {product.price && (
+                              <div className="font-weight-bold mb-2">
+                                {formatPrice(product.price)}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                       <div className="d-flex flex-column justify-content-between">
-                        <div className="ml-auto">
-                          <div className="font-weight-bold mb-2 ">
-                            {product.name || ""}
+                        <div className="ml-auto text-right">
+                          <div className="mb-2">Berat</div>
+                          <div className="font-weight-bold">
+                            {product.weight || ""} Gram
                           </div>
-                          {product.price && (
-                            <div className="font-weight-bold mb-2">
-                              {formatPrice(product.price)}
-                            </div>
-                          )}
                         </div>
 
                         <div className="text-right">

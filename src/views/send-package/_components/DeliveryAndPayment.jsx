@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { PaymentMethod } from "./PaymentMethod";
 import { Expeditions } from "./Expeditions";
 import { PickUpOptions } from "./PickUpOptions";
 import { TbReportMoney } from "react-icons/tb";
 import { Summary } from "./Summary";
+import { useDebounce } from "use-debounce";
 
 export const DeliveryAndPayment = () => {
+  const [customCod, setCustomCod] = useState(0);
+
+  const [debouncedCustomCod] = useDebounce(customCod, 1000);
   return (
     <div className="mt-3">
       <div className="d-flex justify-content-between align-items-center mb-5 ">
@@ -27,6 +31,8 @@ export const DeliveryAndPayment = () => {
             </label>
             <div style={{ position: "relative" }}>
               <input
+                value={customCod || ""}
+                onChange={(e) => setCustomCod(e.target.value)}
                 style={{ paddingLeft: 30 }}
                 type="number"
                 className="form-control "
@@ -50,7 +56,7 @@ export const DeliveryAndPayment = () => {
         </button>
       </div>
 
-      <Summary />
+      <Summary customCod={debouncedCustomCod} />
     </div>
   );
 };

@@ -270,7 +270,7 @@
         "setting": {
           "cod_fee": 0.03,
           "minimum_cod_fee": 3000,
-          "insurance_fee": "0.002",
+          "insurance_fee": 0.002,
           "insurance_add_cost": 0
         },
         "id": 24,
