@@ -89,26 +89,13 @@ export default (state = initialState, action) => {
     case types.RESET_PRODUCT_TOTAL_WEIGHT:
       return {
         ...state,
-        notes: initialState.notes,
         totalWeight: initialState.totalWeight,
-        dimension: initialState.dimension,
       };
     case types.SET_NOTES:
       return {
         ...state,
         notes: action.payload,
       };
-    case types.REDUCE_PRODUCT_LIST:
-      return {
-        ...state,
-        orders: state.orders.map((order) => ({
-          ...order,
-          products: order.products.filter(
-            (product) => product.product_id !== action.payload
-          ),
-        })),
-      };
-
     case types.SET_PICKUP_OPTIONS:
       return {
         ...state,

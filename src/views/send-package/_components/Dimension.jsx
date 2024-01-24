@@ -10,7 +10,6 @@ import { useDebounce } from "use-debounce";
 
 export const Dimension = ({ selectedProduct }) => {
   const packages = useSelector((state) => state.packages);
-
   const [length, setLength] = useState("");
   const [width, setWidth] = useState("");
   const [high, setHigh] = useState("");

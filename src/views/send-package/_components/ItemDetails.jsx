@@ -9,8 +9,6 @@ import { Dimension } from "./Dimension";
 
 export const ItemDetails = () => {
   const [selectedProduct, setSelectedProduct] = useState([]);
-  console.log("🚀 ~ ItemDetails ~ selectedProduct:", selectedProduct);
-
   const { products } = useSelector((state) => state.products);
   const { data } = products;
   const { token } = useSelector((state) => state.login);
@@ -26,11 +24,6 @@ export const ItemDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // const handleRestProductTotalWeight = () => {
-  //   setIsApplyProducts(false);
-  //   dispatch(resetProductTotalWeight());
-  // };
-
   return (
     <div>
       <div className="font-weight-bold font-lg  my-4 ">Detail Barang</div>
@@ -39,6 +32,7 @@ export const ItemDetails = () => {
           <CatalogProductsModal
             products={data}
             setSelectedProduct={setSelectedProduct}
+            selectedProduct={selectedProduct}
           />
         </div>
 

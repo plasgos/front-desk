@@ -8,7 +8,7 @@ export default {
   SET_RECEIVER: "set-receiver",
   SET_DIMENSION: "set-dimension",
   SET_NOTES: "set-notes",
-  RESET_PRODUCT_TOTAL_WEIGHT: "reset-product-total-weight",
+  RESET_PRODUCT_TOTAL_WEIGHT: "reset-product-total-weigth",
   SET_PICKUP_OPTIONS: "set-pickup-options",
   SET_PAYMENT_METHOD: "set-payment-method",
   IS_LOADING_GET_SHIPPING_COST: "is-loading-get-shipping-cost",
@@ -16,5 +16,4 @@ export default {
   GET_SHIPPING_COST: "get-shipping-cost",
   GET_SHIPPING_COST_SUCCESS: "get-shipping-cost-success",
   RESET_SHIPPING: "reset-warehouses",
-  REDUCE_PRODUCT_LIST: "reduce-product-list",
 };
