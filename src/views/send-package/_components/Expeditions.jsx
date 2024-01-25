@@ -1,81 +1,24 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { PiArrowsClockwiseBold } from "react-icons/pi";
 import { formatPrice } from "../../../lib/format-price";
 
-import {
-  getShippingCost,
-  setSelectCourir,
-} from "../../../redux/modules/packages/actions/actions";
+import { setSelectCourir } from "../../../redux/modules/packages/actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { CButton } from "@coreui/react";
 
-export const Expeditions = () => {
+export const Expeditions = ({ filterDataToShow }) => {
   const [isSelected, setIsSelected] = useState(false);
   const [isGroupSelected, setIsGroupSelected] = useState("");
 
   const [courirs, setCourirs] = useState([]);
-  const userData = useSelector((state) => state.login);
   const packages = useSelector((state) => state.packages);
   const { expeditions } = packages;
   const dispatch = useDispatch();
 
-  const getData = useCallback(() => {
-    dispatch(
-      getShippingCost({
-        data: {
-          origin: {
-            district_id: packages.origin.district_id,
-            lat: packages.origin.lat,
-            long: packages.origin.long,
-            address: packages.origin.address,
-          },
-          destination: {
-            district_id: packages.receiver.subdistrict_id,
-            lat: packages.receiver.lat,
-            long: packages.receiver.long,
-            address: packages.receiver.address,
-          },
-          weight: packages.totalWeight,
-          insurance: packages.insurance,
-          item_value: packages.item_value,
-          store_id: userData.user.store.id,
-        },
-        token: userData.token,
-      })
-    );
-  }, [
-    dispatch,
-    packages.insurance,
-    packages.item_value,
-    packages.origin.address,
-    packages.origin.district_id,
-    packages.origin.lat,
-    packages.origin.long,
-    packages.receiver.address,
-    packages.receiver.lat,
-    packages.receiver.long,
-    packages.receiver.subdistrict_id,
-    packages.totalWeight,
-    userData.token,
-    userData.user.store.id,
-  ]);
-
-  useEffect(() => {
-    if (
-      Object.keys(packages.origin).length > 0 &&
-      Object.keys(packages.receiver).length > 0 &&
-      packages.totalWeight &&
-      packages.item_value
-    ) {
-      getData();
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [packages, getData]);
-
   const groupSelectShipping = [
-    // { name: "Instant", group: "instant" },
+    { name: "Instant", group: "instant" },
+    { name: "Same Day", group: "same_day" },
     { name: "One Day", group: "one_day" },
     { name: "Regular", group: "regular" },
     { name: "Kargo", group: "cargo" },
@@ -84,7 +27,7 @@ export const Expeditions = () => {
   const handleShipping = (group) => {
     setIsGroupSelected(group);
 
-    const filteredShippingData = expeditions.data
+    const filteredShippingData = filterDataToShow
       .map((expedition) => ({
         ...expedition,
         costs: expedition.costs.filter((cost) => cost.group === group),
@@ -134,8 +77,8 @@ export const Expeditions = () => {
       </div>
 
       <div style={{ maxHeight: 500, overflowY: "auto" }}>
-        {courirs && courirs.length > 0 ? (
-          courirs.map((courir) => {
+        {filterDataToShow && filterDataToShow.length > 0 ? (
+          filterDataToShow.map((courir) => {
             const selected = isSelected === courir.id;
 
             return (
@@ -150,35 +93,16 @@ export const Expeditions = () => {
                 <div className="d-flex justify-content-between align-items-center">
                   <div>
                     <div className="font-weight-bold mb-2">{courir.name}</div>
-                    {courir.costs.map((cost) => (
-                      <div key={cost.id}>
-                        <div className="font-weight-bold mb-2 text-success">
-                          <span> {formatPrice(cost.cost)}</span>
-                        </div>
-                        <div className="my-2">{cost?.etd}</div>
+                    {/* {courir.costs.map((cost) => (
+                    ))} */}
+                    <div>
+                      <div className="font-weight-bold mb-2 text-success">
+                        <span> {formatPrice(courir.cost)}</span>
                       </div>
-                    ))}
-                  </div>
-
-                  {/* <div>
-                    <img
-                      style={{ width: 60 }}
-                      src={expedition.logo}
-                      alt="ncs-logo"
-                    />
-                  </div> */}
-                </div>
-                {/* {expedition.lowReturnPotencial && (
-                  <div
-                    style={{ backgroundColor: "#D7E3FF", gap: 15 }}
-                    className="d-flex align-items-center rounded p-2"
-                  >
-                    <div style={{ color: "#2D61AC" }}>
-                      <RiErrorWarningFill size={18} />
+                      <div className="my-2">{courir?.etd}</div>
                     </div>
-                    <span>Potensi retur rendah</span>
                   </div>
-                )} */}
+                </div>
               </div>
             );
           })

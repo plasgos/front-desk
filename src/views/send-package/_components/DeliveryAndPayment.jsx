@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import { PaymentMethod } from "./PaymentMethod";
-import { Expeditions } from "./Expeditions";
-import { PickUpOptions } from "./PickUpOptions";
 import { TbReportMoney } from "react-icons/tb";
 import { Summary } from "./Summary";
 import { useDebounce } from "use-debounce";
 import { useSelector } from "react-redux";
 import { CAlert } from "@coreui/react";
+import { Delivery } from "./Delivery";
 
 export const DeliveryAndPayment = () => {
   const packages = useSelector((state) => state.packages);
@@ -21,9 +19,7 @@ export const DeliveryAndPayment = () => {
       </div>
 
       <div className="card p-3 shadow-sm">
-        <PickUpOptions />
-        <PaymentMethod />
-        <Expeditions />
+        <Delivery />
       </div>
 
       {packages.item_value &&

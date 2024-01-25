@@ -8,35 +8,35 @@ export const PickUpOptions = () => {
   const packages = useSelector((state) => state.packages);
   const { expeditions } = packages;
   const [isPickup, setIsPickup] = useState(false);
-  const [pickup, setPickup] = useState("");
+  const [pickup, setPickup] = useState(undefined);
+  console.log("🚀 ~ PickUpOptions ~ pickup:", pickup);
 
   const [isDropOff, setIsDropOff] = useState(false);
 
   const dispatch = useDispatch();
 
-  const handleShipping = () => {
-    // setIsGroupSelected(group);
-
+  const handleShipping = (type) => {
     const filteredShippingData = expeditions.data
       .map((expedition) => ({
         ...expedition,
-        costs: expedition.costs.filter((cost) => cost.drop === false),
+        costs: expedition.costs.filter((cost) => cost.drop === type),
       }))
       .filter((expedition) => expedition.costs.length > 0);
 
-    // setCourirs(filteredShippingData);
+    setPickup(filteredShippingData);
   };
 
   const togglePickup = () => {
     // pickup = drop : false
     setIsPickup(true);
-    handleShipping();
+    handleShipping(false);
     dispatch(setPickUpOptions(false));
     setIsDropOff(false);
   };
 
   const toggleDropOff = () => {
     setIsDropOff(true);
+    handleShipping(true);
     dispatch(setPickUpOptions(true));
     setIsPickup(false);
   };

@@ -128,7 +128,6 @@ export default (state = initialState, action) => {
         },
       };
     case types.GET_SHIPPING_COST_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         expeditions: {
