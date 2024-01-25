@@ -15,6 +15,7 @@ const initialState = {
     loading: false,
   },
   selectedExpedtion: {},
+  billedByReceiverBeforeCustomCod: 0,
 };
 
 export default (state = initialState, action) => {
@@ -97,6 +98,11 @@ export default (state = initialState, action) => {
         ...state,
         notes: action.payload,
       };
+    case types.SET_BILLED_BY_RECEIVER:
+      return {
+        ...state,
+        billedByReceiverBeforeCustomCod: action.payload,
+      };
     case types.SET_PICKUP_OPTIONS:
       return {
         ...state,
@@ -122,6 +128,7 @@ export default (state = initialState, action) => {
         },
       };
     case types.GET_SHIPPING_COST_SUCCESS:
+      console.log(action.payload);
       return {
         ...state,
         expeditions: {

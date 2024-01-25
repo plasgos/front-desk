@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { formatPrice } from "../../../lib/format-price";
-import { CButton, CSwitch } from "@coreui/react";
+import { CAlert, CButton, CSwitch } from "@coreui/react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { GoQuestion } from "react-icons/go";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setBilledByReceiverBeforeCustomCod } from "../../../redux/modules/packages/actions/actions";
 
-export const Summary = ({ customCod }) => {
-  console.log("🚀 ~ Summary ~ customCod:", customCod);
+export const Summary = ({ customCod, setCustomCod }) => {
   const packages = useSelector((state) => state.packages);
   const { selectedExpedtion } = packages;
   const [isChecked, setIsChecked] = useState(false);
@@ -14,10 +14,30 @@ export const Summary = ({ customCod }) => {
   const [codFee, setCodFee] = useState(0);
   const [countInsuranceFee, setCountInsuranceFee] = useState(0);
   const [expedtion, setExpedition] = useState({});
+
+  const dispatch = useDispatch();
+
   const toggleSwitch = () => {
     setIsChecked((prev) => !prev);
     setCountInsuranceFee((prev) => (prev === insuranceFee ? 0 : insuranceFee));
   };
+
+  useEffect(() => {
+    const billedByReceiver =
+      expedtion.cost + countInsuranceFee + codFee + packages.item_value;
+    if (customCod && customCod < billedByReceiver) {
+      dispatch(setBilledByReceiverBeforeCustomCod(billedByReceiver));
+      setCustomCod(null);
+    }
+  }, [
+    customCod,
+    countInsuranceFee,
+    codFee,
+    packages.item_value,
+    expedtion.cost,
+    setCustomCod,
+    dispatch,
+  ]);
 
   useEffect(() => {
     if (Object.keys(selectedExpedtion).length > 0) {

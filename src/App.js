@@ -15,19 +15,29 @@ const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 
 const App = () => {
   const { logged_in } = useSelector((state) => state.login);
-  // if(!logged_in){
-  //   return (
-  //     <BrowserRouter>
-  //       <React.Suspense fallback={<CSpinner />}>
-  //         <Switch>
-  //           <Route exact path="/register" name="Register Page" render={props => <Register {...props}/>} />
-  //           <Route exact path="/login" name="Login Page" render={props => <Login {...props}/>} />
-  //           <Redirect from="/" to="/login" />
-  //         </Switch>
-  //       </React.Suspense>
-  //     </BrowserRouter>
-  //   )
-  // }
+  if (!logged_in) {
+    return (
+      <BrowserRouter>
+        <React.Suspense fallback={<CSpinner />}>
+          <Switch>
+            <Route
+              exact
+              path="/register"
+              name="Register Page"
+              render={(props) => <Register {...props} />}
+            />
+            <Route
+              exact
+              path="/login"
+              name="Login Page"
+              render={(props) => <Login {...props} />}
+            />
+            <Redirect from="/" to="/login" />
+          </Switch>
+        </React.Suspense>
+      </BrowserRouter>
+    );
+  }
   return (
     <BrowserRouter>
       <React.Suspense fallback={<CSpinner />}>

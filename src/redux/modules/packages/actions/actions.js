@@ -61,3 +61,7 @@ export const setSelectCourir = (payload) => ({
   type: types.SET_SELECT_COURIR,
   payload,
 });
+export const setBilledByReceiverBeforeCustomCod = (payload) => ({
+  type: types.SET_BILLED_BY_RECEIVER,
+  payload,
+});

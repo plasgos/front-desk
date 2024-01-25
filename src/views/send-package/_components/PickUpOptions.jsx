@@ -2,16 +2,35 @@ import React, { useState } from "react";
 import { RiErrorWarningFill } from "react-icons/ri";
 
 import { setPickUpOptions } from "../../../redux/modules/packages/actions/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export const PickUpOptions = () => {
+  const packages = useSelector((state) => state.packages);
+  const { expeditions } = packages;
   const [isPickup, setIsPickup] = useState(false);
+  const [pickup, setPickup] = useState("");
+
   const [isDropOff, setIsDropOff] = useState(false);
 
   const dispatch = useDispatch();
 
+  const handleShipping = () => {
+    // setIsGroupSelected(group);
+
+    const filteredShippingData = expeditions.data
+      .map((expedition) => ({
+        ...expedition,
+        costs: expedition.costs.filter((cost) => cost.drop === false),
+      }))
+      .filter((expedition) => expedition.costs.length > 0);
+
+    // setCourirs(filteredShippingData);
+  };
+
   const togglePickup = () => {
+    // pickup = drop : false
     setIsPickup(true);
+    handleShipping();
     dispatch(setPickUpOptions(false));
     setIsDropOff(false);
   };

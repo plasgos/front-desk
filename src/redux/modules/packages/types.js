@@ -17,4 +17,5 @@ export default {
   GET_SHIPPING_COST_SUCCESS: "get-shipping-cost-success",
   SET_SELECT_COURIR: "set-select-courir",
   RESET_SHIPPING: "reset-warehouses",
+  SET_BILLED_BY_RECEIVER: "set-billed-by-receiver",
 };

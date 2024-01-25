@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { PiArrowsClockwiseBold } from "react-icons/pi";
 import { formatPrice } from "../../../lib/format-price";
@@ -20,7 +20,7 @@ export const Expeditions = () => {
   const { expeditions } = packages;
   const dispatch = useDispatch();
 
-  const getData = () => {
+  const getData = useCallback(() => {
     dispatch(
       getShippingCost({
         data: {
@@ -44,17 +44,39 @@ export const Expeditions = () => {
         token: userData.token,
       })
     );
-  };
+  }, [
+    dispatch,
+    packages.insurance,
+    packages.item_value,
+    packages.origin.address,
+    packages.origin.district_id,
+    packages.origin.lat,
+    packages.origin.long,
+    packages.receiver.address,
+    packages.receiver.lat,
+    packages.receiver.long,
+    packages.receiver.subdistrict_id,
+    packages.totalWeight,
+    userData.token,
+    userData.user.store.id,
+  ]);
 
   useEffect(() => {
-    getData();
+    if (
+      Object.keys(packages.origin).length > 0 &&
+      Object.keys(packages.receiver).length > 0 &&
+      packages.totalWeight &&
+      packages.item_value
+    ) {
+      getData();
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [packages, getData]);
 
   const groupSelectShipping = [
-    { name: "Instant", group: "instant" },
-    { name: "Same Day", group: "same_day" },
+    // { name: "Instant", group: "instant" },
+    { name: "One Day", group: "one_day" },
     { name: "Regular", group: "regular" },
     { name: "Kargo", group: "cargo" },
   ];
@@ -77,11 +99,15 @@ export const Expeditions = () => {
     dispatch(setSelectCourir(courir));
   };
 
+  const handleRefreshCourir = () => {
+    // dispatch(setSelectCourir({}));
+  };
+
   return (
     <div>
       <div className="font-weight-bold mb-3">
-        Ekpedisi
-        <PiArrowsClockwiseBold className="ml-2" />
+        Ekspedisi
+        <PiArrowsClockwiseBold onClick={handleRefreshCourir} className="ml-2" />
       </div>
       <div>
         <div
@@ -127,7 +153,7 @@ export const Expeditions = () => {
                     {courir.costs.map((cost) => (
                       <div key={cost.id}>
                         <div className="font-weight-bold mb-2 text-success">
-                          <span> {formatPrice(cost?.price?.total_cost)}</span>
+                          <span> {formatPrice(cost.cost)}</span>
                         </div>
                         <div className="my-2">{cost?.etd}</div>
                       </div>
