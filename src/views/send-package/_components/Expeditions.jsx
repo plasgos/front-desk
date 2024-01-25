@@ -12,6 +12,7 @@ export const Expeditions = ({ filterDataToShow }) => {
   const [isGroupSelected, setIsGroupSelected] = useState("");
 
   const [courirs, setCourirs] = useState([]);
+  console.log("🚀 ~ Expeditions ~ courirs:", courirs);
   const packages = useSelector((state) => state.packages);
   const { expeditions } = packages;
   const dispatch = useDispatch();
@@ -24,15 +25,19 @@ export const Expeditions = ({ filterDataToShow }) => {
     { name: "Kargo", group: "cargo" },
   ];
 
-  const handleShipping = (group) => {
-    setIsGroupSelected(group);
+  const handleShipping = (group, id) => {
+    setIsGroupSelected(id);
 
-    const filteredShippingData = filterDataToShow
-      .map((expedition) => ({
-        ...expedition,
-        costs: expedition.costs.filter((cost) => cost.group === group),
-      }))
-      .filter((expedition) => expedition.costs.length > 0);
+    // const filteredShippingData = filterDataToShow
+    //   .map((expedition) => ({
+    //     ...expedition,
+    //     costs: expedition.costs.filter((cost) => cost.group === group),
+    //   }))
+    //   .filter((expedition) => expedition.costs.length > 0);
+
+    const filteredShippingData = filterDataToShow.filter(
+      (expedition) => expedition.group === group
+    );
 
     setCourirs(filteredShippingData);
   };
@@ -57,19 +62,23 @@ export const Expeditions = ({ filterDataToShow }) => {
           style={{ gap: 12, overflowX: "auto", whiteSpace: "nowrap" }}
           className="d-flex mb-3 p-2"
         >
-          {groupSelectShipping.map((shipping, index) => {
-            const btnSelected = isGroupSelected === shipping.group;
+          {[
+            ...new Map(
+              filterDataToShow?.map((item) => [item["service_name"], item])
+            ).values(),
+          ].map((shipping, index) => {
+            const btnSelected = isGroupSelected === shipping.id;
 
             return (
               <CButton
                 key={index}
                 shape="pill"
                 variant="outline"
-                onClick={() => handleShipping(shipping.group)}
+                onClick={() => handleShipping(shipping.group, shipping.id)}
                 color="primary"
                 className={`${btnSelected && "bg-primary"}`}
               >
-                {shipping.name}
+                {shipping.service_name}
               </CButton>
             );
           })}
@@ -77,38 +86,71 @@ export const Expeditions = ({ filterDataToShow }) => {
       </div>
 
       <div style={{ maxHeight: 500, overflowY: "auto" }}>
-        {filterDataToShow && filterDataToShow.length > 0 ? (
-          filterDataToShow.map((courir) => {
-            const selected = isSelected === courir.id;
+        {filterDataToShow && filterDataToShow.length > 0 && courirs.length === 0
+          ? filterDataToShow.map((courir) => {
+              const selected = isSelected === courir.id;
 
-            return (
-              <div
-                style={{ cursor: "pointer" }}
-                key={courir.id}
-                className={`card p-3 shadow-sm ${
-                  selected && "border border-primary"
-                } `}
-                onClick={() => handleSelectCourir(courir)}
-              >
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <div className="font-weight-bold mb-2">{courir.name}</div>
-                    {/* {courir.costs.map((cost) => (
-                    ))} */}
+              return (
+                <div
+                  style={{ cursor: "pointer" }}
+                  key={courir.id}
+                  className={`card p-3 shadow-sm ${
+                    selected && "border border-primary"
+                  } `}
+                  onClick={() => handleSelectCourir(courir)}
+                >
+                  <div className="d-flex justify-content-between align-items-center">
                     <div>
-                      <div className="font-weight-bold mb-2 text-success">
-                        <span> {formatPrice(courir.cost)}</span>
+                      <div className="font-weight-bold mb-2">{courir.name}</div>
+
+                      <div>
+                        <div className="font-weight-bold mb-2 text-success">
+                          <span> {formatPrice(courir.cost)}</span>
+                        </div>
+                        <div className="my-2">{courir?.etd}</div>
                       </div>
-                      <div className="my-2">{courir?.etd}</div>
+                    </div>
+                    <div>
+                      <div className="text-muted">{courir.service_name}</div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })
-        ) : (
-          <div className="text-center p-3">Not available</div>
-        )}
+              );
+            })
+          : null}
+
+        {courirs && courirs.length > 0
+          ? courirs.map((courir) => {
+              const selected = isSelected === courir.id;
+
+              return (
+                <div
+                  style={{ cursor: "pointer" }}
+                  key={courir.id}
+                  className={`card p-3 shadow-sm ${
+                    selected && "border border-primary"
+                  } `}
+                  onClick={() => handleSelectCourir(courir)}
+                >
+                  <div className="d-flex justify-content-between align-items-center">
+                    <div>
+                      <div className="font-weight-bold mb-2">{courir.name}</div>
+
+                      <div>
+                        <div className="font-weight-bold mb-2 text-success">
+                          <span> {formatPrice(courir.cost)}</span>
+                        </div>
+                        <div className="my-2">{courir?.etd}</div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className="text-muted">{courir.service_name}</div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })
+          : null}
       </div>
     </div>
   );
