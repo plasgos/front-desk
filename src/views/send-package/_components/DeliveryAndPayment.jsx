@@ -8,7 +8,6 @@ import { Delivery } from "./Delivery";
 
 export const DeliveryAndPayment = () => {
   const packages = useSelector((state) => state.packages);
-  console.log("🚀 ~ DeliveryAndPayment ~ packages:", packages);
   const [customCod, setCustomCod] = useState(null);
 
   const [debouncedCustomCod] = useDebounce(customCod, 1000);

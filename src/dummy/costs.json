@@ -329,7 +329,7 @@
         "etd": "2",
         "name": "TIKI",
         "service_type": "REG",
-        "service_name": "Reguler.",
+        "service_name": "Reguler",
         "group": "regular",
         "insurance": 0,
         "cut_off_time": null,

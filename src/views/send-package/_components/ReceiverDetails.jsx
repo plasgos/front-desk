@@ -7,7 +7,7 @@ import { InputDistrict } from "../../../components/InputDistrict";
 import { useDebounce } from "use-debounce";
 
 const ReceiverDetails = () => {
-  const [subdistrictId, setSubdistrictId] = useState({});
+  const [subdistrictId, setSubdistrictId] = useState(undefined);
   const [receiverName, setReceiverName] = useState("");
   const [noTelp, setNoTelp] = useState("");
   const [address, setAddress] = useState("");
@@ -35,7 +35,8 @@ const ReceiverDetails = () => {
           name: debouncedReceiverName,
           phone_number: debouncednoTelp,
           address: debouncedAddress,
-          subdistrict_id: subdistrictId,
+          subdistrict_id: 201,
+          // subdistrictId,
           lat: undefined,
           long: undefined,
         },
@@ -72,7 +73,7 @@ const ReceiverDetails = () => {
             <div className="form-group col-md-6">
               <label className="required-label">Nomor Telepon</label>
               <input
-                type="text"
+                type="number"
                 value={noTelp}
                 onChange={(e) => setNoTelp(e.target.value)}
                 className="form-control"

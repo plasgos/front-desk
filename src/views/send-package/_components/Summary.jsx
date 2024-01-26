@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { formatPrice } from "../../../lib/format-price";
-import { CAlert, CButton, CSwitch } from "@coreui/react";
+import { CButton, CSwitch } from "@coreui/react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { GoQuestion } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +13,6 @@ export const Summary = ({ customCod, setCustomCod }) => {
   const [insuranceFee, setInsuranceFee] = useState(0);
   const [codFee, setCodFee] = useState(0);
   const [countInsuranceFee, setCountInsuranceFee] = useState(0);
-  const [expedtion, setExpedition] = useState({});
 
   const dispatch = useDispatch();
 
@@ -24,7 +23,7 @@ export const Summary = ({ customCod, setCustomCod }) => {
 
   useEffect(() => {
     const billedByReceiver =
-      expedtion.cost + countInsuranceFee + codFee + packages.item_value;
+      selectedExpedtion.cost + countInsuranceFee + codFee + packages.item_value;
     if (customCod && customCod < billedByReceiver) {
       dispatch(setBilledByReceiverBeforeCustomCod(billedByReceiver));
       setCustomCod(null);
@@ -34,40 +33,28 @@ export const Summary = ({ customCod, setCustomCod }) => {
     countInsuranceFee,
     codFee,
     packages.item_value,
-    expedtion.cost,
+    selectedExpedtion.cost,
     setCustomCod,
     dispatch,
   ]);
 
   useEffect(() => {
-    if (Object.keys(selectedExpedtion).length > 0) {
-      const selectedCourier = selectedExpedtion.costs.reduce((result, cost) => {
-        result = {
-          ...cost,
-        };
-        return result;
-      }, {});
-      setExpedition(selectedCourier);
-    }
-  }, [selectedExpedtion, packages.item_value]);
-
-  useEffect(() => {
-    if (expedtion.setting !== undefined) {
+    if (selectedExpedtion.setting !== undefined) {
       const countInsurance =
-        expedtion.setting.insurance_fee * packages.item_value * 100 +
-          expedtion.setting.insurance_add_cost || 0;
+        selectedExpedtion.setting.insurance_fee * packages.item_value * 100 +
+          selectedExpedtion.setting.insurance_add_cost || 0;
 
       setInsuranceFee(countInsurance);
     }
-  }, [selectedExpedtion, expedtion.setting, packages]);
+  }, [selectedExpedtion, selectedExpedtion.setting, packages]);
 
   useEffect(() => {
-    if (expedtion.setting !== undefined) {
+    if (selectedExpedtion.setting !== undefined) {
       const insuranse = countInsuranceFee ? countInsuranceFee : 0;
 
       const codFee =
-        expedtion.setting?.cod_fee *
-          (packages.item_value + expedtion.cost + insuranse) || 0;
+        selectedExpedtion.setting?.cod_fee *
+          (packages.item_value + selectedExpedtion.cost + insuranse) || 0;
 
       if (codFee === 0) {
         setCodFee(0);
@@ -79,8 +66,8 @@ export const Summary = ({ customCod, setCustomCod }) => {
     }
   }, [
     selectedExpedtion,
-    expedtion.setting,
-    expedtion.cost,
+    selectedExpedtion.setting,
+    selectedExpedtion.cost,
     countInsuranceFee,
     packages,
   ]);
@@ -122,7 +109,11 @@ export const Summary = ({ customCod, setCustomCod }) => {
               >
                 {formatPrice(12000)}
               </span>{" "} */}
-              <span>{expedtion.cost ? formatPrice(expedtion.cost) : 0}</span>
+              <span>
+                {selectedExpedtion.cost
+                  ? formatPrice(selectedExpedtion.cost)
+                  : 0}
+              </span>
             </div>
           </div>
 
@@ -154,9 +145,9 @@ export const Summary = ({ customCod, setCustomCod }) => {
             <div className="font-weight-bold text-primary">
               {customCod
                 ? formatPrice(+customCod)
-                : packages.item_value && expedtion.cost
+                : packages.item_value && selectedExpedtion.cost
                 ? formatPrice(
-                    expedtion.cost +
+                    selectedExpedtion.cost +
                       countInsuranceFee +
                       codFee +
                       packages.item_value
@@ -173,7 +164,10 @@ export const Summary = ({ customCod, setCustomCod }) => {
               <div className="font-weight-bold text-success">
                 {customCod
                   ? formatPrice(
-                      customCod - codFee - countInsuranceFee - expedtion.cost
+                      customCod -
+                        codFee -
+                        countInsuranceFee -
+                        selectedExpedtion.cost
                     )
                   : formatPrice(packages.item_value)}
               </div>

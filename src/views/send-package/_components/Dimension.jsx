@@ -15,10 +15,13 @@ export const Dimension = ({ selectedProduct }) => {
   const [high, setHigh] = useState("");
   const [notes, setNotes] = useState("");
 
+  const [totalWeight, setTotalWeight] = useState("");
+
   const [debouncedLength] = useDebounce(length, 1000);
   const [debouncedWidth] = useDebounce(width, 1000);
   const [debouncedHigh] = useDebounce(high, 1000);
   const [debounceNotes] = useDebounce(notes, 2000);
+  const [debounceTotalWeight] = useDebounce(totalWeight, 2000);
   const dispatch = useDispatch();
 
   const setDimensionToRedux = () => {
@@ -30,6 +33,12 @@ export const Dimension = ({ selectedProduct }) => {
       })
     );
   };
+
+  useEffect(() => {
+    if (packages.totalWeight !== 0 && packages.totalWeight !== undefined) {
+      setTotalWeight(packages.totalWeight);
+    }
+  }, [packages.totalWeight]);
 
   const setNotesToRedux = () => {
     dispatch(setNotesPackage(debounceNotes));
@@ -46,8 +55,14 @@ export const Dimension = ({ selectedProduct }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedLength, debouncedHigh, debouncedWidth]);
 
-  const handleTotalWeightChange = (value) => {
-    dispatch(setTotalWeightOrders(Number(value)));
+  useEffect(() => {
+    handleTotalWeightChange();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debounceTotalWeight]);
+
+  const handleTotalWeightChange = () => {
+    dispatch(setTotalWeightOrders(Number(debounceTotalWeight)));
   };
 
   return (
@@ -59,8 +74,8 @@ export const Dimension = ({ selectedProduct }) => {
             <div style={{ position: "relative" }}>
               <input
                 disabled={!selectedProduct.length}
-                onChange={(e) => handleTotalWeightChange(e.target.value)}
-                value={packages.totalWeight || ""}
+                onChange={(e) => setTotalWeight(e.target.value)}
+                value={totalWeight || ""}
                 type="number"
                 inputMode="numeric"
                 className="form-control"
