@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import { setDestination } from "../../../redux/modules/packages/actions/actions";
+import {
+  resetExpeditions,
+  setDestination,
+} from "../../../redux/modules/packages/actions/actions";
 import { InputDistrict } from "../../../components/InputDistrict";
 
 import { useDebounce } from "use-debounce";
@@ -23,14 +26,10 @@ const ReceiverDetails = () => {
   const dispatch = useDispatch();
 
   const setDestinationToRedux = () => {
+    dispatch(resetExpeditions());
+
     dispatch(
       setDestination({
-        // destination: {
-        //   district_id: subdistrictId,
-        //   lat: undefined,
-        //   long: undefined,
-        //   address: debouncedAddress,
-        // },
         receiver: {
           name: debouncedReceiverName,
           phone_number: debouncednoTelp,

@@ -3,7 +3,9 @@ export default {
   SET_SELECT_SENDER: "set-select-sender",
   SET_DESTINATION: "set-destination",
   SET_PRODUCTS: "set-prdocuts",
-  SET_TOTAL_WEIGHT_ORDERS: "set-total-weight-orders",
+  SET_TOTAL_WEIGHT_EACH_PRODUCT: "set-total-weight-each-product",
+  SET_TOTAL_PRICE: "set-total-price",
+  CHANGE_TOTAL_WEIGHT_ORDERS: "change-total-weight-orders",
   SET_ORDERS: "set-orders",
   SET_RECEIVER: "set-receiver",
   SET_DIMENSION: "set-dimension",
@@ -18,4 +20,5 @@ export default {
   SET_SELECT_COURIR: "set-select-courir",
   RESET_SHIPPING: "reset-warehouses",
   SET_BILLED_BY_RECEIVER: "set-billed-by-receiver",
+  RESET_EXPEDITIONS: "reset-expeditions",
 };

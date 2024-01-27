@@ -19,6 +19,11 @@ export const PaymentMethod = ({ filteredData }) => {
     setIsNonCod(false);
   };
 
+  useEffect(() => {
+    setCod([]);
+    resetToggle();
+  }, [packages.expeditions.data, filteredData]);
+
   const handleShipping = (type) => {
     const filteredShippingData = filteredData
       .map((expedition) => ({
@@ -75,7 +80,7 @@ export const PaymentMethod = ({ filteredData }) => {
                   <div className="form-group mb-0">
                     <div className="form-check">
                       <input
-                        disabled={!filteredData}
+                        disabled={filteredData.length === 0}
                         onChange={toggleCod}
                         style={{ cursor: "pointer", transform: "scale(1.5)" }}
                         className="form-check-input "
@@ -103,7 +108,7 @@ export const PaymentMethod = ({ filteredData }) => {
                   <div className="form-group mb-0">
                     <div className="form-check">
                       <input
-                        disabled={!filteredData}
+                        disabled={filteredData.length === 0}
                         onChange={toggleNonCod}
                         style={{ cursor: "pointer", transform: "scale(1.5)" }}
                         className="form-check-input "

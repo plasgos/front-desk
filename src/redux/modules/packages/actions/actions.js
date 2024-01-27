@@ -16,8 +16,16 @@ export const setProducts = (payload) => ({
   type: types.SET_PRODUCTS,
   payload,
 });
-export const setTotalWeightOrders = (payload) => ({
-  type: types.SET_TOTAL_WEIGHT_ORDERS,
+export const setTotalPrice = (payload) => ({
+  type: types.SET_TOTAL_PRICE,
+  payload,
+});
+export const setTotalWeightEachProduct = (payload) => ({
+  type: types.SET_TOTAL_WEIGHT_EACH_PRODUCT,
+  payload,
+});
+export const changeTotalWeightOrders = (payload) => ({
+  type: types.CHANGE_TOTAL_WEIGHT_ORDERS,
   payload,
 });
 export const setDimension = (payload) => ({
@@ -63,5 +71,9 @@ export const setSelectCourir = (payload) => ({
 });
 export const setBilledByReceiverBeforeCustomCod = (payload) => ({
   type: types.SET_BILLED_BY_RECEIVER,
+  payload,
+});
+export const resetExpeditions = (payload) => ({
+  type: types.RESET_EXPEDITIONS,
   payload,
 });

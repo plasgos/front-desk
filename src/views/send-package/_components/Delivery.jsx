@@ -16,10 +16,10 @@ export const Delivery = () => {
   console.log("🚀 ~ Delivery ~ packages:", packages);
   const [isDropOff, setIsDropOff] = useState(false);
   const [isPickup, setIsPickup] = useState(false);
-  const [pickup, setPickup] = useState(undefined);
+  const [pickup, setPickup] = useState([]);
   const dispatch = useDispatch();
 
-  const handlePackageChange = useCallback(() => {
+  const handleGetShippingCost = useCallback(() => {
     const { origin, receiver, totalWeight, item_value } = packages;
     if (
       origin.district_id &&
@@ -53,45 +53,6 @@ export const Delivery = () => {
     }
   }, [dispatch, packages, userData.token, userData.user.store.id]);
 
-  useEffect(() => {
-    handlePackageChange();
-  }, [handlePackageChange]);
-
-  // const handleGetShippingCost = () => {
-  //   const { origin, receiver, totalWeight, item_value } = packages;
-  //   // Pastikan semua data yang diperlukan sudah diatur sebelum memanggil getData
-  //   if (
-  //     origin.district_id &&
-  //     receiver.subdistrict_id &&
-  //     totalWeight &&
-  //     item_value
-  //   ) {
-  //     dispatch(
-  //       getShippingCost({
-  //         data: {
-  //           origin: {
-  //             district_id: origin.district_id,
-  //             lat: origin.lat,
-  //             long: origin.long,
-  //             address: origin.address,
-  //           },
-  //           destination: {
-  //             district_id: receiver.subdistrict_id,
-  //             lat: receiver.lat,
-  //             long: receiver.long,
-  //             address: receiver.address,
-  //           },
-  //           weight: totalWeight,
-  //           insurance: packages.insurance,
-  //           item_value,
-  //           store_id: userData.user.store.id,
-  //         },
-  //         token: userData.token,
-  //       })
-  //     );
-  //   }
-  // };
-
   const handleShipping = (type) => {
     const filteredShippingData = packages.expeditions.data
       .map((expedition) => ({
@@ -104,7 +65,6 @@ export const Delivery = () => {
   };
 
   const togglePickup = () => {
-    // pickup = drop : false
     setIsPickup(true);
     handleShipping(false);
     dispatch(setPickUpOptions(false));
@@ -120,6 +80,16 @@ export const Delivery = () => {
     dispatch(setSelectCourir({}));
   };
 
+  const resetToggle = () => {
+    setIsPickup(false);
+    setIsDropOff(false);
+  };
+
+  useEffect(() => {
+    setPickup([]);
+    resetToggle();
+  }, [packages.expeditions.data]);
+
   return (
     <div>
       <div>
@@ -127,7 +97,7 @@ export const Delivery = () => {
           <div className="font-weight-bold mb-3">Opsi Penjemputan</div>
 
           <div>
-            {/* <CButton
+            <CButton
               disabled={
                 !packages.origin.district_id ||
                 !packages.receiver.subdistrict_id ||
@@ -140,7 +110,7 @@ export const Delivery = () => {
             >
               <FaShippingFast size={18} className="mr-2" />
               Tampilkan Pengiriman
-            </CButton> */}
+            </CButton>
           </div>
 
           {packages.expeditions.loading === true && (
@@ -211,37 +181,41 @@ export const Delivery = () => {
             </form>
           ) : null}
 
-          {isPickup && packages.expeditions.loading === false && (
-            <div className="card p-2 shadow-sm border-primary">
-              <div className="d-flex align-items-center">
-                <div style={{ color: "#2D61AC" }}>
-                  <RiErrorWarningFill size={24} />
-                </div>
+          {isPickup &&
+            packages.expeditions?.data.length > 0 &&
+            packages.expeditions.loading === false && (
+              <div className="card p-2 shadow-sm border-primary">
+                <div className="d-flex align-items-center">
+                  <div style={{ color: "#2D61AC" }}>
+                    <RiErrorWarningFill size={24} />
+                  </div>
 
-                <div className="ml-2">
-                  Paket ini akan{" "}
-                  <span className="font-weight-bold">DIAMBIL</span> oleh kurir
-                  ekspedisi yang di pilh
+                  <div className="ml-2">
+                    Paket ini akan{" "}
+                    <span className="font-weight-bold">DIAMBIL</span> oleh kurir
+                    ekspedisi yang di pilh
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {isDropOff && packages.expeditions.loading === false && (
-            <div className="card p-2 shadow-sm border-primary">
-              <div className="d-flex align-items-center">
-                <div style={{ color: "#2D61AC" }}>
-                  <RiErrorWarningFill size={24} />
-                </div>
+          {isDropOff &&
+            packages.expeditions?.data.length > 0 &&
+            packages.expeditions.loading === false && (
+              <div className="card p-2 shadow-sm border-primary">
+                <div className="d-flex align-items-center">
+                  <div style={{ color: "#2D61AC" }}>
+                    <RiErrorWarningFill size={24} />
+                  </div>
 
-                <div className="ml-2">
-                  Paket ini akan{" "}
-                  <span className="font-weight-bold">DIANTAR SENDIRI</span> oleh
-                  seler ke ekspedisi yang di pilh
+                  <div className="ml-2">
+                    Paket ini akan{" "}
+                    <span className="font-weight-bold">DIANTAR SENDIRI</span>{" "}
+                    oleh seler ke ekspedisi yang di pilh
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
         </div>
       </div>
       <PaymentMethod filteredData={pickup} />

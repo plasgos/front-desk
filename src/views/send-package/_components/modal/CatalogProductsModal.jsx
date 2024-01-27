@@ -12,8 +12,11 @@ import { FaListUl } from "react-icons/fa";
 import { formatPrice } from "../../../../lib/format-price";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 import {
+  resetExpeditions,
   resetProductTotalWeight,
   setProducts,
+  setTotalPrice,
+  setTotalWeightEachProduct,
 } from "../../../../redux/modules/packages/actions/actions";
 import { useDispatch } from "react-redux";
 import { ListSelectedProducts } from "../ListSelectedProducts";
@@ -29,13 +32,13 @@ export const CatalogProductsModal = ({
 
   const [listProductToOrders, setListProductToOrders] = useState([]);
 
+  const dispatch = useDispatch();
+
   const setItemShippingCost = () => {
     if (listProductToOrders && listProductToOrders.length > 0) {
       const productsToRedux = listProductToOrders.map((product) => {
         return {
           ...product,
-          totalWeight: product.totalWeight,
-          totalPrice: product.totalPrice,
         };
       });
 
@@ -44,6 +47,27 @@ export const CatalogProductsModal = ({
       dispatch(setProducts([]));
     }
   };
+
+  // const totalPriceToRedux = () => {
+  //   if (listProductToOrders && listProductToOrders.length > 0) {
+  //     let countTotalPrice = 0;
+  //     for (const product of listProductToOrders) {
+  //       countTotalPrice += product.totalPrice || 0;
+  //     }
+  //     dispatch(setTotalPrice(countTotalPrice));
+  //   }
+  // };
+
+  // const totalWeightToRedux = () => {
+  //   if (listProductToOrders && listProductToOrders.length > 0) {
+  //     let countTotalWeight = 0;
+  //     for (const product of listProductToOrders) {
+  //       countTotalWeight += product.totalWeight || 0;
+  //     }
+
+  //     dispatch(setTotalWeightEachProduct(countTotalWeight));
+  //   }
+  // };
 
   const handleSelectProductToOrder = (data) => {
     const existingProduct = listProductToOrders.find(
@@ -69,8 +93,6 @@ export const CatalogProductsModal = ({
     setListProductToOrders([...listProductToOrders]);
   };
 
-  const dispatch = useDispatch();
-
   const toggle = () => {
     setModal(!modal);
   };
@@ -82,7 +104,10 @@ export const CatalogProductsModal = ({
 
   const onSubmit = (data) => {
     setSelectedProduct(data);
+    dispatch(resetExpeditions());
     setItemShippingCost();
+    // totalPriceToRedux();
+    // totalWeightToRedux();
     setModal((prevModalState) => !prevModalState);
   };
 

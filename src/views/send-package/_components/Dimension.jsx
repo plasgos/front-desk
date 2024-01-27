@@ -2,9 +2,10 @@ import { CCol, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  changeTotalWeightOrders,
+  resetExpeditions,
   setDimension,
   setNotesPackage,
-  setTotalWeightOrders,
 } from "../../../redux/modules/packages/actions/actions";
 import { useDebounce } from "use-debounce";
 
@@ -25,6 +26,7 @@ export const Dimension = ({ selectedProduct }) => {
   const dispatch = useDispatch();
 
   const setDimensionToRedux = () => {
+    dispatch(resetExpeditions());
     dispatch(
       setDimension({
         length: +debouncedLength,
@@ -34,19 +36,25 @@ export const Dimension = ({ selectedProduct }) => {
     );
   };
 
+  const setNotesToRedux = () => {
+    dispatch(resetExpeditions());
+    dispatch(setNotesPackage(debounceNotes));
+  };
+
+  const handleTotalWeightChange = () => {
+    dispatch(resetExpeditions());
+
+    dispatch(changeTotalWeightOrders(Number(debounceTotalWeight)));
+  };
+
   useEffect(() => {
     if (packages.totalWeight !== 0 && packages.totalWeight !== undefined) {
       setTotalWeight(packages.totalWeight);
     }
   }, [packages.totalWeight]);
 
-  const setNotesToRedux = () => {
-    dispatch(setNotesPackage(debounceNotes));
-  };
-
   useEffect(() => {
     setNotesToRedux();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceNotes]);
 
@@ -57,13 +65,8 @@ export const Dimension = ({ selectedProduct }) => {
 
   useEffect(() => {
     handleTotalWeightChange();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debounceTotalWeight]);
-
-  const handleTotalWeightChange = () => {
-    dispatch(setTotalWeightOrders(Number(debounceTotalWeight)));
-  };
 
   return (
     <div className="card-footer ">

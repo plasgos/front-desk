@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
 
-import { PiArrowsClockwiseBold } from "react-icons/pi";
 import { formatPrice } from "../../../lib/format-price";
 
 import { setSelectCourir } from "../../../redux/modules/packages/actions/actions";
@@ -11,28 +10,24 @@ export const Expeditions = ({ isCod, isNonCod, filterDataToShow }) => {
   const [isSelected, setIsSelected] = useState(undefined);
   const [isGroupSelected, setIsGroupSelected] = useState("");
 
-  const [courirs, setCourirs] = useState([]);
+  const [filterByGroup, setFilterByGroup] = useState([]);
   const packages = useSelector((state) => state.packages);
   const dispatch = useDispatch();
 
-  // const groupSelectShipping = [
-  //   { name: "Instant", group: "instant" },
-  //   { name: "Same Day", group: "same_day" },
-  //   { name: "One Day", group: "one_day" },
-  //   { name: "Regular", group: "regular" },
-  //   { name: "Kargo", group: "cargo" },
-  // ];
-
   const reset = useCallback(() => {
-    setCourirs([]);
+    setFilterByGroup([]);
     setIsSelected(undefined);
     setIsGroupSelected("");
     dispatch(setSelectCourir({}));
-  }, [setCourirs, setIsSelected, setIsGroupSelected, dispatch]);
+  }, [setFilterByGroup, setIsSelected, setIsGroupSelected, dispatch]);
 
   useEffect(() => {
     reset();
   }, [filterDataToShow, dispatch, reset]);
+
+  useEffect(() => {
+    reset();
+  }, [packages.expeditions.data, reset]);
 
   const handleShipping = (group, id) => {
     setIsGroupSelected(id);
@@ -44,7 +39,7 @@ export const Expeditions = ({ isCod, isNonCod, filterDataToShow }) => {
       (expedition) => expedition.group === group
     );
 
-    setCourirs(filteredShippingData);
+    setFilterByGroup(filteredShippingData);
   };
 
   const handleSelectCourir = (courir) => {
@@ -54,41 +49,44 @@ export const Expeditions = ({ isCod, isNonCod, filterDataToShow }) => {
 
   return (
     <div>
-      {(isCod || isNonCod) && filterDataToShow?.length > 0 && (
-        <div>
-          <div className="font-weight-bold mb-3">Ekspedisi</div>
-          <div
-            style={{ gap: 12, overflowX: "auto", whiteSpace: "nowrap" }}
-            className="d-flex mb-3 p-2"
-          >
-            {[
-              ...new Map(
-                filterDataToShow?.map((item) => [item["service_name"], item])
-              ).values(),
-            ].map((shipping, index) => {
-              const btnSelected = isGroupSelected === shipping.id;
+      {(isCod || isNonCod) &&
+        packages.expeditions?.data.length > 0 &&
+        filterDataToShow?.length > 0 && (
+          <div>
+            <div className="font-weight-bold mb-3">Ekspedisi</div>
+            <div
+              style={{ gap: 12, overflowX: "auto", whiteSpace: "nowrap" }}
+              className="d-flex mb-3 p-2"
+            >
+              {[
+                ...new Map(
+                  filterDataToShow?.map((item) => [item["service_name"], item])
+                ).values(),
+              ].map((shipping, index) => {
+                const btnSelected = isGroupSelected === shipping.id;
 
-              return (
-                <CButton
-                  key={index}
-                  shape="pill"
-                  variant="outline"
-                  onClick={() => handleShipping(shipping.group, shipping.id)}
-                  color="primary"
-                  className={`${btnSelected && "bg-primary"}`}
-                >
-                  {shipping.service_name}
-                </CButton>
-              );
-            })}
+                return (
+                  <CButton
+                    key={index}
+                    shape="pill"
+                    variant="outline"
+                    onClick={() => handleShipping(shipping.group, shipping.id)}
+                    color="primary"
+                    className={`${btnSelected && "bg-primary"}`}
+                  >
+                    {shipping.service_name}
+                  </CButton>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       <div style={{ maxHeight: 500, overflowY: "auto" }}>
         {(isCod || isNonCod) &&
+        packages.expeditions?.data.length > 0 &&
         filterDataToShow?.length > 0 &&
-        courirs.length === 0
+        filterByGroup.length === 0
           ? filterDataToShow.map((courir) => {
               const selected = isSelected === courir.id;
 
@@ -121,8 +119,10 @@ export const Expeditions = ({ isCod, isNonCod, filterDataToShow }) => {
             })
           : null}
 
-        {(isCod || isNonCod) && courirs?.length > 0
-          ? courirs.map((courir) => {
+        {(isCod || isNonCod) &&
+        packages.expeditions?.data.length > 0 &&
+        filterByGroup?.length > 0
+          ? filterByGroup.map((courir) => {
               const selected = isSelected === courir.id;
 
               return (

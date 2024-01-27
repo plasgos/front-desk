@@ -2,7 +2,6 @@ import types from "./types";
 
 const initialState = {
   origin: {},
-  // destination: {},
   notes: "",
   totalWeight: 0,
   dimension: {},
@@ -51,7 +50,6 @@ export default (state = initialState, action) => {
     case types.SET_DESTINATION:
       return {
         ...state,
-        // destination: action.payload.destination,
         receiver: action.payload.receiver,
       };
     case types.SET_PRODUCTS:
@@ -75,7 +73,17 @@ export default (state = initialState, action) => {
           };
         }),
       };
-    case types.SET_TOTAL_WEIGHT_ORDERS:
+    case types.SET_TOTAL_PRICE:
+      return {
+        ...state,
+        item_value: action.payload,
+      };
+    case types.SET_TOTAL_WEIGHT_EACH_PRODUCT:
+      return {
+        ...state,
+        totalWeight: action.payload,
+      };
+    case types.CHANGE_TOTAL_WEIGHT_ORDERS:
       return {
         ...state,
         totalWeight: action.payload,
@@ -139,6 +147,14 @@ export default (state = initialState, action) => {
       return {
         ...state,
         selectedExpedtion: action.payload,
+      };
+    case types.RESET_EXPEDITIONS:
+      return {
+        ...state,
+        expeditions: {
+          ...state.expeditions,
+          data: initialState.expeditions.data,
+        },
       };
     default:
       return state;
