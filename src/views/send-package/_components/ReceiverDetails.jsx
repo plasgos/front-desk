@@ -3,6 +3,7 @@ import { IoSearch } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import {
   resetExpeditions,
+  resetSummary,
   setDestination,
 } from "../../../redux/modules/packages/actions/actions";
 import { InputDistrict } from "../../../components/InputDistrict";
@@ -10,7 +11,7 @@ import { InputDistrict } from "../../../components/InputDistrict";
 import { useDebounce } from "use-debounce";
 
 const ReceiverDetails = () => {
-  const [subdistrictId, setSubdistrictId] = useState(undefined);
+  const [subdistrict, setSubdistrict] = useState(undefined);
   const [receiverName, setReceiverName] = useState("");
   const [noTelp, setNoTelp] = useState("");
   const [address, setAddress] = useState("");
@@ -20,13 +21,14 @@ const ReceiverDetails = () => {
   const [debouncedAddress] = useDebounce(address, 1000);
 
   const onSetSubdistrict = (value) => {
-    setSubdistrictId(value);
+    setSubdistrict(value);
   };
 
   const dispatch = useDispatch();
 
   const setDestinationToRedux = () => {
     dispatch(resetExpeditions());
+    dispatch(resetSummary());
 
     dispatch(
       setDestination({
@@ -34,8 +36,14 @@ const ReceiverDetails = () => {
           name: debouncedReceiverName,
           phone_number: debouncednoTelp,
           address: debouncedAddress,
-          subdistrict_id: 201,
-          // subdistrictId,
+          Subdistrict: {
+            name: subdistrict?.name,
+            cityType: subdistrict?.City.type,
+            cityName: subdistrict?.City.name,
+          },
+          subdistrict_id:
+            // 201,
+            subdistrict?.id,
           lat: undefined,
           long: undefined,
         },
@@ -46,7 +54,7 @@ const ReceiverDetails = () => {
   useEffect(() => {
     setDestinationToRedux();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [subdistrictId, debouncedReceiverName, debouncednoTelp, debouncedAddress]);
+  }, [subdistrict, debouncedReceiverName, debouncednoTelp, debouncedAddress]);
 
   return (
     <div>

@@ -11,7 +11,6 @@ export const SenderDetails = () => {
 
   const [selectedAddress, setSelectedAddress] = useState({});
   const [defaultAddressSelected, setDefaultAddressSelected] = useState({});
-
   const { warehouses } = useSelector((state) => state.warehouses);
   const { token } = useSelector((state) => state.login);
   const { data } = warehouses;
@@ -36,6 +35,8 @@ export const SenderDetails = () => {
     dispatch(
       setOrigin({
         origin: {
+          name: defaultAddressSelected.name,
+          phone_number: defaultAddressSelected.phone_number,
           district_id: defaultAddressSelected.subdistrict_id,
           lat: defaultAddressSelected.latitude,
           long: defaultAddressSelected.longitude,

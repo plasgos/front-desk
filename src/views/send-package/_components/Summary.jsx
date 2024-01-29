@@ -4,13 +4,21 @@ import { CAlert, CButton, CSwitch } from "@coreui/react";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { GoQuestion } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
-import { setBilledByReceiverBeforeCustomCod } from "../../../redux/modules/packages/actions/actions";
+import {
+  resetExpeditions,
+  resetSummary,
+  setBilledByReceiverBeforeCustomCod,
+  setSummary,
+} from "../../../redux/modules/packages/actions/actions";
 import { TbReportMoney } from "react-icons/tb";
 import { useDebounce } from "use-debounce";
+import { DetailsShippingOrders } from "./modal/DetailsShippingOrders";
+
+import { useHistory } from "react-router-dom";
 
 export const Summary = () => {
   const packages = useSelector((state) => state.packages);
-  const { selectedExpedtion } = packages;
+  const { selectedExpedition } = packages;
   const [isChecked, setIsChecked] = useState(false);
   const [insuranceFee, setInsuranceFee] = useState(0);
   const [codFee, setCodFee] = useState(0);
@@ -20,7 +28,88 @@ export const Summary = () => {
 
   const [debouncedCustomCod] = useDebounce(customCod, 1000);
 
+  const [billedByReceiver, setBilledByReceiver] = useState(0);
+  const [estimateFundReceived, setEstimateFundReceived] = useState(0);
+
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (selectedExpedition) {
+      dispatch(
+        setSummary({
+          service: selectedExpedition.name,
+          shippingCost: selectedExpedition.cost,
+          item_value: packages.item_value,
+        })
+      );
+    }
+  }, [dispatch, packages.item_value, selectedExpedition]);
+
+  useEffect(() => {
+    if (countInsuranceFee) {
+      dispatch(setSummary({ insuranceFee: countInsuranceFee }));
+    } else {
+      dispatch(setSummary({ insuranceFee: 0 }));
+    }
+  }, [countInsuranceFee, dispatch]);
+
+  useEffect(() => {
+    if (debouncedCustomCod) {
+      dispatch(setSummary({ billedByReceiver: Number(debouncedCustomCod) }));
+    } else {
+      dispatch(setSummary({ billedByReceiver: billedByReceiver || 0 }));
+    }
+  }, [billedByReceiver, debouncedCustomCod, dispatch]);
+
+  useEffect(() => {
+    const countBilled =
+      selectedExpedition.cost +
+      countInsuranceFee +
+      codFee +
+      packages.item_value;
+
+    setBilledByReceiver(countBilled);
+  }, [
+    codFee,
+    countInsuranceFee,
+    dispatch,
+    packages.item_value,
+    selectedExpedition.cost,
+  ]);
+
+  useEffect(() => {
+    if (debouncedCustomCod) {
+      const countEstimateFund =
+        debouncedCustomCod -
+        codFee -
+        countInsuranceFee -
+        selectedExpedition.cost;
+      setEstimateFundReceived(countEstimateFund);
+      dispatch(
+        setSummary({
+          estimateFund: countEstimateFund,
+        })
+      );
+    } else {
+      dispatch(setSummary({ estimateFund: packages.item_value }));
+    }
+  }, [
+    codFee,
+    countInsuranceFee,
+    debouncedCustomCod,
+    dispatch,
+    packages.item_value,
+    selectedExpedition.cost,
+  ]);
+
+  useEffect(() => {
+    if (codFee) {
+      dispatch(setSummary({ codFee }));
+    } else {
+      dispatch(setSummary({ codFee: 0 }));
+    }
+  }, [codFee, dispatch]);
 
   const toggleSwitch = () => {
     setIsChecked((prev) => !prev);
@@ -28,8 +117,6 @@ export const Summary = () => {
   };
 
   useEffect(() => {
-    const billedByReceiver =
-      selectedExpedtion.cost + countInsuranceFee + codFee + packages.item_value;
     if (debouncedCustomCod && debouncedCustomCod < billedByReceiver) {
       dispatch(setBilledByReceiverBeforeCustomCod(billedByReceiver));
       setCustomCod(null);
@@ -39,28 +126,29 @@ export const Summary = () => {
     countInsuranceFee,
     codFee,
     packages.item_value,
-    selectedExpedtion.cost,
+    selectedExpedition.cost,
     setCustomCod,
     dispatch,
+    billedByReceiver,
   ]);
 
   useEffect(() => {
-    if (selectedExpedtion.setting !== undefined) {
+    if (selectedExpedition.setting !== undefined) {
       const countInsurance =
-        selectedExpedtion.setting.insurance_fee * packages.item_value * 100 +
-          selectedExpedtion.setting.insurance_add_cost || 0;
+        selectedExpedition.setting.insurance_fee * packages.item_value * 100 +
+          selectedExpedition.setting.insurance_add_cost || 0;
 
       setInsuranceFee(countInsurance);
     }
-  }, [selectedExpedtion, selectedExpedtion.setting, packages]);
+  }, [selectedExpedition, selectedExpedition.setting, packages]);
 
   useEffect(() => {
-    if (selectedExpedtion.setting !== undefined) {
+    if (selectedExpedition.setting !== undefined) {
       const insuranse = countInsuranceFee ? countInsuranceFee : 0;
 
       const codFee =
-        selectedExpedtion.setting?.cod_fee *
-          (packages.item_value + selectedExpedtion.cost + insuranse) || 0;
+        selectedExpedition.setting?.cod_fee *
+          (packages.item_value + selectedExpedition.cost + insuranse) || 0;
 
       if (codFee === 0) {
         setCodFee(0);
@@ -71,17 +159,28 @@ export const Summary = () => {
       }
     }
   }, [
-    selectedExpedtion,
-    selectedExpedtion.setting,
-    selectedExpedtion.cost,
+    selectedExpedition,
+    selectedExpedition.setting,
+    selectedExpedition.cost,
     countInsuranceFee,
     packages,
+    dispatch,
   ]);
+
+  const handleResetPackages = async () => {
+    try {
+      await dispatch(resetSummary());
+      await dispatch(resetExpeditions());
+      history.push("/");
+    } catch (error) {
+      console.error("Error resetting packages:", error);
+    }
+  };
 
   return (
     <div>
       {packages.item_value &&
-      Object.keys(packages.selectedExpedtion).length > 0 ? (
+      Object.keys(packages.selectedExpedition).length > 0 ? (
         <div>
           <div className="font-weight-bold mb-3">Kustom COD</div>
           {debouncedCustomCod < packages.billedByReceiverBeforeCustomCod ? (
@@ -100,7 +199,7 @@ export const Summary = () => {
                   <input
                     disabled={
                       !packages.item_value ||
-                      Object.keys(packages.selectedExpedtion).length === 0
+                      Object.keys(packages.selectedExpedition).length === 0
                     }
                     value={customCod || ""}
                     onChange={(e) => setCustomCod(e.target.value)}
@@ -152,7 +251,7 @@ export const Summary = () => {
                 <div className="d-flex justify-content-between align-items-center">
                   <div className="text-muted">Layanan</div>
                   <div className="font-weight-bold">
-                    {selectedExpedtion.name}
+                    {selectedExpedition.name}
                   </div>
                 </div>
 
@@ -166,8 +265,8 @@ export const Summary = () => {
                 {formatPrice(12000)}
               </span>{" "} */}
                     <span>
-                      {selectedExpedtion.cost
-                        ? formatPrice(selectedExpedtion.cost)
+                      {selectedExpedition.cost
+                        ? formatPrice(selectedExpedition.cost)
                         : 0}
                     </span>
                   </div>
@@ -201,13 +300,8 @@ export const Summary = () => {
                   <div className="font-weight-bold text-primary">
                     {debouncedCustomCod
                       ? formatPrice(+debouncedCustomCod)
-                      : packages.item_value && selectedExpedtion.cost
-                      ? formatPrice(
-                          selectedExpedtion.cost +
-                            countInsuranceFee +
-                            codFee +
-                            packages.item_value
-                        )
+                      : packages.item_value && selectedExpedition.cost
+                      ? formatPrice(billedByReceiver)
                       : 0}
                   </div>
                 </div>
@@ -219,12 +313,7 @@ export const Summary = () => {
                   <div className="d-flex align-items-center">
                     <div className="font-weight-bold text-success">
                       {debouncedCustomCod
-                        ? formatPrice(
-                            debouncedCustomCod -
-                              codFee -
-                              countInsuranceFee -
-                              selectedExpedtion.cost
-                          )
+                        ? formatPrice(estimateFundReceived)
                         : formatPrice(packages.item_value)}
                     </div>
                     <GoQuestion className="ml-2 text-success" />
@@ -250,10 +339,13 @@ export const Summary = () => {
             </div>
 
             <div className="d-flex align-items-center justify-content-end">
-              <CButton className="btn-outline-primary">Batal</CButton>
-              <CButton className="ml-3" color="primary">
-                Kirim
+              <CButton
+                onClick={handleResetPackages}
+                className="btn-outline-primary"
+              >
+                Batal
               </CButton>
+              <DetailsShippingOrders />
             </div>
           </div>
         </div>

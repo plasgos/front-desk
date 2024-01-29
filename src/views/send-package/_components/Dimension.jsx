@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   changeTotalWeightOrders,
   resetExpeditions,
+  resetSummary,
   setDimension,
   setNotesPackage,
 } from "../../../redux/modules/packages/actions/actions";
@@ -13,37 +14,40 @@ export const Dimension = ({ selectedProduct }) => {
   const packages = useSelector((state) => state.packages);
   const [length, setLength] = useState("");
   const [width, setWidth] = useState("");
-  const [high, setHigh] = useState("");
+  const [height, setHeight] = useState("");
   const [notes, setNotes] = useState("");
 
   const [totalWeight, setTotalWeight] = useState("");
 
   const [debouncedLength] = useDebounce(length, 1000);
   const [debouncedWidth] = useDebounce(width, 1000);
-  const [debouncedHigh] = useDebounce(high, 1000);
+  const [debouncedHeight] = useDebounce(height, 1000);
   const [debounceNotes] = useDebounce(notes, 2000);
   const [debounceTotalWeight] = useDebounce(totalWeight, 2000);
   const dispatch = useDispatch();
 
   const setDimensionToRedux = () => {
     dispatch(resetExpeditions());
+    dispatch(resetSummary());
+
     dispatch(
       setDimension({
         length: +debouncedLength,
         width: +debouncedWidth,
-        high: +debouncedHigh,
+        height: +debouncedHeight,
       })
     );
   };
 
   const setNotesToRedux = () => {
     dispatch(resetExpeditions());
+    dispatch(resetSummary());
     dispatch(setNotesPackage(debounceNotes));
   };
 
   const handleTotalWeightChange = () => {
     dispatch(resetExpeditions());
-
+    dispatch(resetSummary());
     dispatch(changeTotalWeightOrders(Number(debounceTotalWeight)));
   };
 
@@ -61,7 +65,7 @@ export const Dimension = ({ selectedProduct }) => {
   useEffect(() => {
     setDimensionToRedux();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedLength, debouncedHigh, debouncedWidth]);
+  }, [debouncedLength, debouncedHeight, debouncedWidth]);
 
   useEffect(() => {
     handleTotalWeightChange();
@@ -158,8 +162,8 @@ export const Dimension = ({ selectedProduct }) => {
               <input
                 disabled={!selectedProduct.length}
                 type="number"
-                value={high}
-                onChange={(e) => setHigh(e.target.value)}
+                value={height}
+                onChange={(e) => setHeight(e.target.value)}
                 inputMode="numeric"
                 className="form-control"
               />

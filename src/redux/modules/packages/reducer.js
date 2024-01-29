@@ -13,8 +13,9 @@ const initialState = {
     data: [],
     loading: false,
   },
-  selectedExpedtion: {},
+  selectedExpedition: {},
   billedByReceiverBeforeCustomCod: 0,
+  summary: {},
 };
 
 export default (state = initialState, action) => {
@@ -146,7 +147,7 @@ export default (state = initialState, action) => {
     case types.SET_SELECT_COURIR:
       return {
         ...state,
-        selectedExpedtion: action.payload,
+        selectedExpedition: action.payload,
       };
     case types.RESET_EXPEDITIONS:
       return {
@@ -155,6 +156,19 @@ export default (state = initialState, action) => {
           ...state.expeditions,
           data: initialState.expeditions.data,
         },
+      };
+    case types.SET_SUMMARY:
+      return {
+        ...state,
+        summary: {
+          ...state.summary,
+          ...action.payload,
+        },
+      };
+    case types.RESET_SUMMARY:
+      return {
+        ...state,
+        summary: initialState.summary,
       };
     default:
       return state;

@@ -13,6 +13,7 @@ import { LiaExchangeAltSolid } from "react-icons/lia";
 import { useDispatch } from "react-redux";
 import {
   resetExpeditions,
+  resetSummary,
   setSelectSender,
 } from "../../../../redux/modules/packages/actions/actions";
 
@@ -32,11 +33,13 @@ export const PickUpAddressModal = ({
 
   const onSubmit = (data) => {
     dispatch(resetExpeditions());
-
+    dispatch(resetSummary());
     setSelectedAddress(data);
     dispatch(
       setSelectSender({
         origin: {
+          name: data.name,
+          phone_number: data.phone_number,
           district_id: data.subdistrict_id,
           lat: data.latitude,
           long: data.longitude,

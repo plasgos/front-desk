@@ -27,6 +27,7 @@ function* watchGetSubdistrict(values) {
       yield put(actions.getSubdistrictSuccess(data.data));
     }
   } catch (e) {
+    console.log(e.response);
     yield put(actions.setIsLoadingGetSubdistrict(false));
   } finally {
     yield put(actions.setIsLoadingGetSubdistrict(false));

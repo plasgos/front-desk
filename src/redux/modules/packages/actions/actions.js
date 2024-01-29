@@ -77,3 +77,11 @@ export const resetExpeditions = (payload) => ({
   type: types.RESET_EXPEDITIONS,
   payload,
 });
+export const setSummary = (payload) => ({
+  type: types.SET_SUMMARY,
+  payload,
+});
+export const resetSummary = (payload) => ({
+  type: types.RESET_SUMMARY,
+  payload,
+});

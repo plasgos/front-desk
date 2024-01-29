@@ -21,4 +21,6 @@ export default {
   RESET_SHIPPING: "reset-warehouses",
   SET_BILLED_BY_RECEIVER: "set-billed-by-receiver",
   RESET_EXPEDITIONS: "reset-expeditions",
+  SET_SUMMARY: "set-sumarry",
+  RESET_SUMMARY: "reset-summary",
 };

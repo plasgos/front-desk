@@ -24,7 +24,7 @@ export const InputDistrict = ({ onSelectDistrict }) => {
           data.City.name.toLowerCase().includes(inputValue.toLowerCase())
       ) || []
     ).map((data) => ({
-      value: data.id, // or any unique identifier from your data
+      value: data, // or any unique identifier from your data
       label: `${data.name}, ${data.City.type} ${data.City.name}, ${data.City.Province.name}`,
     }));
   };

@@ -3,6 +3,7 @@ import { Summary } from "./Summary";
 
 import { Delivery } from "./Delivery";
 import { useSelector } from "react-redux";
+import { DetailsShippingOrders } from "./modal/DetailsShippingOrders";
 
 export const DeliveryAndPayment = () => {
   const packages = useSelector((state) => state.packages);
@@ -16,6 +17,7 @@ export const DeliveryAndPayment = () => {
       <div className="card p-3 shadow-sm">
         <Delivery />
       </div>
+      <DetailsShippingOrders />
 
       {packages.expeditions?.data.length > 0 ? <Summary /> : null}
     </div>

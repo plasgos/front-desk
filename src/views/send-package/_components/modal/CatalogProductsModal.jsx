@@ -7,13 +7,14 @@ import {
   CModalFooter,
   CModalHeader,
 } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaListUl } from "react-icons/fa";
 import { formatPrice } from "../../../../lib/format-price";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 import {
   resetExpeditions,
   resetProductTotalWeight,
+  resetSummary,
   setProducts,
   setTotalPrice,
   setTotalWeightEachProduct,
@@ -21,6 +22,7 @@ import {
 import { useDispatch } from "react-redux";
 import { ListSelectedProducts } from "../ListSelectedProducts";
 import { FaRegEdit } from "react-icons/fa";
+import { IoMdSearch } from "react-icons/io";
 
 export const CatalogProductsModal = ({
   products,
@@ -32,7 +34,26 @@ export const CatalogProductsModal = ({
 
   const [listProductToOrders, setListProductToOrders] = useState([]);
 
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const dispatch = useDispatch();
+
+  const handleSearchProduct = (inputValue) => {
+    const listProdcuts = products
+      .filter((product) =>
+        product.name.toLowerCase().includes(inputValue.toLowerCase())
+      )
+      .map((product) => ({
+        ...product,
+      }));
+
+    setFilteredProducts(listProdcuts);
+  };
+
+  useEffect(() => {
+    if (products) {
+      setFilteredProducts(products);
+    }
+  }, [products]);
 
   const setItemShippingCost = () => {
     if (listProductToOrders && listProductToOrders.length > 0) {
@@ -105,6 +126,7 @@ export const CatalogProductsModal = ({
   const onSubmit = (data) => {
     setSelectedProduct(data);
     dispatch(resetExpeditions());
+    dispatch(resetSummary());
     setItemShippingCost();
     // totalPriceToRedux();
     // totalWeightToRedux();
@@ -135,67 +157,94 @@ export const CatalogProductsModal = ({
         </CModalHeader>
         <CModalBody style={{ gap: 20 }} className="d-flex">
           <div style={{ flex: 1 }}>
-            <div className="mb-2">List Produk</div>
+            <div className="d-flex justify-content-between align-items-center">
+              <div className="mb-2">List Produk</div>
+              <div className="form-group ">
+                <div style={{ position: "relative", width: 200 }}>
+                  <input
+                    onChange={(e) => handleSearchProduct(e.target.value)}
+                    type="text"
+                    className="form-control"
+                    placeholder="Cari Produk..."
+                  />
+                  <div
+                    className="text-muted"
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      top: 5,
+                      transform: "translateX(-10px)",
+                    }}
+                  >
+                    <IoMdSearch size={18} />
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <div className="modal-overflow">
-              {products.map((product) => {
-                const selected = isSelectedProduct.id === product.id;
+              {filteredProducts?.length > 0 ? (
+                filteredProducts.map((product) => {
+                  const selected = isSelectedProduct.id === product.id;
 
-                return (
-                  <CCard
-                    className="my-2"
-                    key={product.id}
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setIsSelectedProduct(product)}
-                  >
-                    <CCardBody
-                      className={` p-2 ${selected && "modal-selected"}`}
+                  return (
+                    <CCard
+                      className="my-2"
+                      key={product.id}
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setIsSelectedProduct(product)}
                     >
-                      <div style={{ gap: 20 }} className="d-flex ">
-                        <div className="rounded shadow-sm border p-2">
-                          <img
-                            style={{ width: 40 }}
-                            src={product.ImageProducts[0].url}
-                            alt="display-product"
-                          />
-                        </div>
-                        <div>
-                          <div className="font-weight-bold mb-2">
-                            {product.name}
+                      <CCardBody
+                        className={` p-2 ${selected && "modal-selected"}`}
+                      >
+                        <div style={{ gap: 20 }} className="d-flex ">
+                          <div className="rounded shadow-sm border p-2">
+                            <img
+                              style={{ width: 40 }}
+                              src={product.ImageProducts[0].url}
+                              alt="display-product"
+                            />
                           </div>
-                          <div className="font-weight-bold mb-2">
-                            {formatPrice(product.price)}
+                          <div>
+                            <div className="font-weight-bold mb-2">
+                              {product.name}
+                            </div>
+                            <div className="font-weight-bold mb-2">
+                              {formatPrice(product.price)}
+                            </div>
                           </div>
-                        </div>
 
-                        <div className="ml-auto text-muted">
-                          <div className="text-right">
-                            {product.weight} Gram
-                          </div>
-                          <div className="mt-3">
-                            <CButton
-                              size="sm"
-                              shape="pill"
-                              variant="outline"
-                              color="primary"
-                              onClick={() =>
-                                handleSelectProductToOrder(product)
-                              }
-                              className="mr-1 btn-block"
-                            >
-                              Pilih Produk
-                              <MdOutlineShoppingCartCheckout
-                                size={18}
-                                className="ml-2"
-                              />
-                            </CButton>
+                          <div className="ml-auto text-muted">
+                            <div className="text-right">
+                              {product.weight} Gram
+                            </div>
+                            <div className="mt-3">
+                              <CButton
+                                size="sm"
+                                shape="pill"
+                                variant="outline"
+                                color="primary"
+                                onClick={() =>
+                                  handleSelectProductToOrder(product)
+                                }
+                                className="mr-1 btn-block"
+                              >
+                                Pilih Produk
+                                <MdOutlineShoppingCartCheckout
+                                  size={18}
+                                  className="ml-2"
+                                />
+                              </CButton>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </CCardBody>
-                  </CCard>
-                );
-              })}
+                      </CCardBody>
+                    </CCard>
+                  );
+                })
+              ) : (
+                <div className="text-center my-3">Produk Tidak Ada</div>
+              )}
             </div>
           </div>
 
