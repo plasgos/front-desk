@@ -6,21 +6,24 @@ import { IoClose } from "react-icons/io5";
 export const ListSelectedProducts = ({
   listProductToOrders,
   setListProductToOrders,
+  setIsSubmitDisabled,
 }) => {
   const [isSelectedProduct, setIsSelectedProduct] = useState({});
 
   const handleQuantityChange = (productId, event) => {
     const updatedProducts = listProductToOrders.map((product) => {
       if (product.id === productId) {
-        const totalWeightPerProduct =
-          product.weight * Number(event.target.value || "");
+        const newQty = Number(event.target.value);
+        const totalWeightPerProduct = product.weight * newQty;
+        const totalPricePerProduct = product.price * newQty;
 
-        const totalPricePerProduct =
-          product.price * Number(event.target.value || "");
+        const isQtyValid = newQty === undefined || newQty >= product.min_order; // Validasi qty
+
+        setIsSubmitDisabled(!isQtyValid);
 
         return {
           ...product,
-          min_order: Number(event.target.value),
+          qty: newQty,
           totalWeight: totalWeightPerProduct,
           totalPrice: totalPricePerProduct,
         };
@@ -101,12 +104,21 @@ export const ListSelectedProducts = ({
                         <label className="required-label ml-auto">
                           Jumlah Item
                         </label>
+                        {product.qty < product.min_order ? (
+                          <p className="text-danger">
+                            Mnimum Order {product.min_order}
+                          </p>
+                        ) : null}
                         <div style={{ position: "relative", width: 100 }}>
                           <input
                             onChange={(event) =>
                               handleQuantityChange(product.id, event)
                             }
-                            value={product.min_order || ""}
+                            value={
+                              product.qty !== undefined
+                                ? product.qty || ""
+                                : product.min_order || ""
+                            }
                             type="number"
                             inputMode="numeric"
                             className="form-control"

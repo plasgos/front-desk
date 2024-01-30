@@ -77,7 +77,10 @@ export const ItemDetails = () => {
                         <div className="text-right">
                           <div className="mb-2">Jumlah Item Dalam Paket</div>
                           <div className="font-weight-bold">
-                            {product.min_order || ""} Item
+                            {product.qty !== undefined
+                              ? product.qty || ""
+                              : product.min_order || ""}{" "}
+                            Item
                           </div>
                         </div>
                       </div>

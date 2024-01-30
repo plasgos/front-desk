@@ -37,6 +37,8 @@ export const CatalogProductsModal = ({
   const [filteredProducts, setFilteredProducts] = useState([]);
   const dispatch = useDispatch();
 
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
+
   const handleSearchProduct = (inputValue) => {
     const listProdcuts = products
       .filter((product) =>
@@ -60,6 +62,7 @@ export const CatalogProductsModal = ({
       const productsToRedux = listProductToOrders.map((product) => {
         return {
           ...product,
+          qty: undefined,
         };
       });
 
@@ -69,36 +72,18 @@ export const CatalogProductsModal = ({
     }
   };
 
-  // const totalPriceToRedux = () => {
-  //   if (listProductToOrders && listProductToOrders.length > 0) {
-  //     let countTotalPrice = 0;
-  //     for (const product of listProductToOrders) {
-  //       countTotalPrice += product.totalPrice || 0;
-  //     }
-  //     dispatch(setTotalPrice(countTotalPrice));
-  //   }
-  // };
-
-  // const totalWeightToRedux = () => {
-  //   if (listProductToOrders && listProductToOrders.length > 0) {
-  //     let countTotalWeight = 0;
-  //     for (const product of listProductToOrders) {
-  //       countTotalWeight += product.totalWeight || 0;
-  //     }
-
-  //     dispatch(setTotalWeightEachProduct(countTotalWeight));
-  //   }
-  // };
-
   const handleSelectProductToOrder = (data) => {
     const existingProduct = listProductToOrders.find(
       (product) => product.id === data.id
     );
     if (existingProduct) {
       // Jika produk dengan ID yang sama sudah ada
-      existingProduct.min_order += 1;
-      existingProduct.totalWeight += data.weight;
-      existingProduct.totalPrice += data.price;
+
+      if (existingProduct.qty !== undefined) {
+        existingProduct.qty += 1;
+        existingProduct.totalWeight += data.weight;
+        existingProduct.totalPrice += data.price;
+      }
     } else {
       // Jika produk dengan ID yang sama belum ada
       const totalWeightPerProduct = data.weight * data.min_order;
@@ -128,8 +113,6 @@ export const CatalogProductsModal = ({
     dispatch(resetExpeditions());
     dispatch(resetSummary());
     setItemShippingCost();
-    // totalPriceToRedux();
-    // totalWeightToRedux();
     setModal((prevModalState) => !prevModalState);
   };
 
@@ -251,10 +234,12 @@ export const CatalogProductsModal = ({
           <ListSelectedProducts
             listProductToOrders={listProductToOrders}
             setListProductToOrders={setListProductToOrders}
+            setIsSubmitDisabled={setIsSubmitDisabled}
           />
         </CModalBody>
         <CModalFooter>
           <CButton
+            disabled={isSubmitDisabled}
             onClick={() => onSubmit(listProductToOrders)}
             color="primary"
           >
