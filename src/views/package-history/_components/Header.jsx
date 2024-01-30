@@ -41,11 +41,11 @@ export const Header = () => {
         return (
           <Link
             key={index}
-            style={{ color: "black", textDecoration: "none" }}
+            style={{ color: "black", textDecoration: "none", flexGrow: 1 }}
             to={`/buyer/package-history${progress.url}`}
           >
             <div
-              style={{ width: 180 }}
+              // style={{ width: 180 }}
               className={` card  shadow-sm card-hover ${
                 isActive && "card-selected"
               }`}

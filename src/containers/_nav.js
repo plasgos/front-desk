@@ -44,6 +44,12 @@ export default [
     icon: "cil-drop",
   },
   {
+    _tag: "CSidebarNavItem",
+    name: "Process Packages",
+    to: "/buyer/process-packages",
+    icon: "cil-drop",
+  },
+  {
     _tag: "CSidebarNavTitle",
     _children: ["Extras"],
   },

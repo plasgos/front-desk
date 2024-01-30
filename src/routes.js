@@ -27,6 +27,19 @@ const ShippingCost = React.lazy(() =>
 const SendPackage = React.lazy(() =>
   import("./views/send-package/SendPackagePage")
 );
+const processPackages = React.lazy(() =>
+  import("./views/process-packages/LayoutProcessPackage")
+);
+const newProcessPackages = React.lazy(() =>
+  import("./views/process-packages/new/NewPackagePage")
+);
+
+const resiProcessPackages = React.lazy(() =>
+  import("./views/process-packages/resi/ResiPage")
+);
+const paymentProcessPackages = React.lazy(() =>
+  import("./views/process-packages/payment/PaymentPage")
+);
 
 const routes = [
   { path: "/", exact: true, name: "Dashboard", component: Dashboard },
@@ -58,11 +71,7 @@ const routes = [
     name: "Package-history-pending",
     component: PackageHistoryPending,
   },
-  {
-    path: "/buyer/package-history",
-    name: "Package-history",
-    component: PackageHistory,
-  },
+
   {
     path: "/shipping-cost",
     name: "Shipping Cost",
@@ -72,6 +81,32 @@ const routes = [
     path: "/send-package",
     name: "Send Package",
     component: SendPackage,
+  },
+
+  {
+    path: "/buyer/process-packages/new",
+    name: "New",
+    component: newProcessPackages,
+  },
+  {
+    path: "/buyer/process-packages/resi",
+    name: "Resi",
+    component: resiProcessPackages,
+  },
+  {
+    path: "/buyer/process-packages/pembayaran",
+    name: "Payment",
+    component: paymentProcessPackages,
+  },
+  {
+    path: "/buyer/package-history",
+    name: "Package-history",
+    component: PackageHistory,
+  },
+  {
+    path: "/buyer/process-packages",
+    name: "Process Package",
+    component: processPackages,
   },
 ];
 

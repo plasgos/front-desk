@@ -13,7 +13,6 @@ import { FaShippingFast } from "react-icons/fa";
 export const Delivery = () => {
   const userData = useSelector((state) => state.login);
   const packages = useSelector((state) => state.packages);
-  console.log("🚀 ~ Delivery ~ packages:", packages);
   const [isDropOff, setIsDropOff] = useState(false);
   const [isPickup, setIsPickup] = useState(false);
   const [pickup, setPickup] = useState([]);
