@@ -9,37 +9,51 @@ import {
   CModalHeader,
   CRow,
   CCol,
-  CInput
+  CInput,
 } from "@coreui/react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { getProducts } from "../../../../redux/modules/product/reducer";
 import { formatPrice } from "../../../../lib";
-import { defaultImgSquare200 } from '../../../../lib/product';
+import { defaultImgSquare200 } from "../../../../lib/product";
 
 import { Detail } from "./Detail";
 import { CatalogProductsModal } from "./modal/CatalogProductsModal";
 
-const Card = ({item}) => {
+const Card = ({ item }) => {
   return (
     <div className="card shadow-sm p-2">
       <div className="d-flex justify-content-between">
         <div className="d-flex">
           <div>
             <div className="rounded shadow-sm border p-2">
-              <img style={{ width: 40, height: 40 }} src={defaultImgSquare200(item.product)} alt="display-product" />
+              <img
+                style={{ width: 40, height: 40 }}
+                src={defaultImgSquare200(item.product)}
+                alt="display-product"
+              />
             </div>
           </div>
           <div className="ml-3">
             <div className="font-weight-bold">{item.product.name}</div>
-            {item.price && <div className="font-weight-bold mb-1 text-danger">{formatPrice(item.price)}</div>}
-            <div className="font-weight-bold text-dark" style={{fontSize: 12}}>{item.quantity} Item ({item.weight} gram / item)</div>
+            {item.price && (
+              <div className="font-weight-bold mb-1 text-danger">
+                {formatPrice(item.price)}
+              </div>
+            )}
+            <div
+              className="font-weight-bold text-dark"
+              style={{ fontSize: 12 }}
+            >
+              {item.quantity} Item ({item.weight} gram / item)
+            </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
+
 export default () => {
   const dispatch = useDispatch();
   const { token, logged_in } = useSelector((state) => state.login);
@@ -51,14 +65,14 @@ export default () => {
   const [limit] = useState(25);
 
   const getData = () => {
-    if(logged_in){
+    if (logged_in) {
       dispatch(getProducts({ page, limit, token }));
     }
   };
 
   useEffect(() => {
     getData();
-    return () => {}
+    return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -70,18 +84,19 @@ export default () => {
           <CatalogProductsModal />
         </div>
 
-        <div className="vertical-scrolling-menu pr-2" style={{maxHeight: 350}}>
-        {
-          items.length > 0 ? items.map(item => (
-            <div key={item.product_id}>
-              <Card item={item} />
-            </div>
-          )) : (
-            <div className="text-center">
-              Pilih Produk yang mau kamu kirim
-            </div>
-          )
-        }
+        <div
+          className="vertical-scrolling-menu pr-2"
+          style={{ maxHeight: 350 }}
+        >
+          {items.length > 0 ? (
+            items.map((item) => (
+              <div key={item.product_id}>
+                <Card item={item} />
+              </div>
+            ))
+          ) : (
+            <div className="text-center">Pilih Produk yang mau kamu kirim</div>
+          )}
         </div>
 
         {items && items.length > 0 && <Detail />}
