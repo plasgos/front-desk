@@ -41,6 +41,8 @@ const paymentProcessPackages = React.lazy(() =>
   import("./views/process-packages/payment/PaymentPage")
 );
 
+const Package = React.lazy(() => import("./views/package/add"));
+
 const routes = [
   { path: "/", exact: true, name: "Dashboard", component: Dashboard },
   { path: "/buyer", name: "Buyer", component: Checkout, exact: true },
@@ -80,7 +82,7 @@ const routes = [
   {
     path: "/send-package",
     name: "Send Package",
-    component: SendPackage,
+    component: Package,
   },
 
   {

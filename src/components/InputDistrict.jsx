@@ -57,6 +57,15 @@ export const InputDistrict = ({ onSelectDistrict }) => {
             // Set the color when focused
           },
         })}
+        classNames={{
+          control: (state) => state.isFocused ? 'rounded  border-primary' : 'rounded',
+        }}
+        styles={{
+          control: (baseStyles, state) => ({
+            ...baseStyles,
+            cursor: 'text'
+          }),
+        }}
       />
     </div>
   );

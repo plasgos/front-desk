@@ -1,5 +1,7 @@
-import InputDistrict from './InputDistrict';
+import {InputDistrict} from './InputDistrict';
+import Checkbox from './checkbox';
 
 export {
-  InputDistrict
+  InputDistrict,
+  Checkbox
 }
