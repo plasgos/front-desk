@@ -3,7 +3,7 @@ import React from "react";
 import { LiaReceiptSolid } from "react-icons/lia";
 import { formatPrice } from "../../../lib/format-price";
 
-export const TableResi = () => {
+export const TablePayment = () => {
   return (
     <div className="my-3 shadow-sm ">
       <table className="table">

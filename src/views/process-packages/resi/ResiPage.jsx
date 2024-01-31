@@ -1,14 +1,14 @@
 import React from "react";
-import { TablePackageHistory } from "../_components/TablePackageHistory";
 import LayoutProcessPackages from "../LayoutProcessPackage";
 import { FilterSectionResi } from "../_components/FilterSectionResi";
+import { TableResi } from "./TableResi";
 
 const ResiPage = () => {
   return (
     <LayoutProcessPackages>
       <div>
         <FilterSectionResi />
-        <TablePackageHistory />
+        <TableResi />
       </div>
     </LayoutProcessPackages>
   );

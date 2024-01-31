@@ -1,6 +1,6 @@
 import React from "react";
 import { FilterSectionNewPackage } from "../_components/FilterSectionNewPackage";
-import { TablePackageHistory } from "../_components/TablePackageHistory";
+import { TableNewProcessPackage } from "./TableNewProcessPackage";
 import LayoutProcessPackages from "../LayoutProcessPackage";
 
 const NewPackagePage = () => {
@@ -8,7 +8,7 @@ const NewPackagePage = () => {
     <LayoutProcessPackages>
       <div>
         <FilterSectionNewPackage />
-        <TablePackageHistory />
+        <TableNewProcessPackage />
       </div>
     </LayoutProcessPackages>
   );
