@@ -9,41 +9,54 @@ export const Summary = () => {
         style={{ gap: 12, borderTop: "2px solid #D8DBE0" }}
         className="p-3 d-flex flex-column"
       >
-        <div className="d-flex justify-content-end mb-2 ">
-          <div className="d-flex justify-content-between w-50">
-            <div className="font-weight-bold font-lg">
-              TOTAL HARGA (1 BARANG)
-            </div>
-            <div className="font-weight-bold font-lg">{formatPrice(60000)}</div>
-          </div>
-        </div>
-        <div className="d-flex justify-content-end ">
-          <div className="d-flex justify-content-between w-50">
-            <div>Total Ongkos Kirim (250 gr)</div>
-            <div className="font-weight-bold">{formatPrice(10000)}</div>
-          </div>
-        </div>
-        <div className="d-flex justify-content-end ">
-          <div className="d-flex justify-content-between w-50">
-            <div>Diskon Ongkos Kirim </div>
-            <div className="font-weight-bold"> - {formatPrice(10000)}</div>
-          </div>
-        </div>
+        <TextSummaryFormated
+          title="TOTAL HARGA (1 BARANG)"
+          price={60000}
+          isFontWeight
+        />
 
         <TextSummaryFormated
+          title="Total Ongkos Kirim (250 gr)"
+          price={10000}
+        />
+
+        <TextSummaryFormated
+          title="Diskon Ongkos Kirim"
+          price={10000}
+          isDiscount
+        />
+
+        <TextSummaryFormated
+          withBorder
           title="Total Diskon Barang"
           isDiscount
           price={18000}
         />
-        <TextSummaryFormated title="TOTAL BELANJA" isFontWeight price={42000} />
-        <TextSummaryFormated title="Biaya Jasa Aplikasi" price={1000} />
-        <TextSummaryFormated title="TOTAL TAGIHAN" isFontWeight price={43000} />
         <TextSummaryFormated
+          withBorder
+          title="TOTAL BELANJA"
+          isFontWeight
+          price={42000}
+        />
+        <TextSummaryFormated
+          withBorder
+          title="Biaya Jasa Aplikasi"
+          price={1000}
+        />
+        <TextSummaryFormated
+          withBorder
+          title="TOTAL TAGIHAN"
+          isFontWeight
+          price={43000}
+        />
+        <TextSummaryFormated
+          withBorder
           badgePromo
           title="Diskon hingga Rp.30.000"
           price={18216}
         />
         <TextSummaryFormated
+          withBorder
           badgePromo
           title="Bebas Ongkir Hingga Rp.20.000"
           price={17500}
