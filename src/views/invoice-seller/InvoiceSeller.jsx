@@ -6,6 +6,7 @@ import { ProductInfo } from "./_components/ProductInfo";
 import { usePDF } from "react-to-pdf";
 import { Summary } from "./_components/Summary";
 import { FooterInfo } from "./_components/FooterInfo";
+import Lunas from "../../assets/lunas.png";
 
 const InvoiceSeller = () => {
   const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
@@ -17,71 +18,90 @@ const InvoiceSeller = () => {
           Download
         </CButton>
       </div>
-      <div ref={targetRef} className="p-5 border">
-        <div className="d-flex justify-content-between align-items-center mb-3">
-          <div>
-            <img style={{ width: 200 }} src={plasgosLogo} alt="plasgos-logo" />
-          </div>
-          <div>
-            <div className="font-weight-bold text-right font-2xl mb-2">
-              INVOICE
-            </div>
-            <div className="text-primary font-weight-bold">
-              INV/20240113/MPL/3678513574
-            </div>
-          </div>
-        </div>
-
-        <div className="d-flex justify-content-between  mb-3">
-          <div>
-            <div className="font-weight-bold mb-3">DITERBITKAN ATAS NAMA</div>
+      <div style={{ position: "relative" }} ref={targetRef} className="p-5 ">
+        <img
+          src={Lunas}
+          alt="Background"
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: "70%",
+            objectFit: "contain", // memastikan gambar meliputi seluruh area
+            opacity: 0.2, // menetapkan opacity untuk gambar
+          }}
+        />
+        <div>
+          <div className="d-flex justify-content-between align-items-center mb-3">
             <div>
-              <span className="mr-5">Penjual</span>
-              <span className="mr-2">:</span>
-              <span className="font-weight-bold">Azarine Cosmetic</span>
+              <img
+                style={{ width: 200 }}
+                src={plasgosLogo}
+                alt="plasgos-logo"
+              />
+            </div>
+            <div>
+              <div className="font-weight-bold text-right font-2xl mb-2">
+                INVOICE
+              </div>
+              <div className="text-primary font-weight-bold">
+                INV/20240113/MPL/3678513574
+              </div>
             </div>
           </div>
-          <div style={{ maxWidth: 400 }}>
-            <div className="font-weight-bold font-font-2xl mb-3">UNTUK</div>
 
+          <div className="d-flex justify-content-between  mb-3">
             <div>
-              <span style={{ marginRight: 76 }}>Pembeli</span>
-              <span className="mr-2">:</span>
-              <span className="font-weight-bold">Dyan Kastutara</span>
+              <div className="font-weight-bold mb-3">DITERBITKAN ATAS NAMA</div>
+              <div>
+                <span className="mr-5">Penjual</span>
+                <span className="mr-2">:</span>
+                <span className="font-weight-bold">Azarine Cosmetic</span>
+              </div>
             </div>
+            <div style={{ maxWidth: 400 }}>
+              <div className="font-weight-bold font-font-2xl mb-3">UNTUK</div>
 
-            <div className="my-3">
-              <span className="mr-2">Tanggal Pembelian</span>
-              <span className="mr-2">:</span>
-              <span className="font-weight-bold">13 Januari 2024</span>
-            </div>
+              <div>
+                <span style={{ marginRight: 76 }}>Pembeli</span>
+                <span className="mr-2">:</span>
+                <span className="font-weight-bold">Dyan Kastutara</span>
+              </div>
 
-            <div className="my-3">
-              <div className="d-flex">
-                <div>
-                  <span style={{ whiteSpace: "nowrap" }} className="mr-2">
-                    Alamat Pengiriman
-                  </span>
-                  <span className="mr-2">:</span>
-                </div>
-                <div>
-                  <div className="font-weight-bold mb-2">
-                    Dyan Kastutara <span>(98642393882)</span>
+              <div className="my-3">
+                <span className="mr-2">Tanggal Pembelian</span>
+                <span className="mr-2">:</span>
+                <span className="font-weight-bold">13 Januari 2024</span>
+              </div>
+
+              <div className="my-3">
+                <div className="d-flex">
+                  <div>
+                    <span style={{ whiteSpace: "nowrap" }} className="mr-2">
+                      Alamat Pengiriman
+                    </span>
+                    <span className="mr-2">:</span>
                   </div>
-                  <span style={{ lineHeight: 1.5 }}>
-                    Graha Mas Pemuda Jl. Pemuda RT 20/RW 6 Jati Kec. Pulo gadung
-                    Kota Jakarta Timur Daerah Khusus Ibukota Jakarta 13220
-                    Indonesia
-                  </span>
+                  <div>
+                    <div className="font-weight-bold mb-2">
+                      Dyan Kastutara <span>(98642393882)</span>
+                    </div>
+                    <span style={{ lineHeight: 1.5 }}>
+                      Graha Mas Pemuda Jl. Pemuda RT 20/RW 6 Jati Kec. Pulo
+                      gadung Kota Jakarta Timur Daerah Khusus Ibukota Jakarta
+                      13220 Indonesia
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <ProductInfo />
-        <Summary />
-        <FooterInfo />
+          <ProductInfo />
+          <Summary />
+          <FooterInfo />
+        </div>
       </div>
     </div>
   );

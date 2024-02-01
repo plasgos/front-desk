@@ -17,7 +17,7 @@ export const TextSummaryFormated = ({
       >
         <div>
           {badgePromo && (
-            <CBadge color="success" className="my-1">
+            <CBadge color="primary" className="my-1">
               Promo Plasgos
             </CBadge>
           )}
