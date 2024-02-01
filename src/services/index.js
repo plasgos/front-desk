@@ -4,6 +4,7 @@ import warehouses from "./warehouses";
 import products from "./products";
 import checkcost from "./checkcost";
 import product from "./product";
+import packages from "./package";
 
 export default {
   login,
@@ -11,5 +12,6 @@ export default {
   warehouses,
   products,
   checkcost,
-  product
+  product,
+  packages,
 };

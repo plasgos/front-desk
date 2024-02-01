@@ -1,5 +1,4 @@
 import React from "react";
-import { formatPrice } from "../../../lib/format-price";
 import { TextSummaryFormated } from "./TextSummaryFormated";
 
 export const Summary = () => {

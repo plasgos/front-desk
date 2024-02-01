@@ -11,7 +11,7 @@ import { LiaShippingFastSolid } from "react-icons/lia";
 import { TbTruckReturn } from "react-icons/tb";
 
 const statusToIcon = {
-  pending: <MdPendingActions size={36} />,
+  waiting: <MdPendingActions size={36} />,
   shipping: <LiaShippingFastSolid size={36} />,
   done: <MdCheckCircle size={36} />,
   return: <TbTruckReturn size={36} />,
@@ -19,7 +19,7 @@ const statusToIcon = {
 };
 
 const progressPackage = [
-  { status: "pending", value: 5, title: "Belum Di Expedisi", url: "/pending" },
+  { status: "waiting", value: 5, title: "Belum Di Expedisi", url: "/waiting" },
   { status: "shipping", value: 5, title: "Pengiriman", url: "/shipping" },
   { status: "done", value: 5, title: "Selesai", url: "/done" },
   { status: "return", value: 5, title: "Return", url: "/return" },

@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
 import LayoutPackageHistory from "../LayoutPackageHistory";
-import { useDispatch, useSelector } from "react-redux";
-import { getHistoryShipped } from "../../../redux/modules/package/reducer";
 import { TablePackageHistory } from "../_components/TablePackageHistory";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getHistoryWaitingPickup } from "../../../redux/modules/package/reducer";
 import { FilterSection } from "../_components/FilterSection";
 
-const ShippingPackagePage = () => {
+const PendingPackagePage = () => {
   const { history } = useSelector((state) => state.package);
-  console.log("🚀 ~ ShippingPackagePage ~ history:", history);
   const { token, logged_in } = useSelector((state) => state.login);
-  const dispacth = useDispatch();
 
   const [filterInvoice, setFilterInvoice] = useState("");
   const [filterPackageType, setFilterPackageType] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const dispacth = useDispatch();
 
   const getData = () => {
     if (logged_in) {
       dispacth(
-        getHistoryShipped({
+        getHistoryWaitingPickup({
           token,
           filter: filterPackageType,
           start: startDate,
@@ -40,15 +40,17 @@ const ShippingPackagePage = () => {
 
   return (
     <LayoutPackageHistory>
-      <div>Shipping</div>
-      <FilterSection
-        setFilterInvoice={setFilterInvoice}
-        setFilterPackageType={setFilterPackageType}
-        setStartDate={setStartDate}
-        setEndDate={setEndDate}
-      />
-      <TablePackageHistory history={history.data} />
+      <div>
+        <FilterSection
+          setFilterInvoice={setFilterInvoice}
+          setFilterPackageType={setFilterPackageType}
+          setStartDate={setStartDate}
+          setEndDate={setEndDate}
+        />
+        <TablePackageHistory history={history.data} />
+      </div>
     </LayoutPackageHistory>
   );
 };
-export default ShippingPackagePage;
+
+export default PendingPackagePage;

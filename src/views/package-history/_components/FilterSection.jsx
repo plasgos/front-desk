@@ -14,11 +14,15 @@ import {
   CLabel,
 } from "@coreui/react";
 
-import { FaRegCircleQuestion } from "react-icons/fa6";
 import { IoSearch } from "react-icons/io5";
 import { FaRegFileExcel } from "react-icons/fa";
 
-export const FilterSection = () => {
+export const FilterSection = ({
+  setFilterInvoice,
+  setFilterPackageType,
+  setStartDate,
+  setEndDate,
+}) => {
   const [state, setState] = useState({
     start: moment().subtract(29, "days"),
     end: moment(),
@@ -29,6 +33,15 @@ export const FilterSection = () => {
     setState({ start, end });
   };
 
+  const [invoice, setInvoice] = useState("");
+  const [packageType, setPackageType] = useState("");
+  const handleSearch = () => {
+    setFilterInvoice(invoice);
+    setFilterPackageType(packageType);
+    setStartDate(moment(start._i).format("DD-MM-YYYY"));
+    setEndDate(moment(end._i).format("DD-MM-YYYY"));
+  };
+
   return (
     <div className="shadow-sm  p-3 mt-3">
       <div
@@ -37,7 +50,11 @@ export const FilterSection = () => {
       >
         <div style={{ flexGrow: 1 }}>
           <CLabel className="font-weight-bold">Cari</CLabel>
-          <CInput type="text" />
+          <CInput
+            value={invoice}
+            onChange={(e) => setInvoice(e.target.value)}
+            type="text"
+          />
         </div>
         <div style={{ width: 200 }}>
           <CLabel className="font-weight-bold">Tanggal</CLabel>
@@ -47,6 +64,12 @@ export const FilterSection = () => {
               endDate: end.toDate(),
               alwaysShowCalendars: true,
               showCustomRangeLabel: false,
+              minDate:
+                moment().subtract(2, "year").toDate() >
+                moment("2024-01-01T00:00:00").toDate()
+                  ? moment().subtract(2, "year").toDate()
+                  : moment("2024-01-01T00:00:00").toDate(),
+              maxDate: moment().toDate(),
               ranges: {
                 "Last 7 Days": [
                   moment().subtract(7, "days").toDate(),
@@ -62,32 +85,16 @@ export const FilterSection = () => {
                 ],
               },
               autoApply: true,
+              locale: {
+                format: "DD-MM-YYYY",
+              },
             }}
             onCallback={handleCallback}
           >
             <input type="text" className="form-control" />
           </DateRangePicker>
         </div>
-        <div>
-          <div className="d-flex justify-content-between align-items-center">
-            <div className="font-weight-bold">Tipe Tanggal</div>
-            <FaRegCircleQuestion />
-          </div>
-          <CDropdown className="mt-2">
-            <CDropdownToggle
-              style={{ width: 200 }}
-              caret
-              className="border d-flex justify-content-between align-items-center"
-            >
-              Paket Dibuat
-            </CDropdownToggle>
-            <CDropdownMenu style={{ width: 200 }}>
-              <CDropdownItem style={{ cursor: "pointer" }} header>
-                Header
-              </CDropdownItem>
-            </CDropdownMenu>
-          </CDropdown>
-        </div>
+
         <div>
           <div className="font-weight-bold">jenis Paket</div>
           <CDropdown className="mt-2">
@@ -96,11 +103,20 @@ export const FilterSection = () => {
               caret
               className="border d-flex justify-content-between align-items-center"
             >
-              Semua(COD/Non COD)
+              {packageType ? packageType.toUpperCase() : "Semua(COD/Non COD"}
             </CDropdownToggle>
             <CDropdownMenu style={{ width: 200 }}>
-              <CDropdownItem style={{ cursor: "pointer" }} header>
-                Header
+              <CDropdownItem
+                onClick={() => setPackageType("cod")}
+                style={{ cursor: "pointer" }}
+              >
+                COD
+              </CDropdownItem>
+              <CDropdownItem
+                onClick={() => setPackageType("non-cod")}
+                style={{ cursor: "pointer" }}
+              >
+                NON COD
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
@@ -125,7 +141,11 @@ export const FilterSection = () => {
       </div>
 
       <div style={{ gap: 10 }} className="d-flex justify-content-end mt-3">
-        <CButton style={{ whiteSpace: "nowrap" }} color="primary">
+        <CButton
+          onClick={handleSearch}
+          style={{ whiteSpace: "nowrap" }}
+          color="primary"
+        >
           <IoSearch className="mr-2" />
           Cari
         </CButton>

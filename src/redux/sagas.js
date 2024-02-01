@@ -24,6 +24,6 @@ export default function* rootSaga() {
     all(shippingSaga),
     all(packageSaga),
     all(warehouseSaga),
-    all(productSaga)
+    all(productSaga),
   ]);
 }

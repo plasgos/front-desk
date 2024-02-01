@@ -7,7 +7,7 @@ const PackageHistory = React.lazy(() =>
   import("./views/package-history/LayoutPackageHistory")
 );
 const PackageHistoryPending = React.lazy(() =>
-  import("./views/package-history/pending/PendingPage")
+  import("./views/package-history/waiting/WaitingPage")
 );
 const PackageHistoryDone = React.lazy(() =>
   import("./views/package-history/done/DonePackage")
@@ -73,8 +73,8 @@ const routes = [
     component: PackageHistoryDone,
   },
   {
-    path: "/buyer/package-history/pending",
-    name: "Package-history-pending",
+    path: "/buyer/package-history/waiting",
+    name: "Package-history-waiting",
     component: PackageHistoryPending,
   },
 
