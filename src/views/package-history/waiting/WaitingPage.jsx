@@ -6,14 +6,19 @@ import { useDispatch } from "react-redux";
 import { getHistoryWaitingPickup } from "../../../redux/modules/package/reducer";
 import { FilterSection } from "../_components/FilterSection";
 
+import moment from "moment";
+
 const PendingPackagePage = () => {
   const { history } = useSelector((state) => state.package);
+  console.log("🚀 ~ PendingPackagePage ~ history:", history.data);
   const { token, logged_in } = useSelector((state) => state.login);
 
   const [filterInvoice, setFilterInvoice] = useState("");
   const [filterPackageType, setFilterPackageType] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(
+    moment().subtract(90, "days").format("DD-MM-YYYY")
+  );
+  const [endDate, setEndDate] = useState(moment().format("DD-MM-YYYY"));
   const dispacth = useDispatch();
 
   const getData = () => {

@@ -16,6 +16,12 @@ import {
 
 import { IoSearch } from "react-icons/io5";
 import { FaRegFileExcel } from "react-icons/fa";
+import ReactExport from "react-data-export";
+import { useSelector } from "react-redux";
+import ExportDataExcel from "./ExportExcelData";
+
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
 
 export const FilterSection = ({
   setFilterInvoice,
@@ -23,8 +29,10 @@ export const FilterSection = ({
   setStartDate,
   setEndDate,
 }) => {
+  const { history } = useSelector((state) => state.package);
+
   const [state, setState] = useState({
-    start: moment().subtract(29, "days"),
+    start: moment().subtract(90, "days"),
     end: moment(),
   });
 
@@ -38,7 +46,7 @@ export const FilterSection = ({
   const handleSearch = () => {
     setFilterInvoice(invoice);
     setFilterPackageType(packageType);
-    setStartDate(moment(start._i).format("DD-MM-YYYY"));
+    setStartDate(moment(!start._i ? start._d : start._i).format("DD-MM-YYYY"));
     setEndDate(moment(end._i).format("DD-MM-YYYY"));
   };
 
@@ -150,10 +158,20 @@ export const FilterSection = ({
           Cari
         </CButton>
 
-        <CButton style={{ whiteSpace: "nowrap" }} color="primary">
-          <FaRegFileExcel className="mr-2" />
-          Export Excel
-        </CButton>
+        <ExcelFile
+          filename="Shipping History"
+          element={
+            <CButton style={{ whiteSpace: "nowrap" }} color="primary">
+              <FaRegFileExcel className="mr-2" />
+              Export Excel
+            </CButton>
+          }
+        >
+          <ExcelSheet
+            dataSet={ExportDataExcel(history)}
+            name="Shipping History"
+          />
+        </ExcelFile>
       </div>
     </div>
   );

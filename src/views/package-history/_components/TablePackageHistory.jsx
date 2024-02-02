@@ -112,10 +112,12 @@ export const TablePackageHistory = ({ history }) => {
                     <CBadge color="success my-2"> Bisa Klaim</CBadge>
                   </td>
                   <td className="align-middle">
-                    <div style={{ cursor: "pointer" }}>
+                    <div>
                       <DetailsModal history={history} />
                     </div>
-                    <div className="text-center">Details</div>
+                    <div style={{ cursor: "pointer" }} className="text-center">
+                      Details
+                    </div>
                   </td>
                 </tr>
               );
