@@ -47,6 +47,10 @@ const InvoiceSeller = React.lazy(() =>
   import("./views/invoice-seller/InvoiceSeller")
 );
 
+const ProductDetail = React.lazy(() =>
+  import("./views/product-detail/ProductDetail")
+);
+
 const routes = [
   { path: "/", exact: true, name: "Dashboard", component: Dashboard },
   { path: "/buyer", name: "Buyer", component: Checkout, exact: true },
@@ -118,6 +122,11 @@ const routes = [
     path: "/invoice-seller",
     name: "Invoice Seller",
     component: InvoiceSeller,
+  },
+  {
+    path: "/product-detail",
+    name: "Product Detail",
+    component: ProductDetail,
   },
 ];
 
