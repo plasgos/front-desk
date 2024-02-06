@@ -7,7 +7,7 @@ import { Discussions } from "./Discussions";
 const ProductDetail = () => {
   return (
     <>
-      <div style={{ gap: 40 }} className="d-flex">
+      <div style={{ gap: 40 }} className="d-flex justify-content-between">
         <div>
           <div
             style={{
@@ -36,7 +36,7 @@ const ProductDetail = () => {
             </div>
           </div>
         </div>
-        <div className="">
+        <div style={{ flexGrow: 1 }} className="">
           <div>
             <div className="font-lg font-weight-bold mb-2">
               Banpresto - Attack on Titan The Final Season - Levi Special -

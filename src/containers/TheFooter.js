@@ -3,12 +3,7 @@ import { CFooter } from "@coreui/react";
 
 const TheFooter = () => {
   return (
-    // <CFooter fixed={false}>
-    // </CFooter>
-    <div
-      className="d-flex justify-content-between align-items-center p-3 bg-secondary"
-      style={{ height: 200 }}
-    >
+    <CFooter fixed={false}>
       <div>
         <a href="https://coreui.io" target="_blank" rel="noopener noreferrer">
           CoreUI
@@ -25,7 +20,7 @@ const TheFooter = () => {
           CoreUI for React
         </a>
       </div>
-    </div>
+    </CFooter>
   );
 };
 

@@ -62,6 +62,12 @@ export default [
     icon: "cil-drop",
   },
   {
+    _tag: "CSidebarNavItem",
+    name: "Mutation",
+    to: "/mutation",
+    icon: "cil-drop",
+  },
+  {
     _tag: "CSidebarNavTitle",
     _children: ["Extras"],
   },

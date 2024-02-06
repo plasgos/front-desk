@@ -51,6 +51,17 @@ const ProductDetail = React.lazy(() =>
   import("./views/product-detail/ProductDetail")
 );
 
+const Mutation = React.lazy(() =>
+  import("./views/mutation/LayoutMutationPage")
+);
+
+const estimateBalance = React.lazy(() =>
+  import("./views/mutation/estimate-balance/EstimateBalancePage")
+);
+const activeBalance = React.lazy(() =>
+  import("./views/mutation/active-balance/ActiveBalancePage")
+);
+
 const routes = [
   { path: "/", exact: true, name: "Dashboard", component: Dashboard },
   { path: "/buyer", name: "Buyer", component: Checkout, exact: true },
@@ -127,6 +138,21 @@ const routes = [
     path: "/product-detail",
     name: "Product Detail",
     component: ProductDetail,
+  },
+  {
+    path: "/mutation/estimate-balance",
+    name: "Estimate Balance",
+    component: estimateBalance,
+  },
+  {
+    path: "/mutation/active-balance",
+    name: "Active Balance",
+    component: activeBalance,
+  },
+  {
+    path: "/mutation",
+    name: "Mutation",
+    component: Mutation,
   },
 ];
 
