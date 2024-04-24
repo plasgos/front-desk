@@ -62,6 +62,10 @@ const activeBalance = React.lazy(() =>
   import("./views/mutation/active-balance/ActiveBalancePage")
 );
 
+const InvoiceLabelSetting = React.lazy(() =>
+  import("./views/invoice-label-setting/InvoiceLabelSetting")
+);
+
 const routes = [
   { path: "/", exact: true, name: "Dashboard", component: Dashboard },
   { path: "/buyer", name: "Buyer", component: Checkout, exact: true },
@@ -153,6 +157,11 @@ const routes = [
     path: "/mutation",
     name: "Mutation",
     component: Mutation,
+  },
+  {
+    path: "/invoice-label-setting",
+    name: "Invoice Label Setting",
+    component: InvoiceLabelSetting,
   },
 ];
 
