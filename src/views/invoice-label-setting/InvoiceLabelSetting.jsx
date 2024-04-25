@@ -8,6 +8,7 @@ import {
 } from "react-icons/io";
 import { Invoice } from "./Invoice";
 import { useReactToPrint } from "react-to-print";
+import { Margin, Resolution, usePDF } from "react-to-pdf";
 
 const invoiceData = [
   {
@@ -61,13 +62,144 @@ const invoiceData = [
       qty: 1,
     },
   },
+
+  {
+    id: 3,
+    barcode: "JO7128534127",
+    isCod: true,
+    price: 10000,
+    service: "REG",
+    qty: 1,
+    weight: 500,
+    receiver: {
+      name: "John Doe",
+      phoneNumber: "089721231",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    sender: {
+      name: "John Kenedy",
+      phoneNumber: "087562721",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    products: {
+      name: "Label stiker barcode thermal 50x20",
+      description:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, impedit",
+      qty: 1,
+    },
+  },
+
+  {
+    id: 4,
+    barcode: "JO7128534127",
+    isCod: true,
+    price: 10000,
+    service: "REG",
+    qty: 1,
+    weight: 500,
+    receiver: {
+      name: "John Doe",
+      phoneNumber: "089721231",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    sender: {
+      name: "John Kenedy",
+      phoneNumber: "087562721",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    products: {
+      name: "Label stiker barcode thermal 50x20",
+      description:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, impedit",
+      qty: 1,
+    },
+  },
+
+  {
+    id: 5,
+    barcode: "JO7128534127",
+    isCod: true,
+    price: 10000,
+    service: "REG",
+    qty: 1,
+    weight: 500,
+    receiver: {
+      name: "John Doe",
+      phoneNumber: "089721231",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    sender: {
+      name: "John Kenedy",
+      phoneNumber: "087562721",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    products: {
+      name: "Label stiker barcode thermal 50x20",
+      description:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, impedit",
+      qty: 1,
+    },
+  },
+
+  {
+    id: 6,
+    barcode: "JO7128534127",
+    isCod: true,
+    price: 10000,
+    service: "REG",
+    qty: 1,
+    weight: 500,
+    receiver: {
+      name: "John Doe",
+      phoneNumber: "089721231",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    sender: {
+      name: "John Kenedy",
+      phoneNumber: "087562721",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    products: {
+      name: "Label stiker barcode thermal 50x20",
+      description:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, impedit",
+      qty: 1,
+    },
+  },
 ];
 
 const InvoiceLabelSetting = () => {
-  const [scale, setScale] = useState(1); // State untuk zoom
-
+  const [scale, setScale] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSelectedA4, setisSelecteA4] = useState(false);
   const [isSelectedA6, setisSelecteA6] = useState(true);
+
+  const { toPDF, targetRef } = usePDF({
+    method: "open",
+    filename: "multipage-example.pdf",
+    resolution: Resolution.NORMAL,
+
+    page: {
+      format: "A6",
+    },
+  });
+
+  const handleDownloadPdf = async () => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          setScale(1);
+          toPDF();
+          resolve(); // Tandai bahwa setTimeout telah selesai
+        }, 1000);
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false); // Tetapkan isLoading ke false setelah semua tugas selesai
+    }
+  };
 
   const handleSelectA4 = () => {
     setisSelecteA4(true);
@@ -80,10 +212,28 @@ const InvoiceLabelSetting = () => {
   };
 
   const componentRef = useRef();
+
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
     removeAfterPrint: false,
   });
+
+  const handlePrinting = async () => {
+    setIsLoading(true);
+    try {
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          setScale(1);
+          handlePrint();
+          resolve(); // Tandai bahwa setTimeout telah selesai
+        }, 1000);
+      });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false); // Tetapkan isLoading ke false setelah semua tugas selesai
+    }
+  };
 
   const handleZoomIn = () => {
     const newScale = scale + 0.1;
@@ -117,28 +267,34 @@ const InvoiceLabelSetting = () => {
           }}
         >
           <div
-            className="preview-content mx-auto"
+            className="d-flex flex-column mx-auto"
             style={{
-              transformOrigin: "top left", // Atur titik asal transformasi
-              transform: `scale(${scale})`, // Atur skala konten
-              transition: "transform 0.5s ease", // Animasi transisi saat zoom
               width: isSelectedA6 ? "105mm" : "210mm",
+              transformOrigin: "top left",
+              transform: `scale(${scale})`,
+              transition: "transform 0.5s ease",
               // height: isSelectedA6 ? "149mm" : "297mm",
+              // height: "auto",
               height: "auto",
-
-              backgroundColor: "white",
-              padding: 10,
             }}
+            ref={targetRef}
           >
-            <div
-              ref={componentRef}
-              style={isSelectedA6 ? { rowGap: 10 } : { gap: 10 }}
-              className={`d-flex ${
-                isSelectedA6 ? "flex-column" : "flex-row"
-              }  align-items-center`}
-            >
-              {invoiceData.map((invoice, index) => {
-                return (
+            {invoiceData.map((invoice, index) => {
+              return (
+                <div
+                  // className={`d-flex ${
+                  //   isSelectedA6 ? "flex-column " : "flex-row flex-wrap   "
+                  // }  align-items-center mx-auto`}
+                  style={{
+                    width: isSelectedA6 ? "105mm" : "210mm",
+                    height: "auto",
+                    // rowGap: 10,
+                    // gap: 10,
+                    backgroundColor: "white",
+                    // paddingBottom: 10,
+                    // marginBottom: 10,
+                  }}
+                >
                   <div
                     key={invoice.id}
                     className={`invoice-container ${
@@ -146,6 +302,8 @@ const InvoiceLabelSetting = () => {
                     }`}
                   >
                     <Invoice
+                      isSelectedA4={isSelectedA4}
+                      isSelectedA6={isSelectedA6}
                       // ref={componentRef}
                       barcode={invoice.barcode}
                       isCod={invoice.isCod}
@@ -158,9 +316,9 @@ const InvoiceLabelSetting = () => {
                       products={invoice.products}
                     />
                   </div>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
         <div
@@ -191,7 +349,7 @@ const InvoiceLabelSetting = () => {
         </div>
       </div>
 
-      <div className="col-12  col-md-4">
+      <div className="col-12  col-md-4 ">
         <CCard style={{ borderRadius: 8 }} className="shadow-sm">
           <CCardBody>
             <div>
@@ -243,11 +401,24 @@ const InvoiceLabelSetting = () => {
             </div>
 
             <CButton
-              onClick={handlePrint}
+              disabled={isLoading}
+              // onClick={handlePrinting}
+              onClick={handleDownloadPdf}
               className="btn-block"
               color="primary"
             >
               Cetak Label
+              {/* {isLoading && (
+                <Oval
+                  visible={true}
+                  height="80"
+                  width="80"
+                  color="#4fa94d"
+                  ariaLabel="oval-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
+              )} */}
             </CButton>
           </CCardBody>
         </CCard>

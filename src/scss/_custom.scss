@@ -187,64 +187,64 @@ div.horizontal-scrolling-menu::-webkit-scrollbar-thumb {
 div.horizontal-scrolling-menu::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-div.print-page {
-  width: 1024px;
-  min-height: auto;
-  margin: 5px auto;
-  border-radius: 5px;
-  background: white;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-  columns: 2;
-  column-gap: 3rem;
-  column-rule: 1px solid #000;
-  column-rule-style: dashed;
-  column-fill: balance;
-  padding: 2rem;
-  > * + * {
-    margin-top: 1rem;
-  }
-  .invoice {
-    width: 100%;
-    height: auto;
-    page-break-before: auto;
-    page-break-inside: avoid;
-    page-break-after: auto;
-  }
-}
-div.print-body {
-  max-width: 1024px;
-  min-height: auto;
-  margin: auto;
-}
+// div.print-page {
+//   width: 1024px;
+//   min-height: auto;
+//   margin: 5px auto;
+//   border-radius: 5px;
+//   background: white;
+//   box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+//   columns: 2;
+//   column-gap: 3rem;
+//   column-rule: 1px solid #000;
+//   column-rule-style: dashed;
+//   column-fill: balance;
+//   padding: 2rem;
+//   > * + * {
+//     margin-top: 1rem;
+//   }
+//   .invoice {
+//     width: 100%;
+//     height: auto;
+//     page-break-before: auto;
+//     page-break-inside: avoid;
+//     page-break-after: auto;
+//   }
+// }
+// div.print-body {
+//   max-width: 1024px;
+//   min-height: auto;
+//   margin: auto;
+// }
 
-@page {
-  size: A4;
-  margin: 0;
-}
-@media print {
-  html,
-  body {
-    width: auto;
-    height: auto;
-    padding: 0;
-    margin: 0;
-  }
-  .page-print {
-    margin: 0;
-    border: initial;
-    border-radius: initial;
-    width: initial;
-    min-height: initial;
-    box-shadow: initial;
-    background: initial;
-    page-break-after: always;
-  }
-  .invoice {
-    break-inside: avoid;
-    display: inline-grid;
-    page-break-inside: avoid;
-  }
-}
+// @page {
+//   size: A4;
+//   margin: 0;
+// }
+// @media print {
+//   html,
+//   body {
+//     width: auto;
+//     height: auto;
+//     padding: 0;
+//     margin: 0;
+//   }
+//   .page-print {
+//     margin: 0;
+//     border: initial;
+//     border-radius: initial;
+//     width: initial;
+//     min-height: initial;
+//     box-shadow: initial;
+//     background: initial;
+//     page-break-after: always;
+//   }
+//   .invoice {
+//     break-inside: avoid;
+//     display: inline-grid;
+//     page-break-inside: avoid;
+//   }
+// }
 
 li.page-item.active .page-link {
   z-index: 0;
@@ -380,17 +380,34 @@ ul.nav.nav-tabs .active.nav-link {
 @media print {
   html,
   body {
-    height: 100%; /* Use 100% here to support printing more than a single page*/
+    height: 100vh; /* Use 100% here to support printing more than a single page*/
     margin: 0px !important;
-    padding: 10px !important;
+    padding: 5px !important;
     overflow: hidden;
   }
 
   .page-break {
     display: block;
-    page-break-before: auto;
+    page-break-before: always;
   }
 }
+
+// @media print {
+//   html,
+//   body {
+//     height: 100% !important;
+//     overflow: initial !important;
+//     padding: 5px;
+//     -webkit-print-color-adjust: exact;
+//   }
+// }
+
+// @media print {
+//   .page-break {
+//     display: block;
+//     page-break-before: auto;
+//   }
+// }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
