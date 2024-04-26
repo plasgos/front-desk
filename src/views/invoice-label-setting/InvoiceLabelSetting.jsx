@@ -10,7 +10,169 @@ import { Invoice } from "./Invoice";
 import { useReactToPrint } from "react-to-print";
 import { Margin, Resolution, usePDF } from "react-to-pdf";
 
-const invoiceData = [
+// import { Page, Document } from "@react-pdf/renderer";
+
+// import { PDFDownloadLink } from "@react-pdf/renderer";
+// import { PDFViewer } from "@react-pdf/renderer";
+// import InvoiceDownload from "./InvoiceDownload";
+
+export const invoiceData = [
+  {
+    id: 1,
+    barcode: "JO7128534127",
+    isCod: true,
+    price: 10000,
+    service: "REG",
+    qty: 1,
+    weight: 500,
+    receiver: {
+      name: "John Doe",
+      phoneNumber: "089721231",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    sender: {
+      name: "John Kenedy",
+      phoneNumber: "087562721",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    products: {
+      name: "Label stiker barcode thermal 50x20",
+      description:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, impedit",
+      qty: 1,
+    },
+  },
+
+  {
+    id: 2,
+    barcode: "JO7128534127",
+    isCod: true,
+    price: 10000,
+    service: "REG",
+    qty: 1,
+    weight: 500,
+    receiver: {
+      name: "John Doe",
+      phoneNumber: "089721231",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    sender: {
+      name: "John Kenedy",
+      phoneNumber: "087562721",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    products: {
+      name: "Label stiker barcode thermal 50x20",
+      description:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, impedit",
+      qty: 1,
+    },
+  },
+
+  {
+    id: 3,
+    barcode: "JO7128534127",
+    isCod: true,
+    price: 10000,
+    service: "REG",
+    qty: 1,
+    weight: 500,
+    receiver: {
+      name: "John Doe",
+      phoneNumber: "089721231",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    sender: {
+      name: "John Kenedy",
+      phoneNumber: "087562721",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    products: {
+      name: "Label stiker barcode thermal 50x20",
+      description:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, impedit",
+      qty: 1,
+    },
+  },
+
+  {
+    id: 4,
+    barcode: "JO7128534127",
+    isCod: true,
+    price: 10000,
+    service: "REG",
+    qty: 1,
+    weight: 500,
+    receiver: {
+      name: "John Doe",
+      phoneNumber: "089721231",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    sender: {
+      name: "John Kenedy",
+      phoneNumber: "087562721",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    products: {
+      name: "Label stiker barcode thermal 50x20",
+      description:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, impedit",
+      qty: 1,
+    },
+  },
+
+  {
+    id: 5,
+    barcode: "JO7128534127",
+    isCod: true,
+    price: 10000,
+    service: "REG",
+    qty: 1,
+    weight: 500,
+    receiver: {
+      name: "John Doe",
+      phoneNumber: "089721231",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    sender: {
+      name: "John Kenedy",
+      phoneNumber: "087562721",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    products: {
+      name: "Label stiker barcode thermal 50x20",
+      description:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, impedit",
+      qty: 1,
+    },
+  },
+
+  {
+    id: 6,
+    barcode: "JO7128534127",
+    isCod: true,
+    price: 10000,
+    service: "REG",
+    qty: 1,
+    weight: 500,
+    receiver: {
+      name: "John Doe",
+      phoneNumber: "089721231",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    sender: {
+      name: "John Kenedy",
+      phoneNumber: "087562721",
+      address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Tmimur",
+    },
+    products: {
+      name: "Label stiker barcode thermal 50x20",
+      description:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, impedit",
+      qty: 1,
+    },
+  },
+
   {
     id: 1,
     barcode: "JO7128534127",
@@ -170,6 +332,7 @@ const invoiceData = [
 
 const InvoiceLabelSetting = () => {
   const [scale, setScale] = useState(1);
+  const [isPreview, setIsPreview] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isSelectedA4, setisSelecteA4] = useState(false);
   const [isSelectedA6, setisSelecteA6] = useState(true);
@@ -178,7 +341,6 @@ const InvoiceLabelSetting = () => {
     method: "open",
     filename: "multipage-example.pdf",
     resolution: Resolution.NORMAL,
-
     page: {
       format: "A6",
     },
@@ -186,6 +348,7 @@ const InvoiceLabelSetting = () => {
 
   const handleDownloadPdf = async () => {
     setIsLoading(true);
+    setIsPreview(false);
     try {
       await new Promise((resolve) => {
         setTimeout(() => {
@@ -197,6 +360,7 @@ const InvoiceLabelSetting = () => {
     } catch (error) {
       console.log(error);
     } finally {
+      setIsPreview(true);
       setIsLoading(false); // Tetapkan isLoading ke false setelah semua tugas selesai
     }
   };
@@ -255,67 +419,56 @@ const InvoiceLabelSetting = () => {
     <div className="row">
       <div className="col-12 col-md-8">
         <div
-          className="component-preview "
+          className="component-preview"
           style={{
             position: "relative", // Atur posisi relatif untuk mengatur tombol floating
             // width: "400px",
-            height: "400px",
+            height: "420px",
             overflow: "auto",
 
             backgroundColor: "gray",
             padding: 20,
           }}
         >
+          {/* <PDFViewer>
+            <InvoiceDownload />
+          </PDFViewer> */}
+
           <div
-            className="d-flex flex-column mx-auto"
+            className="d-flex flex-column align-items-center justify-content-center mx-auto"
             style={{
               width: isSelectedA6 ? "105mm" : "210mm",
               transformOrigin: "top left",
               transform: `scale(${scale})`,
               transition: "transform 0.5s ease",
-              // height: isSelectedA6 ? "149mm" : "297mm",
-              // height: "auto",
               height: "auto",
+              rowGap: isPreview ? 10 : 0,
             }}
             ref={targetRef}
           >
             {invoiceData.map((invoice, index) => {
               return (
                 <div
-                  // className={`d-flex ${
-                  //   isSelectedA6 ? "flex-column " : "flex-row flex-wrap   "
-                  // }  align-items-center mx-auto`}
-                  style={{
-                    width: isSelectedA6 ? "105mm" : "210mm",
-                    height: "auto",
-                    // rowGap: 10,
-                    // gap: 10,
-                    backgroundColor: "white",
-                    // paddingBottom: 10,
-                    // marginBottom: 10,
-                  }}
+                  key={invoice.id}
+
+                  // className={`invoice-container ${
+                  //   index !== 0 ? "page-break" : ""
+                  // }`}
                 >
-                  <div
-                    key={invoice.id}
-                    className={`invoice-container ${
-                      index !== 0 ? "page-break" : ""
-                    }`}
-                  >
-                    <Invoice
-                      isSelectedA4={isSelectedA4}
-                      isSelectedA6={isSelectedA6}
-                      // ref={componentRef}
-                      barcode={invoice.barcode}
-                      isCod={invoice.isCod}
-                      price={invoice.price}
-                      service={invoice.service}
-                      qty={invoice.qty}
-                      weight={invoice.weight}
-                      receiver={invoice.receiver}
-                      sender={invoice.sender}
-                      products={invoice.products}
-                    />
-                  </div>
+                  <Invoice
+                    isSelectedA4={isSelectedA4}
+                    isSelectedA6={isSelectedA6}
+                    // ref={componentRef}
+                    barcode={invoice.barcode}
+                    isCod={invoice.isCod}
+                    price={invoice.price}
+                    service={invoice.service}
+                    qty={invoice.qty}
+                    weight={invoice.weight}
+                    receiver={invoice.receiver}
+                    sender={invoice.sender}
+                    products={invoice.products}
+                  />
                 </div>
               );
             })}
@@ -400,6 +553,18 @@ const InvoiceLabelSetting = () => {
               </div>
             </div>
 
+            {/* <PDFDownloadLink document={<InvoiceDownload />} fileName="invoice">
+              
+
+              {({ loading }) =>
+                loading ? (
+                  <button>Loading Document...</button>
+                ) : (
+                  <button>Download</button>
+                )
+              }
+            </PDFDownloadLink> */}
+
             <CButton
               disabled={isLoading}
               // onClick={handlePrinting}
@@ -408,17 +573,6 @@ const InvoiceLabelSetting = () => {
               color="primary"
             >
               Cetak Label
-              {/* {isLoading && (
-                <Oval
-                  visible={true}
-                  height="80"
-                  width="80"
-                  color="#4fa94d"
-                  ariaLabel="oval-loading"
-                  wrapperStyle={{}}
-                  wrapperClass=""
-                />
-              )} */}
             </CButton>
           </CCardBody>
         </CCard>

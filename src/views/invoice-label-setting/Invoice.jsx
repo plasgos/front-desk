@@ -21,17 +21,21 @@ export const Invoice = forwardRef((props, ref) => {
   } = props;
 
   return (
-    <div style={{ width: "105mm", height: "559px" }} ref={ref} className="p-2">
-      <div ref={ref} className="border border-dark">
+    <div
+      style={{ width: "105mm", height: "559px", backgroundColor: "white" }}
+      ref={ref}
+      className="p-2"
+    >
+      <div ref={ref} className="border border-dark h-100">
         <div className="d-flex justify-content-between border-bottom  align-items-center p-3">
           <img
-            style={{ width: 100, height: "100%" }}
+            style={{ width: 80, height: "100%" }}
             src={kiriminaja}
             alt="kirimin-aja"
           />
 
           <img
-            style={{ width: 80, height: "100%" }}
+            style={{ width: 60, height: "100%" }}
             src={jne}
             alt="kirimin-aja"
           />
