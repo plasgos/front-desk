@@ -12,9 +12,9 @@ import { Margin, Resolution, usePDF } from "react-to-pdf";
 
 // import { Page, Document } from "@react-pdf/renderer";
 
-// import { PDFDownloadLink } from "@react-pdf/renderer";
-// import { PDFViewer } from "@react-pdf/renderer";
-// import InvoiceDownload from "./InvoiceDownload";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PDFViewer } from "@react-pdf/renderer";
+import InvoiceDownload from "./InvoiceDownload";
 
 export const invoiceData = [
   {
@@ -430,9 +430,9 @@ const InvoiceLabelSetting = () => {
             padding: 20,
           }}
         >
-          {/* <PDFViewer>
+          <PDFViewer style={{ width: "100%", height: "100%" }}>
             <InvoiceDownload />
-          </PDFViewer> */}
+          </PDFViewer>
 
           <div
             className="d-flex flex-column align-items-center justify-content-center mx-auto"
@@ -552,18 +552,14 @@ const InvoiceLabelSetting = () => {
                 <IoIosInformationCircleOutline size={12} color="grey" />
               </div>
             </div>
-
-            {/* <PDFDownloadLink document={<InvoiceDownload />} fileName="invoice">
-              
-
-              {({ loading }) =>
-                loading ? (
-                  <button>Loading Document...</button>
-                ) : (
-                  <button>Download</button>
-                )
+            <PDFDownloadLink
+              document={<InvoiceDownload />}
+              fileName="somename.pdf"
+            >
+              {({ blob, url, loading, error }) =>
+                loading ? "Loading document..." : "Download now!"
               }
-            </PDFDownloadLink> */}
+            </PDFDownloadLink>
 
             <CButton
               disabled={isLoading}
