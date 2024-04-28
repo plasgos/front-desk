@@ -418,7 +418,7 @@ const InvoiceLabelSetting = () => {
   return (
     <div className="row">
       <div className="col-12 col-md-8">
-        <div
+        {/* <div
           className="component-preview"
           style={{
             position: "relative", // Atur posisi relatif untuk mengatur tombol floating
@@ -430,9 +430,7 @@ const InvoiceLabelSetting = () => {
             padding: 20,
           }}
         >
-          <PDFViewer style={{ width: "100%", height: "100%" }}>
-            <InvoiceDownload />
-          </PDFViewer>
+        
 
           <div
             className="d-flex flex-column align-items-center justify-content-center mx-auto"
@@ -499,7 +497,11 @@ const InvoiceLabelSetting = () => {
               <HiMagnifyingGlassPlus size={18} />
             </CButton>{" "}
           </div>
-        </div>
+        </div> */}
+
+        <PDFViewer showToolbar={false} height={420} width={"100%"}>
+          <InvoiceDownload />
+        </PDFViewer>
       </div>
 
       <div className="col-12  col-md-4 ">
@@ -553,8 +555,13 @@ const InvoiceLabelSetting = () => {
               </div>
             </div>
             <PDFDownloadLink
-              document={<InvoiceDownload />}
-              fileName="somename.pdf"
+              document={
+                <InvoiceDownload
+                  isSelectedA6={isSelectedA6}
+                  isSelectedA4={isSelectedA4}
+                />
+              }
+              fileName="Invoice.pdf"
             >
               {({ blob, url, loading, error }) =>
                 loading ? "Loading document..." : "Download now!"
