@@ -500,7 +500,10 @@ const InvoiceLabelSetting = () => {
         </div> */}
 
         <PDFViewer showToolbar={false} height={420} width={"100%"}>
-          <InvoiceDownload />
+          <InvoiceDownload
+            isSelectedA6={isSelectedA6}
+            isSelectedA4={isSelectedA4}
+          />
         </PDFViewer>
       </div>
 
