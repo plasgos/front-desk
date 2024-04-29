@@ -392,30 +392,6 @@ ul.nav.nav-tabs .active.nav-link {
   }
 }
 
-.sheet {
-  box-sizing: border-box;
-  margin: 0;
-  overflow: hidden;
-  page-break-after: always;
-  position: relative;
-}
-// @media print {
-//   html,
-//   body {
-//     height: 100% !important;
-//     overflow: initial !important;
-//     padding: 5px;
-//     -webkit-print-color-adjust: exact;
-//   }
-// }
-
-// @media print {
-//   .page-break {
-//     display: block;
-//     page-break-before: auto;
-//   }
-// }
-
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
