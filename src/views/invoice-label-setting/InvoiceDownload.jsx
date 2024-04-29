@@ -6,20 +6,16 @@ import JsBarcode from "jsbarcode";
 import jne from "../../assets/jne-logo.png";
 import warningIcon from "../../assets/exclamation.png";
 
-const InvoiceDownload = ({ isSelectedA6, isProductInclude }) => {
+const InvoiceDownload = ({ isSelectedA6, isProductsInclude }) => {
   let canvas;
 
   const stylePageA4 = {};
+  console.log("🚀 ~ InvoiceDownload ~ stylePageA4:", stylePageA4);
   if (isSelectedA6 === false) {
     stylePageA4.flexDirection = "row";
     stylePageA4.flexWrap = "wrap";
     stylePageA4.justifyContent = "space-between";
   }
-
-  Font.register({
-    family: "Oswald",
-    src: "https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf",
-  });
 
   return (
     <Document>
@@ -106,9 +102,7 @@ const InvoiceDownload = ({ isSelectedA6, isProductInclude }) => {
                     <View>
                       <Text
                         style={{
-                          fontSize: 24,
-                          textAlign: "center",
-                          fontFamily: "Oswald",
+                          fontSize: 10,
                         }}
                       >
                         Jenis Layanan : REG
@@ -181,7 +175,7 @@ const InvoiceDownload = ({ isSelectedA6, isProductInclude }) => {
                   style={{ borderBottom: 1.5, borderStyle: "dashed" }}
                 ></View>
 
-                {isProductInclude && (
+                {isProductsInclude && (
                   <View
                     style={{
                       padding: 10,

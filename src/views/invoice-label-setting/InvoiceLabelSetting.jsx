@@ -10,13 +10,8 @@ import {
   IoIosRadioButtonOn,
   IoIosInformationCircleOutline,
 } from "react-icons/io";
-import { Invoice } from "./Invoice";
-import { useReactToPrint } from "react-to-print";
-import { Margin, Resolution, usePDF } from "react-to-pdf";
 
-// import { Page, Document } from "@react-pdf/renderer";
-
-import { BlobProvider, PDFDownloadLink } from "@react-pdf/renderer";
+import { BlobProvider } from "@react-pdf/renderer";
 import { PDFViewer } from "@react-pdf/renderer";
 import InvoiceDownload from "./InvoiceDownload";
 
@@ -336,7 +331,6 @@ export const invoiceData = [
 
 const InvoiceLabelSetting = () => {
   const [scale, setScale] = useState(1);
-  const [isPreview, setIsPreview] = useState(true);
   const [isSelectedA4, setisSelecteA4] = useState(false);
   const [isSelectedA6, setisSelecteA6] = useState(true);
 
@@ -371,61 +365,19 @@ const InvoiceLabelSetting = () => {
   return (
     <div className="row">
       <div className="col-12 col-md-8">
+        <PDFViewer showToolbar={false} height={420} width={"100%"}>
+          <InvoiceDownload
+            isSelectedA6={isSelectedA6}
+            isProductsInclude={isProductInclude}
+            // zoom={{
+            //   transformOrigin: "top left",
+            //   transform: `scale(${scale})`,
+            //   transition: "transform 0.5s ease",
+            // }}
+          />
+        </PDFViewer>
+
         {/* <div
-          className="component-preview"
-          style={{
-            position: "relative", // Atur posisi relatif untuk mengatur tombol floating
-            // width: "400px",
-            height: "420px",
-            overflow: "auto",
-
-            backgroundColor: "gray",
-            padding: 20,
-          }}
-        >
-        
-
-          <div
-            className="d-flex flex-column align-items-center justify-content-center mx-auto"
-            style={{
-              width: isSelectedA6 ? "105mm" : "210mm",
-              transformOrigin: "top left",
-              transform: `scale(${scale})`,
-              transition: "transform 0.5s ease",
-              height: "auto",
-              rowGap: isPreview ? 10 : 0,
-            }}
-            ref={targetRef}
-          >
-            {invoiceData.map((invoice, index) => {
-              return (
-                <div
-                  key={invoice.id}
-
-                  // className={`invoice-container ${
-                  //   index !== 0 ? "page-break" : ""
-                  // }`}
-                >
-                  <Invoice
-                    isSelectedA4={isSelectedA4}
-                    isSelectedA6={isSelectedA6}
-                    // ref={componentRef}
-                    barcode={invoice.barcode}
-                    isCod={invoice.isCod}
-                    price={invoice.price}
-                    service={invoice.service}
-                    qty={invoice.qty}
-                    weight={invoice.weight}
-                    receiver={invoice.receiver}
-                    sender={invoice.sender}
-                    products={invoice.products}
-                  />
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div
           style={{
             position: "absolute",
             bottom: "30px",
@@ -451,13 +403,6 @@ const InvoiceLabelSetting = () => {
             </CButton>{" "}
           </div>
         </div> */}
-
-        <PDFViewer showToolbar={false} height={420} width={"100%"}>
-          <InvoiceDownload
-            isSelectedA6={isSelectedA6}
-            isProductInclude={isProductInclude}
-          />
-        </PDFViewer>
       </div>
 
       <div className="col-12  col-md-4 ">
@@ -533,7 +478,7 @@ const InvoiceLabelSetting = () => {
               document={
                 <InvoiceDownload
                   isSelectedA6={isSelectedA6}
-                  isProductInclude={isProductInclude}
+                  isProductsInclude={isProductInclude}
                 />
               }
             >
