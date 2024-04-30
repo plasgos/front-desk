@@ -10,16 +10,40 @@ const InvoiceDownload = ({ isSelectedA6, isProductsInclude }) => {
   let canvas;
 
   const stylePageA4 = {};
-  console.log("🚀 ~ InvoiceDownload ~ stylePageA4:", stylePageA4);
   if (isSelectedA6 === false) {
     stylePageA4.flexDirection = "row";
     stylePageA4.flexWrap = "wrap";
     stylePageA4.justifyContent = "space-between";
   }
 
+  // Fungsi untuk menghitung tinggi konten dinamis
+  const calculateContentHeight = () => {
+    let dynamicContentHeight = 0;
+
+    // Hitung tinggi konten yang tetap
+    dynamicContentHeight += 419.53; // Hitungan tinggi tetap seperti header dan footer
+
+    if (isProductsInclude) {
+      // Hitung tinggi konten produk berdasarkan jumlah produk
+      const numberOfProducts = 3; // Ganti dengan jumlah produk yang sesuai {dinamis}
+      const productHeight = numberOfProducts * 22.5; // Tinggi rata-rata per produk
+      dynamicContentHeight += productHeight;
+    }
+
+    // Hitung tinggi konten lainnya berdasarkan kebutuhan
+
+    return dynamicContentHeight;
+  };
+
+  const dynamicContentHeight = calculateContentHeight();
+
   return (
     <Document>
-      <Page size={isSelectedA6 ? "A6" : "A4"} style={stylePageA4}>
+      <Page
+        // size={isSelectedA6 ? "A6" : "A4"}
+        size={{ width: 297.64, height: dynamicContentHeight }}
+        style={stylePageA4}
+      >
         {[...Array(4)].map((_, i) => {
           canvas = document.createElement("canvas");
           JsBarcode(canvas, "AWB312121", {
@@ -176,31 +200,85 @@ const InvoiceDownload = ({ isSelectedA6, isProductsInclude }) => {
                 ></View>
 
                 {isProductsInclude && (
-                  <View
-                    style={{
-                      padding: 10,
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <View>
-                      <Text style={{ fontSize: 10, marginBottom: 2 }}>
-                        Produk
-                      </Text>
-                      <Text style={{ fontSize: 8, marginBottom: 2 }}>
-                        1.Label stiker barcode thermal 50x20
-                      </Text>
+                  <>
+                    <View
+                      style={{
+                        padding: 10,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <View>
+                        <Text style={{ fontSize: 10, marginBottom: 2 }}>
+                          Produk
+                        </Text>
+                        <Text style={{ fontSize: 8, marginBottom: 2 }}>
+                          1.Label stiker barcode thermal 50x20
+                        </Text>
+                      </View>
+
+                      <View>
+                        <Text style={{ fontSize: 10, marginBottom: 2 }}>
+                          Jumlah
+                        </Text>
+                        <Text style={{ fontSize: 8, marginBottom: 2 }}>
+                          1 Pcs
+                        </Text>
+                      </View>
                     </View>
 
-                    <View>
-                      <Text style={{ fontSize: 10, marginBottom: 2 }}>
-                        Jumlah
-                      </Text>
-                      <Text style={{ fontSize: 8, marginBottom: 2 }}>
-                        1 Pcs
-                      </Text>
+                    <View
+                      style={{
+                        padding: 10,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <View>
+                        <Text style={{ fontSize: 10, marginBottom: 2 }}>
+                          Produk
+                        </Text>
+                        <Text style={{ fontSize: 8, marginBottom: 2 }}>
+                          1.Label stiker barcode thermal 50x20
+                        </Text>
+                      </View>
+
+                      <View>
+                        <Text style={{ fontSize: 10, marginBottom: 2 }}>
+                          Jumlah
+                        </Text>
+                        <Text style={{ fontSize: 8, marginBottom: 2 }}>
+                          1 Pcs
+                        </Text>
+                      </View>
                     </View>
-                  </View>
+
+                    <View
+                      style={{
+                        padding: 10,
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <View>
+                        <Text style={{ fontSize: 10, marginBottom: 2 }}>
+                          Produk
+                        </Text>
+                        <Text style={{ fontSize: 8, marginBottom: 2 }}>
+                          1.Label stiker barcode thermal 50x20
+                        </Text>
+                      </View>
+
+                      <View>
+                        <Text style={{ fontSize: 10, marginBottom: 2 }}>
+                          Jumlah
+                        </Text>
+                        <Text style={{ fontSize: 8, marginBottom: 2 }}>
+                          1 Pcs
+                        </Text>
+                      </View>
+                    </View>
+                  </>
                 )}
 
                 <View

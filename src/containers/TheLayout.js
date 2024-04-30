@@ -7,7 +7,7 @@ const TheLayout = () => {
       <TheSidebar />
       <div className="c-wrapper">
         <TheHeader />
-        <div className="c-body">
+        <div style={{ overflow: "hidden" }} className="c-body">
           <TheContent />
         </div>
         <TheFooter />

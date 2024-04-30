@@ -14,6 +14,8 @@ import {
 import { BlobProvider } from "@react-pdf/renderer";
 import { PDFViewer } from "@react-pdf/renderer";
 import InvoiceDownload from "./InvoiceDownload";
+import { InvoiceCanvas } from "./InvoiceCanvas";
+import InvoiceDownloadCanvas from "./InvoiceDownloadCanvas";
 
 export const invoiceData = [
   {
@@ -46,7 +48,7 @@ export const invoiceData = [
     id: 2,
     barcode: "JO7128534127",
     isCod: true,
-    price: 10000,
+    price: 20000,
     service: "REG",
     qty: 1,
     weight: 500,
@@ -72,7 +74,7 @@ export const invoiceData = [
     id: 3,
     barcode: "JO7128534127",
     isCod: true,
-    price: 10000,
+    price: 30000,
     service: "REG",
     qty: 1,
     weight: 500,
@@ -98,7 +100,7 @@ export const invoiceData = [
     id: 4,
     barcode: "JO7128534127",
     isCod: true,
-    price: 10000,
+    price: 40000,
     service: "REG",
     qty: 1,
     weight: 500,
@@ -377,6 +379,10 @@ const InvoiceLabelSetting = () => {
           />
         </PDFViewer>
 
+        {/* <PDFViewer showToolbar={false} height={420} width={"100%"}>
+          <InvoiceDownloadCanvas />
+        </PDFViewer> */}
+
         {/* <div
           style={{
             position: "absolute",
@@ -402,6 +408,31 @@ const InvoiceLabelSetting = () => {
               <HiMagnifyingGlassPlus size={18} />
             </CButton>{" "}
           </div>
+        </div> */}
+        {/* <div style={{ position: "absolute", top: 99999, zIndex: -99999 }}>
+          <InvoiceCanvas
+          // key={i}
+          // barcode="AWB312121"
+          // isCod={true}
+          // price={7000}
+          // service="REG"
+          // qty={1}
+          // weight={500}
+          // receiver={{
+          //   name: "John Kenedy",
+          //   phoneNumber: "089721231",
+          //   address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Timur",
+          // }}
+          // sender={{
+          //   name: "John Kenedy",
+          //   phoneNumber: "089721231",
+          //   address: "Jl. Blotan Permai No.23 RT 03/40 Jakarta Timur",
+          // }}
+          // products={{
+          //   name: "  1.Label stiker barcode thermal 50x20",
+          //   qty: 1,
+          // }}
+          />
         </div> */}
       </div>
 
