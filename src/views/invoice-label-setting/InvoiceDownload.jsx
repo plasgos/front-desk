@@ -1,5 +1,5 @@
 import React from "react";
-import { Document, Page, Text, Image, View, Font } from "@react-pdf/renderer";
+import { Document, Page, Text, Image, View } from "@react-pdf/renderer";
 import { formatPrice } from "../../lib";
 import kiriminaja from "../../assets/kirimin-aja-png.png";
 import JsBarcode from "jsbarcode";
@@ -17,7 +17,7 @@ const InvoiceDownload = ({ isSelectedA6, isProductsInclude }) => {
   }
 
   // Fungsi untuk menghitung tinggi konten dinamis
-  const calculateContentHeight = () => {
+  const calculateContentHeightA6 = () => {
     let dynamicContentHeight = 0;
 
     // Hitung tinggi konten yang tetap
@@ -35,13 +35,36 @@ const InvoiceDownload = ({ isSelectedA6, isProductsInclude }) => {
     return dynamicContentHeight;
   };
 
-  const dynamicContentHeight = calculateContentHeight();
+  const calculateContentHeightA4 = () => {
+    let dynamicContentHeight = 0;
+
+    // Hitung tinggi konten yang tetap
+    dynamicContentHeight += 841.89; // Hitungan tinggi tetap seperti header dan footer
+
+    if (isProductsInclude) {
+      // Hitung tinggi konten produk berdasarkan jumlah produk
+      const numberOfProducts = 3; // Ganti dengan jumlah produk yang sesuai {dinamis}
+      const productHeight = numberOfProducts * 22.5; // Tinggi rata-rata per produk
+      dynamicContentHeight += productHeight;
+    }
+
+    // Hitung tinggi konten lainnya berdasarkan kebutuhan
+
+    return dynamicContentHeight;
+  };
+
+  const dynamicContentHeightA6 = calculateContentHeightA6();
+  const dynamicContentHeightA4 = calculateContentHeightA4();
 
   return (
     <Document>
       <Page
         // size={isSelectedA6 ? "A6" : "A4"}
-        size={{ width: 297.64, height: dynamicContentHeight }}
+        size={
+          !isSelectedA6
+            ? { width: 595.28, height: dynamicContentHeightA4 }
+            : { width: 297.64, height: dynamicContentHeightA6 }
+        }
         style={stylePageA4}
       >
         {[...Array(4)].map((_, i) => {
