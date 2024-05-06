@@ -1,10 +1,16 @@
 import React from "react";
-import { Document, Page, Text, Image, View } from "@react-pdf/renderer";
+import { Document, Page, Text, Image, View, Font } from "@react-pdf/renderer";
 import { formatPrice } from "../../lib";
 import kiriminaja from "../../assets/kirimin-aja-png.png";
 import JsBarcode from "jsbarcode";
 import jne from "../../assets/jne-logo.png";
 import warningIcon from "../../assets/exclamation.png";
+import antonRegular from "../../assets/fonts/Anton-Regular.ttf";
+
+// Font.register({
+//   family: "AntonFamily",
+//   src: antonRegular,
+// });
 
 const InvoiceDownload = ({ isSelectedA6, isProductsInclude }) => {
   let canvas;
@@ -118,6 +124,7 @@ const InvoiceDownload = ({ isSelectedA6, isProductsInclude }) => {
                       textAlign: "center",
                       marginTop: -12,
                       letterSpacing: 1,
+                      // fontFamily: "AntonFamily",
                     }}
                   >
                     AWB312121

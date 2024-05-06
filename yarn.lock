@@ -1919,7 +1919,7 @@
   dependencies:
     "@babel/runtime" "^7.20.13"
 
-"@react-pdf/font@^2.3.7", "@react-pdf/font@^2.5.1":
+"@react-pdf/font@^2.3.7":
   version "2.5.1"
   resolved "https://registry.npmjs.org/@react-pdf/font/-/font-2.5.1.tgz"
   integrity sha512-Hyb2zBb92Glc3lvhmJfy4dO2Mj29KB26Uk12Ua9EhKAdiuCTLBqgP8Oe1cGwrvDI7xA4OOcwvBMdYh0vhOUHzA==

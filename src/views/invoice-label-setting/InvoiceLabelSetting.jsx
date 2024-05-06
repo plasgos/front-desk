@@ -11,7 +11,7 @@ import {
   IoIosInformationCircleOutline,
 } from "react-icons/io";
 
-import { BlobProvider } from "@react-pdf/renderer";
+import { BlobProvider, PDFDownloadLink } from "@react-pdf/renderer";
 import { PDFViewer } from "@react-pdf/renderer";
 import InvoiceDownload from "./InvoiceDownload";
 import { InvoiceCanvas } from "./InvoiceCanvas";
