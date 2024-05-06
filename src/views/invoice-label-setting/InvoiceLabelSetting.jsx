@@ -14,8 +14,8 @@ import {
 import { BlobProvider, PDFDownloadLink } from "@react-pdf/renderer";
 import { PDFViewer } from "@react-pdf/renderer";
 import InvoiceDownload from "./InvoiceDownload";
-import { InvoiceCanvas } from "./InvoiceCanvas";
-import InvoiceDownloadCanvas from "./InvoiceDownloadCanvas";
+// import { InvoiceCanvas } from "./InvoiceCanvas";
+// import InvoiceDownloadCanvas from "./InvoiceDownloadCanvas";
 
 export const invoiceData = [
   {

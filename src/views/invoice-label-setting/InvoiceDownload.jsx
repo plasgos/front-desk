@@ -1,16 +1,22 @@
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Document, Page, Text, Image, View, Font } from "@react-pdf/renderer";
 import { formatPrice } from "../../lib";
 import kiriminaja from "../../assets/kirimin-aja-png.png";
 import JsBarcode from "jsbarcode";
 import jne from "../../assets/jne-logo.png";
 import warningIcon from "../../assets/exclamation.png";
-import antonRegular from "../../assets/fonts/Anton-Regular.ttf";
+import openSansItalic from "../../assets/fonts/OpenSans-Italic.ttf";
+import openSansRegular from "../../assets/fonts/OpenSans-Regular.ttf";
+import openSansBold from "../../assets/fonts/OpenSans-Bold.ttf";
 
-// Font.register({
-//   family: "AntonFamily",
-//   src: antonRegular,
-// });
+Font.register({
+  family: "OpenSans",
+  fonts: [
+    { src: openSansRegular },
+    { src: openSansItalic, fontStyle: "italic" },
+    { src: openSansBold, fontWeight: "bold" },
+  ],
+});
 
 const InvoiceDownload = ({ isSelectedA6, isProductsInclude }) => {
   let canvas;
@@ -156,7 +162,9 @@ const InvoiceDownload = ({ isSelectedA6, isProductsInclude }) => {
                     <View>
                       <Text
                         style={{
+                          fontFamily: "OpenSans",
                           fontSize: 10,
+                          fontWeight: "bold",
                         }}
                       >
                         Jenis Layanan : REG
@@ -320,10 +328,22 @@ const InvoiceDownload = ({ isSelectedA6, isProductsInclude }) => {
                   <Text style={{ fontSize: 8, marginBottom: 2 }}>
                     Catatan :
                   </Text>
-                  <Text style={{ fontSize: 8 }}>
+                  <Text
+                    style={{
+                      fontSize: 8,
+                      fontFamily: "OpenSans",
+                      fontStyle: "italic",
+                    }}
+                  >
                     * Pengirim wajib meminta bukti serah terima paket ke kurir
                   </Text>
-                  <Text style={{ fontSize: 8 }}>
+                  <Text
+                    style={{
+                      fontSize: 8,
+                      fontFamily: "OpenSans",
+                      fontStyle: "italic",
+                    }}
+                  >
                     * Jika paket ini retur, pengirim tetap di kenakan biaya
                     keberangkatan dan biaya retur sesuai ekspedisi
                   </Text>
