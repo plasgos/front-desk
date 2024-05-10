@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { ViewTextAndImage } from "./_components/Commons";
 import {
+  CButton,
   CCard,
   CCardBody,
   CCol,
@@ -15,86 +16,198 @@ import {
 
 import image from "../../assets/action-figure.jpg";
 
-import { FiMenu } from "react-icons/fi";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 
-import { IoMenu, IoCloseOutline, IoSettingsOutline } from "react-icons/io5";
+import {
+  IoMenu,
+  IoCloseOutline,
+  IoSettingsOutline,
+  IoAdd,
+  IoSearch,
+} from "react-icons/io5";
+import { AddContent } from "./_components/AddContent";
+import { EditContent } from "./_components/EditContent";
+
+const contents = [
+  {
+    id: "adguiwbj",
+    name: "text-image",
+    content: {
+      title: "Rahasia untuk maju adalah memulai",
+      description:
+        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
+      image: image,
+    },
+  },
+];
 
 const CustomLandingPage = () => {
+  const [isAddContent, setIsAddContent] = useState(false);
+  const [sections, setSections] = useState(contents || []);
+  const [tempSections, setTempSections] = useState(contents || []);
+  const [isEditing, setIsEditing] = useState(false);
+  const handleAddContent = () => {
+    setIsAddContent(true);
+  };
+
+  const handelCancel = () => {
+    setIsAddContent(false);
+    setIsEditing(false);
+    setTempSections(sections);
+  };
+
+  const handelConfirm = () => {
+    setIsAddContent(false);
+    setSections(tempSections);
+  };
+
+  const handleRemoveItemSection = (id) => {
+    const updatedSections = sections.filter((section) => section.id !== id);
+
+    setTempSections(updatedSections);
+    setSections(updatedSections);
+  };
+
+  const handleEditItemSection = (id) => {
+    setIsEditing(true);
+  };
+
   return (
     <div>
       <CRow>
         <CCol md="4">
+          <div className="d-flex justify-content-end align-items-center border-bottom p-2">
+            <div>
+              <CButton onClick={() => {}} variant="ghost">
+                <IoSearch style={{ cursor: "pointer" }} size={18} />
+              </CButton>
+              <CButton
+                onClick={handelCancel}
+                color="primary"
+                variant="outline"
+                className="mx-2"
+              >
+                Batal
+              </CButton>
+
+              <CButton onClick={handelConfirm} color="primary">
+                Selesai
+              </CButton>
+            </div>
+          </div>
+
           <CTabs activeTab="kolom">
             <CNav variant="tabs">
               <CNavItem>
                 <CNavLink data-tab="kolom">Kolom</CNavLink>
               </CNavItem>
-              <CNavItem>
-                <CNavLink data-tab="desain">Desain</CNavLink>
-              </CNavItem>
-              <CNavItem>
-                <CNavLink data-tab="background">Background</CNavLink>
-              </CNavItem>
             </CNav>
-            <CTabContent>
+            <CTabContent className="pt-3">
               <CTabPane data-tab="kolom">
-                <CCard className="mt-3">
-                  <CCardBody style={{ padding: "0px 10px 0px 10px" }}>
-                    <div
-                      style={{ gap: 10 }}
-                      className="d-flex align-items-center"
+                {isAddContent ? (
+                  <AddContent
+                    sections={sections}
+                    setSections={setSections}
+                    setTempSections={setTempSections}
+                  />
+                ) : isEditing ? (
+                  <EditContent
+                    sections={sections}
+                    setSections={setSections}
+                    setTempSections={setTempSections}
+                  />
+                ) : (
+                  sections.map((section) => (
+                    <CCard
+                      key={section.id}
+                      style={{ cursor: "pointer" }}
+                      className="mb-2"
                     >
-                      <IoMenu style={{ cursor: "pointer" }} size={18} />
+                      <CCardBody style={{ padding: "0px 10px 0px 10px" }}>
+                        <div
+                          style={{ gap: 10 }}
+                          className="d-flex align-items-center"
+                        >
+                          <IoMenu style={{ cursor: "pointer" }} size={18} />
 
-                      <div
-                        style={{ width: 60, height: 40, overflow: "hidden" }}
-                      >
-                        <img
-                          src={image}
-                          alt="img"
+                          <div
+                            style={{
+                              width: 60,
+                              height: 40,
+                              overflow: "hidden",
+                            }}
+                          >
+                            <img
+                              src={image}
+                              alt="img"
+                              style={{
+                                height: "100%",
+                                width: "100%",
+                                objectFit: "contain",
+                              }}
+                            />
+                          </div>
+
+                          <div
+                            style={{
+                              flexGrow: 1,
+                              overflow: "hidden",
+                              whiteSpace: "nowrap",
+                              textOverflow: "ellipsis",
+                              width: 80,
+                              fontSize: 14,
+                            }}
+                          >
+                            {section.content.title}
+                          </div>
+
+                          <FaMagnifyingGlass
+                            style={{ cursor: "pointer" }}
+                            size={16}
+                          />
+                          <IoSettingsOutline
+                            onClick={() => handleEditItemSection(section.id)}
+                            style={{ cursor: "pointer" }}
+                            size={16}
+                          />
+                          <IoCloseOutline
+                            onClick={() => handleRemoveItemSection(section.id)}
+                            style={{ cursor: "pointer" }}
+                            size={18}
+                          />
+                        </div>
+                      </CCardBody>
+                    </CCard>
+                  ))
+                )}
+
+                {!isAddContent && !isEditing && (
+                  <CCard
+                    style={{ cursor: "pointer" }}
+                    onClick={handleAddContent}
+                  >
+                    <CCardBody className="p-1">
+                      <div className="d-flex align-items-center ">
+                        <IoAdd
                           style={{
-                            height: "100%",
-                            width: "100%",
-                            objectFit: "contain",
+                            cursor: "pointer",
+                            margin: "0px 10px 0px 6px",
                           }}
+                          size={18}
                         />
-                      </div>
 
-                      <div
-                        style={{
-                          flexGrow: 1,
-                          overflow: "hidden",
-                          whiteSpace: "nowrap",
-                          textOverflow: "ellipsis",
-                          width: 100,
-                          fontSize: 14,
-                        }}
-                      >
-                        Rahasia untuk maju adalah memulai
+                        <div>Tambah Konten</div>
                       </div>
-
-                      <FaMagnifyingGlass
-                        style={{ cursor: "pointer" }}
-                        size={16}
-                      />
-                      <IoSettingsOutline
-                        style={{ cursor: "pointer" }}
-                        size={16}
-                      />
-                      <IoCloseOutline style={{ cursor: "pointer" }} size={18} />
-                    </div>
-                  </CCardBody>
-                </CCard>
+                    </CCardBody>
+                  </CCard>
+                )}
               </CTabPane>
-              <CTabPane data-tab="desain">456</CTabPane>
-              <CTabPane data-tab="background">789</CTabPane>
             </CTabContent>
           </CTabs>
         </CCol>
 
         <CCol>
-          <ViewTextAndImage />
+          <ViewTextAndImage sections={sections} tempSections={tempSections} />
         </CCol>
       </CRow>
     </div>
