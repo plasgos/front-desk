@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+// import update from "immutability-helper ";
+import React, { useCallback, useEffect, useState } from "react";
 import { ViewTextAndImage } from "./_components/Commons";
 import {
   CButton,
@@ -16,17 +17,10 @@ import {
 
 import image from "../../assets/action-figure.jpg";
 
-import { FaMagnifyingGlass } from "react-icons/fa6";
-
-import {
-  IoMenu,
-  IoCloseOutline,
-  IoSettingsOutline,
-  IoAdd,
-  IoSearch,
-} from "react-icons/io5";
+import { IoAdd, IoSearch } from "react-icons/io5";
 import { AddContent } from "./_components/AddContent";
 import { EditContent } from "./_components/EditContent";
+import { CardList } from "./_components/CardList";
 
 const contents = [
   {
@@ -61,16 +55,64 @@ const CustomLandingPage = () => {
     setSections(tempSections);
   };
 
-  const handleRemoveItemSection = (id) => {
-    const updatedSections = sections.filter((section) => section.id !== id);
-
-    setTempSections(updatedSections);
-    setSections(updatedSections);
-  };
+  const removeSection = useCallback((index) => {
+    setSections((prev) => prev.filter((item, i) => i !== index));
+    return () => {};
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleEditItemSection = (id) => {
     setIsEditing(true);
   };
+
+  // const moveSection = useCallback((dragIndex, hoverIndex) => {
+  //   setSections((prevCards) =>
+  //     update(prevCards, {
+  //       $splice: [
+  //         [dragIndex, 1],
+  //         [hoverIndex, 0, prevCards[dragIndex]],
+  //       ],
+  //     })
+  //   );
+  //   return () => {};
+  //   // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  const moveSection = useCallback((dragIndex, hoverIndex) => {
+    setSections((prevCards) => {
+      const draggedCard = prevCards[dragIndex];
+      const updatedSections = prevCards
+        .slice(0, dragIndex)
+        .concat(prevCards.slice(dragIndex + 1));
+
+      return updatedSections
+        .slice(0, hoverIndex)
+        .concat([draggedCard])
+        .concat(updatedSections.slice(hoverIndex));
+    });
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    setTempSections(sections);
+  }, [sections]);
+
+  const renderSection = useCallback((section, index) => {
+    return (
+      <CardList
+        key={section.id}
+        index={index}
+        id={section.id}
+        section={section}
+        // text={section.text}
+        // name={section.name}
+        moveSection={moveSection}
+        // editSection={(index) => editSection(section, index)}
+        removeSection={removeSection}
+      />
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -117,68 +159,9 @@ const CustomLandingPage = () => {
                     setTempSections={setTempSections}
                   />
                 ) : (
-                  sections.map((section) => (
-                    <CCard
-                      key={section.id}
-                      style={{ cursor: "pointer" }}
-                      className="mb-2"
-                    >
-                      <CCardBody style={{ padding: "0px 10px 0px 10px" }}>
-                        <div
-                          style={{ gap: 10 }}
-                          className="d-flex align-items-center"
-                        >
-                          <IoMenu style={{ cursor: "pointer" }} size={18} />
-
-                          <div
-                            style={{
-                              width: 60,
-                              height: 40,
-                              overflow: "hidden",
-                            }}
-                          >
-                            <img
-                              src={image}
-                              alt="img"
-                              style={{
-                                height: "100%",
-                                width: "100%",
-                                objectFit: "contain",
-                              }}
-                            />
-                          </div>
-
-                          <div
-                            style={{
-                              flexGrow: 1,
-                              overflow: "hidden",
-                              whiteSpace: "nowrap",
-                              textOverflow: "ellipsis",
-                              width: 80,
-                              fontSize: 14,
-                            }}
-                          >
-                            {section.content.title}
-                          </div>
-
-                          <FaMagnifyingGlass
-                            style={{ cursor: "pointer" }}
-                            size={16}
-                          />
-                          <IoSettingsOutline
-                            onClick={() => handleEditItemSection(section.id)}
-                            style={{ cursor: "pointer" }}
-                            size={16}
-                          />
-                          <IoCloseOutline
-                            onClick={() => handleRemoveItemSection(section.id)}
-                            style={{ cursor: "pointer" }}
-                            size={18}
-                          />
-                        </div>
-                      </CCardBody>
-                    </CCard>
-                  ))
+                  <div>
+                    {sections.map((section, i) => renderSection(section, i))}
+                  </div>
                 )}
 
                 {!isAddContent && !isEditing && (
