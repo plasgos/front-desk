@@ -2,7 +2,6 @@ import { CCard, CCardBody } from "@coreui/react";
 import React, { useRef } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoCloseOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
-import image from "../../../assets/action-figure.jpg";
 import { useDrag, useDrop } from "react-dnd";
 
 export const ItemTypes = {
@@ -14,6 +13,7 @@ export const CardList = ({
   id,
   section,
   moveSection,
+  editSection,
   removeSection,
 }) => {
   const ref = useRef(null);
@@ -74,6 +74,7 @@ export const CardList = ({
   });
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
+
   return (
     <div style={{ opacity }} ref={ref} data-handler-id={handlerId}>
       <CCard style={{ cursor: "move" }} className="mb-2">
@@ -89,7 +90,7 @@ export const CardList = ({
               }}
             >
               <img
-                src={image}
+                src={section.content.image}
                 alt="img"
                 style={{
                   height: "100%",
@@ -112,9 +113,9 @@ export const CardList = ({
               {section.content.title}
             </div>
 
-            <FaMagnifyingGlass style={{ cursor: "pointer" }} size={16} />
+            {/* <FaMagnifyingGlass style={{ cursor: "pointer" }} size={16} /> */}
             <IoSettingsOutline
-              //   onClick={() => handleEditItemSection(section.id)}
+              onClick={() => editSection()}
               style={{ cursor: "pointer" }}
               size={16}
             />

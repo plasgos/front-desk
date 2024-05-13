@@ -1,31 +1,43 @@
 import React from "react";
-import { CCol, CRow } from "@coreui/react";
+import { useDragLayer } from "react-dnd";
+import "../styles/ViewTextImage.css";
 
-export const ViewTextAndImage = ({ sections, tempSections, isDragging }) => {
+export const ViewTextAndImage = ({ tempSections }) => {
+  console.log("🚀 ~ ViewTextAndImage ~ tempSections:", tempSections);
+  const { id, isDragging } = useDragLayer((monitor) => ({
+    isDragging: monitor.isDragging(),
+    id: monitor.getItem()?.id,
+  }));
   return (
-    <CRow className="justify-content-center">
+    <div className="grid-container">
       {tempSections.map((item, i) => (
-        <CCol sm="6" md="4">
-          <div key={i} className="text-center">
+        <div
+          className="colXSmall colSmall colMedium"
+          key={i}
+          style={{
+            width: "100%",
+            float: "none",
+            padding: 0,
+            margin: 0,
+            ...(isDragging && item.id === id && { border: "2px solid green" }),
+          }}
+        >
+          <div style={{ textAlign: "center" }}>
             <div style={{ lineHeight: 1.4, fontSize: 18 }}>
               {item.content.title}
             </div>
             <img
               src={item.content.image}
               alt="img"
-              className="img-fluid"
               style={{ width: "100%", marginTop: 14, marginBottom: 14 }}
             />
-
             <div
               style={{ lineHeight: 1.4 }}
-              dangerouslySetInnerHTML={{
-                __html: item.content.description,
-              }}
+              dangerouslySetInnerHTML={{ __html: item.content.description }}
             />
           </div>
-        </CCol>
+        </div>
       ))}
-    </CRow>
+    </div>
   );
 };

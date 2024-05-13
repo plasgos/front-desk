@@ -1,19 +1,19 @@
 import { CButton, CCard } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import image from "../../../assets/action-figure.jpg";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
-import { createUniqueID } from "../../../lib/unique-id";
 
-export const EditContent = ({ sections, setSections, setTempSections }) => {
+export const EditContent = ({
+  id,
+  titleValue,
+  descriptionValue,
+  image,
+  setTempSections,
+}) => {
   const [imageUrl, setImageUrl] = useState(image);
-  const [title, setTitle] = useState("How awesome are you?");
-  const [description, setDescription] = useState(
-    "So awesome that you will not believe it"
-  );
-
-  const [settingTitle, setSettingTitle] = useState({});
+  const [title, setTitle] = useState(titleValue);
+  const [description, setDescription] = useState(descriptionValue);
 
   const handleFileUpload = () => {
     const input = document.createElement("input");
@@ -33,11 +33,30 @@ export const EditContent = ({ sections, setSections, setTempSections }) => {
     };
   };
 
+  // Efek ini akan dipanggil setiap kali imageUrl berubah
+  useEffect(() => {
+    // Update tempSections setelah imageUrl berubah
+    setTempSections((arr) =>
+      arr.map((item) =>
+        String(item.id) === String(id)
+          ? {
+              ...item,
+              content: {
+                ...item.content,
+                image: imageUrl,
+              },
+            }
+          : item
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [imageUrl]);
+
   const handleEditorChange = (value) => {
     setDescription(value);
     setTempSections((arr) =>
       arr.map((item) =>
-        String(item.id) === String(settingTitle.id)
+        String(item.id) === String(id)
           ? {
               ...item,
               content: {
@@ -54,7 +73,7 @@ export const EditContent = ({ sections, setSections, setTempSections }) => {
     setTitle(value);
     setTempSections((arr) =>
       arr.map((item) =>
-        String(item.id) === String(settingTitle.id)
+        String(item.id) === String(id)
           ? {
               ...item,
               content: {
@@ -66,27 +85,6 @@ export const EditContent = ({ sections, setSections, setTempSections }) => {
       )
     );
   };
-
-  const handleAddContent = () => {
-    let uniqueId = createUniqueID(sections);
-    let payload = {
-      id: uniqueId,
-      name: "text-image",
-      content: {
-        title,
-        description,
-        image: imageUrl,
-      },
-    };
-
-    setTempSections((arr) => [...arr, payload]);
-    setSettingTitle(payload);
-  };
-
-  useEffect(() => {
-    handleAddContent();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <CCard

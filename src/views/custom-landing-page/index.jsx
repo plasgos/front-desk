@@ -1,4 +1,3 @@
-// import update from "immutability-helper ";
 import React, { useCallback, useEffect, useState } from "react";
 import { ViewTextAndImage } from "./_components/Commons";
 import {
@@ -40,6 +39,7 @@ const CustomLandingPage = () => {
   const [sections, setSections] = useState(contents || []);
   const [tempSections, setTempSections] = useState(contents || []);
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedSection, setSelectedSection] = useState({});
   const handleAddContent = () => {
     setIsAddContent(true);
   };
@@ -52,6 +52,7 @@ const CustomLandingPage = () => {
 
   const handelConfirm = () => {
     setIsAddContent(false);
+    setIsEditing(false);
     setSections(tempSections);
   };
 
@@ -60,23 +61,6 @@ const CustomLandingPage = () => {
     return () => {};
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handleEditItemSection = (id) => {
-    setIsEditing(true);
-  };
-
-  // const moveSection = useCallback((dragIndex, hoverIndex) => {
-  //   setSections((prevCards) =>
-  //     update(prevCards, {
-  //       $splice: [
-  //         [dragIndex, 1],
-  //         [hoverIndex, 0, prevCards[dragIndex]],
-  //       ],
-  //     })
-  //   );
-  //   return () => {};
-  //   // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   const moveSection = useCallback((dragIndex, hoverIndex) => {
     setSections((prevCards) => {
@@ -97,6 +81,11 @@ const CustomLandingPage = () => {
     setTempSections(sections);
   }, [sections]);
 
+  const editSection = (section) => {
+    setSelectedSection(section);
+    setIsEditing(true);
+  };
+
   const renderSection = useCallback((section, index) => {
     return (
       <CardList
@@ -104,10 +93,8 @@ const CustomLandingPage = () => {
         index={index}
         id={section.id}
         section={section}
-        // text={section.text}
-        // name={section.name}
         moveSection={moveSection}
-        // editSection={(index) => editSection(section, index)}
+        editSection={() => editSection(section, index)}
         removeSection={removeSection}
       />
     );
@@ -120,9 +107,9 @@ const CustomLandingPage = () => {
         <CCol md="4">
           <div className="d-flex justify-content-end align-items-center border-bottom p-2">
             <div>
-              <CButton onClick={() => {}} variant="ghost">
+              {/* <CButton onClick={() => {}} variant="ghost">
                 <IoSearch style={{ cursor: "pointer" }} size={18} />
-              </CButton>
+              </CButton> */}
               <CButton
                 onClick={handelCancel}
                 color="primary"
@@ -154,8 +141,10 @@ const CustomLandingPage = () => {
                   />
                 ) : isEditing ? (
                   <EditContent
-                    sections={sections}
-                    setSections={setSections}
+                    id={selectedSection.id}
+                    titleValue={selectedSection.content.title}
+                    descriptionValue={selectedSection.content.description}
+                    image={selectedSection.content.image}
                     setTempSections={setTempSections}
                   />
                 ) : (
@@ -190,7 +179,7 @@ const CustomLandingPage = () => {
         </CCol>
 
         <CCol>
-          <ViewTextAndImage sections={sections} tempSections={tempSections} />
+          <ViewTextAndImage tempSections={tempSections} />
         </CCol>
       </CRow>
     </div>

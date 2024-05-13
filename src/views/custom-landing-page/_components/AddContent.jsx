@@ -33,6 +33,24 @@ export const AddContent = ({ sections, setSections, setTempSections }) => {
     };
   };
 
+  useEffect(() => {
+    // Update tempSections setelah imageUrl berubah
+    setTempSections((arr) =>
+      arr.map((item) =>
+        String(item.id) === String(settingTitle.id)
+          ? {
+              ...item,
+              content: {
+                ...item.content,
+                image: imageUrl,
+              },
+            }
+          : item
+      )
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [imageUrl]);
+
   const handleEditorChange = (value) => {
     setDescription(value);
     setTempSections((arr) =>
