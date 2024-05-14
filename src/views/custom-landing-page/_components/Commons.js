@@ -3,22 +3,19 @@ import { useDragLayer } from "react-dnd";
 import "../styles/ViewTextImage.css";
 
 export const ViewTextAndImage = ({ tempSections }) => {
-  console.log("🚀 ~ ViewTextAndImage ~ tempSections:", tempSections);
   const { id, isDragging } = useDragLayer((monitor) => ({
     isDragging: monitor.isDragging(),
     id: monitor.getItem()?.id,
   }));
   return (
-    <div className="grid-container">
+    <div className="wrapper">
       {tempSections.map((item, i) => (
         <div
-          className="colXSmall colSmall colMedium"
+          className="itemsMd"
           key={i}
           style={{
-            width: "100%",
-            float: "none",
             padding: 0,
-            margin: 0,
+            margin: "10px",
             ...(isDragging && item.id === id && { border: "2px solid green" }),
           }}
         >
