@@ -16,10 +16,20 @@ import {
 
 import image from "../../assets/action-figure.jpg";
 
-import { IoAdd, IoSearch } from "react-icons/io5";
+import { IoAdd } from "react-icons/io5";
 import { AddContent } from "./_components/AddContent";
 import { EditContent } from "./_components/EditContent";
 import { CardList } from "./_components/CardList";
+
+import { MdLaptopMac } from "react-icons/md";
+import { IoIosPhonePortrait } from "react-icons/io";
+import { IoIosTabletPortrait } from "react-icons/io";
+
+const viewIcon = {
+  laptop: <MdLaptopMac size={20} />,
+  tablet: <IoIosTabletPortrait size={20} />,
+  phone: <IoIosPhonePortrait size={20} />,
+};
 
 const contents = [
   {
@@ -40,6 +50,62 @@ const CustomLandingPage = () => {
   const [tempSections, setTempSections] = useState(contents || []);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedSection, setSelectedSection] = useState({});
+
+  const [isSelectedView, setIsSelectedView] = useState("laptop");
+
+  const initialDimensions = {
+    width:
+      isSelectedView === "laptop"
+        ? "100%"
+        : isSelectedView === "tablet"
+        ? 600
+        : 320,
+    height: 480,
+  };
+
+  const [dimensions, setDimensions] = useState(initialDimensions);
+
+  const handleMouseDown = (e, direction) => {
+    e.preventDefault();
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const startWidth =
+      dimensions.width === "100%" ? window.innerWidth : dimensions.width;
+    const startHeight = dimensions.height;
+
+    const handleMouseMove = (e) => {
+      let newWidth = startWidth;
+      let newHeight = startHeight;
+
+      if (direction.includes("right")) {
+        newWidth = startWidth + (e.clientX - startX);
+      } else if (direction.includes("left")) {
+        newWidth = startWidth - (e.clientX - startX);
+      }
+
+      if (direction.includes("bottom")) {
+        newHeight = startHeight + (e.clientY - startY);
+      } else if (direction.includes("top")) {
+        newHeight = startHeight - (e.clientY - startY);
+      }
+
+      setDimensions({
+        width: newWidth > 100 ? newWidth : 100,
+        height: newHeight > 100 ? newHeight : 100,
+      });
+    };
+
+    const handleMouseUp = () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+  };
+
+  const viewTypes = Object.keys(viewIcon);
+
   const handleAddContent = () => {
     setIsAddContent(true);
   };
@@ -176,10 +242,160 @@ const CustomLandingPage = () => {
               </CTabPane>
             </CTabContent>
           </CTabs>
+
+          <div className="d-flex justify-content-between align-items-center border rounded-sm p-2">
+            <div
+              className="d-flex align-items-center"
+              style={{ cursor: "pointer" }}
+            >
+              {viewTypes.map((view) => (
+                <div
+                  key={view}
+                  onClick={() => setIsSelectedView(view)}
+                  style={{
+                    backgroundColor:
+                      isSelectedView === view ? "skyblue" : "transparent",
+                  }}
+                  className="border p-1 px-2 "
+                >
+                  {React.cloneElement(viewIcon[view], {
+                    color: isSelectedView === view ? "white" : "black",
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
         </CCol>
 
         <CCol>
-          <ViewTextAndImage tempSections={tempSections} />
+          <div
+            className="mx-auto border"
+            style={{
+              // width:
+              //   isSelectedView === "laptop"
+              //     ? "100%"
+              //     : isSelectedView === "tablet"
+              //     ? 600
+              //     : 320,
+              // height: 480,
+              // maxHeight: "98%",
+              // overflowY: "scroll",
+              // flex: isSelectedView === "laptop" ? "1 1 0%" : "initial",
+              // transition: "transform 0.4s ease 0s",
+              // transformOrigin: "center top",
+              // minHeight: isSelectedView === "phone" ? "100%" : "initial",
+
+              width: dimensions.width,
+              height: dimensions.height,
+              maxHeight: "98%",
+              overflowY: "scroll",
+              flex: isSelectedView === "laptop" ? "1 1 0%" : "initial",
+              transition: "transform 0.4s ease 0s",
+              transformOrigin: "center top",
+              minHeight: isSelectedView === "phone" ? "100%" : "initial",
+            }}
+          >
+            <ViewTextAndImage
+              width={dimensions.width}
+              tempSections={tempSections}
+            />
+            <div
+              style={{
+                width: 10,
+                height: "100%",
+                backgroundColor: "transparent",
+                position: "absolute",
+                left: 0,
+                top: 0,
+                cursor: "w-resize",
+              }}
+              onMouseDown={(e) => handleMouseDown(e, "left")}
+            ></div>
+            <div
+              style={{
+                width: 10,
+                height: "100%",
+                backgroundColor: "transparent",
+                position: "absolute",
+                right: 0,
+                top: 0,
+                cursor: "e-resize",
+              }}
+              onMouseDown={(e) => handleMouseDown(e, "right")}
+            ></div>
+            <div
+              style={{
+                width: "100%",
+                height: 10,
+                backgroundColor: "transparent",
+                position: "absolute",
+                left: 0,
+                top: 0,
+                cursor: "n-resize",
+              }}
+              onMouseDown={(e) => handleMouseDown(e, "top")}
+            ></div>
+            <div
+              style={{
+                width: "100%",
+                height: 10,
+                backgroundColor: "transparent",
+                position: "absolute",
+                left: 0,
+                bottom: 0,
+                cursor: "s-resize",
+              }}
+              onMouseDown={(e) => handleMouseDown(e, "bottom")}
+            ></div>
+            <div
+              style={{
+                width: 10,
+                height: 10,
+                backgroundColor: "transparent",
+                position: "absolute",
+                right: 0,
+                bottom: 0,
+                cursor: "se-resize",
+              }}
+              onMouseDown={(e) => handleMouseDown(e, "bottomRight")}
+            ></div>
+            <div
+              style={{
+                width: 10,
+                height: 10,
+                backgroundColor: "transparent",
+                position: "absolute",
+                left: 0,
+                bottom: 0,
+                cursor: "sw-resize",
+              }}
+              onMouseDown={(e) => handleMouseDown(e, "bottomLeft")}
+            ></div>
+            <div
+              style={{
+                width: 10,
+                height: 10,
+                backgroundColor: "transparent",
+                position: "absolute",
+                left: 0,
+                top: 0,
+                cursor: "nw-resize",
+              }}
+              onMouseDown={(e) => handleMouseDown(e, "topLeft")}
+            ></div>
+            <div
+              style={{
+                width: 10,
+                height: 10,
+                backgroundColor: "transparent",
+                position: "absolute",
+                right: 0,
+                top: 0,
+                cursor: "ne-resize",
+              }}
+              onMouseDown={(e) => handleMouseDown(e, "topRight")}
+            ></div>
+          </div>
         </CCol>
       </CRow>
     </div>

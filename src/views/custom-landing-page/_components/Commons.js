@@ -2,20 +2,21 @@ import React from "react";
 import { useDragLayer } from "react-dnd";
 import "../styles/ViewTextImage.css";
 
-export const ViewTextAndImage = ({ tempSections }) => {
+export const ViewTextAndImage = ({ tempSections, width }) => {
+  console.log("🚀 ~ ViewTextAndImage ~ width:", width);
   const { id, isDragging } = useDragLayer((monitor) => ({
     isDragging: monitor.isDragging(),
     id: monitor.getItem()?.id,
   }));
   return (
-    <div className="wrapper">
+    <div sty className="wrapper">
       {tempSections.map((item, i) => (
         <div
-          className="itemsMd"
+          className=""
           key={i}
           style={{
             padding: 0,
-            margin: "10px",
+            width: width > 600 ? "32%" : "100%",
             ...(isDragging && item.id === id && { border: "2px solid green" }),
           }}
         >

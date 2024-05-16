@@ -19,6 +19,8 @@
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
+  padding: 12px 18px;
+  gap: 10px;
 }
 
 .itemsMd {
@@ -29,15 +31,27 @@
   grid-column: span 12;
 }
 
-@media (min-width: 376px) {
+@media (min-width: 320px) {
+  /* Stil untuk layar SM */
+
+  .itemsMd {
+    width: 100%;
+  }
+}
+
+@media (min-width: 600px) {
   /* Stil untuk layar SM */
 
   .column {
     grid-column: span 6;
   }
 
-  .itemsMd {
+  /* .itemsMd {
     width: 40%;
+  } */
+
+  .itemsMd {
+    width: 32%;
   }
 }
 
@@ -48,9 +62,9 @@
     grid-column: span 6;
   }
 
-  .itemsMd {
+  /* .itemsMd {
     width: 25%;
-  }
+  } */
 }
 
 @media (min-width: 768px) {
@@ -60,9 +74,9 @@
     grid-column: span 4;
   }
 
-  .itemsMd {
+  /* .itemsMd {
     width: 28%;
-  }
+  } */
 }
 
 @media (min-width: 1024px) {
@@ -72,7 +86,15 @@
     grid-column: span 4;
   }
 
-  .itemsMd {
+  /* .itemsMd {
     width: 30%;
-  }
+  } */
+}
+
+.fixed-bottom-card {
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 0;
+
+  z-index: 1000; /* Ensure it appears above other content */
 }
