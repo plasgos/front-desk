@@ -24,6 +24,8 @@ import { CardList } from "./_components/CardList";
 import { MdLaptopMac } from "react-icons/md";
 import { IoIosPhonePortrait } from "react-icons/io";
 import { IoIosTabletPortrait } from "react-icons/io";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import ResizableView from "./_components/ResizebleView";
 
 const viewIcon = {
   laptop: <MdLaptopMac size={20} />,
@@ -42,31 +44,59 @@ const contents = [
       image: image,
     },
   },
+  {
+    id: "adgdawdw",
+    name: "text-image",
+    content: {
+      title: "Rahasia untuk maju adalah memulai",
+      description:
+        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
+      image: image,
+    },
+  },
+  {
+    id: "feqawd",
+    name: "text-image",
+    content: {
+      title: "Rahasia untuk maju adalah memulai",
+      description:
+        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
+      image: image,
+    },
+  },
 ];
 
 const CustomLandingPage = () => {
+  const [isMenuVisible, setIsMenuVisible] = useState(true);
+
   const [isAddContent, setIsAddContent] = useState(false);
   const [sections, setSections] = useState(contents || []);
   const [tempSections, setTempSections] = useState(contents || []);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedSection, setSelectedSection] = useState({});
-
   const [isSelectedView, setIsSelectedView] = useState("laptop");
+  const [isResizing, setIsResizing] = useState(false);
 
-  const initialDimensions = {
-    width:
-      isSelectedView === "laptop"
-        ? "100%"
-        : isSelectedView === "tablet"
-        ? 600
-        : 320,
-    height: 480,
+  const getInitialDimensions = (view) => {
+    return {
+      width: view === "laptop" ? "100%" : view === "tablet" ? 600 : 320,
+      height: 480,
+    };
   };
 
-  const [dimensions, setDimensions] = useState(initialDimensions);
+  const [dimensions, setDimensions] = useState(
+    getInitialDimensions(isSelectedView)
+  );
+
+  useEffect(() => {
+    setDimensions(getInitialDimensions(isSelectedView));
+  }, [isSelectedView]);
 
   const handleMouseDown = (e, direction) => {
+    if (isSelectedView === "laptop") return;
+
     e.preventDefault();
+    setIsResizing(true);
     const startX = e.clientX;
     const startY = e.clientY;
     const startWidth =
@@ -89,6 +119,21 @@ const CustomLandingPage = () => {
         newHeight = startHeight - (e.clientY - startY);
       }
 
+      // Handle corners
+      if (direction === "bottomRight") {
+        newWidth = startWidth + (e.clientX - startX);
+        newHeight = startHeight + (e.clientY - startY);
+      } else if (direction === "bottomLeft") {
+        newWidth = startWidth - (e.clientX - startX);
+        newHeight = startHeight + (e.clientY - startY);
+      } else if (direction === "topRight") {
+        newWidth = startWidth + (e.clientX - startX);
+        newHeight = startHeight - (e.clientY - startY);
+      } else if (direction === "topLeft") {
+        newWidth = startWidth - (e.clientX - startX);
+        newHeight = startHeight - (e.clientY - startY);
+      }
+
       setDimensions({
         width: newWidth > 100 ? newWidth : 100,
         height: newHeight > 100 ? newHeight : 100,
@@ -96,6 +141,7 @@ const CustomLandingPage = () => {
     };
 
     const handleMouseUp = () => {
+      setIsResizing(false);
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
@@ -168,236 +214,157 @@ const CustomLandingPage = () => {
   }, []);
 
   return (
-    <div>
+    <div style={isResizing ? { cursor: "not-allowed" } : {}}>
       <CRow>
-        <CCol md="4">
-          <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-            <div>
-              {/* <CButton onClick={() => {}} variant="ghost">
+        {isMenuVisible && (
+          <CCol md="4">
+            <div style={{ height: 400 }}>
+              <div className="d-flex justify-content-end align-items-center border-bottom p-2">
+                <div>
+                  {/* <CButton onClick={() => {}} variant="ghost">
                 <IoSearch style={{ cursor: "pointer" }} size={18} />
               </CButton> */}
-              <CButton
-                onClick={handelCancel}
-                color="primary"
-                variant="outline"
-                className="mx-2"
-              >
-                Batal
-              </CButton>
-
-              <CButton onClick={handelConfirm} color="primary">
-                Selesai
-              </CButton>
-            </div>
-          </div>
-
-          <CTabs activeTab="kolom">
-            <CNav variant="tabs">
-              <CNavItem>
-                <CNavLink data-tab="kolom">Kolom</CNavLink>
-              </CNavItem>
-            </CNav>
-            <CTabContent className="pt-3">
-              <CTabPane data-tab="kolom">
-                {isAddContent ? (
-                  <AddContent
-                    sections={sections}
-                    setSections={setSections}
-                    setTempSections={setTempSections}
-                  />
-                ) : isEditing ? (
-                  <EditContent
-                    id={selectedSection.id}
-                    titleValue={selectedSection.content.title}
-                    descriptionValue={selectedSection.content.description}
-                    image={selectedSection.content.image}
-                    setTempSections={setTempSections}
-                  />
-                ) : (
-                  <div>
-                    {sections.map((section, i) => renderSection(section, i))}
-                  </div>
-                )}
-
-                {!isAddContent && !isEditing && (
-                  <CCard
-                    style={{ cursor: "pointer" }}
-                    onClick={handleAddContent}
+                  <CButton
+                    onClick={handelCancel}
+                    color="primary"
+                    variant="outline"
+                    className="mx-2"
                   >
-                    <CCardBody className="p-1">
-                      <div className="d-flex align-items-center ">
-                        <IoAdd
-                          style={{
-                            cursor: "pointer",
-                            margin: "0px 10px 0px 6px",
-                          }}
-                          size={18}
-                        />
+                    Batal
+                  </CButton>
 
-                        <div>Tambah Konten</div>
-                      </div>
-                    </CCardBody>
-                  </CCard>
-                )}
-              </CTabPane>
-            </CTabContent>
-          </CTabs>
-
-          <div className="d-flex justify-content-between align-items-center border rounded-sm p-2">
-            <div
-              className="d-flex align-items-center"
-              style={{ cursor: "pointer" }}
-            >
-              {viewTypes.map((view) => (
-                <div
-                  key={view}
-                  onClick={() => setIsSelectedView(view)}
-                  style={{
-                    backgroundColor:
-                      isSelectedView === view ? "skyblue" : "transparent",
-                  }}
-                  className="border p-1 px-2 "
-                >
-                  {React.cloneElement(viewIcon[view], {
-                    color: isSelectedView === view ? "white" : "black",
-                  })}
+                  <CButton onClick={handelConfirm} color="primary">
+                    Selesai
+                  </CButton>
                 </div>
-              ))}
+              </div>
+
+              <CTabs activeTab="kolom">
+                <CNav variant="tabs">
+                  <CNavItem>
+                    <CNavLink data-tab="kolom">Kolom</CNavLink>
+                  </CNavItem>
+                </CNav>
+                <CTabContent
+                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
+                  className="pt-3"
+                >
+                  <CTabPane data-tab="kolom">
+                    {isAddContent ? (
+                      <AddContent
+                        sections={sections}
+                        setSections={setSections}
+                        setTempSections={setTempSections}
+                      />
+                    ) : isEditing ? (
+                      <EditContent
+                        id={selectedSection.id}
+                        titleValue={selectedSection.content.title}
+                        descriptionValue={selectedSection.content.description}
+                        image={selectedSection.content.image}
+                        setTempSections={setTempSections}
+                      />
+                    ) : (
+                      <div>
+                        {sections.map((section, i) =>
+                          renderSection(section, i)
+                        )}
+                      </div>
+                    )}
+
+                    {!isAddContent && !isEditing && (
+                      <CCard
+                        style={{ cursor: "pointer" }}
+                        onClick={handleAddContent}
+                      >
+                        <CCardBody className="p-1">
+                          <div className="d-flex align-items-center ">
+                            <IoAdd
+                              style={{
+                                cursor: "pointer",
+                                margin: "0px 10px 0px 6px",
+                              }}
+                              size={18}
+                            />
+
+                            <div>Tambah Konten</div>
+                          </div>
+                        </CCardBody>
+                      </CCard>
+                    )}
+                  </CTabPane>
+                </CTabContent>
+              </CTabs>
+
+              <div
+                style={{ position: "absolute", bottom: 0, width: "92%" }}
+                className="d-flex justify-content-between align-items-center border rounded-sm p-2 mb-2"
+              >
+                <div
+                  className="d-flex align-items-center"
+                  style={{ cursor: "pointer" }}
+                >
+                  {viewTypes.map((view) => (
+                    <div
+                      key={view}
+                      onClick={() => setIsSelectedView(view)}
+                      style={{
+                        backgroundColor:
+                          isSelectedView === view ? "#fa541c" : "transparent",
+                      }}
+                      className="border p-1 px-2 "
+                    >
+                      {React.cloneElement(viewIcon[view], {
+                        color: isSelectedView === view ? "white" : "black",
+                      })}
+                    </div>
+                  ))}
+                </div>
+
+                <CButton
+                  onClick={() => setIsMenuVisible((prev) => !prev)}
+                  size="sm"
+                  color="primary"
+                  variant="outline"
+                >
+                  <FaChevronLeft size={20} />
+                </CButton>
+              </div>
             </div>
-          </div>
-        </CCol>
+          </CCol>
+        )}
 
         <CCol>
-          <div
-            className="mx-auto border"
-            style={{
-              // width:
-              //   isSelectedView === "laptop"
-              //     ? "100%"
-              //     : isSelectedView === "tablet"
-              //     ? 600
-              //     : 320,
-              // height: 480,
-              // maxHeight: "98%",
-              // overflowY: "scroll",
-              // flex: isSelectedView === "laptop" ? "1 1 0%" : "initial",
-              // transition: "transform 0.4s ease 0s",
-              // transformOrigin: "center top",
-              // minHeight: isSelectedView === "phone" ? "100%" : "initial",
-
-              width: dimensions.width,
-              height: dimensions.height,
-              maxHeight: "98%",
-              overflowY: "scroll",
-              flex: isSelectedView === "laptop" ? "1 1 0%" : "initial",
-              transition: "transform 0.4s ease 0s",
-              transformOrigin: "center top",
-              minHeight: isSelectedView === "phone" ? "100%" : "initial",
-            }}
+          <ResizableView
+            dimensions={dimensions}
+            isSelectedView={isSelectedView}
+            isResizing={isResizing}
+            handleMouseDown={handleMouseDown}
           >
             <ViewTextAndImage
               width={dimensions.width}
               tempSections={tempSections}
+              isResizing={isResizing}
             />
-            <div
-              style={{
-                width: 10,
-                height: "100%",
-                backgroundColor: "transparent",
-                position: "absolute",
-                left: 0,
-                top: 0,
-                cursor: "w-resize",
-              }}
-              onMouseDown={(e) => handleMouseDown(e, "left")}
-            ></div>
-            <div
-              style={{
-                width: 10,
-                height: "100%",
-                backgroundColor: "transparent",
-                position: "absolute",
-                right: 0,
-                top: 0,
-                cursor: "e-resize",
-              }}
-              onMouseDown={(e) => handleMouseDown(e, "right")}
-            ></div>
-            <div
-              style={{
-                width: "100%",
-                height: 10,
-                backgroundColor: "transparent",
-                position: "absolute",
-                left: 0,
-                top: 0,
-                cursor: "n-resize",
-              }}
-              onMouseDown={(e) => handleMouseDown(e, "top")}
-            ></div>
-            <div
-              style={{
-                width: "100%",
-                height: 10,
-                backgroundColor: "transparent",
-                position: "absolute",
-                left: 0,
-                bottom: 0,
-                cursor: "s-resize",
-              }}
-              onMouseDown={(e) => handleMouseDown(e, "bottom")}
-            ></div>
-            <div
-              style={{
-                width: 10,
-                height: 10,
-                backgroundColor: "transparent",
-                position: "absolute",
-                right: 0,
-                bottom: 0,
-                cursor: "se-resize",
-              }}
-              onMouseDown={(e) => handleMouseDown(e, "bottomRight")}
-            ></div>
-            <div
-              style={{
-                width: 10,
-                height: 10,
-                backgroundColor: "transparent",
-                position: "absolute",
-                left: 0,
-                bottom: 0,
-                cursor: "sw-resize",
-              }}
-              onMouseDown={(e) => handleMouseDown(e, "bottomLeft")}
-            ></div>
-            <div
-              style={{
-                width: 10,
-                height: 10,
-                backgroundColor: "transparent",
-                position: "absolute",
-                left: 0,
-                top: 0,
-                cursor: "nw-resize",
-              }}
-              onMouseDown={(e) => handleMouseDown(e, "topLeft")}
-            ></div>
-            <div
-              style={{
-                width: 10,
-                height: 10,
-                backgroundColor: "transparent",
-                position: "absolute",
-                right: 0,
-                top: 0,
-                cursor: "ne-resize",
-              }}
-              onMouseDown={(e) => handleMouseDown(e, "topRight")}
-            ></div>
-          </div>
+          </ResizableView>
         </CCol>
       </CRow>
+
+      {!isMenuVisible && (
+        <div
+          style={{ position: "fixed", bottom: 40, left: 265, zIndex: 1000 }}
+          className="shadow-lg"
+        >
+          <CButton
+            onClick={() => setIsMenuVisible((prev) => !prev)}
+            size="sm"
+            color="primary"
+            className=""
+          >
+            <FaChevronRight size={20} />
+          </CButton>
+        </div>
+      )}
     </div>
   );
 };

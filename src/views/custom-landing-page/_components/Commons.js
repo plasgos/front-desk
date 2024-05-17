@@ -2,21 +2,29 @@ import React from "react";
 import { useDragLayer } from "react-dnd";
 import "../styles/ViewTextImage.css";
 
-export const ViewTextAndImage = ({ tempSections, width }) => {
+export const ViewTextAndImage = ({ tempSections, width, isResizing }) => {
   console.log("🚀 ~ ViewTextAndImage ~ width:", width);
   const { id, isDragging } = useDragLayer((monitor) => ({
     isDragging: monitor.isDragging(),
     id: monitor.getItem()?.id,
   }));
   return (
-    <div sty className="wrapper">
+    <div
+      style={isResizing ? { cursor: "not-allowed" } : {}}
+      className="wrapper"
+    >
       {tempSections.map((item, i) => (
         <div
           className=""
           key={i}
           style={{
             padding: 0,
-            width: width > 600 ? "32%" : "100%",
+            width:
+              width === "100%" || width >= 600
+                ? "32%"
+                : width > 320 && width < 600
+                ? "45%"
+                : "100%",
             ...(isDragging && item.id === id && { border: "2px solid green" }),
           }}
         >
