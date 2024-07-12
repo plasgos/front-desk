@@ -1,0 +1,43 @@
+import { put, call, takeLatest } from "redux-saga/effects";
+import Api from "../../../services";
+import types from "./types";
+import * as actions from "./reducer";
+
+function* watchGetHelpTopic(value) {
+  yield put(actions.isLoadingGetHelpTopic(true));
+  const { payload } = value;
+  try {
+    const response = yield call(Api.help.get.topic, payload);
+    const { data } = response;
+    if (data.success) {
+      yield put(actions.getHelpTopicSuccess(data.data));
+    }
+  } catch (e) {
+    yield put(actions.isLoadingGetHelpTopic(false));
+  } finally {
+    yield put(actions.isLoadingGetHelpTopic(false));
+  }
+}
+
+function* watchGetHelpChat(value) {
+  yield put(actions.isLoadingGetHelpChat(true));
+  const { payload } = value;
+  try {
+    const response = yield call(Api.help.get.chat, payload);
+    const { data } = response;
+    if (data.success) {
+      yield put(actions.getHelpChatSuccess(data.data));
+    }
+  } catch (e) {
+    yield put(actions.isLoadingGetHelpChat(false));
+  } finally {
+    yield put(actions.isLoadingGetHelpChat(false));
+  }
+}
+
+const sagas = [
+  takeLatest(types.GET_HELP_TOPIC, watchGetHelpTopic),
+  takeLatest(types.GET_HELP_CHAT, watchGetHelpChat),
+];
+
+export default sagas;

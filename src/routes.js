@@ -70,6 +70,8 @@ const CustomLandingPage = React.lazy(() =>
   import("./views/custom-landing-page")
 );
 
+const ChatHelp = React.lazy(() => import("./views/chat-help"));
+
 const routes = [
   { path: "/", exact: true, name: "Dashboard", component: Dashboard },
   { path: "/buyer", name: "Buyer", component: Checkout, exact: true },
@@ -171,6 +173,11 @@ const routes = [
     path: "/custom-landing-page",
     name: "Custom Landing Page",
     component: CustomLandingPage,
+  },
+  {
+    path: "/chat-help",
+    name: "Chat Help",
+    component: ChatHelp,
   },
 ];
 

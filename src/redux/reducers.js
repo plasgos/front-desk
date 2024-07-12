@@ -13,6 +13,7 @@ import shippingReducer from "./modules/shipping/reducer";
 import warehouseReducer from "./modules/warehouse/reducer";
 import packageReducer from "./modules/package/reducer";
 import productReducer from "./modules/product/reducer";
+import chatHelpReducer from "./modules/chat-help/reducer";
 
 const rootReducer = combineReducers({
   login: loginReducer,
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
   shipping: shippingReducer,
   package: packageReducer,
   warehouse: warehouseReducer,
-  product: productReducer
+  product: productReducer,
+  chatHelp: chatHelpReducer,
 });
 
 export default rootReducer;

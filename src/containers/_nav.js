@@ -80,6 +80,12 @@ export default [
     icon: "cil-drop",
   },
   {
+    _tag: "CSidebarNavItem",
+    name: "Chat Help",
+    to: "/chat-help",
+    icon: "cil-drop",
+  },
+  {
     _tag: "CSidebarNavTitle",
     _children: ["Extras"],
   },

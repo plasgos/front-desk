@@ -11,6 +11,7 @@ import shippingSaga from "./modules/shipping/saga";
 import packageSaga from "./modules/package/saga";
 import warehouseSaga from "./modules/warehouse/saga";
 import productSaga from "./modules/product/saga";
+import chatHelpSaga from "./modules/chat-help/saga";
 
 export default function* rootSaga() {
   yield all([
@@ -25,5 +26,6 @@ export default function* rootSaga() {
     all(packageSaga),
     all(warehouseSaga),
     all(productSaga),
+    all(chatHelpSaga),
   ]);
 }

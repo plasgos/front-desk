@@ -5,6 +5,7 @@ import products from "./products";
 import checkcost from "./checkcost";
 import product from "./product";
 import packages from "./package";
+import help from "./help";
 
 export default {
   login,
@@ -14,4 +15,5 @@ export default {
   checkcost,
   product,
   packages,
+  help,
 };
