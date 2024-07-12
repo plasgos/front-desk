@@ -66,6 +66,10 @@ const InvoiceLabelSetting = React.lazy(() =>
   import("./views/invoice-label-setting/InvoiceLabelSetting")
 );
 
+const CustomLandingPage = React.lazy(() =>
+  import("./views/custom-landing-page")
+);
+
 const routes = [
   { path: "/", exact: true, name: "Dashboard", component: Dashboard },
   { path: "/buyer", name: "Buyer", component: Checkout, exact: true },
@@ -162,6 +166,11 @@ const routes = [
     path: "/invoice-label-setting",
     name: "Invoice Label Setting",
     component: InvoiceLabelSetting,
+  },
+  {
+    path: "/custom-landing-page",
+    name: "Custom Landing Page",
+    component: CustomLandingPage,
   },
 ];
 

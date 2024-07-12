@@ -354,6 +354,12 @@ ul.nav.nav-tabs .active.nav-link {
   .btn-dropdown {
     width: 420px; /* Lebar 240px pada layar sm */
   }
+
+  // .col-md-6,
+  // .col-xs-6,
+  // .col-lg-6 {
+  //   grid-column: span 6;
+  // }
 }
 
 /* Medium devices (tablets, 768px and up) */
@@ -391,30 +397,6 @@ ul.nav.nav-tabs .active.nav-link {
     page-break-before: always;
   }
 }
-
-.sheet {
-  box-sizing: border-box;
-  margin: 0;
-  overflow: hidden;
-  page-break-after: always;
-  position: relative;
-}
-// @media print {
-//   html,
-//   body {
-//     height: 100% !important;
-//     overflow: initial !important;
-//     padding: 5px;
-//     -webkit-print-color-adjust: exact;
-//   }
-// }
-
-// @media print {
-//   .page-break {
-//     display: block;
-//     page-break-before: auto;
-//   }
-// }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
