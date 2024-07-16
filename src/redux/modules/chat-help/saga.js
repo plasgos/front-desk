@@ -54,7 +54,6 @@ function* watchCreateHelpChat(value) {
 function* watchReplyHelpChat(value) {
   yield put(actions.isLoadingReplyHelpChat(true));
   const { payload } = value;
-  console.log("🚀 ~ function*watchReplyHelpChat ~ payload:", payload);
   try {
     const response = yield call(Api.help.create.reply_chat, payload);
     const { data } = response;
