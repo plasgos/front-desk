@@ -3,7 +3,6 @@ import { useDragLayer } from "react-dnd";
 import "../styles/ViewTextImage.css";
 
 export const ViewTextAndImage = ({ tempSections, width, isResizing }) => {
-  console.log("🚀 ~ ViewTextAndImage ~ width:", width);
   const { id, isDragging } = useDragLayer((monitor) => ({
     isDragging: monitor.isDragging(),
     id: monitor.getItem()?.id,
