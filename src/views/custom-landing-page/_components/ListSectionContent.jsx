@@ -8,7 +8,7 @@ export const ItemTypes = {
   CARD: "card",
 };
 
-export const CardList = ({
+export const ListSectionContent = ({
   index,
   id,
   section,
@@ -78,52 +78,37 @@ export const CardList = ({
   return (
     <div style={{ opacity }} ref={ref} data-handler-id={handlerId}>
       <CCard style={{ cursor: "move" }} className="mb-2">
-        <CCardBody style={{ padding: "0px 10px 0px 10px" }}>
+        <CCardBody style={{ padding: "5px 10px 5px 10px" }}>
           <div style={{ gap: 10 }} className="d-flex align-items-center">
             <IoMenu style={{ cursor: "move" }} size={18} />
 
             <div
               style={{
-                width: 60,
-                height: 40,
+                // width: 60,
+                // height: 40,
                 overflow: "hidden",
               }}
             >
-              <img
-                src={section?.content?.image}
-                alt="img"
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  objectFit: "contain",
-                }}
+              {section.icon}
+            </div>
+
+            <div style={{ flexGrow: 1 }} className="capitalize">
+              {section.name}
+            </div>
+
+            <FaMagnifyingGlass style={{ cursor: "pointer" }} size={14} />
+            <div style={{ gap: 10 }} className="d-flex ">
+              <IoSettingsOutline
+                onClick={() => editSection()}
+                style={{ cursor: "pointer" }}
+                size={16}
+              />
+              <IoCloseOutline
+                onClick={() => removeSection(index)}
+                style={{ cursor: "pointer" }}
+                size={18}
               />
             </div>
-
-            <div
-              style={{
-                flexGrow: 1,
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-                width: 80,
-                fontSize: 14,
-              }}
-            >
-              {section?.content?.title}
-            </div>
-
-            {/* <FaMagnifyingGlass style={{ cursor: "pointer" }} size={16} /> */}
-            <IoSettingsOutline
-              onClick={() => editSection()}
-              style={{ cursor: "pointer" }}
-              size={16}
-            />
-            <IoCloseOutline
-              onClick={() => removeSection(index)}
-              style={{ cursor: "pointer" }}
-              size={18}
-            />
           </div>
         </CCardBody>
       </CCard>
