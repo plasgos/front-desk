@@ -120,7 +120,7 @@ export const CardList = ({
               size={16}
             />
             <IoCloseOutline
-              onClick={() => removeSection(index)}
+              onClick={() => removeSection()}
               style={{ cursor: "pointer" }}
               size={18}
             />

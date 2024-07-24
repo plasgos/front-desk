@@ -6,15 +6,19 @@ import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 import { createUniqueID } from "../../../lib/unique-id";
 
-export const AddContent = ({ sections, setSections, setTempSections }) => {
+export const AddContent = ({
+  idSection,
+  sections,
+  setSections,
+  setPreviewSection,
+}) => {
   const [imageUrl, setImageUrl] = useState(image);
   const [title, setTitle] = useState("How awesome are you?");
   const [description, setDescription] = useState(
     "So awesome that you will not believe it"
   );
 
-  const [settingTitle, setSettingTitle] = useState({});
-
+  const [setting, setSetting] = useState({});
   const handleFileUpload = () => {
     const input = document.createElement("input");
     input.type = "file";
@@ -35,15 +39,22 @@ export const AddContent = ({ sections, setSections, setTempSections }) => {
 
   useEffect(() => {
     // Update tempSections setelah imageUrl berubah
-    setTempSections((arr) =>
+    setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(settingTitle.id)
+        String(item.id) === idSection
           ? {
               ...item,
-              content: {
-                ...item.content,
-                image: imageUrl,
-              },
+              content: item.content.map((contentItem) =>
+                String(contentItem.id) === String(setting.id)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        image: imageUrl,
+                      },
+                    }
+                  : contentItem
+              ),
             }
           : item
       )
@@ -51,17 +62,24 @@ export const AddContent = ({ sections, setSections, setTempSections }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl]);
 
-  const handleEditorChange = (value) => {
+  const handleDescriptionChange = (value) => {
     setDescription(value);
-    setTempSections((arr) =>
+    setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(settingTitle.id)
+        String(item.id) === idSection
           ? {
               ...item,
-              content: {
-                ...item.content,
-                description: value,
-              },
+              content: item.content.map((contentItem) =>
+                String(contentItem.id) === String(setting.id)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        description: value,
+                      },
+                    }
+                  : contentItem
+              ),
             }
           : item
       )
@@ -70,15 +88,22 @@ export const AddContent = ({ sections, setSections, setTempSections }) => {
 
   const handleTitleChange = (value) => {
     setTitle(value);
-    setTempSections((arr) =>
+    setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(settingTitle.id)
+        String(item.id) === idSection
           ? {
               ...item,
-              content: {
-                ...item.content,
-                title: value,
-              },
+              content: item.content.map((contentItem) =>
+                String(contentItem.id) === String(setting.id)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        title: value,
+                      },
+                    }
+                  : contentItem
+              ),
             }
           : item
       )
@@ -89,7 +114,6 @@ export const AddContent = ({ sections, setSections, setTempSections }) => {
     let uniqueId = createUniqueID(sections);
     let payload = {
       id: uniqueId,
-      name: "text-image",
       content: {
         title,
         description,
@@ -97,8 +121,15 @@ export const AddContent = ({ sections, setSections, setTempSections }) => {
       },
     };
 
-    setTempSections((arr) => [...arr, payload]);
-    setSettingTitle(payload);
+    setPreviewSection((prevSections) =>
+      prevSections.map((section) =>
+        section.id === idSection
+          ? { ...section, content: [...section.content, payload] }
+          : section
+      )
+    );
+
+    setSetting(payload);
   };
 
   useEffect(() => {
@@ -179,7 +210,7 @@ export const AddContent = ({ sections, setSections, setTempSections }) => {
           ]}
           theme="snow"
           value={description}
-          onChange={handleEditorChange}
+          onChange={handleDescriptionChange}
           className="text-editor rounded"
         />
       </div>

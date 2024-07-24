@@ -13,16 +13,10 @@ import {
 } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
 import ResizableView from "./_components/ResizebleView";
-import { ViewTextAndImage } from "./_components/Commons";
-import { MdTextFields, MdViewColumn } from "react-icons/md";
 import { ListSectionContent } from "./_components/ListSectionContent";
-import image from "../../assets/action-figure.jpg";
-
 import { MdLaptopMac } from "react-icons/md";
-import { IoIosPhonePortrait } from "react-icons/io";
-import { IoIosTabletPortrait } from "react-icons/io";
+import { IoIosPhonePortrait, IoIosTabletPortrait } from "react-icons/io";
 import { IoAdd } from "react-icons/io5";
-import ColumnSection from "./_components/ColumnSection";
 import ListContent from "./_components/list-add-content/";
 import ViewText from "./_components/view-content/ViewText";
 import { useDragLayer } from "react-dnd";
@@ -33,77 +27,9 @@ import ViewColumnTextAndImage from "./_components/view-content/ViewColumnTextAnd
 
 const landingPage = {
   detail: {
-    contents: [
-      // {
-      //   id: "aohdawkd",
-      //   name: "column-text-and-image",
-      //   icon: <MdViewColumn size={20} />,
-      //   content: [],
-      // },
-      // {
-      //   id: "adguiwbj",
-      //   name: "text",
-      //   icon: <MdTextFields size={24} />,
-      //   content: {
-      //     html: "tes",
-      //   },
-      // },
-      // {
-      //   id: "ewgwge",
-      //   name: "column-text-and-image",
-      //   icon: <MdViewColumn size={20} />,
-      //   content: {
-      //     title: "Rahasia untuk maju adalah memulai",
-      //     description:
-      //       "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      //     image: image,
-      //   },
-      // },
-    ],
+    contents: [],
   },
 };
-
-const dataListContents = [
-  {
-    id: "1",
-    name: "column",
-    icon: <MdViewColumn size={20} />,
-  },
-];
-
-const contentsViewAndImageData = [
-  {
-    id: "adguiwbj",
-    name: "text-image",
-
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-  },
-  {
-    id: "adgdawdw",
-    name: "text-image",
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-  },
-  {
-    id: "feqawd",
-    name: "text-image",
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-  },
-];
 
 const viewIcon = {
   laptop: <MdLaptopMac size={20} />,
@@ -117,13 +43,13 @@ const CustomLandingPage = () => {
   const [sections, setSections] = useState(landingPage.detail.contents || []);
   const [editing, setEditing] = useState("");
   const [isAddContent, setIsAddContent] = useState(false);
-  const [contentsViewAndImage, setContentsViewAndImage] = useState(
-    landingPage.detail.contents || []
-  );
 
   const [previewSection, setPreviewSection] = useState(
     landingPage.detail.contents || []
   );
+
+  const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
+  console.log("🚀 ~ CustomLandingPage ~ sectionBeforeEdit:", sectionBeforeEdit);
 
   console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
   const viewTypes = Object.keys(viewIcon);
@@ -159,7 +85,7 @@ const CustomLandingPage = () => {
   };
 
   const renderEditSection = (section) => {
-    if (editing === "text" && section.name === "text") {
+    if (editing.name === section.name && editing.id === section.id) {
       return (
         <EditText
           id={section.id}
@@ -171,6 +97,7 @@ const CustomLandingPage = () => {
           isShowContent={(value) => setEditing(value)}
           sections={sections}
           setSections={(value) => setSections(value)}
+          sectionBeforeEdit={sectionBeforeEdit}
         />
       );
     }
@@ -292,7 +219,7 @@ const CustomLandingPage = () => {
   }, []);
 
   const editSection = (sectionToEdit) => {
-    // setSelectedSection(section);
+    setSectionBeforeEdit([...previewSection]);
     setEditing(sectionToEdit);
   };
 
@@ -310,7 +237,7 @@ const CustomLandingPage = () => {
         id={section.id}
         section={section}
         moveSection={moveSection}
-        editSection={() => editSection(section.name, index)}
+        editSection={() => editSection(section)}
         removeSection={removeSection}
       />
     );

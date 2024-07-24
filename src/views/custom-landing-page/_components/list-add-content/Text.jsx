@@ -34,10 +34,8 @@ const Text = ({
   toggleAddContent,
 }) => {
   const [editorHtml, setEditorHtml] = useState("Type your text here");
-  console.log("🚀 ~ editorHtml:", editorHtml);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [selectAlign, setSelectAlign] = useState("text-center");
-  console.log("🚀 ~ selectAlign:", selectAlign);
   const [selectedColor, setSelectedColor] = useState("#000000");
 
   const [settingText, setSettingText] = useState({});
@@ -113,7 +111,7 @@ const Text = ({
       },
     };
 
-    setPreviewSection((arr) => [...arr, payload]);
+    setPreviewSection((prevSections) => [...prevSections, payload]);
     setSettingText(payload);
   };
 
@@ -135,20 +133,12 @@ const Text = ({
     left: "0px",
   };
 
-  // useEffect(() => {
-  //   if (settingText.content) {
-  //     handleColorChange(settingText.content.style?.color);
-  //     onChangeAlign(settingText.content.style?.textAlign);
-  //     setEditorHtml(settingText.content.html);
-  //   }
-  //   return () => {};
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [settingText]);
-
   const handelCancel = () => {
     toggleAddContent("");
     isShowContent(false);
-    setPreviewSection(sections);
+    setPreviewSection((prevSections) =>
+      prevSections.filter((section) => section.id !== settingText.id)
+    );
   };
 
   const handelConfirm = () => {

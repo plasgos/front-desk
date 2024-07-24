@@ -5,11 +5,12 @@ import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 
 export const EditContent = ({
-  id,
+  idSection,
+  idContent,
   titleValue,
   descriptionValue,
   image,
-  setTempSections,
+  setPreviewSection,
 }) => {
   const [imageUrl, setImageUrl] = useState(image);
   const [title, setTitle] = useState(titleValue);
@@ -36,15 +37,22 @@ export const EditContent = ({
   // Efek ini akan dipanggil setiap kali imageUrl berubah
   useEffect(() => {
     // Update tempSections setelah imageUrl berubah
-    setTempSections((arr) =>
+    setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(id)
+        String(item.id) === idSection
           ? {
               ...item,
-              content: {
-                ...item.content,
-                image: imageUrl,
-              },
+              content: item.content.map((contentItem) =>
+                String(contentItem.id) === String(idContent)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        image: imageUrl,
+                      },
+                    }
+                  : contentItem
+              ),
             }
           : item
       )
@@ -54,15 +62,22 @@ export const EditContent = ({
 
   const handleEditorChange = (value) => {
     setDescription(value);
-    setTempSections((arr) =>
+    setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(id)
+        String(item.id) === idSection
           ? {
               ...item,
-              content: {
-                ...item.content,
-                description: value,
-              },
+              content: item.content.map((contentItem) =>
+                String(contentItem.id) === String(idContent)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        description: description,
+                      },
+                    }
+                  : contentItem
+              ),
             }
           : item
       )
@@ -71,15 +86,23 @@ export const EditContent = ({
 
   const handleTitleChange = (value) => {
     setTitle(value);
-    setTempSections((arr) =>
+
+    setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(id)
+        String(item.id) === idSection
           ? {
               ...item,
-              content: {
-                ...item.content,
-                title: value,
-              },
+              content: item.content.map((contentItem) =>
+                String(contentItem.id) === String(idContent)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        title: value,
+                      },
+                    }
+                  : contentItem
+              ),
             }
           : item
       )
@@ -121,7 +144,7 @@ export const EditContent = ({
         </div>
 
         <form>
-          <div class="form-group">
+          <div className="form-group">
             <label>Judul</label>
             <input
               value={title}

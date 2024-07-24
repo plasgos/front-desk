@@ -22,8 +22,6 @@ import {
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 import { ChromePicker } from "react-color";
-import { createUniqueID } from "../../../../lib/unique-id";
-import { MdTextFields } from "react-icons/md";
 
 const EditText = ({
   id,
@@ -35,14 +33,13 @@ const EditText = ({
   isShowContent,
   sections,
   setSections,
+  sectionBeforeEdit,
 }) => {
-  console.log("🚀 ~ text:", text);
+  console.log("🚀 ~ sectionBeforeEdit:", sectionBeforeEdit);
   const [editorHtml, setEditorHtml] = useState(text);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [selectAlign, setSelectAlign] = useState(textAlign);
   const [selectedColor, setSelectedColor] = useState(color);
-
-  // const [settingText, setSettingText] = useState({});
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
@@ -101,26 +98,6 @@ const EditText = ({
     );
   };
 
-  //   const handleAddContent = () => {
-  //     let uniqueId = createUniqueID(previewSection);
-  //     let payload = {
-  //       id: uniqueId,
-  //       name: "text",
-  //       icon: <MdTextFields size={24} />,
-  //       content: {
-  //         editorHtml,
-  //       },
-  //     };
-
-  //     setPreviewSection((arr) => [...arr, payload]);
-  //     setSettingText(payload);
-  //   };
-
-  //   useEffect(() => {
-  //     handleAddContent();
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, []);
-
   const popover = {
     position: "absolute",
     zIndex: "2",
@@ -134,19 +111,9 @@ const EditText = ({
     left: "0px",
   };
 
-  // useEffect(() => {
-  //   if (settingText.content) {
-  //     handleColorChange(settingText.content.style?.color);
-  //     onChangeAlign(settingText.content.style?.textAlign);
-  //     setEditorHtml(settingText.content.html);
-  //   }
-  //   return () => {};
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [settingText]);
-
   const handelCancel = () => {
     isShowContent("");
-    setPreviewSection(sections);
+    setPreviewSection([...sectionBeforeEdit]);
   };
 
   const handelConfirm = () => {

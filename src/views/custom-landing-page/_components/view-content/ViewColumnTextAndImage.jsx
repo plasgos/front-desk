@@ -1,7 +1,6 @@
 import React from "react";
 
 const ViewColumnTextAndImage = ({ isDragging, width, isResizing, content }) => {
-  console.log("🚀 ~ ViewColumnTextAndImage ~ content:", content);
   return (
     <div
       style={isResizing ? { cursor: "not-allowed" } : {}}
