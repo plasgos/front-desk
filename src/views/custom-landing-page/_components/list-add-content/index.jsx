@@ -1,8 +1,7 @@
 import { CButton, CCard } from "@coreui/react";
 import React, { useState } from "react";
-import { MdImage, MdTitle, MdViewColumn } from "react-icons/md";
+import { MdTitle, MdViewColumn } from "react-icons/md";
 import Text from "./Text";
-import ColumTextAndImage from "./ColumTextAndImage";
 import ColumnSection from "../ColumnSection";
 
 const ListContent = ({

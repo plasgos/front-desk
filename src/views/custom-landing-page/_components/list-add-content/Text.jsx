@@ -28,7 +28,6 @@ import { MdTextFields } from "react-icons/md";
 const Text = ({
   previewSection,
   setPreviewSection,
-  sections,
   setSections,
   isShowContent,
   toggleAddContent,

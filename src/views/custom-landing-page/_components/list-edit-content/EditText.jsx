@@ -31,7 +31,6 @@ const EditText = ({
   previewSection,
   setPreviewSection,
   isShowContent,
-  sections,
   setSections,
   sectionBeforeEdit,
 }) => {

@@ -6,12 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 import { createUniqueID } from "../../../lib/unique-id";
 
-export const AddContent = ({
-  idSection,
-  sections,
-  setSections,
-  setPreviewSection,
-}) => {
+export const AddContent = ({ idSection, sections, setPreviewSection }) => {
   const [imageUrl, setImageUrl] = useState(image);
   const [title, setTitle] = useState("How awesome are you?");
   const [description, setDescription] = useState(

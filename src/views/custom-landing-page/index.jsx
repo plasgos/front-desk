@@ -85,7 +85,11 @@ const CustomLandingPage = () => {
   };
 
   const renderEditSection = (section) => {
-    if (editing.name === section.name && editing.id === section.id) {
+    if (
+      editing.name === "text" &&
+      section.name === "text" &&
+      editing.id === section.id
+    ) {
       return (
         <EditText
           id={section.id}
@@ -95,7 +99,6 @@ const CustomLandingPage = () => {
           previewContent={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={(value) => setEditing(value)}
-          sections={sections}
           setSections={(value) => setSections(value)}
           sectionBeforeEdit={sectionBeforeEdit}
         />
@@ -115,6 +118,8 @@ const CustomLandingPage = () => {
     //     />
     //   );
     // }
+
+    return null;
   };
 
   const handleSave = () => {
@@ -218,10 +223,13 @@ const CustomLandingPage = () => {
     return () => {};
   }, []);
 
-  const editSection = (sectionToEdit) => {
-    setSectionBeforeEdit([...previewSection]);
-    setEditing(sectionToEdit);
-  };
+  const editSection = useCallback(
+    (sectionToEdit) => {
+      setSectionBeforeEdit([...previewSection]);
+      setEditing(sectionToEdit);
+    },
+    [previewSection]
+  );
 
   const removeSection = useCallback((index) => {
     setPreviewSection((prev) => prev.filter((item, i) => i !== index));
@@ -229,20 +237,22 @@ const CustomLandingPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const renderListContent = useCallback((section, index) => {
-    return (
-      <ListSectionContent
-        key={section.id}
-        index={index}
-        id={section.id}
-        section={section}
-        moveSection={moveSection}
-        editSection={() => editSection(section)}
-        removeSection={removeSection}
-      />
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const renderListContent = useCallback(
+    (section, index) => {
+      return (
+        <ListSectionContent
+          key={section.id}
+          index={index}
+          id={section.id}
+          section={section}
+          moveSection={moveSection}
+          editSection={() => editSection(section)}
+          removeSection={removeSection}
+        />
+      );
+    },
+    [editSection, moveSection, removeSection]
+  );
 
   const handleAddContent = () => {
     setIsAddContent(true);

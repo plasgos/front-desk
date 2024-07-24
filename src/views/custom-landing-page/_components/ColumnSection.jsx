@@ -58,10 +58,8 @@ const contents = [
 const ColumnSection = ({
   previewSection,
   setPreviewSection,
-  section,
   setSections,
   isShowContent,
-  toggleAddContent,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   console.log("🚀 ~ isAddContent:", isAddContent);
@@ -110,22 +108,25 @@ const ColumnSection = ({
     setSections(previewSection);
   };
 
-  const moveSection = useCallback((dragIndex, hoverIndex) => {
-    setPreviewSection((prevSections) => {
-      return prevSections.map((section) => {
-        if (section.name === "column-text-and-image") {
-          const updatedContent = [...section.content];
-          const draggedItem = updatedContent[dragIndex];
-          updatedContent.splice(dragIndex, 1);
-          updatedContent.splice(hoverIndex, 0, draggedItem);
-          return { ...section, content: updatedContent };
-        }
-        return section;
+  const moveSection = useCallback(
+    (dragIndex, hoverIndex) => {
+      setPreviewSection((prevSections) => {
+        return prevSections.map((section) => {
+          if (section.name === "column-text-and-image") {
+            const updatedContent = [...section.content];
+            const draggedItem = updatedContent[dragIndex];
+            updatedContent.splice(dragIndex, 1);
+            updatedContent.splice(hoverIndex, 0, draggedItem);
+            return { ...section, content: updatedContent };
+          }
+          return section;
+        });
       });
-    });
 
-    return () => {};
-  }, []);
+      return () => {};
+    },
+    [setPreviewSection]
+  );
 
   const onAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
@@ -147,7 +148,6 @@ const ColumnSection = ({
 
   const editSection = useCallback(
     (section) => {
-      console.log("🚀 ~ editSection ~ section:", section);
       setSectionBeforeEdit([...previewSection]);
       setSelectedSection(section);
       setIsEditing(true);
@@ -233,7 +233,6 @@ const ColumnSection = ({
                     <AddContent
                       idSection={setting.id}
                       sections={defaultSection}
-                      setSections={setDefaultSection}
                       setPreviewSection={setPreviewSection}
                     />
                   )}
