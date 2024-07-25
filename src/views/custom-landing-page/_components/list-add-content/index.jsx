@@ -1,8 +1,10 @@
 import { CButton, CCard } from "@coreui/react";
 import React, { useState } from "react";
-import { MdTitle, MdViewColumn } from "react-icons/md";
+import { MdTextFields, MdViewColumn } from "react-icons/md";
+import { PiArrowsDownUpLight } from "react-icons/pi";
 import Text from "./Text";
-import ColumnSection from "../ColumnSection";
+import ColumnSection from "../list-add-content/colum-text-and-image/ColumnSection";
+import EmptySpace from "./EmptySpace";
 
 const ListContent = ({
   previewSection,
@@ -12,8 +14,6 @@ const ListContent = ({
   isShowContent,
 }) => {
   const [addContent, setAddContent] = useState("");
-  console.log("🚀 ~ addContent:", addContent);
-
   const onAddTitle = () => {
     setAddContent("text");
   };
@@ -27,16 +27,24 @@ const ListContent = ({
     setAddContent("");
   };
 
+  const handleAddEmptySpace = () => {
+    setAddContent("empty-space");
+  };
   const dataListContent = [
     {
       name: "text",
-      icon: <MdTitle style={{ marginRight: 5 }} size={24} />,
+      icon: <MdTextFields style={{ marginRight: 5 }} size={24} />,
       action: onAddTitle,
     },
     {
       name: "column-text-and-image",
       icon: <MdViewColumn style={{ marginRight: 5 }} size={24} />,
       action: onAddColumnTextAndImage,
+    },
+    {
+      name: "empty-space",
+      icon: <PiArrowsDownUpLight style={{ marginRight: 5 }} size={24} />,
+      action: handleAddEmptySpace,
     },
   ];
 
@@ -74,6 +82,17 @@ const ListContent = ({
 
       {addContent === "column-text-and-image" && (
         <ColumnSection
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          sections={sections}
+          setSections={(value) => setSections(value)}
+          isShowContent={isShowContent}
+          toggleAddContent={(value) => setAddContent(value)}
+        />
+      )}
+
+      {addContent === "empty-space" && (
+        <EmptySpace
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           sections={sections}

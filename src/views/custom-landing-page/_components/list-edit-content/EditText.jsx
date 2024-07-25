@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   CButton,
   CCol,
@@ -34,7 +34,6 @@ const EditText = ({
   setSections,
   sectionBeforeEdit,
 }) => {
-  console.log("🚀 ~ sectionBeforeEdit:", sectionBeforeEdit);
   const [editorHtml, setEditorHtml] = useState(text);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [selectAlign, setSelectAlign] = useState(textAlign);

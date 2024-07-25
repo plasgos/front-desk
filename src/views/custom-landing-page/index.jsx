@@ -11,7 +11,7 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import ResizableView from "./_components/ResizebleView";
 import { ListSectionContent } from "./_components/ListSectionContent";
 import { MdLaptopMac } from "react-icons/md";
@@ -24,6 +24,9 @@ import { useDragLayer } from "react-dnd";
 import { renderToString } from "react-dom/server";
 import EditText from "./_components/list-edit-content/EditText";
 import ViewColumnTextAndImage from "./_components/view-content/ViewColumnTextAndImage";
+import EditColumnTextAndImage from "./_components/list-edit-content/EditColumnTextAndImage";
+import ViewEmptySpace from "./_components/view-content/ViewEmptySpace";
+import EditEmptySpace from "./_components/list-edit-content/EditEmptySpace";
 
 const landingPage = {
   detail: {
@@ -43,20 +46,51 @@ const CustomLandingPage = () => {
   const [sections, setSections] = useState(landingPage.detail.contents || []);
   const [editing, setEditing] = useState("");
   const [isAddContent, setIsAddContent] = useState(false);
-
   const [previewSection, setPreviewSection] = useState(
     landingPage.detail.contents || []
   );
-
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
-  console.log("🚀 ~ CustomLandingPage ~ sectionBeforeEdit:", sectionBeforeEdit);
-
+  const [timers, setTimers] = useState({});
+  const setRef = (el, index) => {
+    previewRefs.current[index] = el;
+  };
+  const previewRefs = useRef([]);
+  const [focusedIndex, setFocusedIndex] = useState(null);
   console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
+
+  const handleContentFocus = (index) => {
+    setFocusedIndex(index);
+    // eslint-disable-next-line no-unused-expressions
+    previewRefs.current[index]?.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "nearest",
+    });
+
+    // Clear any existing timer for this index
+    if (timers[index]) {
+      clearTimeout(timers[index]);
+    }
+
+    // Set a timer to remove focus after 3 seconds
+    const timer = setTimeout(() => {
+      setFocusedIndex(null);
+    }, 2000);
+
+    setTimers({ ...timers, [index]: timer });
+  };
+
+  useEffect(() => {
+    return () => {
+      Object.values(timers).forEach(clearTimeout);
+    };
+  }, [timers]);
+
   const viewTypes = Object.keys(viewIcon);
 
   const [strViewContent, setStrViewContent] = useState({});
 
-  const renderViewComponent = (section) => {
+  const renderViewComponent = (section, index) => {
     if (section.name === "text") {
       return (
         <ViewText
@@ -64,63 +98,101 @@ const CustomLandingPage = () => {
           width={dimensions.width}
           content={section.content}
           isResizing={isResizing}
+          ref={(el) => setRef(el, index)}
+          isFocused={focusedIndex === index}
         />
       );
     }
 
     if (section.name === "column-text-and-image") {
       return (
-        <div key={section.id} className="flex-1">
-          <ViewColumnTextAndImage
-            isDragging={isDragging && section.id === id}
-            width={dimensions.width}
-            content={section.content}
-            isResizing={isResizing}
-          />
-        </div>
-      );
-    }
-
-    return null;
-  };
-
-  const renderEditSection = (section) => {
-    if (
-      editing.name === "text" &&
-      section.name === "text" &&
-      editing.id === section.id
-    ) {
-      return (
-        <EditText
-          id={section.id}
-          text={section.content?.editorHtml}
-          color={section.content?.style?.color}
-          textAlign={section.content?.style?.textAlign}
-          previewContent={previewSection}
-          setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={(value) => setEditing(value)}
-          setSections={(value) => setSections(value)}
-          sectionBeforeEdit={sectionBeforeEdit}
+        <ViewColumnTextAndImage
+          isDragging={isDragging && section.id === id}
+          content={section.content}
+          isResizing={isResizing}
+          ref={(el) => setRef(el, index)}
+          isFocused={focusedIndex === index}
         />
       );
     }
 
-    // if (
-    //   editing === "text-column-image" &&
-    //   section.name === "text-column-image"
-    // ) {
-    //   return (
-    //     <ColumnSection
-    //       initialContent={contentsViewAndImage}
-    //       previewContent={previewSection}
-    //       setPreviewContent={(value) => setPreviewSection(value)}
-    //       setIsEditingContent={(value) => setEditing(value)}
-    //     />
-    //   );
-    // }
+    if (section.name === "empty-space") {
+      return (
+        <ViewEmptySpace
+          isDragging={isDragging && section.id === id}
+          width={dimensions.width}
+          content={section.content}
+          isResizing={isResizing}
+          ref={(el) => setRef(el, index)}
+          isFocused={focusedIndex === index}
+        />
+      );
+    }
 
     return null;
   };
+
+  const renderEditSection = useCallback(
+    (section) => {
+      if (
+        editing.name === "text" &&
+        section.name === "text" &&
+        editing.id === section.id
+      ) {
+        return (
+          <EditText
+            id={section.id}
+            text={section.content?.editorHtml}
+            color={section.content?.style?.color}
+            textAlign={section.content?.style?.textAlign}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            setSections={(value) => setSections(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+          />
+        );
+      }
+
+      if (
+        editing.name === "column-text-and-image" &&
+        section.name === "column-text-and-image" &&
+        editing.id === section.id
+      ) {
+        return (
+          <EditColumnTextAndImage
+            id={section.id}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            setSections={(value) => setSections(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+          />
+        );
+      }
+
+      if (
+        editing.name === "empty-space" &&
+        section.name === "empty-space" &&
+        editing.id === section.id
+      ) {
+        return (
+          <EditEmptySpace
+            id={section.id}
+            heightContent={section.content.height}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            setSections={(value) => setSections(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+          />
+        );
+      }
+
+      return null;
+    },
+    [editing.id, editing.name, previewSection, sectionBeforeEdit]
+  );
 
   const handleSave = () => {
     const renderedString = previewSection
@@ -248,6 +320,7 @@ const CustomLandingPage = () => {
           moveSection={moveSection}
           editSection={() => editSection(section)}
           removeSection={removeSection}
+          focusContent={() => handleContentFocus(index)}
         />
       );
     },
@@ -369,10 +442,6 @@ const CustomLandingPage = () => {
               ))}
             </div>
           </div>
-
-          {strViewContent && (
-            <div dangerouslySetInnerHTML={{ __html: strViewContent }} />
-          )}
         </CCol>
 
         <CCol md="8">
@@ -382,12 +451,16 @@ const CustomLandingPage = () => {
             isResizing={isResizing}
             handleMouseDown={handleMouseDown}
           >
-            {previewSection.map((item) => (
-              <div key={item.id}>{renderViewComponent(item)}</div>
+            {previewSection.map((item, index) => (
+              <div key={item.id}>{renderViewComponent(item, index)}</div>
             ))}
           </ResizableView>
         </CCol>
       </CRow>
+
+      {strViewContent && (
+        <div dangerouslySetInnerHTML={{ __html: strViewContent }} />
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   CButton,
   CCard,
@@ -13,14 +13,12 @@ import {
   CTabs,
 } from "@coreui/react";
 
-import image from "../../../assets/action-figure.jpg";
+import image from "../../../../assets/action-figure.jpg";
 
 import { IoAdd } from "react-icons/io5";
-import { AddContent } from "./AddContent";
-import { EditContent } from "./EditContent";
-import { CardList } from "./CardList";
-import { MdViewColumn } from "react-icons/md";
-import { createUniqueID } from "../../../lib/unique-id";
+import { AddContent } from "../list-add-content/colum-text-and-image/AddContent";
+import { EditContent } from "../list-add-content/colum-text-and-image/EditContent";
+import { CardList } from "../list-add-content/colum-text-and-image/CardList";
 
 const contents = [
   {
@@ -55,20 +53,20 @@ const contents = [
   },
 ];
 
-const ColumnSection = ({
+const EditColumnTextAndImage = ({
+  id,
   previewSection,
   setPreviewSection,
   setSections,
   isShowContent,
+  sectionBeforeEdit,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
-  console.log("🚀 ~ isAddContent:", isAddContent);
   const [defaultSection, setDefaultSection] = useState(contents || []);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedSection, setSelectedSection] = useState({});
-  const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
 
-  const [setting, setSetting] = useState({});
+  const [beforeEditPrevSection, setBeforeEditPrevSection] = useState([]);
 
   const handleAddContent = () => {
     setIsAddContent(true);
@@ -80,7 +78,7 @@ const ColumnSection = ({
       setIsEditing(false);
       setPreviewSection((prevSections) =>
         prevSections.map((section) =>
-          section.id === setting.id
+          section.id === id
             ? {
                 ...section,
                 content: section.content.slice(0, -1),
@@ -89,23 +87,25 @@ const ColumnSection = ({
         )
       );
     } else if (isEditing) {
-      setPreviewSection([...sectionBeforeEdit]);
+      setPreviewSection([...beforeEditPrevSection]);
       setIsAddContent(false);
       setIsEditing(false);
     } else {
       setIsAddContent(false);
       isShowContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.filter((section) => section.id !== setting.id)
-      );
+      setPreviewSection([...sectionBeforeEdit]);
     }
   };
 
   const handelConfirm = () => {
-    setIsAddContent(false);
-    setIsEditing(false);
-    isShowContent(false);
-    setSections(previewSection);
+    if (isAddContent || isEditing) {
+      setIsAddContent(false);
+      setIsEditing(false);
+      setSections(previewSection);
+    } else {
+      isShowContent(false);
+      setSections(previewSection);
+    }
   };
 
   const moveSection = useCallback(
@@ -128,27 +128,9 @@ const ColumnSection = ({
     [setPreviewSection]
   );
 
-  const onAddContent = () => {
-    let uniqueId = createUniqueID(previewSection);
-    let payload = {
-      id: uniqueId,
-      name: "column-text-and-image",
-      icon: <MdViewColumn size={20} />,
-      content: defaultSection,
-    };
-
-    setPreviewSection((prevSections) => [...prevSections, payload]);
-    setSetting(payload);
-  };
-
-  useEffect(() => {
-    onAddContent();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const editSection = useCallback(
     (section) => {
-      setSectionBeforeEdit([...previewSection]);
+      setBeforeEditPrevSection([...previewSection]);
       setSelectedSection(section);
       setIsEditing(true);
     },
@@ -231,7 +213,7 @@ const ColumnSection = ({
                 <CTabPane data-tab="kolom">
                   {isAddContent && (
                     <AddContent
-                      idSection={setting.id}
+                      idSection={id}
                       sections={defaultSection}
                       setPreviewSection={setPreviewSection}
                     />
@@ -239,7 +221,7 @@ const ColumnSection = ({
 
                   {isEditing && (
                     <EditContent
-                      idSection={setting.id}
+                      idSection={id}
                       idContent={selectedSection.id}
                       titleValue={selectedSection.content.title}
                       descriptionValue={selectedSection.content.description}
@@ -252,7 +234,7 @@ const ColumnSection = ({
                     <>
                       <div>
                         {previewSection
-                          .filter((section) => section.id === setting.id)
+                          .filter((section) => section.id === id)
                           .map((section, i) => renderSection(section, i))}
                       </div>
                       <CCard
@@ -285,4 +267,4 @@ const ColumnSection = ({
   );
 };
 
-export default ColumnSection;
+export default EditColumnTextAndImage;

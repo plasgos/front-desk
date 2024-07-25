@@ -1,10 +1,10 @@
 import { CButton, CCard } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import image from "../../../assets/action-figure.jpg";
+import image from "../../../../../assets/action-figure.jpg";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
-import { createUniqueID } from "../../../lib/unique-id";
+import { createUniqueID } from "../../../../../lib/unique-id";
 
 export const AddContent = ({ idSection, sections, setPreviewSection }) => {
   const [imageUrl, setImageUrl] = useState(image);
