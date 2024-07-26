@@ -1,5 +1,5 @@
 import { CButton, CCol, CRow } from "@coreui/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const EditEmptySpace = ({
   id,
@@ -10,8 +10,8 @@ const EditEmptySpace = ({
   setSections,
   sectionBeforeEdit,
 }) => {
-  console.log("🚀 ~ heightContent:", heightContent);
   const [height, setHeight] = useState(heightContent);
+  console.log("🚀 ~ height:", height);
 
   const handleChange = (event) => {
     setHeight(+event.target.value);
@@ -29,12 +29,56 @@ const EditEmptySpace = ({
     );
   };
 
-  const handleBlur = (event) => {
-    if (event.target.value > 1200) {
+  const handleChangeHeight = (event) => {
+    setHeight(+event.target.value);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === String(id)
+          ? {
+              ...item,
+              content: {
+                height: +event.target.value,
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  const handleSetHeightWhenBlur = () => {
+    if (height > 1200) {
       setHeight(1200);
-    } else if (event.target.value < 10) {
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === String(id)
+            ? {
+                ...item,
+                content: {
+                  height: 1200,
+                },
+              }
+            : item
+        )
+      );
+    } else if (height < 10) {
       setHeight(10);
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === String(id)
+            ? {
+                ...item,
+                content: {
+                  height: 10,
+                },
+              }
+            : item
+        )
+      );
     }
+  };
+
+  const handleBlur = () => {
+    handleSetHeightWhenBlur();
   };
 
   const handelCancel = () => {
@@ -43,6 +87,7 @@ const EditEmptySpace = ({
   };
 
   const handelConfirm = () => {
+    handleSetHeightWhenBlur();
     isShowContent("");
     setSections(previewSection);
   };
@@ -74,14 +119,14 @@ const EditEmptySpace = ({
               value={height !== 0 ? height : ""}
               className="form-control text-center"
               placeholder="0"
-              onChange={(e) => setHeight(Number(e.target.value))}
+              onChange={handleChangeHeight}
               onBlur={handleBlur}
             />
           </div>
         </CCol>
 
         <CCol md={9} className="p-0">
-          <div style={{ gap: 10 }} className="flex align-items-center">
+          <div style={{ gap: 10 }} className="d-flex align-items-center">
             <div className="text-secondary">10</div>
             <input
               style={{ cursor: "pointer", flexGrow: 1 }}

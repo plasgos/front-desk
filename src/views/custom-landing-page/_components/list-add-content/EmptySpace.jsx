@@ -13,7 +13,7 @@ const EmptySpace = ({
   const [height, setHeight] = useState(120);
   const [setting, setSetting] = useState({});
 
-  const handleChange = (event) => {
+  const handleChangeRangeInput = (event) => {
     setHeight(+event.target.value);
     setPreviewSection((arr) =>
       arr.map((item) =>
@@ -29,11 +29,51 @@ const EmptySpace = ({
     );
   };
 
-  const handleBlur = (event) => {
-    if (event.target.value > 1200) {
+  const handleChangeHeight = (event) => {
+    setHeight(+event.target.value);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === String(setting.id)
+          ? {
+              ...item,
+              content: {
+                height: +event.target.value,
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  const handleSetHeightWhenBlur = () => {
+    if (height > 1200) {
       setHeight(1200);
-    } else if (event.target.value < 10) {
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === String(setting.id)
+            ? {
+                ...item,
+                content: {
+                  height: 1200,
+                },
+              }
+            : item
+        )
+      );
+    } else if (height < 10) {
       setHeight(10);
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === String(setting.id)
+            ? {
+                ...item,
+                content: {
+                  height: 10,
+                },
+              }
+            : item
+        )
+      );
     }
   };
 
@@ -46,6 +86,7 @@ const EmptySpace = ({
   };
 
   const handelConfirm = () => {
+    handleSetHeightWhenBlur();
     toggleAddContent("");
     isShowContent(false);
     setSections(previewSection);
@@ -98,14 +139,14 @@ const EmptySpace = ({
               value={height !== 0 ? height : ""}
               className="form-control text-center"
               placeholder="0"
-              onChange={(e) => setHeight(Number(e.target.value))}
-              onBlur={handleBlur}
+              onChange={handleChangeHeight}
+              onBlur={handleSetHeightWhenBlur}
             />
           </div>
         </CCol>
 
         <CCol md={9} className="p-0">
-          <div style={{ gap: 10 }} className="flex align-items-center">
+          <div style={{ gap: 10 }} className="d-flex align-items-center">
             <div className="text-secondary">10</div>
             <input
               style={{ cursor: "pointer", flexGrow: 1 }}
@@ -115,7 +156,7 @@ const EmptySpace = ({
               min="10"
               max="1200"
               value={height}
-              onChange={handleChange}
+              onChange={handleChangeRangeInput}
             />
 
             <div className="text-secondary">1200</div>

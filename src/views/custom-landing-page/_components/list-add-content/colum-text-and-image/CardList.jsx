@@ -15,6 +15,7 @@ export const CardList = ({
   moveSection,
   editSection,
   removeSection,
+  // focusContent,
 }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
@@ -113,7 +114,11 @@ export const CardList = ({
               {section?.content?.title}
             </div>
 
-            {/* <FaMagnifyingGlass style={{ cursor: "pointer" }} size={16} /> */}
+            {/* <FaMagnifyingGlass
+              onClick={() => focusContent()}
+              style={{ cursor: "pointer" }}
+              size={16}
+            /> */}
             <IoSettingsOutline
               onClick={() => editSection()}
               style={{ cursor: "pointer" }}

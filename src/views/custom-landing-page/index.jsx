@@ -58,27 +58,30 @@ const CustomLandingPage = () => {
   const [focusedIndex, setFocusedIndex] = useState(null);
   console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
 
-  const handleContentFocus = (index) => {
-    setFocusedIndex(index);
-    // eslint-disable-next-line no-unused-expressions
-    previewRefs.current[index]?.scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-      inline: "nearest",
-    });
+  const handleContentFocus = useCallback(
+    (index) => {
+      setFocusedIndex(index);
+      // eslint-disable-next-line no-unused-expressions
+      previewRefs.current[index]?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
 
-    // Clear any existing timer for this index
-    if (timers[index]) {
-      clearTimeout(timers[index]);
-    }
+      // Clear any existing timer for this index
+      if (timers[index]) {
+        clearTimeout(timers[index]);
+      }
 
-    // Set a timer to remove focus after 3 seconds
-    const timer = setTimeout(() => {
-      setFocusedIndex(null);
-    }, 2000);
+      // Set a timer to remove focus after 3 seconds
+      const timer = setTimeout(() => {
+        setFocusedIndex(null);
+      }, 2000);
 
-    setTimers({ ...timers, [index]: timer });
-  };
+      setTimers({ ...timers, [index]: timer });
+    },
+    [timers]
+  );
 
   useEffect(() => {
     return () => {
@@ -95,7 +98,6 @@ const CustomLandingPage = () => {
       return (
         <ViewText
           isDragging={isDragging && section.id === id}
-          width={dimensions.width}
           content={section.content}
           isResizing={isResizing}
           ref={(el) => setRef(el, index)}
@@ -107,6 +109,7 @@ const CustomLandingPage = () => {
     if (section.name === "column-text-and-image") {
       return (
         <ViewColumnTextAndImage
+          width={dimensions.width}
           isDragging={isDragging && section.id === id}
           content={section.content}
           isResizing={isResizing}
@@ -324,7 +327,7 @@ const CustomLandingPage = () => {
         />
       );
     },
-    [editSection, moveSection, removeSection]
+    [editSection, handleContentFocus, moveSection, removeSection]
   );
 
   const handleAddContent = () => {
@@ -333,6 +336,7 @@ const CustomLandingPage = () => {
 
   return (
     <div>
+      <div className="text-red-600">TEST</div>
       <CRow>
         <CCol md="4">
           <div style={{ height: "80%" }}>
