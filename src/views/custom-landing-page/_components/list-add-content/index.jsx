@@ -5,6 +5,8 @@ import { PiArrowsDownUpLight } from "react-icons/pi";
 import Text from "./Text";
 import ColumnSection from "../list-add-content/colum-text-and-image/ColumnSection";
 import EmptySpace from "./EmptySpace";
+import { IoMdImages } from "react-icons/io";
+import ListImagesControl from "./list-images/ListImagesContro;";
 
 const ListContent = ({
   previewSection,
@@ -30,6 +32,11 @@ const ListContent = ({
   const handleAddEmptySpace = () => {
     setAddContent("empty-space");
   };
+
+  const handleAddListImages = () => {
+    setAddContent("list-images");
+  };
+
   const dataListContent = [
     {
       name: "text",
@@ -45,6 +52,11 @@ const ListContent = ({
       name: "empty-space",
       icon: <PiArrowsDownUpLight style={{ marginRight: 5 }} size={24} />,
       action: handleAddEmptySpace,
+    },
+    {
+      name: "list-images",
+      icon: <IoMdImages style={{ marginRight: 5 }} size={24} />,
+      action: handleAddListImages,
     },
   ];
 
@@ -93,6 +105,17 @@ const ListContent = ({
 
       {addContent === "empty-space" && (
         <EmptySpace
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          sections={sections}
+          setSections={(value) => setSections(value)}
+          isShowContent={isShowContent}
+          toggleAddContent={(value) => setAddContent(value)}
+        />
+      )}
+
+      {addContent === "list-images" && (
+        <ListImagesControl
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           sections={sections}

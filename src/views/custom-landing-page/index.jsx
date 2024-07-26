@@ -27,6 +27,9 @@ import ViewColumnTextAndImage from "./_components/view-content/ViewColumnTextAnd
 import EditColumnTextAndImage from "./_components/list-edit-content/EditColumnTextAndImage";
 import ViewEmptySpace from "./_components/view-content/ViewEmptySpace";
 import EditEmptySpace from "./_components/list-edit-content/EditEmptySpace";
+import ViewListImages from "./_components/view-content/ViewListImages";
+import { EditImages } from "./_components/list-add-content/list-images/EditImages";
+import EditListImages from "./_components/list-edit-content/EditListImages";
 
 const landingPage = {
   detail: {
@@ -132,6 +135,19 @@ const CustomLandingPage = () => {
       );
     }
 
+    if (section.name === "list-images") {
+      return (
+        <ViewListImages
+          isDragging={isDragging && section.id === id}
+          width={dimensions.width}
+          content={section.content}
+          isResizing={isResizing}
+          ref={(el) => setRef(el, index)}
+          isFocused={focusedIndex === index}
+        />
+      );
+    }
+
     return null;
   };
 
@@ -183,6 +199,23 @@ const CustomLandingPage = () => {
           <EditEmptySpace
             id={section.id}
             heightContent={section.content.height}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            setSections={(value) => setSections(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+          />
+        );
+      }
+
+      if (
+        editing.name === "list-images" &&
+        section.name === "list-images" &&
+        editing.id === section.id
+      ) {
+        return (
+          <EditListImages
+            id={section.id}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
@@ -336,7 +369,6 @@ const CustomLandingPage = () => {
 
   return (
     <div>
-      <div className="text-red-600">TEST</div>
       <CRow>
         <CCol md="4">
           <div style={{ height: "80%" }}>
