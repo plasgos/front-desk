@@ -58,12 +58,13 @@ export const InputDistrict = ({ onSelectDistrict }) => {
           },
         })}
         classNames={{
-          control: (state) => state.isFocused ? 'rounded  border-primary' : 'rounded',
+          control: (state) =>
+            state.isFocused ? "rounded  border-primary" : "rounded",
         }}
         styles={{
           control: (baseStyles, state) => ({
             ...baseStyles,
-            cursor: 'text'
+            cursor: "text",
           }),
         }}
       />

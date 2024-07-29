@@ -28,11 +28,33 @@ const contents = [
     content: {
       image: image,
     },
+    target: {
+      url: {
+        url: "",
+        isOpenNewTab: false,
+      },
+      whatApps: {
+        phoneNumber: "",
+        message: "",
+        isOpenNewTab: false,
+      },
+    },
   },
   {
     id: "adgdawdw",
     content: {
       image: image,
+    },
+    target: {
+      url: {
+        url: "",
+        isOpenNewTab: false,
+      },
+      whatApps: {
+        phoneNumber: "",
+        message: "",
+        isOpenNewTab: false,
+      },
     },
   },
   {
@@ -40,7 +62,17 @@ const contents = [
     content: {
       image: image,
     },
-    target: {},
+    target: {
+      url: {
+        url: "",
+        isOpenNewTab: false,
+      },
+      whatApps: {
+        phoneNumber: "",
+        message: "",
+        isOpenNewTab: false,
+      },
+    },
   },
 ];
 
@@ -233,8 +265,8 @@ const ListImagesControl = ({
                     <EditImages
                       idSection={setting.id}
                       idContent={selectedSection.id}
-                      titleValue={selectedSection.content.title}
-                      descriptionValue={selectedSection.content.description}
+                      altValue={selectedSection.content?.alt}
+                      target={selectedSection.target}
                       image={selectedSection.content.image}
                       setPreviewSection={setPreviewSection}
                     />

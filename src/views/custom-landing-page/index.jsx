@@ -28,7 +28,6 @@ import EditColumnTextAndImage from "./_components/list-edit-content/EditColumnTe
 import ViewEmptySpace from "./_components/view-content/ViewEmptySpace";
 import EditEmptySpace from "./_components/list-edit-content/EditEmptySpace";
 import ViewListImages from "./_components/view-content/ViewListImages";
-import { EditImages } from "./_components/list-add-content/list-images/EditImages";
 import EditListImages from "./_components/list-edit-content/EditListImages";
 
 const landingPage = {

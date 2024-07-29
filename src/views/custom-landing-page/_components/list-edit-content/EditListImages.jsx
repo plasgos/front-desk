@@ -223,8 +223,8 @@ const EditListImages = ({
                     <EditImages
                       idSection={id}
                       idContent={selectedSection.id}
-                      titleValue={selectedSection.content.title}
-                      descriptionValue={selectedSection.content.description}
+                      altValue={selectedSection.content?.alt}
+                      target={selectedSection.target}
                       image={selectedSection.content.image}
                       setPreviewSection={setPreviewSection}
                     />
