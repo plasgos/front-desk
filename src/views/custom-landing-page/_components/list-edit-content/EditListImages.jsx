@@ -13,45 +13,10 @@ import {
   CTabs,
 } from "@coreui/react";
 
-import image from "../../../../assets/action-figure.jpg";
-
 import { IoAdd } from "react-icons/io5";
 import { ImagesList } from "../list-add-content/list-images/ImagesList";
 import { AddImages } from "../list-add-content/list-images/AddImages";
 import { EditImages } from "../list-add-content/list-images/EditImages";
-
-const contents = [
-  {
-    id: "adguiwbj",
-
-    content: {
-      title: "Rahasia ",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-  },
-  {
-    id: "adgdawdw",
-
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-  },
-  {
-    id: "feqawd",
-
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-  },
-];
 
 const EditListImages = ({
   id,
@@ -62,7 +27,7 @@ const EditListImages = ({
   sectionBeforeEdit,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
-  const [defaultSection, setDefaultSection] = useState(contents || []);
+
   const [isEditing, setIsEditing] = useState(false);
   const [selectedSection, setSelectedSection] = useState({});
 
@@ -214,7 +179,7 @@ const EditListImages = ({
                   {isAddContent && (
                     <AddImages
                       idSection={id}
-                      sections={defaultSection}
+                      sections={previewSection}
                       setPreviewSection={setPreviewSection}
                     />
                   )}

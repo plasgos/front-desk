@@ -13,45 +13,10 @@ import {
   CTabs,
 } from "@coreui/react";
 
-import image from "../../../../assets/action-figure.jpg";
-
 import { IoAdd } from "react-icons/io5";
 import { AddContent } from "../list-add-content/colum-text-and-image/AddContent";
 import { EditContent } from "../list-add-content/colum-text-and-image/EditContent";
 import { CardList } from "../list-add-content/colum-text-and-image/CardList";
-
-const contents = [
-  {
-    id: "adguiwbj",
-
-    content: {
-      title: "Rahasia ",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-  },
-  {
-    id: "adgdawdw",
-
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-  },
-  {
-    id: "feqawd",
-
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-  },
-];
 
 const EditColumnTextAndImage = ({
   id,
@@ -62,7 +27,6 @@ const EditColumnTextAndImage = ({
   sectionBeforeEdit,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
-  const [defaultSection, setDefaultSection] = useState(contents || []);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedSection, setSelectedSection] = useState({});
 
@@ -214,7 +178,7 @@ const EditColumnTextAndImage = ({
                   {isAddContent && (
                     <AddContent
                       idSection={id}
-                      sections={defaultSection}
+                      sections={previewSection}
                       setPreviewSection={setPreviewSection}
                     />
                   )}

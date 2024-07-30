@@ -2,21 +2,7 @@ import { CButton, CCard, CTooltip } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { FaCircleInfo } from "react-icons/fa6";
 import Select from "react-select";
-
-const options = [
-  {
-    label: "Tidak ada link",
-    options: [{ value: "noLink", label: "Tidak ada link" }],
-  },
-  {
-    label: "Web",
-    options: [{ value: "url", label: "URL" }],
-  },
-  {
-    label: "Chat",
-    options: [{ value: "whatApps", label: "Whatapps" }],
-  },
-];
+import { options } from "./AddImages";
 
 export const EditImages = ({
   idSection,
@@ -449,15 +435,25 @@ export const EditImages = ({
                     <FaCircleInfo style={{ marginLeft: 4 }} size={12} />
                   </CTooltip>
                 </div>
-                <input
-                  placeholder="+628114002323"
-                  value={whatApps.phoneNumber}
-                  onChange={(event) =>
-                    handlePhoneNumberChange(event.target.value)
-                  }
-                  type="number"
-                  className="form-control"
-                />
+
+                <div className="input-group">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text" id="basic-addon1">
+                      +62
+                    </span>
+                    <input
+                      style={{ borderRadius: "0px 0.5rem 0.5rem 0px" }}
+                      aria-describedby="basic-addon1"
+                      placeholder="8114002323"
+                      value={whatApps.phoneNumber}
+                      onChange={(event) =>
+                        handlePhoneNumberChange(event.target.value)
+                      }
+                      type="number"
+                      className="form-control"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="form-group">

@@ -139,7 +139,7 @@ const CustomLandingPage = () => {
         <ViewListImages
           isDragging={isDragging && section.id === id}
           width={dimensions.width}
-          content={section.content}
+          content={section}
           isResizing={isResizing}
           ref={(el) => setRef(el, index)}
           isFocused={focusedIndex === index}
