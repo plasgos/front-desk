@@ -77,7 +77,7 @@ const contents = [
   },
 ];
 
-const distanceOptions = [
+export const distanceOptions = [
   { value: 0, label: "0" },
   { value: 1, label: "1" },
   { value: 2, label: "2" },
@@ -85,7 +85,7 @@ const distanceOptions = [
   { value: 4, label: "4" },
 ];
 
-const maxColumnOptions = [
+export const maxColumnOptions = [
   {
     value: "50%",
     label: "2",
@@ -95,8 +95,44 @@ const maxColumnOptions = [
   { value: "20%", label: "5" },
   { value: "16.66%", label: "6" },
   { value: "14.28%", label: "7" },
-  { value: "12.55", label: "8" },
+  { value: "12.55%", label: "8" },
 ];
+
+export const aspectRatioOptions = [
+  {
+    label: "Kotak",
+    options: [{ value: 1 / 1, label: "1:1" }],
+  },
+  {
+    label: "Melebar",
+    options: [
+      { value: 5 / 4, label: "5:4" },
+      { value: 4 / 3, label: "4:3" },
+      { value: 5 / 3, label: "5:3" },
+      { value: 2 / 1, label: "2:1" },
+    ],
+  },
+  {
+    label: "Potret",
+    options: [
+      { value: 4 / 5, label: "4:5" },
+      { value: 3 / 4, label: "3:4" },
+      { value: 3 / 5, label: "3:5" },
+      { value: 1 / 2, label: "1:2" },
+    ],
+  },
+];
+
+export const customStyles = {
+  groupHeading: (provided) => ({
+    ...provided,
+    fontWeight: "bold",
+  }),
+  control: (baseStyles, state) => ({
+    ...baseStyles,
+    cursor: "text",
+  }),
+};
 
 const ListImagesControl = ({
   previewSection,
@@ -161,7 +197,7 @@ const ListImagesControl = ({
               ...item,
               wrapperStyle: {
                 ...item.wrapperStyle,
-                imageRatio: selectedOption.value,
+                aspectRatio: selectedOption.value,
               },
             }
           : item
@@ -241,6 +277,7 @@ const ListImagesControl = ({
       wrapperStyle: {
         paddingX: 2,
         maxColumn: "16.66%",
+        aspectRatio: 1 / 1,
       },
     };
 
@@ -299,17 +336,6 @@ const ListImagesControl = ({
     },
     [moveSection, editSection, removeSection]
   );
-
-  const customStyles = {
-    groupHeading: (provided) => ({
-      ...provided,
-      fontWeight: "bold",
-    }),
-    control: (baseStyles, state) => ({
-      ...baseStyles,
-      cursor: "text",
-    }),
-  };
 
   return (
     <div>
@@ -417,14 +443,14 @@ const ListImagesControl = ({
                                   ? "rounded  border-primary"
                                   : "rounded",
                             }}
-                            options={distanceOptions}
+                            options={aspectRatioOptions}
                             styles={customStyles}
                             onChange={handleChangeImageRatio}
                             isSearchable={false}
                             value={selectedImageRatio}
                             defaultValue={{
-                              value: 2,
-                              label: "2",
+                              value: 1 / 1,
+                              label: "1:1",
                             }}
                           />
                         </div>

@@ -1,20 +1,8 @@
 import React, { forwardRef } from "react";
 
 const ViewListImages = forwardRef(
-  ({ isDragging, width, isResizing, content, isFocused }, ref) => {
+  ({ isDragging, width, isResizing, content, isFocused, isPreview }, ref) => {
     console.log("🚀 ~ content:", content);
-    const commonStyles = {
-      padding: 0,
-      display: "flex",
-      // width:
-      //   width === "100%" || width >= 600
-      //     ? "32%"
-      //     : width > 320 && width < 600
-      //     ? "45%"
-      //     : "100%",
-      width: content.wrapperStyle?.maxColumn,
-      textAlign: "center",
-    };
 
     return (
       <div
@@ -25,44 +13,56 @@ const ViewListImages = forwardRef(
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
         }}
-        className="flex flex-row justify-center items-center flex-wrap p-4 gap-y-3"
+        className="flex flex-row flex-wrap justify-center items-center  p-2 gap-y-3 "
       >
         {content.content.map((section) => {
           return (
             <React.Fragment key={section.id}>
               {section.target?.url?.url ? (
-                <a
-                  target={
-                    section.target?.url?.isOpenNewTab ? "_blank" : "_self"
+                <div
+                  className={
+                    isPreview
+                      ? `flex  ${
+                          width === "100%" || width >= 640
+                            ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                            : width > 320 && width < 640
+                            ? "w-1/3"
+                            : "w-full"
+                        }  `
+                      : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
                   }
-                  href={section.target.url.url}
-                  rel={
-                    section.target?.url?.isOpenNewTab
-                      ? "noopener noreferrer"
-                      : ""
-                  }
-                  style={{
-                    ...commonStyles,
-                    textDecoration: "none",
-                  }}
                 >
-                  <div
+                  <a
+                    target={
+                      section.target?.url?.isOpenNewTab ? "_blank" : "_self"
+                    }
+                    href={section.target.url.url}
+                    rel={
+                      section.target?.url?.isOpenNewTab
+                        ? "noopener noreferrer"
+                        : ""
+                    }
                     style={{
-                      width: "100%",
-                      textAlign: "center",
+                      textDecoration: "none",
                     }}
                   >
-                    <img
-                      src={section.content?.image}
-                      alt={section.content?.alt ? section.content.alt : ""}
-                      style={{
-                        width: "100%",
-                        marginTop: 14,
-                        marginBottom: 14,
-                      }}
-                    />
-                  </div>
-                </a>
+                    <div
+                      className={`w-full text-center px-${content?.wrapperStyle?.paddingX}   `}
+                    >
+                      <img
+                        src={section.content?.image}
+                        alt={section.content?.alt ? section.content.alt : ""}
+                        style={{
+                          width: "100%",
+                          marginTop: 14,
+                          marginBottom: 14,
+                          aspectRatio: content?.wrapperStyle?.aspectRatio,
+                          objectFit: "contain",
+                        }}
+                      />
+                    </div>
+                  </a>
+                </div>
               ) : section.target.whatApps.phoneNumber ? (
                 <a
                   target={
@@ -77,15 +77,22 @@ const ViewListImages = forwardRef(
                     section.target.url.isOpenNewTab ? "noopener noreferrer" : ""
                   }
                   style={{
-                    ...commonStyles,
                     textDecoration: "none",
                   }}
+                  className={
+                    isPreview
+                      ? `flex  ${
+                          width === "100%" || width >= 640
+                            ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                            : width > 320 && width < 640
+                            ? "w-1/3"
+                            : "w-full"
+                        }  `
+                      : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
+                  }
                 >
                   <div
-                    style={{
-                      width: "100%",
-                      textAlign: "center",
-                    }}
+                    className={`w-full text-center px-${content?.wrapperStyle?.paddingX}  `}
                   >
                     <img
                       src={section.content?.image}
@@ -94,18 +101,28 @@ const ViewListImages = forwardRef(
                         width: "100%",
                         marginTop: 14,
                         marginBottom: 14,
+                        aspectRatio: content?.wrapperStyle?.aspectRatio,
+                        objectFit: "contain",
                       }}
                     />
                   </div>
                 </a>
               ) : (
-                <div style={commonStyles}>
+                <div
+                  className={
+                    isPreview
+                      ? `flex  ${
+                          width === "100%" || width >= 640
+                            ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                            : width > 320 && width < 640
+                            ? "w-1/3"
+                            : "w-full"
+                        }  `
+                      : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
+                  }
+                >
                   <div
-                    className={`px-${content?.wrapperStyle?.paddingX}`}
-                    style={{
-                      width: "100%",
-                      textAlign: "center",
-                    }}
+                    className={`w-full text-center px-${content?.wrapperStyle?.paddingX}  `}
                   >
                     <img
                       src={section.content?.image}
@@ -114,6 +131,8 @@ const ViewListImages = forwardRef(
                         width: "100%",
                         marginTop: 14,
                         marginBottom: 14,
+                        aspectRatio: content?.wrapperStyle?.aspectRatio,
+                        objectFit: "contain",
                       }}
                     />
                   </div>

@@ -12,6 +12,7 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
+import Select from "react-select";
 
 import image from "../../../../../assets/action-figure.jpg";
 
@@ -21,6 +22,13 @@ import { EditContent } from "./EditContent";
 import { CardList } from "./CardList";
 import { MdViewColumn } from "react-icons/md";
 import { createUniqueID } from "../../../../../lib/unique-id";
+import {
+  aspectRatioOptions,
+  customStyles,
+  distanceOptions,
+  maxColumnOptions,
+} from "../list-images/ListImagesContro;";
+import { ChromePicker } from "react-color";
 
 const contents = [
   {
@@ -68,6 +76,104 @@ const ColumnSection = ({
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
 
   const [setting, setSetting] = useState({});
+
+  const [showColorPickerTitle, setShowColorPickerTitle] = useState(false);
+  const [showColorPickerDesc, setShowColorPickerDesc] = useState(false);
+
+  const [selectedColorTitle, setSelectedColorTitle] = useState("#000000");
+
+  const [selectedColorDesc, setSelectedColorDesc] = useState("#000000");
+
+  const [selectedDistance, setSelectedDistance] = useState(undefined);
+  const [selectedMaxColumn, setSelectedMaxColumn] = useState(undefined);
+  const [selectedImageRatio, setSelectedImageRatio] = useState(undefined);
+
+  const handleChangeDistance = (selectedOption) => {
+    setSelectedDistance(selectedOption);
+
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === setting.id
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                paddingX: selectedOption.value,
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  const handleChangeMaxColumn = (selectedOption) => {
+    setSelectedMaxColumn(selectedOption);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === setting.id
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                maxColumn: selectedOption.value,
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  const handleChangeImageRatio = (selectedOption) => {
+    setSelectedImageRatio(selectedOption);
+
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === setting.id
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                aspectRatio: selectedOption.value,
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  const handleColorChangeTitle = (color) => {
+    setSelectedColorTitle(color);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === setting.id
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                colorTitle: color,
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  const handleColorChangeDesc = (color) => {
+    setSelectedColorDesc(color);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === setting.id
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                colorDescription: color,
+              },
+            }
+          : item
+      )
+    );
+  };
 
   const handleAddContent = () => {
     setIsAddContent(true);
@@ -138,6 +244,14 @@ const ColumnSection = ({
       name: "column-text-and-image",
       icon: <MdViewColumn size={20} />,
       content: defaultSection,
+      wrapperStyle: {
+        paddingX: 2,
+        maxColumn: "33.33%",
+        aspectRatio: 1 / 1,
+        colorTitle: "#000000",
+        colorDescription: "#000000",
+        fontSizeTitle: "18px",
+      },
     };
 
     setPreviewSection((prevSections) => [...prevSections, payload]);
@@ -196,6 +310,17 @@ const ColumnSection = ({
     [moveSection, editSection, removeSection]
   );
 
+  const popover = {
+    position: "absolute",
+    zIndex: "2",
+  };
+  const cover = {
+    position: "fixed",
+    top: "0px",
+    right: "0px",
+    bottom: "0px",
+    left: "0px",
+  };
   return (
     <div>
       <CRow>
@@ -226,12 +351,15 @@ const ColumnSection = ({
                 <CNavItem>
                   <CNavLink data-tab="kolom">Kolom</CNavLink>
                 </CNavItem>
+                <CNavItem>
+                  <CNavLink data-tab="desain">Desain</CNavLink>
+                </CNavItem>
               </CNav>
               <CTabContent
                 style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
                 className="pt-3"
               >
-                <CTabPane data-tab="kolom">
+                <CTabPane className="p-1" data-tab="kolom">
                   {isAddContent && (
                     <AddContent
                       idSection={setting.id}
@@ -278,6 +406,169 @@ const ColumnSection = ({
                       </CCard>
                     </>
                   )}
+                </CTabPane>
+
+                <CTabPane className="p-1" data-tab="desain">
+                  <div
+                    style={{ gap: 10 }}
+                    className="d-flex align-items-center mb-3"
+                  >
+                    <div className="w-50">
+                      <div className="mb-1" style={{ fontFamily: "Arial" }}>
+                        Warna Teks
+                      </div>
+                      <div
+                        onClick={() =>
+                          setShowColorPickerTitle(!showColorPickerTitle)
+                        }
+                        style={{
+                          width: 35,
+                          height: 35,
+                          backgroundColor: selectedColorTitle,
+                          cursor: "pointer",
+                        }}
+                        className="rounded border"
+                      />
+                      {showColorPickerTitle && (
+                        <div style={popover}>
+                          <div
+                            style={cover}
+                            onClick={() => setShowColorPickerTitle(false)}
+                          />
+                          <ChromePicker
+                            color={selectedColorTitle}
+                            Title
+                            onChange={(e) => handleColorChangeTitle(e.hex)}
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="w-50">
+                      <div className="mb-1" style={{ fontFamily: "Arial" }}>
+                        Warna Deskripsi
+                      </div>
+                      <div
+                        onClick={() =>
+                          setShowColorPickerDesc(!showColorPickerDesc)
+                        }
+                        style={{
+                          width: 35,
+                          height: 35,
+                          backgroundColor: selectedColorDesc,
+                          cursor: "pointer",
+                        }}
+                        className="rounded border"
+                      />
+                      {showColorPickerDesc && (
+                        <div style={popover}>
+                          <div
+                            style={cover}
+                            onClick={() => setShowColorPickerDesc(false)}
+                          />
+                          <ChromePicker
+                            color={selectedColorDesc}
+                            Title
+                            onChange={(e) => handleColorChangeDesc(e.hex)}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div
+                    style={{ gap: 10 }}
+                    className="d-flex align-items-center "
+                  >
+                    <div className="form-group w-50 ">
+                      <label>Kolom Maksimal</label>
+                      <Select
+                        theme={(theme) => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: "#FED4C6",
+                            // Set the color when focused
+                          },
+                        })}
+                        classNames={{
+                          control: (state) =>
+                            state.isFocused
+                              ? "rounded  border-primary"
+                              : "rounded",
+                        }}
+                        options={maxColumnOptions}
+                        styles={customStyles}
+                        onChange={handleChangeMaxColumn}
+                        isSearchable={false}
+                        value={selectedMaxColumn}
+                        defaultValue={{
+                          value: "16.66%",
+                          label: "6",
+                        }}
+                      />
+                    </div>
+                    <div className="form-group w-50 ">
+                      <label>Jarak</label>
+                      <Select
+                        theme={(theme) => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: "#FED4C6",
+                            // Set the color when focused
+                          },
+                        })}
+                        classNames={{
+                          control: (state) =>
+                            state.isFocused
+                              ? "rounded  border-primary"
+                              : "rounded",
+                        }}
+                        options={distanceOptions}
+                        styles={customStyles}
+                        onChange={handleChangeDistance}
+                        isSearchable={false}
+                        value={selectedDistance}
+                        defaultValue={{
+                          value: 2,
+                          label: "2",
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <h4 className=" my-2">Gambar</h4>
+                  <div>
+                    <div className="form-group w-50 ">
+                      <label>Rasio Gambar</label>
+                      <Select
+                        theme={(theme) => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: "#FED4C6",
+                            // Set the color when focused
+                          },
+                        })}
+                        classNames={{
+                          control: (state) =>
+                            state.isFocused
+                              ? "rounded  border-primary"
+                              : "rounded",
+                        }}
+                        options={aspectRatioOptions}
+                        styles={customStyles}
+                        onChange={handleChangeImageRatio}
+                        isSearchable={false}
+                        value={selectedImageRatio}
+                        defaultValue={{
+                          value: 1 / 1,
+                          label: "1:1",
+                        }}
+                      />
+                    </div>
+                  </div>
                 </CTabPane>
               </CTabContent>
             </CTabs>

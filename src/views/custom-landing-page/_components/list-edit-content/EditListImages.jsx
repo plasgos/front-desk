@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   CButton,
   CCard,
@@ -12,11 +12,17 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
+import Select from "react-select";
 
 import { IoAdd } from "react-icons/io5";
 import { ImagesList } from "../list-add-content/list-images/ImagesList";
 import { AddImages } from "../list-add-content/list-images/AddImages";
 import { EditImages } from "../list-add-content/list-images/EditImages";
+import {
+  aspectRatioOptions,
+  distanceOptions,
+  maxColumnOptions,
+} from "../list-add-content/list-images/ListImagesContro;";
 
 const EditListImages = ({
   id,
@@ -32,6 +38,91 @@ const EditListImages = ({
   const [selectedSection, setSelectedSection] = useState({});
 
   const [beforeEditPrevSection, setBeforeEditPrevSection] = useState([]);
+  const [selectedDistance, setSelectedDistance] = useState(undefined);
+  const [selectedMaxColumn, setSelectedMaxColumn] = useState(undefined);
+  const [selectedImageRatio, setSelectedImageRatio] = useState(undefined);
+  console.log("🚀 ~ selectedImageRatio:", selectedImageRatio);
+
+  const handleChangeDistance = (selectedOption) => {
+    setSelectedDistance(selectedOption);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === id
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                paddingX: selectedOption.value,
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  const handleChangeMaxColumn = (selectedOption) => {
+    setSelectedMaxColumn(selectedOption);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === id
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                maxColumn: selectedOption.value,
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  const handleChangeImageRatio = (selectedOption) => {
+    setSelectedMaxColumn(selectedOption);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === id
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                aspectRatio: selectedOption.value,
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  useEffect(() => {
+    const selectedSectionToEdit = previewSection.find(
+      (section) => String(section.id) === id
+    );
+    if (selectedSectionToEdit) {
+      const distanceOption = distanceOptions.find(
+        (opt) => opt.value === selectedSectionToEdit.wrapperStyle?.paddingX
+      );
+      if (distanceOption) {
+        setSelectedDistance(distanceOption);
+      }
+
+      const maxColumnOption = maxColumnOptions.find(
+        (opt) => opt.value === selectedSectionToEdit.wrapperStyle?.maxColumn
+      );
+      if (maxColumnOption) {
+        setSelectedMaxColumn(maxColumnOption);
+      }
+
+      const aspectRatioOption = aspectRatioOptions
+        .flatMap((opts) => opts.options)
+        .find(
+          (opt) => opt.value === selectedSectionToEdit.wrapperStyle?.aspectRatio
+        );
+      if (aspectRatioOption) {
+        setSelectedImageRatio(aspectRatioOption);
+      }
+    }
+  }, [id, previewSection]);
 
   const handleAddContent = () => {
     setIsAddContent(true);
@@ -140,6 +231,17 @@ const EditListImages = ({
     [moveSection, editSection, removeSection]
   );
 
+  const customStyles = {
+    groupHeading: (provided) => ({
+      ...provided,
+      fontWeight: "bold",
+    }),
+    control: (baseStyles, state) => ({
+      ...baseStyles,
+      cursor: "text",
+    }),
+  };
+
   return (
     <div>
       <CRow>
@@ -175,7 +277,7 @@ const EditListImages = ({
                 style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
                 className="pt-3"
               >
-                <CTabPane data-tab="kolom">
+                <CTabPane className="p-1" data-tab="kolom">
                   {isAddContent && (
                     <AddImages
                       idSection={id}
@@ -197,6 +299,85 @@ const EditListImages = ({
 
                   {!isAddContent && !isEditing && (
                     <>
+                      <div
+                        style={{ gap: 10 }}
+                        className="d-flex align-items-center "
+                      >
+                        <div className="form-group w-50 ">
+                          <label>Kolom Maksimal</label>
+                          <Select
+                            theme={(theme) => ({
+                              ...theme,
+                              colors: {
+                                ...theme.colors,
+                                primary: "#FED4C6",
+                                // Set the color when focused
+                              },
+                            })}
+                            classNames={{
+                              control: (state) =>
+                                state.isFocused
+                                  ? "rounded  border-primary"
+                                  : "rounded",
+                            }}
+                            options={maxColumnOptions}
+                            styles={customStyles}
+                            onChange={handleChangeMaxColumn}
+                            isSearchable={false}
+                            value={selectedMaxColumn}
+                          />
+                        </div>
+                        <div className="form-group w-50 ">
+                          <label>Rasio Gambar</label>
+                          <Select
+                            theme={(theme) => ({
+                              ...theme,
+                              colors: {
+                                ...theme.colors,
+                                primary: "#FED4C6",
+                                // Set the color when focused
+                              },
+                            })}
+                            classNames={{
+                              control: (state) =>
+                                state.isFocused
+                                  ? "rounded  border-primary"
+                                  : "rounded",
+                            }}
+                            options={aspectRatioOptions}
+                            styles={customStyles}
+                            onChange={handleChangeImageRatio}
+                            isSearchable={false}
+                            value={selectedImageRatio}
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="form-group w-50 ">
+                          <label>Jarak</label>
+                          <Select
+                            theme={(theme) => ({
+                              ...theme,
+                              colors: {
+                                ...theme.colors,
+                                primary: "#FED4C6",
+                                // Set the color when focused
+                              },
+                            })}
+                            classNames={{
+                              control: (state) =>
+                                state.isFocused
+                                  ? "rounded  border-primary"
+                                  : "rounded",
+                            }}
+                            options={distanceOptions}
+                            styles={customStyles}
+                            onChange={handleChangeDistance}
+                            isSearchable={false}
+                            value={selectedDistance}
+                          />
+                        </div>
+                      </div>
                       <div>
                         {previewSection
                           .filter((section) => section.id === id)

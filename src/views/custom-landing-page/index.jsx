@@ -44,6 +44,8 @@ const viewIcon = {
 
 const CustomLandingPage = () => {
   const [isResizing, setIsResizing] = useState(false);
+  const [isPreview, setIsPreview] = useState(true);
+  const [shouldSave, setShouldSave] = useState(false);
   const [isSelectedView, setIsSelectedView] = useState("laptop");
   const [sections, setSections] = useState(landingPage.detail.contents || []);
   const [editing, setEditing] = useState("");
@@ -143,6 +145,7 @@ const CustomLandingPage = () => {
           isResizing={isResizing}
           ref={(el) => setRef(el, index)}
           isFocused={focusedIndex === index}
+          isPreview={isPreview}
         />
       );
     }
@@ -229,13 +232,33 @@ const CustomLandingPage = () => {
     [editing.id, editing.name, previewSection, sectionBeforeEdit]
   );
 
+  // const handleSave = () => {
+  //   setIsPreview(false);
+
+  //   const renderedString = previewSection
+  //     .map((item) => renderToString(renderViewComponent(item)))
+  //     .join("");
+  //   console.log(renderedString);
+  //   setStrViewContent(renderedString);
+  // };
+
   const handleSave = () => {
-    const renderedString = previewSection
-      .map((item) => renderToString(renderViewComponent(item)))
-      .join("");
-    console.log(renderedString);
-    setStrViewContent(renderedString);
+    setIsPreview(false);
+    setShouldSave(true);
   };
+
+  useEffect(() => {
+    if (!isPreview && shouldSave) {
+      const renderedString = previewSection
+        .map((item) => renderToString(renderViewComponent(item)))
+        .join("");
+      setStrViewContent(renderedString);
+
+      // Reset shouldSave after saving
+      setShouldSave(false);
+      setIsPreview(true);
+    }
+  }, [isPreview, shouldSave, previewSection, renderViewComponent]);
 
   const getInitialDimensions = (view) => {
     return {
