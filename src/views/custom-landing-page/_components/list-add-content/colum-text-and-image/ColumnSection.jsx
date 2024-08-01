@@ -40,6 +40,17 @@ const contents = [
         "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
       image: image,
     },
+    target: {
+      url: {
+        url: "",
+        isOpenNewTab: false,
+      },
+      whatApps: {
+        phoneNumber: "",
+        message: "",
+        isOpenNewTab: false,
+      },
+    },
   },
   {
     id: "adgdawdw",
@@ -49,6 +60,17 @@ const contents = [
       description:
         "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
       image: image,
+    },
+    target: {
+      url: {
+        url: "",
+        isOpenNewTab: false,
+      },
+      whatApps: {
+        phoneNumber: "",
+        message: "",
+        isOpenNewTab: false,
+      },
     },
   },
   {
@@ -60,7 +82,25 @@ const contents = [
         "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
       image: image,
     },
+    target: {
+      url: {
+        url: "",
+        isOpenNewTab: false,
+      },
+      whatApps: {
+        phoneNumber: "",
+        message: "",
+        isOpenNewTab: false,
+      },
+    },
   },
+];
+
+export const fontSizeOptions = [
+  { value: "16", label: "Kecil" },
+  { value: "18", label: "Sedang" },
+  { value: "22", label: "Besar" },
+  { value: "25", label: "Lebih Besar" },
 ];
 
 const ColumnSection = ({
@@ -87,6 +127,25 @@ const ColumnSection = ({
   const [selectedDistance, setSelectedDistance] = useState(undefined);
   const [selectedMaxColumn, setSelectedMaxColumn] = useState(undefined);
   const [selectedImageRatio, setSelectedImageRatio] = useState(undefined);
+
+  const [selectedFontSize, setSelectedFontSize] = useState(undefined);
+
+  const handleChangeFontSize = (selectedOption) => {
+    setSelectedFontSize(selectedOption);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === setting.id
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                fontSizeTitle: selectedOption.value,
+              },
+            }
+          : item
+      )
+    );
+  };
 
   const handleChangeDistance = (selectedOption) => {
     setSelectedDistance(selectedOption);
@@ -250,7 +309,7 @@ const ColumnSection = ({
         aspectRatio: 1 / 1,
         colorTitle: "#000000",
         colorDescription: "#000000",
-        fontSizeTitle: "18px",
+        fontSizeTitle: "18",
       },
     };
 
@@ -375,6 +434,7 @@ const ColumnSection = ({
                       titleValue={selectedSection.content.title}
                       descriptionValue={selectedSection.content.description}
                       image={selectedSection.content.image}
+                      target={selectedSection.target}
                       setPreviewSection={setPreviewSection}
                     />
                   )}
@@ -503,8 +563,8 @@ const ColumnSection = ({
                         isSearchable={false}
                         value={selectedMaxColumn}
                         defaultValue={{
-                          value: "16.66%",
-                          label: "6",
+                          value: "33.33%",
+                          label: "3",
                         }}
                       />
                     </div>
@@ -566,6 +626,35 @@ const ColumnSection = ({
                           value: 1 / 1,
                           label: "1:1",
                         }}
+                      />
+                    </div>
+                  </div>
+
+                  <h4 className=" my-2">Font</h4>
+                  <div>
+                    <div className="form-group w-50 ">
+                      <label>Ukuran Judul</label>
+                      <Select
+                        theme={(theme) => ({
+                          ...theme,
+                          colors: {
+                            ...theme.colors,
+                            primary: "#FED4C6",
+                            // Set the color when focused
+                          },
+                        })}
+                        classNames={{
+                          control: (state) =>
+                            state.isFocused
+                              ? "rounded  border-primary"
+                              : "rounded",
+                        }}
+                        options={fontSizeOptions}
+                        styles={customStyles}
+                        onChange={handleChangeFontSize}
+                        isSearchable={false}
+                        value={selectedFontSize}
+                        defaultValue={{ value: "18", label: "Sedang" }}
                       />
                     </div>
                   </div>

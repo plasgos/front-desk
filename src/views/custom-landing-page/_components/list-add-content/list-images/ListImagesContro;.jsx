@@ -94,8 +94,6 @@ export const maxColumnOptions = [
   { value: "25%", label: "4" },
   { value: "20%", label: "5" },
   { value: "16.66%", label: "6" },
-  { value: "14.28%", label: "7" },
-  { value: "12.55%", label: "8" },
 ];
 
 export const aspectRatioOptions = [

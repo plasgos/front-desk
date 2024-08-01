@@ -78,21 +78,6 @@ export const AddImages = ({ idSection, sections, setPreviewSection }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl]);
 
-  const resetWhatAppsValue = () => {
-    setWhatApps({
-      phoneNumber: "",
-      message: "",
-      isOpenNewTab: false,
-    });
-  };
-
-  const resetUrlValue = () => {
-    setUrl({
-      url: "",
-      isOpenNewTab: false,
-    });
-  };
-
   const handleAltChange = (value) => {
     setAlt(value);
 
@@ -116,6 +101,21 @@ export const AddImages = ({ idSection, sections, setPreviewSection }) => {
           : item
       )
     );
+  };
+
+  const resetWhatAppsValue = () => {
+    setWhatApps({
+      phoneNumber: "",
+      message: "",
+      isOpenNewTab: false,
+    });
+  };
+
+  const resetUrlValue = () => {
+    setUrl({
+      url: "",
+      isOpenNewTab: false,
+    });
   };
 
   const handleUrlChange = (value) => {

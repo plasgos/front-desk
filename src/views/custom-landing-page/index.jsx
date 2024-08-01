@@ -62,6 +62,25 @@ const CustomLandingPage = () => {
   const [focusedIndex, setFocusedIndex] = useState(null);
   console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
 
+  const getInitialDimensions = (view) => {
+    return {
+      width: view === "laptop" ? "100%" : view === "tablet" ? 600 : 320,
+      height: 480,
+    };
+  };
+
+  useEffect(() => {
+    setDimensions(getInitialDimensions(isSelectedView));
+  }, [isSelectedView]);
+
+  const [dimensions, setDimensions] = useState(
+    getInitialDimensions(isSelectedView)
+  );
+  const { id, isDragging } = useDragLayer((monitor) => ({
+    isDragging: monitor.isDragging(),
+    id: monitor.getItem()?.id,
+  }));
+
   const handleContentFocus = useCallback(
     (index) => {
       setFocusedIndex(index);
@@ -97,61 +116,65 @@ const CustomLandingPage = () => {
 
   const [strViewContent, setStrViewContent] = useState({});
 
-  const renderViewComponent = (section, index) => {
-    if (section.name === "text") {
-      return (
-        <ViewText
-          isDragging={isDragging && section.id === id}
-          content={section.content}
-          isResizing={isResizing}
-          ref={(el) => setRef(el, index)}
-          isFocused={focusedIndex === index}
-        />
-      );
-    }
+  const renderViewComponent = useCallback(
+    (section, index) => {
+      if (section.name === "text") {
+        return (
+          <ViewText
+            isDragging={isDragging && section.id === id}
+            content={section.content}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
 
-    if (section.name === "column-text-and-image") {
-      return (
-        <ViewColumnTextAndImage
-          width={dimensions.width}
-          isDragging={isDragging && section.id === id}
-          content={section.content}
-          isResizing={isResizing}
-          ref={(el) => setRef(el, index)}
-          isFocused={focusedIndex === index}
-        />
-      );
-    }
+      if (section.name === "column-text-and-image") {
+        return (
+          <ViewColumnTextAndImage
+            width={dimensions.width}
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+            isPreview={isPreview}
+          />
+        );
+      }
 
-    if (section.name === "empty-space") {
-      return (
-        <ViewEmptySpace
-          isDragging={isDragging && section.id === id}
-          width={dimensions.width}
-          content={section.content}
-          isResizing={isResizing}
-          ref={(el) => setRef(el, index)}
-          isFocused={focusedIndex === index}
-        />
-      );
-    }
+      if (section.name === "empty-space") {
+        return (
+          <ViewEmptySpace
+            isDragging={isDragging && section.id === id}
+            width={dimensions.width}
+            content={section.content}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
 
-    if (section.name === "list-images") {
-      return (
-        <ViewListImages
-          isDragging={isDragging && section.id === id}
-          width={dimensions.width}
-          content={section}
-          isResizing={isResizing}
-          ref={(el) => setRef(el, index)}
-          isFocused={focusedIndex === index}
-          isPreview={isPreview}
-        />
-      );
-    }
+      if (section.name === "list-images") {
+        return (
+          <ViewListImages
+            isDragging={isDragging && section.id === id}
+            width={dimensions.width}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+            isPreview={isPreview}
+          />
+        );
+      }
 
-    return null;
-  };
+      return null;
+    },
+    [dimensions.width, focusedIndex, id, isDragging, isPreview, isResizing]
+  );
 
   const renderEditSection = useCallback(
     (section) => {
@@ -183,6 +206,7 @@ const CustomLandingPage = () => {
         return (
           <EditColumnTextAndImage
             id={section.id}
+            curentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
@@ -259,26 +283,6 @@ const CustomLandingPage = () => {
       setIsPreview(true);
     }
   }, [isPreview, shouldSave, previewSection, renderViewComponent]);
-
-  const getInitialDimensions = (view) => {
-    return {
-      width: view === "laptop" ? "100%" : view === "tablet" ? 600 : 320,
-      height: 480,
-    };
-  };
-
-  const [dimensions, setDimensions] = useState(
-    getInitialDimensions(isSelectedView)
-  );
-
-  useEffect(() => {
-    setDimensions(getInitialDimensions(isSelectedView));
-  }, [isSelectedView]);
-
-  const { id, isDragging } = useDragLayer((monitor) => ({
-    isDragging: monitor.isDragging(),
-    id: monitor.getItem()?.id,
-  }));
 
   const handleMouseDown = (e, direction) => {
     if (isSelectedView === "laptop") return;

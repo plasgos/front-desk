@@ -13,7 +13,7 @@ const ViewListImages = forwardRef(
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
         }}
-        className="flex flex-row flex-wrap justify-center items-center  p-2 gap-y-3 "
+        className="flex flex-row flex-wrap justify-center items-center p-3 gap-y-3 "
       >
         {content.content.map((section) => {
           return (

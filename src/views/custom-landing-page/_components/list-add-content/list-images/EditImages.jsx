@@ -138,12 +138,23 @@ export const EditImages = ({
     );
   };
 
-  const handleUrlChange = (value) => {
+  const resetWhatAppsValue = () => {
     setWhatApps({
       phoneNumber: "",
       message: "",
       isOpenNewTab: false,
     });
+  };
+
+  const resetUrlValue = () => {
+    setUrl({
+      url: "",
+      isOpenNewTab: false,
+    });
+  };
+
+  const handleUrlChange = (value) => {
+    resetWhatAppsValue();
     setUrl((prevValue) => ({
       ...prevValue,
       url: value,
@@ -176,11 +187,7 @@ export const EditImages = ({
   };
 
   const handleUrlOpenNewTabChange = (value) => {
-    setWhatApps({
-      phoneNumber: "",
-      message: "",
-      isOpenNewTab: false,
-    });
+    resetWhatAppsValue();
     setUrl((prevValue) => ({
       ...prevValue,
       isOpenNewTab: value,
@@ -213,10 +220,7 @@ export const EditImages = ({
   };
 
   const handlePhoneNumberChange = (value) => {
-    setUrl({
-      url: "",
-      isOpenNewTab: false,
-    });
+    resetUrlValue();
     setWhatApps((prevValue) => ({
       ...prevValue,
       phoneNumber: value,
@@ -249,10 +253,7 @@ export const EditImages = ({
   };
 
   const handleMessageChange = (value) => {
-    setUrl({
-      url: "",
-      isOpenNewTab: false,
-    });
+    resetUrlValue();
     setWhatApps((prevValue) => ({
       ...prevValue,
       message: value,
@@ -285,10 +286,7 @@ export const EditImages = ({
   };
 
   const handleUrlOpenNewTabWaChange = (value) => {
-    setUrl({
-      url: "",
-      isOpenNewTab: false,
-    });
+    resetUrlValue();
     setWhatApps((prevValue) => ({
       ...prevValue,
       isOpenNewTab: value,
