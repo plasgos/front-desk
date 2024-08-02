@@ -39,6 +39,10 @@ const contents = [
         message: "",
         isOpenNewTab: false,
       },
+      scrollTarget: {
+        target: "",
+        isActive: false,
+      },
     },
   },
   {
@@ -56,6 +60,10 @@ const contents = [
         message: "",
         isOpenNewTab: false,
       },
+      scrollTarget: {
+        target: "",
+        isActive: false,
+      },
     },
   },
   {
@@ -72,6 +80,10 @@ const contents = [
         phoneNumber: "",
         message: "",
         isOpenNewTab: false,
+      },
+      scrollTarget: {
+        target: "",
+        isActive: false,
       },
     },
   },
@@ -135,6 +147,7 @@ export const customStyles = {
 const ListImagesControl = ({
   previewSection,
   setPreviewSection,
+  sections,
   setSections,
   isShowContent,
 }) => {
@@ -381,6 +394,7 @@ const ListImagesControl = ({
 
                   {isEditing && (
                     <EditImages
+                      sections={sections}
                       idSection={setting.id}
                       idContent={selectedSection.id}
                       altValue={selectedSection.content?.alt}

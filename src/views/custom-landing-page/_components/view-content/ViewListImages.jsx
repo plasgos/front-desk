@@ -2,8 +2,6 @@ import React, { forwardRef } from "react";
 
 const ViewListImages = forwardRef(
   ({ isDragging, width, isResizing, content, isFocused, isPreview }, ref) => {
-    console.log("🚀 ~ content:", content);
-
     return (
       <div
         key={content.id}
@@ -107,6 +105,50 @@ const ViewListImages = forwardRef(
                     />
                   </div>
                 </a>
+              ) : section.target.scrollTarget.target &&
+                !section.target.whatApps.phoneNumber &&
+                !section.target.url.url ? (
+                <div
+                  className={
+                    isPreview
+                      ? `flex  ${
+                          width === "100%" || width >= 640
+                            ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                            : width > 320 && width < 640
+                            ? "w-1/3"
+                            : "w-full"
+                        }  `
+                      : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
+                  }
+                >
+                  <a
+                    href={`#${section.target.scrollTarget.target}`}
+                    rel={
+                      section.target?.url?.isOpenNewTab
+                        ? "noopener noreferrer"
+                        : ""
+                    }
+                    style={{
+                      textDecoration: "none",
+                    }}
+                  >
+                    <div
+                      className={`w-full text-center px-${content?.wrapperStyle?.paddingX}   `}
+                    >
+                      <img
+                        src={section.content?.image}
+                        alt={section.content?.alt ? section.content.alt : ""}
+                        style={{
+                          width: "100%",
+                          marginTop: 14,
+                          marginBottom: 14,
+                          aspectRatio: content?.wrapperStyle?.aspectRatio,
+                          objectFit: "contain",
+                        }}
+                      />
+                    </div>
+                  </a>
+                </div>
               ) : (
                 <div
                   className={

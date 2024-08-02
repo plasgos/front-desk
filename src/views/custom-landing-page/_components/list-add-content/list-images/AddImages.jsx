@@ -6,6 +6,7 @@ import "react-slideshow-image/dist/styles.css";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import Select from "react-select";
 import { FaCircleInfo } from "react-icons/fa6";
+import { optionsTarget } from "../../options-select";
 
 export const options = [
   {
@@ -14,7 +15,10 @@ export const options = [
   },
   {
     label: "Web",
-    options: [{ value: "url", label: "URL" }],
+    options: [
+      { value: "url", label: "URL" },
+      { value: "scroll-target", label: "Scroll Target" },
+    ],
   },
   {
     label: "Chat",
@@ -391,7 +395,7 @@ export const AddImages = ({ idSection, sections, setPreviewSection }) => {
                 control: (state) =>
                   state.isFocused ? "rounded  border-primary" : "rounded",
               }}
-              options={options}
+              options={optionsTarget}
               styles={customStyles}
               onChange={handleChange}
               isSearchable={false}

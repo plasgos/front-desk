@@ -1,12 +1,13 @@
 import { CButton, CCard } from "@coreui/react";
 import React, { useState } from "react";
 import { MdTextFields, MdViewColumn } from "react-icons/md";
-import { PiArrowsDownUpLight } from "react-icons/pi";
+import { PiArrowsDownUpLight, PiTargetDuotone } from "react-icons/pi";
 import Text from "./Text";
 import ColumnSection from "../list-add-content/colum-text-and-image/ColumnSection";
 import EmptySpace from "./EmptySpace";
 import { IoMdImages } from "react-icons/io";
 import ListImagesControl from "./list-images/ListImagesContro;";
+import ScrollTarget from "./ScrollTarget";
 
 const ListContent = ({
   previewSection,
@@ -16,47 +17,37 @@ const ListContent = ({
   isShowContent,
 }) => {
   const [addContent, setAddContent] = useState("");
-  const onAddTitle = () => {
-    setAddContent("text");
-  };
-
-  const onAddColumnTextAndImage = () => {
-    setAddContent("column-text-and-image");
-  };
 
   const handelCancelAddContent = () => {
     isShowContent(false);
     setAddContent("");
   };
 
-  const handleAddEmptySpace = () => {
-    setAddContent("empty-space");
-  };
-
-  const handleAddListImages = () => {
-    setAddContent("list-images");
-  };
-
   const dataListContent = [
     {
       name: "text",
       icon: <MdTextFields style={{ marginRight: 5 }} size={24} />,
-      action: onAddTitle,
+      action: () => setAddContent("text"),
     },
     {
       name: "column-text-and-image",
       icon: <MdViewColumn style={{ marginRight: 5 }} size={24} />,
-      action: onAddColumnTextAndImage,
+      action: () => setAddContent("column-text-and-image"),
     },
     {
       name: "empty-space",
       icon: <PiArrowsDownUpLight style={{ marginRight: 5 }} size={24} />,
-      action: handleAddEmptySpace,
+      action: () => setAddContent("empty-space"),
     },
     {
       name: "list-images",
       icon: <IoMdImages style={{ marginRight: 5 }} size={24} />,
-      action: handleAddListImages,
+      action: () => setAddContent("list-images"),
+    },
+    {
+      name: "scroll-target",
+      icon: <PiTargetDuotone style={{ marginRight: 5 }} size={24} />,
+      action: () => setAddContent("scroll-target"),
     },
   ];
 
@@ -85,7 +76,6 @@ const ListContent = ({
         <Text
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          sections={sections}
           setSections={(value) => setSections(value)}
           isShowContent={isShowContent}
           toggleAddContent={(value) => setAddContent(value)}
@@ -96,7 +86,6 @@ const ListContent = ({
         <ColumnSection
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          sections={sections}
           setSections={(value) => setSections(value)}
           isShowContent={isShowContent}
           toggleAddContent={(value) => setAddContent(value)}
@@ -107,7 +96,6 @@ const ListContent = ({
         <EmptySpace
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          sections={sections}
           setSections={(value) => setSections(value)}
           isShowContent={isShowContent}
           toggleAddContent={(value) => setAddContent(value)}
@@ -119,6 +107,16 @@ const ListContent = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           sections={sections}
+          setSections={(value) => setSections(value)}
+          isShowContent={isShowContent}
+          toggleAddContent={(value) => setAddContent(value)}
+        />
+      )}
+
+      {addContent === "scroll-target" && (
+        <ScrollTarget
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
           setSections={(value) => setSections(value)}
           isShowContent={isShowContent}
           toggleAddContent={(value) => setAddContent(value)}

@@ -29,6 +29,7 @@ import ViewEmptySpace from "./_components/view-content/ViewEmptySpace";
 import EditEmptySpace from "./_components/list-edit-content/EditEmptySpace";
 import ViewListImages from "./_components/view-content/ViewListImages";
 import EditListImages from "./_components/list-edit-content/EditListImages";
+import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
 
 const landingPage = {
   detail: {
@@ -47,7 +48,7 @@ const CustomLandingPage = () => {
   const [isPreview, setIsPreview] = useState(true);
   const [shouldSave, setShouldSave] = useState(false);
   const [isSelectedView, setIsSelectedView] = useState("laptop");
-  const [sections, setSections] = useState(landingPage.detail.contents || []);
+  const [sections, setSections] = useState(landingPage.detail.contents || []); //final section save to db
   const [editing, setEditing] = useState("");
   const [isAddContent, setIsAddContent] = useState(false);
   const [previewSection, setPreviewSection] = useState(
@@ -167,6 +168,18 @@ const CustomLandingPage = () => {
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
             isPreview={isPreview}
+          />
+        );
+      }
+
+      if (section.name === "scroll-target") {
+        return (
+          <ViewScrollTraget
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
           />
         );
       }
