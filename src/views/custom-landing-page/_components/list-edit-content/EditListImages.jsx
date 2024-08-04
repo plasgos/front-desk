@@ -28,6 +28,7 @@ const EditListImages = ({
   id,
   previewSection,
   setPreviewSection,
+  sections,
   setSections,
   isShowContent,
   sectionBeforeEdit,
@@ -280,8 +281,9 @@ const EditListImages = ({
                 <CTabPane className="p-1" data-tab="kolom">
                   {isAddContent && (
                     <AddImages
+                      sections={sections}
                       idSection={id}
-                      sections={previewSection}
+                      defaultSection={previewSection}
                       setPreviewSection={setPreviewSection}
                     />
                   )}
@@ -289,6 +291,7 @@ const EditListImages = ({
                   {isEditing && (
                     <EditImages
                       idSection={id}
+                      sections={sections}
                       idContent={selectedSection.id}
                       altValue={selectedSection.content?.alt}
                       target={selectedSection.target}

@@ -6,9 +6,10 @@ import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import { customStyles } from "../list-images/ListImagesContro;";
-import { options } from "../list-images/AddImages";
+
 import Select from "react-select";
 import { FaCircleInfo } from "react-icons/fa6";
+import { optionsTarget } from "../../options-select";
 
 export const AddContent = ({ idSection, sections, setPreviewSection }) => {
   const [imageUrl, setImageUrl] = useState(image);
@@ -385,7 +386,7 @@ export const AddContent = ({ idSection, sections, setPreviewSection }) => {
                 control: (state) =>
                   state.isFocused ? "rounded  border-primary" : "rounded",
               }}
-              options={options}
+              options={optionsTarget}
               styles={customStyles}
               onChange={handleChange}
               isSearchable={false}

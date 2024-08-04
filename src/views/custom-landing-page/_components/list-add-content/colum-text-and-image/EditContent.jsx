@@ -4,9 +4,10 @@ import { FaCircleInfo } from "react-icons/fa6";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
-import { options } from "../list-images/AddImages";
+
 import { customStyles } from "../list-images/ListImagesContro;";
 import Select from "react-select";
+import { optionsTarget } from "../../options-select";
 
 export const EditContent = ({
   idSection,
@@ -399,7 +400,7 @@ export const EditContent = ({
                 control: (state) =>
                   state.isFocused ? "rounded  border-primary" : "rounded",
               }}
-              options={options}
+              options={optionsTarget}
               styles={customStyles}
               onChange={handleChange}
               isSearchable={false}

@@ -14,6 +14,7 @@ import warehouseReducer from "./modules/warehouse/reducer";
 import packageReducer from "./modules/package/reducer";
 import productReducer from "./modules/product/reducer";
 import chatHelpReducer from "./modules/chat-help/reducer";
+import customLandingPageReducer from "./modules/custom-landing-page/reducer";
 
 const rootReducer = combineReducers({
   login: loginReducer,
@@ -31,6 +32,7 @@ const rootReducer = combineReducers({
   warehouse: warehouseReducer,
   product: productReducer,
   chatHelp: chatHelpReducer,
+  customLandingPage: customLandingPageReducer,
 });
 
 export default rootReducer;

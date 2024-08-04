@@ -2,7 +2,9 @@ import { CButton, CCard, CTooltip } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { FaCircleInfo } from "react-icons/fa6";
 import Select from "react-select";
-import { optionsScrollTarget, optionsTarget } from "../../options-select";
+import { optionsTarget } from "../../options-select";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export const EditImages = ({
   sections,
@@ -13,17 +15,26 @@ export const EditImages = ({
   image,
   setPreviewSection,
 }) => {
+  const { optionsScrollTarget } = useSelector(
+    (state) => state.customLandingPage
+  );
+
+  const dispatch = useDispatch();
+
   const [imageUrl, setImageUrl] = useState(image);
   const [alt, setAlt] = useState(altValue);
   const [url, setUrl] = useState(target?.url);
+  const [scrollTarget, setScrollTarget] = useState(target?.scrollTarget);
   const [whatApps, setWhatApps] = useState(target?.whatApps);
+
   const [selectedOption, setSelectedOption] = useState(undefined);
-  console.log("🚀 ~ selectedOption:", selectedOption);
   const [selectedOptionScrollTarget, setSelectedOptionScrollTarget] =
     useState(undefined);
 
-  const [updatedOptionsScrollTarget, setUpdatedOptionsScrollTarget] =
-    useState(optionsScrollTarget);
+  console.log("🚀 ~ selectedOptionScrollTarget:", selectedOptionScrollTarget);
+
+  // const [updatedOptionsScrollTarget, setUpdatedOptionsScrollTarget] =
+  //   useState(optionsScrollTarget);
   const handleChange = (selectedOptionValue) => {
     setSelectedOption(selectedOptionValue);
   };
@@ -48,8 +59,10 @@ export const EditImages = ({
                         whatApps,
                         url,
                         scrollTarget: {
-                          target: selectedOption.value,
-                          isActive: true,
+                          ...contentItem.target.scrollTarget,
+                          id: selectedOption.id,
+                          value: selectedOption.value,
+                          label: selectedOption.label,
                         },
                       },
                     }
@@ -62,7 +75,50 @@ export const EditImages = ({
   };
 
   useEffect(() => {
-    if (selectedOption && selectedOption.value === "scroll-target") {
+    if (selectedOptionScrollTarget && optionsScrollTarget) {
+      const updatedOption = optionsScrollTarget.find(
+        (option) => option.id === selectedOptionScrollTarget.id
+      );
+
+      if (updatedOption) {
+        setPreviewSection((arr) =>
+          arr.map((item) =>
+            String(item.id) === idSection
+              ? {
+                  ...item,
+                  content: item.content.map((contentItem) =>
+                    String(contentItem.id) === String(idContent)
+                      ? {
+                          ...contentItem,
+                          target: {
+                            ...contentItem.target,
+                            whatApps,
+                            url,
+                            scrollTarget: {
+                              ...contentItem.target.scrollTarget,
+                              value: updatedOption.value,
+                              label: updatedOption.label,
+                            },
+                          },
+                        }
+                      : contentItem
+                  ),
+                }
+              : item
+          )
+        );
+      }
+      setSelectedOptionScrollTarget(updatedOption);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [optionsScrollTarget, selectedOptionScrollTarget]);
+
+  useEffect(() => {
+    if (
+      selectedOption &&
+      selectedOption.value === "scroll-target" &&
+      !scrollTarget.value
+    ) {
       setPreviewSection((arr) =>
         arr.map((item) =>
           String(item.id) === idSection
@@ -76,10 +132,11 @@ export const EditImages = ({
                           ...contentItem.target,
                           whatApps,
                           url,
-                          scrollTarget: {
-                            target: "back-to-top",
-                            isActive: true,
-                          },
+                          scrollTarget: optionsScrollTarget[0],
+                          // ...contentItem.target.scrollTarget,
+                          // id: "",
+                          // target: "back-to-top",
+                          // label: "Kembali Ke Atas",
                         },
                       }
                     : contentItem
@@ -88,26 +145,11 @@ export const EditImages = ({
             : item
         )
       );
+      setSelectedOptionScrollTarget(optionsScrollTarget[0]);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOption]);
-
-  useEffect(() => {
-    if (sections) {
-      const filteredScrolltarget = sections
-        .filter((section) => section.name === "scroll-target")
-        .reduce((acc, item) => {
-          acc = {
-            value: item.content.name,
-            label: item.content.name,
-          };
-          return acc;
-        }, {});
-
-      setUpdatedOptionsScrollTarget((prev) => [...prev, filteredScrolltarget]);
-    }
-  }, [sections]);
 
   useEffect(() => {
     if (url?.url) {
@@ -122,6 +164,18 @@ export const EditImages = ({
   }, [whatApps]);
 
   useEffect(() => {
+    if (scrollTarget.value) {
+      setSelectedOption({ value: "scroll-target", label: "Scroll Target" });
+
+      setSelectedOptionScrollTarget({
+        id: scrollTarget.id,
+        value: scrollTarget.value,
+        label: scrollTarget.label,
+      });
+    }
+  }, [scrollTarget.id, scrollTarget.label, scrollTarget.value]);
+
+  useEffect(() => {
     const resetTarget = {
       url: {
         url: "",
@@ -133,8 +187,8 @@ export const EditImages = ({
         isOpenNewTab: false,
       },
       scrollTarget: {
-        target: "back-to-top",
-        isActive: false,
+        target: "",
+        label: "",
       },
     };
 
@@ -245,8 +299,16 @@ export const EditImages = ({
     });
   };
 
+  const resetScrolltargetValue = () => {
+    setScrollTarget({
+      value: "",
+      label: "",
+    });
+  };
+
   const handleUrlChange = (value) => {
     resetWhatAppsValue();
+    resetScrolltargetValue();
     setUrl((prevValue) => ({
       ...prevValue,
       url: value,
@@ -263,6 +325,7 @@ export const EditImages = ({
                       ...contentItem,
                       target: {
                         ...contentItem.target,
+                        scrollTarget,
                         whatApps,
                         url: {
                           ...contentItem.target.url,
@@ -280,6 +343,7 @@ export const EditImages = ({
 
   const handleUrlOpenNewTabChange = (value) => {
     resetWhatAppsValue();
+    resetScrolltargetValue();
     setUrl((prevValue) => ({
       ...prevValue,
       isOpenNewTab: value,
@@ -297,6 +361,7 @@ export const EditImages = ({
                       target: {
                         ...contentItem.target,
                         whatApps,
+                        scrollTarget,
                         url: {
                           ...contentItem.target.url,
                           isOpenNewTab: value,
@@ -313,6 +378,7 @@ export const EditImages = ({
 
   const handlePhoneNumberChange = (value) => {
     resetUrlValue();
+    resetScrolltargetValue();
     setWhatApps((prevValue) => ({
       ...prevValue,
       phoneNumber: value,
@@ -330,6 +396,7 @@ export const EditImages = ({
                       target: {
                         ...contentItem.target,
                         url,
+                        scrollTarget,
                         whatApps: {
                           ...contentItem.target.whatApps,
                           phoneNumber: value,
@@ -346,6 +413,8 @@ export const EditImages = ({
 
   const handleMessageChange = (value) => {
     resetUrlValue();
+    resetScrolltargetValue();
+
     setWhatApps((prevValue) => ({
       ...prevValue,
       message: value,
@@ -363,6 +432,7 @@ export const EditImages = ({
                       target: {
                         ...contentItem.target,
                         url,
+                        scrollTarget,
                         whatApps: {
                           ...contentItem.target.whatApps,
                           message: value,
@@ -379,6 +449,8 @@ export const EditImages = ({
 
   const handleUrlOpenNewTabWaChange = (value) => {
     resetUrlValue();
+    resetScrolltargetValue();
+
     setWhatApps((prevValue) => ({
       ...prevValue,
       isOpenNewTab: value,
@@ -396,6 +468,7 @@ export const EditImages = ({
                       target: {
                         ...contentItem.target,
                         url,
+                        scrollTarget,
                         whatApps: {
                           ...contentItem.target.whatApps,
                           isOpenNewTab: value,
@@ -590,12 +663,12 @@ export const EditImages = ({
                   control: (state) =>
                     state.isFocused ? "rounded  border-primary" : "rounded",
                 }}
-                options={updatedOptionsScrollTarget}
+                options={optionsScrollTarget}
                 styles={customStyles}
                 onChange={handleChangeScrollTarget}
                 isSearchable={false}
                 value={selectedOptionScrollTarget}
-                defaultValue={updatedOptionsScrollTarget[0]}
+                // defaultValue={optionsScrollTarget[0]}
               />
             </div>
           )}

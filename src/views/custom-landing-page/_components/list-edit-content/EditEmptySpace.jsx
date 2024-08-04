@@ -11,8 +11,6 @@ const EditEmptySpace = ({
   sectionBeforeEdit,
 }) => {
   const [height, setHeight] = useState(heightContent);
-  console.log("🚀 ~ height:", height);
-
   const handleChange = (event) => {
     setHeight(+event.target.value);
     setPreviewSection((arr) =>

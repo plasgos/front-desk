@@ -1,35 +1,28 @@
 import { CButton } from "@coreui/react";
-import React, { useEffect, useState } from "react";
-import { createUniqueID } from "../../../../lib/unique-id";
-import { PiTargetDuotone } from "react-icons/pi";
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 import { setOptionsScrollTarget } from "../../../../redux/modules/custom-landing-page/reducer";
-// import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-const ScrollTarget = ({
+const EditScrollTarget = ({
+  curentSection,
   previewSection,
   setPreviewSection,
+  sections,
   setSections,
   isShowContent,
-  toggleAddContent,
+  sectionBeforeEdit,
 }) => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(curentSection.content.name);
   const [isCopiedLink, setIsCopiedLink] = useState(false);
   const [isCopiedAnchor, setIsCopiedAnchor] = useState(false);
-  const [setting, setSetting] = useState({});
-  const [hasAddedContent, setHasAddedContent] = useState(false);
+
+  const { optionsScrollTarget } = useSelector(
+    (state) => state.customLandingPage
+  );
+
+  console.log("🚀 ~ optionsScrollTarget:", optionsScrollTarget);
 
   const dispatch = useDispatch();
-
-  const generateRandomNumberString = () => {
-    const randomNumber = Math.floor(Math.random() * 100) + 1;
-    return randomNumber.toString();
-  };
-
-  useEffect(() => {
-    setName(`Target-${generateRandomNumberString()}`);
-  }, []);
-
   const copyToClipboardAnchor = () => {
     navigator.clipboard
       .writeText(`#${name}`)
@@ -68,7 +61,7 @@ const ScrollTarget = ({
     setName(value);
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(setting.id)
+        String(item.id) === String(curentSection.id)
           ? {
               ...item,
               content: {
@@ -83,71 +76,18 @@ const ScrollTarget = ({
     );
   };
 
-  // useEffect(() => {
-  //   if (name && !hasAddedContent) {
-  //     const handleAddContent = () => {
-  //       let uniqueId = createUniqueID(previewSection);
-  //       let payload = {
-  //         id: uniqueId,
-  //         name: "scroll-target",
-  //         icon: <PiTargetDuotone size={24} />,
-  //         content: {
-  //           name,
-  //           anchor: `#${name}`,
-  //           link: baseURLandAnchor,
-  //         },
-  //       };
-
-  //       setPreviewSection((prevSections) => [...prevSections, payload]);
-  //       setSetting(payload);
-  //       setHasAddedContent(true);
-  //       dispatch(
-  //         setOptionsScrollTarget({ id: uniqueId, value: name, label: name })
-  //       );
-  //     };
-
-  //     handleAddContent();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [name, hasAddedContent, dispatch]);
-
-  const handleAddContent = () => {
-    let uniqueId = createUniqueID(previewSection);
-    let payload = {
-      id: uniqueId,
-      name: "scroll-target",
-      icon: <PiTargetDuotone size={24} />,
-      content: {
-        name,
-        anchor: `#${name}`,
-        link: baseURLandAnchor,
-      },
-    };
-
-    setPreviewSection((prevSections) => [...prevSections, payload]);
-    setSetting(payload);
-    setHasAddedContent(true);
-    dispatch(
-      setOptionsScrollTarget({ id: uniqueId, value: name, label: name })
-    );
-  };
-
   const handelCancel = () => {
-    toggleAddContent("");
-    isShowContent(false);
-    setPreviewSection((prevSections) =>
-      prevSections.filter((section) => section.id !== setting.id)
-    );
+    isShowContent("");
+    setPreviewSection([...sectionBeforeEdit]);
   };
 
   const handelConfirm = () => {
-    // addScrolllTargetOptions();
-    handleAddContent();
-    toggleAddContent("");
-    isShowContent(false);
+    dispatch(
+      setOptionsScrollTarget({ id: curentSection.id, value: name, label: name })
+    );
+    isShowContent("");
     setSections(previewSection);
   };
-
   return (
     <div>
       <div className="d-flex justify-content-end align-items-center border-bottom p-2 mb-3">
@@ -230,4 +170,4 @@ const ScrollTarget = ({
   );
 };
 
-export default ScrollTarget;
+export default EditScrollTarget;

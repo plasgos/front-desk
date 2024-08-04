@@ -30,6 +30,9 @@ import EditEmptySpace from "./_components/list-edit-content/EditEmptySpace";
 import ViewListImages from "./_components/view-content/ViewListImages";
 import EditListImages from "./_components/list-edit-content/EditListImages";
 import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
+import EditScrollTarget from "./_components/list-edit-content/EditScrollTarget";
+import { useDispatch, useSelector } from "react-redux";
+import { removeOptionScrollTarget } from "../../redux/modules/custom-landing-page/reducer";
 
 const landingPage = {
   detail: {
@@ -59,9 +62,12 @@ const CustomLandingPage = () => {
   const setRef = (el, index) => {
     previewRefs.current[index] = el;
   };
+  const containerRef = useRef(null);
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
   console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
+
+  const dispatch = useDispatch();
 
   const getInitialDimensions = (view) => {
     return {
@@ -161,6 +167,7 @@ const CustomLandingPage = () => {
       if (section.name === "list-images") {
         return (
           <ViewListImages
+            containerRef={containerRef}
             isDragging={isDragging && section.id === id}
             width={dimensions.width}
             content={section}
@@ -258,6 +265,25 @@ const CustomLandingPage = () => {
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
+            sections={sections}
+            setSections={(value) => setSections(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+          />
+        );
+      }
+
+      if (
+        editing.name === "scroll-target" &&
+        section.name === "scroll-target" &&
+        editing.id === section.id
+      ) {
+        return (
+          <EditScrollTarget
+            curentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sections={sections}
             setSections={(value) => setSections(value)}
             sectionBeforeEdit={sectionBeforeEdit}
           />
@@ -266,7 +292,7 @@ const CustomLandingPage = () => {
 
       return null;
     },
-    [editing.id, editing.name, previewSection, sectionBeforeEdit]
+    [editing.id, editing.name, previewSection, sectionBeforeEdit, sections]
   );
 
   // const handleSave = () => {
@@ -378,11 +404,21 @@ const CustomLandingPage = () => {
     [previewSection]
   );
 
-  const removeSection = useCallback((index) => {
-    setPreviewSection((prev) => prev.filter((item, i) => i !== index));
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const { optionsScrollTarget } = useSelector(
+    (state) => state.customLandingPage
+  );
+
+  console.log(
+    "🚀 ~ CustomLandingPage ~ optionsScrollTarget:",
+    optionsScrollTarget
+  );
+  const removeSection = useCallback(
+    (index, id) => {
+      setPreviewSection((prev) => prev.filter((item, i) => i !== index));
+      dispatch(removeOptionScrollTarget(id));
+    },
+    [dispatch]
+  );
 
   const renderListContent = useCallback(
     (section, index) => {
@@ -521,6 +557,7 @@ const CustomLandingPage = () => {
 
         <CCol md="8">
           <ResizableView
+            containerRef={containerRef}
             dimensions={dimensions}
             isSelectedView={isSelectedView}
             isResizing={isResizing}

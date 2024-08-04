@@ -6,6 +6,7 @@ const ResizableView = ({
   isSelectedView,
   isResizing,
   handleMouseDown,
+  containerRef,
 }) => {
   return (
     <div
@@ -16,7 +17,7 @@ const ResizableView = ({
         maxWidth: 1024,
         height: dimensions.height,
         maxHeight: "98%",
-        overflowY: "hidden",
+        overflowY: "auto",
         flex: isSelectedView === "laptop" ? "1 1 0%" : "initial",
         transition: "transform 0.4s ease 0s",
         transformOrigin: "center top",
@@ -25,6 +26,7 @@ const ResizableView = ({
       }}
     >
       <div
+        ref={containerRef}
         style={{
           width: "100%",
           maxWidth: 1024,

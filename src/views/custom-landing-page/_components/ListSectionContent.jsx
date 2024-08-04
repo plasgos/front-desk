@@ -109,7 +109,7 @@ export const ListSectionContent = ({
                 size={16}
               />
               <IoCloseOutline
-                onClick={() => removeSection(index)}
+                onClick={() => removeSection(index, section.id)}
                 style={{ cursor: "pointer" }}
                 size={18}
               />

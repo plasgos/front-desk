@@ -40,8 +40,9 @@ const contents = [
         isOpenNewTab: false,
       },
       scrollTarget: {
-        target: "",
-        isActive: false,
+        id: "",
+        value: "",
+        label: "",
       },
     },
   },
@@ -61,8 +62,9 @@ const contents = [
         isOpenNewTab: false,
       },
       scrollTarget: {
-        target: "",
-        isActive: false,
+        id: "",
+        value: "",
+        label: "",
       },
     },
   },
@@ -82,8 +84,9 @@ const contents = [
         isOpenNewTab: false,
       },
       scrollTarget: {
-        target: "",
-        isActive: false,
+        id: "",
+        value: "",
+        label: "",
       },
     },
   },
@@ -386,8 +389,9 @@ const ListImagesControl = ({
                 <CTabPane className="p-1" data-tab="kolom">
                   {isAddContent && (
                     <AddImages
+                      sections={sections}
                       idSection={setting.id}
-                      sections={defaultSection}
+                      defaultSection={defaultSection}
                       setPreviewSection={setPreviewSection}
                     />
                   )}
