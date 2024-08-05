@@ -1,10 +1,11 @@
 import types from "./types";
 
 const initialState = {
+  landingPageSection: [],
   optionsTarget: [
     {
       label: "Tidak ada link",
-      options: [{ value: "noLink", label: "Tidak ada link" }],
+      options: [{ value: undefined, label: "Tidak ada link" }],
     },
     {
       label: "Web",
@@ -21,10 +22,62 @@ const initialState = {
   optionsScrollTarget: [
     { id: "hakdjw", value: "back-to-top", label: "Kembali Ke Atas" },
   ],
+  optionsFacebookPixel: [
+    {
+      label: "Utama",
+      options: [
+        { value: "notFound", label: "Tidak Ada" },
+        { value: "custom", label: "Custom" },
+      ],
+    },
+    {
+      label: "Belanja",
+      options: [
+        { value: "add-payment-info", label: "Add Payment Info" },
+        { value: "add-to-cart", label: "Add to Cart" },
+        { value: "add-to-wishlist", label: "Add to Wishlist" },
+        { value: "initiate-checkout", label: "Initiate Checkout" },
+        { value: "purchase", label: "Purchase" },
+        { value: "search", label: "Search" },
+        { value: "view-content", label: "View Content" },
+      ],
+    },
+    {
+      label: "Leads",
+      options: [
+        { value: "lead", label: "Lead" },
+        { value: "page-view", label: "Page View" },
+        { value: "complete-registration", label: "Complete Registration" },
+        { value: "contact", label: "Contact" },
+        { value: "find-location", label: "Find Location" },
+      ],
+    },
+    {
+      label: "Subscription",
+      options: [
+        { value: "start-trial", label: "Start Trial" },
+        { value: "subscribe", label: "Subscribe" },
+      ],
+    },
+    {
+      label: "Lainnya",
+      options: [
+        { value: "customize-product", label: "Customize Product" },
+        { value: "donate", label: "Donate" },
+        { value: "schedule", label: "Schedule" },
+        { value: "submit-application", label: "Submit Application" },
+      ],
+    },
+  ],
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case types.SET_LANDING_PAGE_SECTION:
+      return {
+        ...state,
+        landingPageSection: action.payload,
+      };
     case types.SET_OPTIONS_SCROLL_TARGET:
       const isExisting = state.optionsScrollTarget.some(
         (option) => option.id === action.payload.id
@@ -53,6 +106,10 @@ export default (state = initialState, action) => {
   }
 };
 
+export const setLandingPageSection = (payload) => ({
+  type: types.SET_LANDING_PAGE_SECTION,
+  payload,
+});
 export const setOptionsScrollTarget = (payload) => ({
   type: types.SET_OPTIONS_SCROLL_TARGET,
   payload,
@@ -60,4 +117,8 @@ export const setOptionsScrollTarget = (payload) => ({
 export const removeOptionScrollTarget = (id) => ({
   type: types.REMOVE_OPTIONS_SCROLL_TARGET,
   payload: id,
+});
+export const resetOptionScrollTarget = (payload) => ({
+  type: types.RESET_OPTIONS_SCROLL_TARGET,
+  payload,
 });

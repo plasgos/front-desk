@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../lib/unique-id";
 import { PiTargetDuotone } from "react-icons/pi";
 import { useDispatch } from "react-redux";
-import { setOptionsScrollTarget } from "../../../../redux/modules/custom-landing-page/reducer";
-// import { useLocation } from "react-router-dom";
+import {
+  setLandingPageSection,
+  setOptionsScrollTarget,
+} from "../../../../redux/modules/custom-landing-page/reducer";
 
 const ScrollTarget = ({
   previewSection,
@@ -83,54 +85,33 @@ const ScrollTarget = ({
     );
   };
 
-  // useEffect(() => {
-  //   if (name && !hasAddedContent) {
-  //     const handleAddContent = () => {
-  //       let uniqueId = createUniqueID(previewSection);
-  //       let payload = {
-  //         id: uniqueId,
-  //         name: "scroll-target",
-  //         icon: <PiTargetDuotone size={24} />,
-  //         content: {
-  //           name,
-  //           anchor: `#${name}`,
-  //           link: baseURLandAnchor,
-  //         },
-  //       };
+  useEffect(() => {
+    if (name && !hasAddedContent) {
+      const handleAddContent = () => {
+        let uniqueId = createUniqueID(previewSection);
+        let payload = {
+          id: uniqueId,
+          name: "scroll-target",
+          icon: <PiTargetDuotone size={24} />,
+          content: {
+            name,
+            anchor: `#${name}`,
+            link: baseURLandAnchor,
+          },
+        };
 
-  //       setPreviewSection((prevSections) => [...prevSections, payload]);
-  //       setSetting(payload);
-  //       setHasAddedContent(true);
-  //       dispatch(
-  //         setOptionsScrollTarget({ id: uniqueId, value: name, label: name })
-  //       );
-  //     };
+        setPreviewSection((prevSections) => [...prevSections, payload]);
+        setSetting(payload);
+        setHasAddedContent(true);
+        dispatch(
+          setOptionsScrollTarget({ id: uniqueId, value: name, label: name })
+        );
+      };
 
-  //     handleAddContent();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [name, hasAddedContent, dispatch]);
-
-  const handleAddContent = () => {
-    let uniqueId = createUniqueID(previewSection);
-    let payload = {
-      id: uniqueId,
-      name: "scroll-target",
-      icon: <PiTargetDuotone size={24} />,
-      content: {
-        name,
-        anchor: `#${name}`,
-        link: baseURLandAnchor,
-      },
-    };
-
-    setPreviewSection((prevSections) => [...prevSections, payload]);
-    setSetting(payload);
-    setHasAddedContent(true);
-    dispatch(
-      setOptionsScrollTarget({ id: uniqueId, value: name, label: name })
-    );
-  };
+      handleAddContent();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name, hasAddedContent, dispatch]);
 
   const handelCancel = () => {
     toggleAddContent("");
@@ -141,11 +122,9 @@ const ScrollTarget = ({
   };
 
   const handelConfirm = () => {
-    // addScrolllTargetOptions();
-    handleAddContent();
     toggleAddContent("");
     isShowContent(false);
-    setSections(previewSection);
+    dispatch(setLandingPageSection(previewSection));
   };
 
   return (

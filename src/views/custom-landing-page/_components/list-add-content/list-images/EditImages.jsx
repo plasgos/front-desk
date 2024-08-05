@@ -2,9 +2,8 @@ import { CButton, CCard, CTooltip } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { FaCircleInfo } from "react-icons/fa6";
 import Select from "react-select";
-import { optionsTarget } from "../../options-select";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import FacebookPixel from "../../FacebookPixel";
 
 export const EditImages = ({
   sections,
@@ -15,28 +14,64 @@ export const EditImages = ({
   image,
   setPreviewSection,
 }) => {
-  const { optionsScrollTarget } = useSelector(
+  const { optionsScrollTarget, optionsTarget } = useSelector(
     (state) => state.customLandingPage
   );
-
-  const dispatch = useDispatch();
 
   const [imageUrl, setImageUrl] = useState(image);
   const [alt, setAlt] = useState(altValue);
   const [url, setUrl] = useState(target?.url);
   const [scrollTarget, setScrollTarget] = useState(target?.scrollTarget);
+  console.log("🚀 ~ scrollTarget:", scrollTarget);
   const [whatApps, setWhatApps] = useState(target?.whatApps);
 
-  const [selectedOption, setSelectedOption] = useState(undefined);
+  const [selectedOption, setSelectedOption] = useState(
+    optionsTarget[0].options[0]
+  );
   const [selectedOptionScrollTarget, setSelectedOptionScrollTarget] =
     useState(undefined);
 
   console.log("🚀 ~ selectedOptionScrollTarget:", selectedOptionScrollTarget);
-
-  // const [updatedOptionsScrollTarget, setUpdatedOptionsScrollTarget] =
-  //   useState(optionsScrollTarget);
   const handleChange = (selectedOptionValue) => {
     setSelectedOption(selectedOptionValue);
+
+    if (!selectedOptionValue.value) {
+      const resetTarget = {
+        url: {
+          url: "",
+          isOpenNewTab: false,
+        },
+        whatApps: {
+          phoneNumber: "",
+          message: "",
+          isOpenNewTab: false,
+        },
+        scrollTarget: {
+          id: "",
+          value: "",
+          label: "",
+        },
+      };
+
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === idSection
+            ? {
+                ...item,
+                content: item.content.map((contentItem) =>
+                  String(contentItem.id) === String(idContent)
+                    ? {
+                        ...contentItem,
+                        target: resetTarget,
+                      }
+                    : contentItem
+                ),
+              }
+            : item
+        )
+      );
+      setSelectedOptionScrollTarget(undefined);
+    }
   };
 
   const handleChangeScrollTarget = (selectedOption) => {
@@ -107,8 +142,37 @@ export const EditImages = ({
               : item
           )
         );
+        setSelectedOptionScrollTarget(updatedOption);
+      } else {
+        resetScrolltargetValue();
+
+        setPreviewSection((arr) =>
+          arr.map((item) =>
+            String(item.id) === idSection
+              ? {
+                  ...item,
+                  content: item.content.map((contentItem) =>
+                    String(contentItem.id) === String(idContent)
+                      ? {
+                          ...contentItem,
+                          target: {
+                            ...contentItem.target,
+                            whatApps,
+                            url,
+                            scrollTarget: {
+                              id: "",
+                              value: "",
+                              label: "",
+                            },
+                          },
+                        }
+                      : contentItem
+                  ),
+                }
+              : item
+          )
+        );
       }
-      setSelectedOptionScrollTarget(updatedOption);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [optionsScrollTarget, selectedOptionScrollTarget]);
@@ -130,13 +194,7 @@ export const EditImages = ({
                         ...contentItem,
                         target: {
                           ...contentItem.target,
-                          whatApps,
-                          url,
                           scrollTarget: optionsScrollTarget[0],
-                          // ...contentItem.target.scrollTarget,
-                          // id: "",
-                          // target: "back-to-top",
-                          // label: "Kembali Ke Atas",
                         },
                       }
                     : contentItem
@@ -172,48 +230,13 @@ export const EditImages = ({
         value: scrollTarget.value,
         label: scrollTarget.label,
       });
+    } else {
+      setSelectedOptionScrollTarget({
+        value: "di-hapus",
+        label: "--Di Hapus--",
+      });
     }
   }, [scrollTarget.id, scrollTarget.label, scrollTarget.value]);
-
-  useEffect(() => {
-    const resetTarget = {
-      url: {
-        url: "",
-        isOpenNewTab: false,
-      },
-      whatApps: {
-        phoneNumber: "",
-        message: "",
-        isOpenNewTab: false,
-      },
-      scrollTarget: {
-        target: "",
-        label: "",
-      },
-    };
-
-    if (selectedOption?.value === "noLink") {
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === idSection
-            ? {
-                ...item,
-                content: item.content.map((contentItem) =>
-                  String(contentItem.id) === String(idContent)
-                    ? {
-                        ...contentItem,
-                        target: resetTarget,
-                      }
-                    : contentItem
-                ),
-              }
-            : item
-        )
-      );
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOption]);
 
   const handleFileUpload = () => {
     const input = document.createElement("input");
@@ -301,6 +324,7 @@ export const EditImages = ({
 
   const resetScrolltargetValue = () => {
     setScrollTarget({
+      id: "",
       value: "",
       label: "",
     });
@@ -559,7 +583,7 @@ export const EditImages = ({
               onChange={handleChange}
               isSearchable={false}
               value={selectedOption}
-              defaultValue={optionsTarget[0].options[0]}
+              // defaultValue={optionsTarget[0].options[0]}
             />
           </div>
           {selectedOption?.value === "url" && (
@@ -668,11 +692,12 @@ export const EditImages = ({
                 onChange={handleChangeScrollTarget}
                 isSearchable={false}
                 value={selectedOptionScrollTarget}
-                // defaultValue={optionsScrollTarget[0]}
               />
             </div>
           )}
         </form>
+
+        {selectedOption.value !== undefined && <FacebookPixel />}
       </div>
     </CCard>
   );

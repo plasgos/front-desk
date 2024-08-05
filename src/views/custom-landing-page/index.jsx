@@ -52,11 +52,10 @@ const CustomLandingPage = () => {
   const [shouldSave, setShouldSave] = useState(false);
   const [isSelectedView, setIsSelectedView] = useState("laptop");
   const [sections, setSections] = useState(landingPage.detail.contents || []); //final section save to db
+  console.log("🚀 ~ CustomLandingPage ~ sections:", sections);
   const [editing, setEditing] = useState("");
   const [isAddContent, setIsAddContent] = useState(false);
-  const [previewSection, setPreviewSection] = useState(
-    landingPage.detail.contents || []
-  );
+  const [previewSection, setPreviewSection] = useState([]);
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
   const [timers, setTimers] = useState({});
   const setRef = (el, index) => {
@@ -404,14 +403,46 @@ const CustomLandingPage = () => {
     [previewSection]
   );
 
-  const { optionsScrollTarget } = useSelector(
+  const { optionsScrollTarget, landingPageSection } = useSelector(
     (state) => state.customLandingPage
   );
 
   console.log(
-    "🚀 ~ CustomLandingPage ~ optionsScrollTarget:",
-    optionsScrollTarget
+    "🚀 ~ CustomLandingPage ~ landingPageSection:",
+    landingPageSection
   );
+
+  // const handleReceiveIdSection = (idSection, idContent) => {
+  //   console.log("🚀 ~ handleReceiveIdSection ~ idSection:", idContent);
+
+  //   setPreviewSection((arr) =>
+  //     arr.map((item) =>
+  //       String(item.id) === idSection
+  //         ? {
+  //             ...item,
+  //             content: item.content.map((contentItem) =>
+  //               String(contentItem.id) === String(idContent)
+  //                 ? {
+  //                     ...contentItem,
+  //                     target: {
+  //                       ...contentItem.target,
+  //                       whatApps: {},
+  //                       url: {},
+  //                       scrollTarget: {
+  //                         id: "",
+  //                         value: "",
+  //                         label: "",
+  //                       },
+  //                     },
+  //                   }
+  //                 : contentItem
+  //             ),
+  //           }
+  //         : item
+  //     )
+  //   );
+  // };
+
   const removeSection = useCallback(
     (index, id) => {
       setPreviewSection((prev) => prev.filter((item, i) => i !== index));

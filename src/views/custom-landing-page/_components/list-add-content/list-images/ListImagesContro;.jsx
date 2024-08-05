@@ -22,6 +22,8 @@ import { EditImages } from "./EditImages";
 import { ImagesList } from "./ImagesList";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import { IoMdImages } from "react-icons/io";
+import { useDispatch } from "react-redux";
+import { setLandingPageSection } from "../../../../../redux/modules/custom-landing-page/reducer";
 
 const contents = [
   {
@@ -153,6 +155,7 @@ const ListImagesControl = ({
   sections,
   setSections,
   isShowContent,
+  handleReceiveIdSection,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [defaultSection, setDefaultSection] = useState(contents || []);
@@ -161,6 +164,8 @@ const ListImagesControl = ({
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
 
   const [setting, setSetting] = useState({});
+
+  const dispatch = useDispatch();
 
   const [selectedDistance, setSelectedDistance] = useState(undefined);
   const [selectedMaxColumn, setSelectedMaxColumn] = useState(undefined);
@@ -254,10 +259,10 @@ const ListImagesControl = ({
     if (isAddContent || isEditing) {
       setIsAddContent(false);
       setIsEditing(false);
-      setSections(previewSection);
+      dispatch(setLandingPageSection(previewSection));
     } else {
       isShowContent(false);
-      setSections(previewSection);
+      dispatch(setLandingPageSection(previewSection));
     }
   };
 

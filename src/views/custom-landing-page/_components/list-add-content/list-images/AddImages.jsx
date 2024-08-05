@@ -6,7 +6,9 @@ import "react-slideshow-image/dist/styles.css";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import Select from "react-select";
 import { FaCircleInfo } from "react-icons/fa6";
-import { optionsScrollTarget, optionsTarget } from "../../options-select";
+
+import FacebookPixel from "../../FacebookPixel";
+import { useSelector } from "react-redux";
 
 export const AddImages = ({
   idSection,
@@ -14,19 +16,25 @@ export const AddImages = ({
   defaultSection,
   setPreviewSection,
 }) => {
+  const { optionsScrollTarget, optionsTarget } = useSelector(
+    (state) => state.customLandingPage
+  );
+
   const [imageUrl, setImageUrl] = useState(image);
   const [alt, setAlt] = useState("");
   const [whatApps, setWhatApps] = useState({});
   const [url, setUrl] = useState({});
   const [scrollTarget, setScrollTarget] = useState({});
   const [setting, setSetting] = useState({});
-  const [selectedOption, setSelectedOption] = useState(undefined);
+  const [selectedOption, setSelectedOption] = useState(
+    optionsTarget[0].options[0]
+  );
 
   const [selectedOptionScrollTarget, setSelectedOptionScrollTarget] =
     useState(undefined);
 
-  const [updatedOptionsScrollTarget, setUpdatedOptionsScrollTarget] =
-    useState(optionsScrollTarget);
+  // const [updatedOptionsScrollTarget, setUpdatedOptionsScrollTarget] =
+  //   useState(optionsScrollTarget);
   const handleChangeScrollTarget = (selectedOption) => {
     setSelectedOptionScrollTarget(selectedOption);
 
@@ -47,7 +55,8 @@ export const AddImages = ({
                         whatApps,
                         url,
                         scrollTarget: {
-                          target: selectedOption.value,
+                          id: selectedOption.id,
+                          value: selectedOption.value,
                           label: selectedOption.label,
                         },
                       },
@@ -75,11 +84,7 @@ export const AddImages = ({
                           ...contentItem.target,
                           whatApps,
                           url,
-                          scrollTarget: {
-                            ...contentItem.target.scrollTarget,
-                            target: "back-to-top",
-                            label: "Kembali Ke Atas",
-                          },
+                          scrollTarget: optionsScrollTarget[0],
                         },
                       }
                     : contentItem
@@ -88,29 +93,52 @@ export const AddImages = ({
             : item
         )
       );
+      setSelectedOptionScrollTarget(optionsScrollTarget[0]);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOption]);
 
-  useEffect(() => {
-    if (sections) {
-      const filteredScrolltarget = sections
-        .filter((section) => section.name === "scroll-target")
-        .reduce((acc, item) => {
-          acc = {
-            value: item.content.name,
-            label: item.content.name,
-          };
-          return acc;
-        }, {});
+  const handleChange = (selectedOptionValue) => {
+    setSelectedOption(selectedOptionValue);
 
-      setUpdatedOptionsScrollTarget((prev) => [...prev, filteredScrolltarget]);
+    if (!selectedOptionValue.value) {
+      const resetTarget = {
+        url: {
+          url: "",
+          isOpenNewTab: false,
+        },
+        whatApps: {
+          phoneNumber: "",
+          message: "",
+          isOpenNewTab: false,
+        },
+        scrollTarget: {
+          id: "",
+          value: "",
+          label: "",
+        },
+      };
+
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === idSection
+            ? {
+                ...item,
+                content: item.content.map((contentItem) =>
+                  String(contentItem.id) === String(setting.id)
+                    ? {
+                        ...contentItem,
+                        target: resetTarget,
+                      }
+                    : contentItem
+                ),
+              }
+            : item
+        )
+      );
+      setSelectedOptionScrollTarget(undefined);
     }
-  }, [sections]);
-
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
   };
 
   const handleFileUpload = () => {
@@ -198,6 +226,7 @@ export const AddImages = ({
 
   const resetScrolltargetValue = () => {
     setScrollTarget({
+      id: "",
       value: "",
       label: "",
     });
@@ -397,7 +426,8 @@ export const AddImages = ({
           isOpenNewTab: false,
         },
         scrollTarget: {
-          target: "",
+          id: "",
+          value: "",
           label: "",
         },
       },
@@ -603,16 +633,17 @@ export const AddImages = ({
                   control: (state) =>
                     state.isFocused ? "rounded  border-primary" : "rounded",
                 }}
-                options={updatedOptionsScrollTarget}
+                options={optionsScrollTarget}
                 styles={customStyles}
                 onChange={handleChangeScrollTarget}
                 isSearchable={false}
                 value={selectedOptionScrollTarget}
-                defaultValue={updatedOptionsScrollTarget[0]}
               />
             </div>
           )}
         </form>
+
+        {selectedOption.value !== undefined && <FacebookPixel />}
       </div>
     </CCard>
   );

@@ -1,6 +1,9 @@
 import { CButton } from "@coreui/react";
 import React, { useState } from "react";
-import { setOptionsScrollTarget } from "../../../../redux/modules/custom-landing-page/reducer";
+import {
+  setLandingPageSection,
+  setOptionsScrollTarget,
+} from "../../../../redux/modules/custom-landing-page/reducer";
 import { useDispatch, useSelector } from "react-redux";
 
 const EditScrollTarget = ({
@@ -81,12 +84,12 @@ const EditScrollTarget = ({
     setPreviewSection([...sectionBeforeEdit]);
   };
 
-  const handelConfirm = () => {
-    dispatch(
+  const handelConfirm = async () => {
+    await dispatch(
       setOptionsScrollTarget({ id: curentSection.id, value: name, label: name })
     );
     isShowContent("");
-    setSections(previewSection);
+    await dispatch(setLandingPageSection(previewSection));
   };
   return (
     <div>

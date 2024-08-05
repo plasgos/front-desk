@@ -24,6 +24,8 @@ import "react-slideshow-image/dist/styles.css";
 import { ChromePicker } from "react-color";
 import { createUniqueID } from "../../../../lib/unique-id";
 import { MdTextFields } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { setLandingPageSection } from "../../../../redux/modules/custom-landing-page/reducer";
 
 const Text = ({
   previewSection,
@@ -140,10 +142,12 @@ const Text = ({
     );
   };
 
+  const dispatch = useDispatch();
+
   const handelConfirm = () => {
     toggleAddContent("");
     isShowContent(false);
-    setSections(previewSection);
+    dispatch(setLandingPageSection(previewSection));
   };
 
   return (

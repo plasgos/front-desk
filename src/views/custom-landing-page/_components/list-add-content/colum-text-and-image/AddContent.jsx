@@ -10,6 +10,7 @@ import { customStyles } from "../list-images/ListImagesContro;";
 import Select from "react-select";
 import { FaCircleInfo } from "react-icons/fa6";
 import { optionsTarget } from "../../options-select";
+import FacebookPixel from "../../FacebookPixel";
 
 export const AddContent = ({ idSection, sections, setPreviewSection }) => {
   const [imageUrl, setImageUrl] = useState(image);
@@ -486,6 +487,8 @@ export const AddContent = ({ idSection, sections, setPreviewSection }) => {
             />
           </div>
         </form>
+
+        {selectedOption !== undefined && <FacebookPixel />}
 
         <ReactQuill
           modules={{

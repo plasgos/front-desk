@@ -22,6 +22,8 @@ import {
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 import { ChromePicker } from "react-color";
+import { setLandingPageSection } from "../../../../redux/modules/custom-landing-page/reducer";
+import { useDispatch } from "react-redux";
 
 const EditText = ({
   id,
@@ -114,9 +116,11 @@ const EditText = ({
     setPreviewSection([...sectionBeforeEdit]);
   };
 
+  const dispatch = useDispatch();
+
   const handelConfirm = () => {
     isShowContent("");
-    setSections(previewSection);
+    dispatch(setLandingPageSection(previewSection));
   };
 
   return (

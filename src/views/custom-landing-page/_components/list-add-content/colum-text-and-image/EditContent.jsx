@@ -8,6 +8,7 @@ import "react-slideshow-image/dist/styles.css";
 import { customStyles } from "../list-images/ListImagesContro;";
 import Select from "react-select";
 import { optionsTarget } from "../../options-select";
+import FacebookPixel from "../../FacebookPixel";
 
 export const EditContent = ({
   idSection,
@@ -499,6 +500,8 @@ export const EditContent = ({
             />
           </div>
         </form>
+
+        {selectedOption !== undefined && <FacebookPixel />}
 
         <ReactQuill
           modules={{

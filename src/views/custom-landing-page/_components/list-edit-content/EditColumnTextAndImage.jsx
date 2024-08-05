@@ -26,6 +26,8 @@ import {
 } from "../list-add-content/list-images/ListImagesContro;";
 import { fontSizeOptions } from "../list-add-content/colum-text-and-image/ColumnSection";
 import { ChromePicker } from "react-color";
+import { useDispatch } from "react-redux";
+import { setLandingPageSection } from "../../../../redux/modules/custom-landing-page/reducer";
 
 const EditColumnTextAndImage = ({
   id,
@@ -229,14 +231,16 @@ const EditColumnTextAndImage = ({
     }
   };
 
+  const dispatch = useDispatch();
+
   const handelConfirm = () => {
     if (isAddContent || isEditing) {
       setIsAddContent(false);
       setIsEditing(false);
-      setSections(previewSection);
+      dispatch(setLandingPageSection(previewSection));
     } else {
       isShowContent(false);
-      setSections(previewSection);
+      dispatch(setLandingPageSection(previewSection));
     }
   };
 

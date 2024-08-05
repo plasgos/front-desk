@@ -1,5 +1,7 @@
 import { CButton, CCol, CRow } from "@coreui/react";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setLandingPageSection } from "../../../../redux/modules/custom-landing-page/reducer";
 
 const EditEmptySpace = ({
   id,
@@ -84,10 +86,12 @@ const EditEmptySpace = ({
     setPreviewSection([...sectionBeforeEdit]);
   };
 
+  const dispatch = useDispatch();
+
   const handelConfirm = () => {
     handleSetHeightWhenBlur();
     isShowContent("");
-    setSections(previewSection);
+    dispatch(setLandingPageSection(previewSection));
   };
 
   return (

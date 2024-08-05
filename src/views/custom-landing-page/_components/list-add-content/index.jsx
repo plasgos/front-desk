@@ -15,6 +15,7 @@ const ListContent = ({
   sections,
   setSections,
   isShowContent,
+  handleReceiveIdSection,
 }) => {
   const [addContent, setAddContent] = useState("");
 

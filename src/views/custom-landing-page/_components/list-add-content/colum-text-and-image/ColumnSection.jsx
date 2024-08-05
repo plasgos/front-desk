@@ -29,6 +29,8 @@ import {
   maxColumnOptions,
 } from "../list-images/ListImagesContro;";
 import { ChromePicker } from "react-color";
+import { useDispatch } from "react-redux";
+import { setLandingPageSection } from "../../../../../redux/modules/custom-landing-page/reducer";
 
 const contents = [
   {
@@ -265,14 +267,16 @@ const ColumnSection = ({
     }
   };
 
+  const dispatch = useDispatch();
+
   const handelConfirm = () => {
     if (isAddContent || isEditing) {
       setIsAddContent(false);
       setIsEditing(false);
-      setSections(previewSection);
+      dispatch(setLandingPageSection(previewSection));
     } else {
       isShowContent(false);
-      setSections(previewSection);
+      dispatch(setLandingPageSection(previewSection));
     }
   };
 

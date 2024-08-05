@@ -23,6 +23,8 @@ import {
   distanceOptions,
   maxColumnOptions,
 } from "../list-add-content/list-images/ListImagesContro;";
+import { useDispatch } from "react-redux";
+import { setLandingPageSection } from "../../../../redux/modules/custom-landing-page/reducer";
 
 const EditListImages = ({
   id,
@@ -154,14 +156,16 @@ const EditListImages = ({
     }
   };
 
+  const dispatch = useDispatch();
+
   const handelConfirm = () => {
     if (isAddContent || isEditing) {
       setIsAddContent(false);
       setIsEditing(false);
-      setSections(previewSection);
+      dispatch(setLandingPageSection(previewSection));
     } else {
       isShowContent(false);
-      setSections(previewSection);
+      dispatch(setLandingPageSection(previewSection));
     }
   };
 
