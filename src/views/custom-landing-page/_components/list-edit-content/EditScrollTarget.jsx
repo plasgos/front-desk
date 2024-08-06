@@ -89,7 +89,7 @@ const EditScrollTarget = ({
       setOptionsScrollTarget({ id: curentSection.id, value: name, label: name })
     );
     isShowContent("");
-    await dispatch(setLandingPageSection(previewSection));
+    // await dispatch(setLandingPageSection(previewSection));
   };
   return (
     <div>

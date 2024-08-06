@@ -32,7 +32,10 @@ import EditListImages from "./_components/list-edit-content/EditListImages";
 import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
 import EditScrollTarget from "./_components/list-edit-content/EditScrollTarget";
 import { useDispatch, useSelector } from "react-redux";
-import { removeOptionScrollTarget } from "../../redux/modules/custom-landing-page/reducer";
+import {
+  removeOptionScrollTarget,
+  setLandingPageSection,
+} from "../../redux/modules/custom-landing-page/reducer";
 
 const landingPage = {
   detail: {
@@ -139,6 +142,7 @@ const CustomLandingPage = () => {
       if (section.name === "column-text-and-image") {
         return (
           <ViewColumnTextAndImage
+            containerRef={containerRef}
             width={dimensions.width}
             isDragging={isDragging && section.id === id}
             content={section}
@@ -294,19 +298,10 @@ const CustomLandingPage = () => {
     [editing.id, editing.name, previewSection, sectionBeforeEdit, sections]
   );
 
-  // const handleSave = () => {
-  //   setIsPreview(false);
-
-  //   const renderedString = previewSection
-  //     .map((item) => renderToString(renderViewComponent(item)))
-  //     .join("");
-  //   console.log(renderedString);
-  //   setStrViewContent(renderedString);
-  // };
-
   const handleSave = () => {
     setIsPreview(false);
     setShouldSave(true);
+    dispatch(setLandingPageSection(previewSection));
   };
 
   useEffect(() => {
@@ -411,37 +406,6 @@ const CustomLandingPage = () => {
     "🚀 ~ CustomLandingPage ~ landingPageSection:",
     landingPageSection
   );
-
-  // const handleReceiveIdSection = (idSection, idContent) => {
-  //   console.log("🚀 ~ handleReceiveIdSection ~ idSection:", idContent);
-
-  //   setPreviewSection((arr) =>
-  //     arr.map((item) =>
-  //       String(item.id) === idSection
-  //         ? {
-  //             ...item,
-  //             content: item.content.map((contentItem) =>
-  //               String(contentItem.id) === String(idContent)
-  //                 ? {
-  //                     ...contentItem,
-  //                     target: {
-  //                       ...contentItem.target,
-  //                       whatApps: {},
-  //                       url: {},
-  //                       scrollTarget: {
-  //                         id: "",
-  //                         value: "",
-  //                         label: "",
-  //                       },
-  //                     },
-  //                   }
-  //                 : contentItem
-  //             ),
-  //           }
-  //         : item
-  //     )
-  //   );
-  // };
 
   const removeSection = useCallback(
     (index, id) => {

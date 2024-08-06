@@ -27,7 +27,7 @@ import {
   customStyles,
   distanceOptions,
   maxColumnOptions,
-} from "../list-images/ListImagesContro;";
+} from "../list-images/ListImagesControl";
 import { ChromePicker } from "react-color";
 import { useDispatch } from "react-redux";
 import { setLandingPageSection } from "../../../../../redux/modules/custom-landing-page/reducer";
@@ -52,6 +52,11 @@ const contents = [
         message: "",
         isOpenNewTab: false,
       },
+      scrollTarget: {
+        id: "",
+        value: "",
+        label: "",
+      },
     },
   },
   {
@@ -73,6 +78,11 @@ const contents = [
         message: "",
         isOpenNewTab: false,
       },
+      scrollTarget: {
+        id: "",
+        value: "",
+        label: "",
+      },
     },
   },
   {
@@ -93,6 +103,11 @@ const contents = [
         phoneNumber: "",
         message: "",
         isOpenNewTab: false,
+      },
+      scrollTarget: {
+        id: "",
+        value: "",
+        label: "",
       },
     },
   },
@@ -273,10 +288,10 @@ const ColumnSection = ({
     if (isAddContent || isEditing) {
       setIsAddContent(false);
       setIsEditing(false);
-      dispatch(setLandingPageSection(previewSection));
+      // dispatch(setLandingPageSection(previewSection));
     } else {
       isShowContent(false);
-      dispatch(setLandingPageSection(previewSection));
+      // dispatch(setLandingPageSection(previewSection));
     }
   };
 
@@ -434,11 +449,7 @@ const ColumnSection = ({
                   {isEditing && (
                     <EditContent
                       idSection={setting.id}
-                      idContent={selectedSection.id}
-                      titleValue={selectedSection.content.title}
-                      descriptionValue={selectedSection.content.description}
-                      image={selectedSection.content.image}
-                      target={selectedSection.target}
+                      selectedSectionToEdit={selectedSection}
                       setPreviewSection={setPreviewSection}
                     />
                   )}

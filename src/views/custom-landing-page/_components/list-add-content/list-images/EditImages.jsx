@@ -6,32 +6,29 @@ import { useSelector } from "react-redux";
 import FacebookPixel from "../../FacebookPixel";
 
 export const EditImages = ({
-  sections,
+  selectedSectionToEdit,
   idSection,
-  idContent,
-  altValue,
-  target,
-  image,
   setPreviewSection,
 }) => {
   const { optionsScrollTarget, optionsTarget } = useSelector(
     (state) => state.customLandingPage
   );
 
-  const [imageUrl, setImageUrl] = useState(image);
-  const [alt, setAlt] = useState(altValue);
-  const [url, setUrl] = useState(target?.url);
-  const [scrollTarget, setScrollTarget] = useState(target?.scrollTarget);
-  console.log("🚀 ~ scrollTarget:", scrollTarget);
-  const [whatApps, setWhatApps] = useState(target?.whatApps);
+  const [imageUrl, setImageUrl] = useState(selectedSectionToEdit.content.image);
+  const [alt, setAlt] = useState(selectedSectionToEdit.content?.alt);
+  const [url, setUrl] = useState(selectedSectionToEdit.target?.url);
+  const [scrollTarget, setScrollTarget] = useState(
+    selectedSectionToEdit.target?.scrollTarget
+  );
+  const [whatApps, setWhatApps] = useState(
+    selectedSectionToEdit.target?.whatApps
+  );
 
   const [selectedOption, setSelectedOption] = useState(
     optionsTarget[0].options[0]
   );
   const [selectedOptionScrollTarget, setSelectedOptionScrollTarget] =
     useState(undefined);
-
-  console.log("🚀 ~ selectedOptionScrollTarget:", selectedOptionScrollTarget);
   const handleChange = (selectedOptionValue) => {
     setSelectedOption(selectedOptionValue);
 
@@ -59,7 +56,7 @@ export const EditImages = ({
             ? {
                 ...item,
                 content: item.content.map((contentItem) =>
-                  String(contentItem.id) === String(idContent)
+                  String(contentItem.id) === String(selectedSectionToEdit.id)
                     ? {
                         ...contentItem,
                         target: resetTarget,
@@ -86,7 +83,7 @@ export const EditImages = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
@@ -122,7 +119,7 @@ export const EditImages = ({
               ? {
                   ...item,
                   content: item.content.map((contentItem) =>
-                    String(contentItem.id) === String(idContent)
+                    String(contentItem.id) === String(selectedSectionToEdit.id)
                       ? {
                           ...contentItem,
                           target: {
@@ -152,7 +149,7 @@ export const EditImages = ({
               ? {
                   ...item,
                   content: item.content.map((contentItem) =>
-                    String(contentItem.id) === String(idContent)
+                    String(contentItem.id) === String(selectedSectionToEdit.id)
                       ? {
                           ...contentItem,
                           target: {
@@ -181,7 +178,7 @@ export const EditImages = ({
     if (
       selectedOption &&
       selectedOption.value === "scroll-target" &&
-      !scrollTarget.value
+      !scrollTarget?.value
     ) {
       setPreviewSection((arr) =>
         arr.map((item) =>
@@ -189,7 +186,7 @@ export const EditImages = ({
             ? {
                 ...item,
                 content: item.content.map((contentItem) =>
-                  String(contentItem.id) === String(idContent)
+                  String(contentItem.id) === String(selectedSectionToEdit.id)
                     ? {
                         ...contentItem,
                         target: {
@@ -265,7 +262,7 @@ export const EditImages = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -291,7 +288,7 @@ export const EditImages = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -344,7 +341,7 @@ export const EditImages = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
@@ -379,7 +376,7 @@ export const EditImages = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
@@ -414,7 +411,7 @@ export const EditImages = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
@@ -450,7 +447,7 @@ export const EditImages = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
@@ -486,7 +483,7 @@ export const EditImages = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
@@ -537,7 +534,7 @@ export const EditImages = ({
           >
             <img
               style={{ objectFit: "contain", width: "100%", height: 100 }}
-              src={imageUrl || image}
+              src={imageUrl || selectedSectionToEdit.content.image}
               alt="img"
             />
           </div>
@@ -583,7 +580,6 @@ export const EditImages = ({
               onChange={handleChange}
               isSearchable={false}
               value={selectedOption}
-              // defaultValue={optionsTarget[0].options[0]}
             />
           </div>
           {selectedOption?.value === "url" && (

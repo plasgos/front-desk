@@ -85,7 +85,7 @@ const ViewListImages = forwardRef(
                     </div>
                   </a>
                 </div>
-              ) : section.target.whatApps.phoneNumber ? (
+              ) : section.target?.whatApps?.phoneNumber ? (
                 <a
                   target={
                     section.target.whatApps.isOpenNewTab ? "_blank" : "_self"
@@ -129,7 +129,7 @@ const ViewListImages = forwardRef(
                     />
                   </div>
                 </a>
-              ) : section.target.scrollTarget.value ? (
+              ) : section.target?.scrollTarget?.value ? (
                 <div
                   className={
                     isPreview

@@ -10,12 +10,7 @@ import { FaCircleInfo } from "react-icons/fa6";
 import FacebookPixel from "../../FacebookPixel";
 import { useSelector } from "react-redux";
 
-export const AddImages = ({
-  idSection,
-  sections,
-  defaultSection,
-  setPreviewSection,
-}) => {
+export const AddImages = ({ idSection, defaultSection, setPreviewSection }) => {
   const { optionsScrollTarget, optionsTarget } = useSelector(
     (state) => state.customLandingPage
   );
@@ -33,8 +28,6 @@ export const AddImages = ({
   const [selectedOptionScrollTarget, setSelectedOptionScrollTarget] =
     useState(undefined);
 
-  // const [updatedOptionsScrollTarget, setUpdatedOptionsScrollTarget] =
-  //   useState(optionsScrollTarget);
   const handleChangeScrollTarget = (selectedOption) => {
     setSelectedOptionScrollTarget(selectedOption);
 
@@ -525,10 +518,6 @@ export const AddImages = ({
               onChange={handleChange}
               isSearchable={false}
               value={selectedOption}
-              defaultValue={{
-                value: "noLink",
-                label: "Tidak ada link",
-              }}
             />
           </div>
 

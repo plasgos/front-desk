@@ -23,7 +23,7 @@ import {
   customStyles,
   distanceOptions,
   maxColumnOptions,
-} from "../list-add-content/list-images/ListImagesContro;";
+} from "../list-add-content/list-images/ListImagesControl";
 import { fontSizeOptions } from "../list-add-content/colum-text-and-image/ColumnSection";
 import { ChromePicker } from "react-color";
 import { useDispatch } from "react-redux";
@@ -34,7 +34,6 @@ const EditColumnTextAndImage = ({
   curentSection,
   previewSection,
   setPreviewSection,
-  setSections,
   isShowContent,
   sectionBeforeEdit,
 }) => {
@@ -237,10 +236,10 @@ const EditColumnTextAndImage = ({
     if (isAddContent || isEditing) {
       setIsAddContent(false);
       setIsEditing(false);
-      dispatch(setLandingPageSection(previewSection));
+      // dispatch(setLandingPageSection(previewSection));
     } else {
       isShowContent(false);
-      dispatch(setLandingPageSection(previewSection));
+      // dispatch(setLandingPageSection(previewSection));
     }
   };
 
@@ -373,11 +372,7 @@ const EditColumnTextAndImage = ({
                   {isEditing && (
                     <EditContent
                       idSection={id}
-                      idContent={selectedSection.id}
-                      titleValue={selectedSection.content.title}
-                      target={selectedSection.target}
-                      descriptionValue={selectedSection.content.description}
-                      image={selectedSection.content.image}
+                      selectedSectionToEdit={selectedSection}
                       setPreviewSection={setPreviewSection}
                     />
                   )}

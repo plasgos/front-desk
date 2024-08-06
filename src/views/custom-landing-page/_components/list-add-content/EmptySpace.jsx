@@ -93,7 +93,7 @@ const EmptySpace = ({
     handleSetHeightWhenBlur();
     toggleAddContent("");
     isShowContent(false);
-    dispatch(setLandingPageSection(previewSection));
+    // dispatch(setLandingPageSection(previewSection));
   };
 
   const handleAddContent = () => {

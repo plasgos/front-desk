@@ -6,8 +6,10 @@ import Text from "./Text";
 import ColumnSection from "../list-add-content/colum-text-and-image/ColumnSection";
 import EmptySpace from "./EmptySpace";
 import { IoMdImages } from "react-icons/io";
-import ListImagesControl from "./list-images/ListImagesContro;";
+import ListImagesControl from "./list-images/ListImagesControl";
 import ScrollTarget from "./ScrollTarget";
+import { RxSwitch } from "react-icons/rx";
+import ListButtonControl from "./button/ListButtonControl";
 
 const ListContent = ({
   previewSection,
@@ -15,7 +17,6 @@ const ListContent = ({
   sections,
   setSections,
   isShowContent,
-  handleReceiveIdSection,
 }) => {
   const [addContent, setAddContent] = useState("");
 
@@ -27,28 +28,39 @@ const ListContent = ({
   const dataListContent = [
     {
       name: "text",
+      title: "Teks",
       icon: <MdTextFields style={{ marginRight: 5 }} size={24} />,
       action: () => setAddContent("text"),
     },
     {
       name: "column-text-and-image",
+      title: "Kolom Teks + Gambar",
       icon: <MdViewColumn style={{ marginRight: 5 }} size={24} />,
       action: () => setAddContent("column-text-and-image"),
     },
     {
       name: "empty-space",
+      title: "Ruang Kosong",
       icon: <PiArrowsDownUpLight style={{ marginRight: 5 }} size={24} />,
       action: () => setAddContent("empty-space"),
     },
     {
       name: "list-images",
+      title: "Daftar Gambar",
       icon: <IoMdImages style={{ marginRight: 5 }} size={24} />,
       action: () => setAddContent("list-images"),
     },
     {
       name: "scroll-target",
+      title: "Scroll Target",
       icon: <PiTargetDuotone style={{ marginRight: 5 }} size={24} />,
       action: () => setAddContent("scroll-target"),
+    },
+    {
+      name: "button",
+      title: "Tombol",
+      icon: <RxSwitch style={{ marginRight: 5 }} size={24} />,
+      action: () => setAddContent("button"),
     },
   ];
 
@@ -124,6 +136,16 @@ const ListContent = ({
         />
       )}
 
+      {addContent === "button" && (
+        <ListButtonControl
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          setSections={(value) => setSections(value)}
+          isShowContent={isShowContent}
+          toggleAddContent={(value) => setAddContent(value)}
+        />
+      )}
+
       {!addContent &&
         dataListContent.map((item, index) => (
           <CCard
@@ -131,10 +153,9 @@ const ListContent = ({
             style={{ marginBottom: 10, cursor: "pointer" }}
             onClick={item.action}
           >
-            <div className="d-flex align-items-center p-1">
+            <div className="d-flex align-items-center py-1 px-2">
               <div>{item.icon}</div>
-
-              <div>{item.name}</div>
+              <div>{item.title}</div>
             </div>
           </CCard>
         ))}

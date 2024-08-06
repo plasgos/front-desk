@@ -147,7 +147,7 @@ const Text = ({
   const handelConfirm = () => {
     toggleAddContent("");
     isShowContent(false);
-    dispatch(setLandingPageSection(previewSection));
+    // dispatch(setLandingPageSection(previewSection));
   };
 
   return (

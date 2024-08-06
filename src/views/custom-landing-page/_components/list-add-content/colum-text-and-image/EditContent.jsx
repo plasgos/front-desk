@@ -5,30 +5,217 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 
-import { customStyles } from "../list-images/ListImagesContro;";
+import { customStyles } from "../list-images/ListImagesControl";
 import Select from "react-select";
-import { optionsTarget } from "../../options-select";
 import FacebookPixel from "../../FacebookPixel";
+import { useSelector } from "react-redux";
 
 export const EditContent = ({
   idSection,
-  idContent,
-  titleValue,
-  target,
-  descriptionValue,
-  image,
+  selectedSectionToEdit,
   setPreviewSection,
 }) => {
-  const [imageUrl, setImageUrl] = useState(image);
-  const [title, setTitle] = useState(titleValue);
-  const [description, setDescription] = useState(descriptionValue);
-  const [url, setUrl] = useState(target?.url);
-  const [whatApps, setWhatApps] = useState(target?.whatApps);
-  const [selectedOption, setSelectedOption] = useState(undefined);
+  const { optionsScrollTarget, optionsTarget } = useSelector(
+    (state) => state.customLandingPage
+  );
 
-  const handleChange = (selectedOption) => {
-    setSelectedOption(selectedOption);
+  const [imageUrl, setImageUrl] = useState(selectedSectionToEdit.content.image);
+  const [title, setTitle] = useState(selectedSectionToEdit.content.title);
+  const [description, setDescription] = useState(
+    selectedSectionToEdit.content.description
+  );
+  const [scrollTarget, setScrollTarget] = useState(
+    selectedSectionToEdit.target?.scrollTarget
+  );
+  const [url, setUrl] = useState(selectedSectionToEdit.target?.url);
+  const [whatApps, setWhatApps] = useState(
+    selectedSectionToEdit.target?.whatApps
+  );
+  const [selectedOption, setSelectedOption] = useState(
+    optionsTarget[0].options[0]
+  );
+
+  console.log("🚀 ~ selectedOption:", selectedOption);
+
+  const [selectedOptionScrollTarget, setSelectedOptionScrollTarget] =
+    useState(undefined);
+
+  const handleChange = (selectedOptionValue) => {
+    setSelectedOption(selectedOptionValue);
+
+    if (!selectedOptionValue.value) {
+      const resetTarget = {
+        url: {
+          url: "",
+          isOpenNewTab: false,
+        },
+        whatApps: {
+          phoneNumber: "",
+          message: "",
+          isOpenNewTab: false,
+        },
+        scrollTarget: {
+          id: "",
+          value: "",
+          label: "",
+        },
+      };
+
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === idSection
+            ? {
+                ...item,
+                content: item.content.map((contentItem) =>
+                  String(contentItem.id) === String(selectedSectionToEdit.id)
+                    ? {
+                        ...contentItem,
+                        target: resetTarget,
+                      }
+                    : contentItem
+                ),
+              }
+            : item
+        )
+      );
+      setSelectedOptionScrollTarget(undefined);
+    }
   };
+
+  const handleChangeScrollTarget = (selectedOption) => {
+    setSelectedOptionScrollTarget(selectedOption);
+
+    resetUrlValue();
+    resetWhatAppsValue();
+
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === idSection
+          ? {
+              ...item,
+              content: item.content.map((contentItem) =>
+                String(contentItem.id) === String(selectedSectionToEdit.id)
+                  ? {
+                      ...contentItem,
+                      target: {
+                        ...contentItem.target,
+                        whatApps,
+                        url,
+                        scrollTarget: {
+                          ...contentItem.target.scrollTarget,
+                          id: selectedOption.id,
+                          value: selectedOption.value,
+                          label: selectedOption.label,
+                        },
+                      },
+                    }
+                  : contentItem
+              ),
+            }
+          : item
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (selectedOptionScrollTarget && optionsScrollTarget) {
+      const updatedOption = optionsScrollTarget.find(
+        (option) => option.id === selectedOptionScrollTarget.id
+      );
+
+      if (updatedOption) {
+        setPreviewSection((arr) =>
+          arr.map((item) =>
+            String(item.id) === idSection
+              ? {
+                  ...item,
+                  content: item.content.map((contentItem) =>
+                    String(contentItem.id) === String(selectedSectionToEdit.id)
+                      ? {
+                          ...contentItem,
+                          target: {
+                            ...contentItem.target,
+                            whatApps,
+                            url,
+                            scrollTarget: {
+                              ...contentItem.target.scrollTarget,
+                              value: updatedOption.value,
+                              label: updatedOption.label,
+                            },
+                          },
+                        }
+                      : contentItem
+                  ),
+                }
+              : item
+          )
+        );
+        setSelectedOptionScrollTarget(updatedOption);
+      } else {
+        resetScrolltargetValue();
+
+        setPreviewSection((arr) =>
+          arr.map((item) =>
+            String(item.id) === idSection
+              ? {
+                  ...item,
+                  content: item.content.map((contentItem) =>
+                    String(contentItem.id) === String(selectedSectionToEdit.id)
+                      ? {
+                          ...contentItem,
+                          target: {
+                            ...contentItem.target,
+                            whatApps,
+                            url,
+                            scrollTarget: {
+                              id: "",
+                              value: "",
+                              label: "",
+                            },
+                          },
+                        }
+                      : contentItem
+                  ),
+                }
+              : item
+          )
+        );
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [optionsScrollTarget, selectedOptionScrollTarget]);
+
+  useEffect(() => {
+    if (
+      selectedOption &&
+      selectedOption.value === "scroll-target" &&
+      !scrollTarget?.value
+    ) {
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === idSection
+            ? {
+                ...item,
+                content: item.content.map((contentItem) =>
+                  String(contentItem.id) === String(selectedSectionToEdit.id)
+                    ? {
+                        ...contentItem,
+                        target: {
+                          ...contentItem.target,
+                          scrollTarget: optionsScrollTarget[0],
+                        },
+                      }
+                    : contentItem
+                ),
+              }
+            : item
+        )
+      );
+      setSelectedOptionScrollTarget(optionsScrollTarget[0]);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOption]);
 
   useEffect(() => {
     if (url?.url) {
@@ -43,40 +230,21 @@ export const EditContent = ({
   }, [whatApps]);
 
   useEffect(() => {
-    const resetTarget = {
-      url: {
-        url: "",
-        isOpenNewTab: false,
-      },
-      whatApps: {
-        phoneNumber: "",
-        message: "",
-        isOpenNewTab: false,
-      },
-    };
+    if (scrollTarget.value) {
+      setSelectedOption({ value: "scroll-target", label: "Scroll Target" });
 
-    if (selectedOption?.value === "noLink") {
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === idSection
-            ? {
-                ...item,
-                content: item.content.map((contentItem) =>
-                  String(contentItem.id) === String(idContent)
-                    ? {
-                        ...contentItem,
-                        target: resetTarget,
-                      }
-                    : contentItem
-                ),
-              }
-            : item
-        )
-      );
+      setSelectedOptionScrollTarget({
+        id: scrollTarget.id,
+        value: scrollTarget.value,
+        label: scrollTarget.label,
+      });
+    } else {
+      setSelectedOptionScrollTarget({
+        value: "di-hapus",
+        label: "--Di Hapus--",
+      });
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOption]);
+  }, [scrollTarget.id, scrollTarget.label, scrollTarget.value]);
 
   const handleFileUpload = () => {
     const input = document.createElement("input");
@@ -105,7 +273,7 @@ export const EditContent = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -130,7 +298,7 @@ export const EditContent = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -155,7 +323,7 @@ export const EditContent = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -186,8 +354,17 @@ export const EditContent = ({
     });
   };
 
+  const resetScrolltargetValue = () => {
+    setScrollTarget({
+      id: "",
+      value: "",
+      label: "",
+    });
+  };
+
   const handleUrlChange = (value) => {
     resetWhatAppsValue();
+    resetScrolltargetValue();
     setUrl((prevValue) => ({
       ...prevValue,
       url: value,
@@ -199,11 +376,12 @@ export const EditContent = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
                         ...contentItem.target,
+                        scrollTarget,
                         whatApps,
                         url: {
                           ...contentItem.target.url,
@@ -221,6 +399,7 @@ export const EditContent = ({
 
   const handleUrlOpenNewTabChange = (value) => {
     resetWhatAppsValue();
+    resetScrolltargetValue();
     setUrl((prevValue) => ({
       ...prevValue,
       isOpenNewTab: value,
@@ -232,12 +411,13 @@ export const EditContent = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
                         ...contentItem.target,
                         whatApps,
+                        scrollTarget,
                         url: {
                           ...contentItem.target.url,
                           isOpenNewTab: value,
@@ -254,6 +434,7 @@ export const EditContent = ({
 
   const handlePhoneNumberChange = (value) => {
     resetUrlValue();
+    resetScrolltargetValue();
     setWhatApps((prevValue) => ({
       ...prevValue,
       phoneNumber: value,
@@ -265,12 +446,13 @@ export const EditContent = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
                         ...contentItem.target,
                         url,
+                        scrollTarget,
                         whatApps: {
                           ...contentItem.target.whatApps,
                           phoneNumber: value,
@@ -287,6 +469,8 @@ export const EditContent = ({
 
   const handleMessageChange = (value) => {
     resetUrlValue();
+    resetScrolltargetValue();
+
     setWhatApps((prevValue) => ({
       ...prevValue,
       message: value,
@@ -298,12 +482,13 @@ export const EditContent = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
                         ...contentItem.target,
                         url,
+                        scrollTarget,
                         whatApps: {
                           ...contentItem.target.whatApps,
                           message: value,
@@ -320,6 +505,8 @@ export const EditContent = ({
 
   const handleUrlOpenNewTabWaChange = (value) => {
     resetUrlValue();
+    resetScrolltargetValue();
+
     setWhatApps((prevValue) => ({
       ...prevValue,
       isOpenNewTab: value,
@@ -331,12 +518,13 @@ export const EditContent = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
                         ...contentItem.target,
                         url,
+                        scrollTarget,
                         whatApps: {
                           ...contentItem.target.whatApps,
                           isOpenNewTab: value,
@@ -370,7 +558,7 @@ export const EditContent = ({
           >
             <img
               style={{ objectFit: "contain", width: "100%", height: 100 }}
-              src={imageUrl || image}
+              src={imageUrl || selectedSectionToEdit.content.image}
               alt="img"
             />
           </div>
@@ -490,6 +678,39 @@ export const EditContent = ({
               </div>
             </>
           )}
+
+          {selectedOption?.value === "scroll-target" && (
+            <div className="form-group ">
+              <div className="d-flex align-items-center mb-2">
+                <label className="p-0 m-0">Target</label>
+                <CTooltip
+                  content={`Untuk menggunakan tipe link ini, mohon tambahkan seksi "Scroll Target di halaman ini" `}
+                >
+                  <FaCircleInfo style={{ marginLeft: 4 }} size={12} />
+                </CTooltip>
+              </div>
+              <Select
+                theme={(theme) => ({
+                  ...theme,
+                  colors: {
+                    ...theme.colors,
+                    primary: "#FED4C6",
+                    // Set the color when focused
+                  },
+                })}
+                classNames={{
+                  control: (state) =>
+                    state.isFocused ? "rounded  border-primary" : "rounded",
+                }}
+                options={optionsScrollTarget}
+                styles={customStyles}
+                onChange={handleChangeScrollTarget}
+                isSearchable={false}
+                value={selectedOptionScrollTarget}
+              />
+            </div>
+          )}
+
           <div className="form-group">
             <label>Judul</label>
             <input

@@ -118,7 +118,3 @@ export const removeOptionScrollTarget = (id) => ({
   type: types.REMOVE_OPTIONS_SCROLL_TARGET,
   payload: id,
 });
-export const resetOptionScrollTarget = (payload) => ({
-  type: types.RESET_OPTIONS_SCROLL_TARGET,
-  payload,
-});

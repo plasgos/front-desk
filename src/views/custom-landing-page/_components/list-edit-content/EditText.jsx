@@ -120,7 +120,7 @@ const EditText = ({
 
   const handelConfirm = () => {
     isShowContent("");
-    dispatch(setLandingPageSection(previewSection));
+    // dispatch(setLandingPageSection(previewSection));
   };
 
   return (

@@ -91,7 +91,7 @@ const EditEmptySpace = ({
   const handelConfirm = () => {
     handleSetHeightWhenBlur();
     isShowContent("");
-    dispatch(setLandingPageSection(previewSection));
+    // dispatch(setLandingPageSection(previewSection));
   };
 
   return (

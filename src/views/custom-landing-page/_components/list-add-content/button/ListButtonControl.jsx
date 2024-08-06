@@ -15,46 +15,143 @@ import {
 import Select from "react-select";
 
 import { IoAdd } from "react-icons/io5";
-import { ImagesList } from "../list-add-content/list-images/ImagesList";
-import { AddImages } from "../list-add-content/list-images/AddImages";
-import { EditImages } from "../list-add-content/list-images/EditImages";
-import {
-  aspectRatioOptions,
-  distanceOptions,
-  maxColumnOptions,
-} from "../list-add-content/list-images/ListImagesControl";
+import { createUniqueID } from "../../../../../lib/unique-id";
 import { useDispatch } from "react-redux";
-import { setLandingPageSection } from "../../../../redux/modules/custom-landing-page/reducer";
+import { RxSwitch } from "react-icons/rx";
+import { ButtonList } from "./ButtonList";
+import AddButton from "./AddButton";
 
-const EditListImages = ({
-  id,
+const contents = [
+  {
+    id: "btn01",
+    content: {
+      title: "Please Click Me",
+      style: {
+        btnColor: "#2196F3",
+        textColor: "#FFFFFF",
+        variant: "fill",
+        rounded: "rounded",
+        buttonSize: "md",
+        shadow: "shadow",
+      },
+    },
+    target: {
+      url: {
+        url: "",
+        isOpenNewTab: false,
+      },
+      whatApps: {
+        phoneNumber: "",
+        message: "",
+        isOpenNewTab: false,
+      },
+      scrollTarget: {
+        id: "",
+        value: "",
+        label: "",
+      },
+    },
+  },
+  {
+    id: "btn02",
+    content: {
+      title: "Dont't Click Me",
+      style: {
+        btnColor: "#EF5350",
+        textColor: "#FFFFFF",
+        variant: "fill",
+        rounded: "rounded",
+        buttonSize: "md",
+        shadow: "shadow",
+      },
+    },
+    target: {
+      url: {
+        url: "",
+        isOpenNewTab: false,
+      },
+      whatApps: {
+        phoneNumber: "",
+        message: "",
+        isOpenNewTab: false,
+      },
+      scrollTarget: {
+        id: "",
+        value: "",
+        label: "",
+      },
+    },
+  },
+];
+
+export const distanceOptions = [
+  { value: 0, label: "0" },
+  { value: 1, label: "1" },
+  { value: 2, label: "2" },
+  { value: 3, label: "3" },
+  { value: 4, label: "4" },
+];
+
+export const alignOptions = [
+  {
+    value: "flex-start",
+    label: "Kiri",
+  },
+  {
+    value: "justify-center",
+    label: "Tengah",
+  },
+  {
+    value: "flex-end",
+    label: "Kanan",
+  },
+];
+
+export const flexOptions = [
+  { value: "flex-row", label: "Horizontal" },
+  { value: "flex-column", label: "Vertical" },
+];
+
+export const customStyles = {
+  groupHeading: (provided) => ({
+    ...provided,
+    fontWeight: "bold",
+  }),
+  control: (baseStyles, state) => ({
+    ...baseStyles,
+    cursor: "text",
+  }),
+};
+
+const ListButtonControl = ({
   previewSection,
   setPreviewSection,
-  sections,
   isShowContent,
-  sectionBeforeEdit,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
-
   const [isEditing, setIsEditing] = useState(false);
   const [selectedSection, setSelectedSection] = useState({});
+  const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
 
-  const [beforeEditPrevSection, setBeforeEditPrevSection] = useState([]);
-  const [selectedDistance, setSelectedDistance] = useState(undefined);
-  const [selectedMaxColumn, setSelectedMaxColumn] = useState(undefined);
-  const [selectedImageRatio, setSelectedImageRatio] = useState(undefined);
-  console.log("🚀 ~ selectedImageRatio:", selectedImageRatio);
+  const [setting, setSetting] = useState({});
+
+  const dispatch = useDispatch();
+
+  const [selectedDistance, setSelectedDistance] = useState(distanceOptions[2]);
+  const [selectedAlign, setSelectedAlign] = useState(alignOptions[1]);
+  const [selectedFlex, setSelectedFlex] = useState(flexOptions[0]);
 
   const handleChangeDistance = (selectedOption) => {
     setSelectedDistance(selectedOption);
+
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === id
+        String(item.id) === setting.id
           ? {
               ...item,
               wrapperStyle: {
                 ...item.wrapperStyle,
-                paddingX: selectedOption.value,
+                margin: selectedOption.value,
               },
             }
           : item
@@ -62,16 +159,16 @@ const EditListImages = ({
     );
   };
 
-  const handleChangeMaxColumn = (selectedOption) => {
-    setSelectedMaxColumn(selectedOption);
+  const handleChangeAlign = (selectedOption) => {
+    setSelectedAlign(selectedOption);
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === id
+        String(item.id) === setting.id
           ? {
               ...item,
               wrapperStyle: {
                 ...item.wrapperStyle,
-                maxColumn: selectedOption.value,
+                jusctifyContent: selectedOption.value,
               },
             }
           : item
@@ -79,52 +176,23 @@ const EditListImages = ({
     );
   };
 
-  const handleChangeImageRatio = (selectedOption) => {
-    setSelectedMaxColumn(selectedOption);
+  const handleChangeFlex = (selectedOption) => {
+    setSelectedFlex(selectedOption);
+
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === id
+        String(item.id) === setting.id
           ? {
               ...item,
               wrapperStyle: {
                 ...item.wrapperStyle,
-                aspectRatio: selectedOption.value,
+                flex: selectedOption.value,
               },
             }
           : item
       )
     );
   };
-
-  useEffect(() => {
-    const selectedSectionToEdit = previewSection.find(
-      (section) => String(section.id) === id
-    );
-    if (selectedSectionToEdit) {
-      const distanceOption = distanceOptions.find(
-        (opt) => opt.value === selectedSectionToEdit.wrapperStyle?.paddingX
-      );
-      if (distanceOption) {
-        setSelectedDistance(distanceOption);
-      }
-
-      const maxColumnOption = maxColumnOptions.find(
-        (opt) => opt.value === selectedSectionToEdit.wrapperStyle?.maxColumn
-      );
-      if (maxColumnOption) {
-        setSelectedMaxColumn(maxColumnOption);
-      }
-
-      const aspectRatioOption = aspectRatioOptions
-        .flatMap((opts) => opts.options)
-        .find(
-          (opt) => opt.value === selectedSectionToEdit.wrapperStyle?.aspectRatio
-        );
-      if (aspectRatioOption) {
-        setSelectedImageRatio(aspectRatioOption);
-      }
-    }
-  }, [id, previewSection]);
 
   const handleAddContent = () => {
     setIsAddContent(true);
@@ -136,7 +204,7 @@ const EditListImages = ({
       setIsEditing(false);
       setPreviewSection((prevSections) =>
         prevSections.map((section) =>
-          section.id === id
+          section.id === setting.id
             ? {
                 ...section,
                 content: section.content.slice(0, -1),
@@ -145,17 +213,17 @@ const EditListImages = ({
         )
       );
     } else if (isEditing) {
-      setPreviewSection([...beforeEditPrevSection]);
+      setPreviewSection([...sectionBeforeEdit]);
       setIsAddContent(false);
       setIsEditing(false);
     } else {
       setIsAddContent(false);
       isShowContent(false);
-      setPreviewSection([...sectionBeforeEdit]);
+      setPreviewSection((prevSections) =>
+        prevSections.filter((section) => section.id !== setting.id)
+      );
     }
   };
-
-  const dispatch = useDispatch();
 
   const handelConfirm = () => {
     if (isAddContent || isEditing) {
@@ -172,7 +240,7 @@ const EditListImages = ({
     (dragIndex, hoverIndex) => {
       setPreviewSection((prevSections) => {
         return prevSections.map((section) => {
-          if (section.name === "list-images") {
+          if (section.name === "button") {
             const updatedContent = [...section.content];
             const draggedItem = updatedContent[dragIndex];
             updatedContent.splice(dragIndex, 1);
@@ -188,9 +256,32 @@ const EditListImages = ({
     [setPreviewSection]
   );
 
+  const onAddContent = () => {
+    let uniqueId = createUniqueID(previewSection);
+    let payload = {
+      id: uniqueId,
+      name: "button",
+      icon: <RxSwitch size={20} />,
+      content: contents,
+      wrapperStyle: {
+        jusctifyContent: "justify-center",
+        flex: "flex-wrap",
+        margin: "2",
+      },
+    };
+
+    setPreviewSection((prevSections) => [...prevSections, payload]);
+    setSetting(payload);
+  };
+
+  useEffect(() => {
+    onAddContent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const editSection = useCallback(
     (section) => {
-      setBeforeEditPrevSection([...previewSection]);
+      setSectionBeforeEdit([...previewSection]);
       setSelectedSection(section);
       setIsEditing(true);
     },
@@ -219,8 +310,8 @@ const EditListImages = ({
       return (
         <div key={section.id}>
           {section.content.map((contentItem, contentIndex) => (
-            <ImagesList
-              key={contentItem.id || contentIndex} // Ensure a unique key for each item
+            <ButtonList
+              key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
               section={contentItem}
@@ -235,17 +326,6 @@ const EditListImages = ({
     [moveSection, editSection, removeSection]
   );
 
-  const customStyles = {
-    groupHeading: (provided) => ({
-      ...provided,
-      fontWeight: "bold",
-    }),
-    control: (baseStyles, state) => ({
-      ...baseStyles,
-      cursor: "text",
-    }),
-  };
-
   return (
     <div>
       <CRow>
@@ -253,9 +333,6 @@ const EditListImages = ({
           <div style={{ height: 400 }}>
             <div className="d-flex justify-content-end align-items-center border-bottom p-2">
               <div>
-                {/* <CButton onClick={() => {}} variant="ghost">
-                <IoSearch style={{ cursor: "pointer" }} size={18} />
-              </CButton> */}
                 <CButton
                   onClick={handelCancel}
                   color="primary"
@@ -271,32 +348,35 @@ const EditListImages = ({
               </div>
             </div>
 
-            <CTabs activeTab="kolom">
+            <CTabs activeTab="konten">
               <CNav variant="tabs">
                 <CNavItem>
-                  <CNavLink data-tab="kolom">Kolom</CNavLink>
+                  <CNavLink data-tab="konten">Konten</CNavLink>
+                </CNavItem>
+                <CNavItem>
+                  <CNavLink data-tab="wadah">Wadah</CNavLink>
                 </CNavItem>
               </CNav>
               <CTabContent
                 style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
                 className="pt-3"
               >
-                <CTabPane className="p-1" data-tab="kolom">
+                <CTabPane className="p-1" data-tab="konten">
                   {isAddContent && (
-                    <AddImages
-                      idSection={id}
-                      defaultSection={previewSection}
+                    <AddButton
+                      idSection={setting.id}
+                      sections={contents}
                       setPreviewSection={setPreviewSection}
                     />
                   )}
-
+                  {/* 
                   {isEditing && (
                     <EditImages
-                      idSection={id}
+                      idSection={setting.id}
                       selectedSectionToEdit={selectedSection}
                       setPreviewSection={setPreviewSection}
                     />
-                  )}
+                  )} */}
 
                   {!isAddContent && !isEditing && (
                     <>
@@ -305,7 +385,7 @@ const EditListImages = ({
                         className="d-flex align-items-center "
                       >
                         <div className="form-group w-50 ">
-                          <label>Kolom Maksimal</label>
+                          <label>Align</label>
                           <Select
                             theme={(theme) => ({
                               ...theme,
@@ -321,39 +401,13 @@ const EditListImages = ({
                                   ? "rounded  border-primary"
                                   : "rounded",
                             }}
-                            options={maxColumnOptions}
+                            options={alignOptions}
                             styles={customStyles}
-                            onChange={handleChangeMaxColumn}
+                            onChange={handleChangeAlign}
                             isSearchable={false}
-                            value={selectedMaxColumn}
+                            value={selectedAlign}
                           />
                         </div>
-                        <div className="form-group w-50 ">
-                          <label>Rasio Gambar</label>
-                          <Select
-                            theme={(theme) => ({
-                              ...theme,
-                              colors: {
-                                ...theme.colors,
-                                primary: "#FED4C6",
-                                // Set the color when focused
-                              },
-                            })}
-                            classNames={{
-                              control: (state) =>
-                                state.isFocused
-                                  ? "rounded  border-primary"
-                                  : "rounded",
-                            }}
-                            options={aspectRatioOptions}
-                            styles={customStyles}
-                            onChange={handleChangeImageRatio}
-                            isSearchable={false}
-                            value={selectedImageRatio}
-                          />
-                        </div>
-                      </div>
-                      <div>
                         <div className="form-group w-50 ">
                           <label>Jarak</label>
                           <Select
@@ -380,8 +434,35 @@ const EditListImages = ({
                         </div>
                       </div>
                       <div>
+                        <div className="form-group w-50 ">
+                          <label>Barisan</label>
+                          <Select
+                            theme={(theme) => ({
+                              ...theme,
+                              colors: {
+                                ...theme.colors,
+                                primary: "#FED4C6",
+                                // Set the color when focused
+                              },
+                            })}
+                            classNames={{
+                              control: (state) =>
+                                state.isFocused
+                                  ? "rounded  border-primary"
+                                  : "rounded",
+                            }}
+                            options={flexOptions}
+                            styles={customStyles}
+                            onChange={handleChangeFlex}
+                            isSearchable={false}
+                            value={selectedFlex}
+                          />
+                        </div>
+                      </div>
+
+                      <div>
                         {previewSection
-                          .filter((section) => section.id === id)
+                          .filter((section) => section.id === setting.id)
                           .map((section, i) => renderSection(section, i))}
                       </div>
                       <CCard
@@ -405,6 +486,9 @@ const EditListImages = ({
                     </>
                   )}
                 </CTabPane>
+                <CTabPane className="p-1" data-tab="wadah">
+                  <div className="">WADAH</div>
+                </CTabPane>
               </CTabContent>
             </CTabs>
           </div>
@@ -414,4 +498,4 @@ const EditListImages = ({
   );
 };
 
-export default EditListImages;
+export default ListButtonControl;

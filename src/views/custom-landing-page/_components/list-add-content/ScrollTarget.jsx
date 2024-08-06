@@ -1,9 +1,10 @@
 import { CButton } from "@coreui/react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createUniqueID } from "../../../../lib/unique-id";
 import { PiTargetDuotone } from "react-icons/pi";
 import { useDispatch } from "react-redux";
 import {
+  removeOptionScrollTarget,
   setLandingPageSection,
   setOptionsScrollTarget,
 } from "../../../../redux/modules/custom-landing-page/reducer";
@@ -119,12 +120,12 @@ const ScrollTarget = ({
     setPreviewSection((prevSections) =>
       prevSections.filter((section) => section.id !== setting.id)
     );
+    dispatch(removeOptionScrollTarget(setting.id));
   };
 
   const handelConfirm = () => {
     toggleAddContent("");
     isShowContent(false);
-    dispatch(setLandingPageSection(previewSection));
   };
 
   return (

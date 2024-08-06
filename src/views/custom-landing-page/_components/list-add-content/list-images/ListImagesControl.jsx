@@ -155,7 +155,6 @@ const ListImagesControl = ({
   sections,
   setSections,
   isShowContent,
-  handleReceiveIdSection,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [defaultSection, setDefaultSection] = useState(contents || []);
@@ -259,10 +258,10 @@ const ListImagesControl = ({
     if (isAddContent || isEditing) {
       setIsAddContent(false);
       setIsEditing(false);
-      dispatch(setLandingPageSection(previewSection));
+      // dispatch(setLandingPageSection(previewSection));
     } else {
       isShowContent(false);
-      dispatch(setLandingPageSection(previewSection));
+      // dispatch(setLandingPageSection(previewSection));
     }
   };
 
@@ -394,7 +393,6 @@ const ListImagesControl = ({
                 <CTabPane className="p-1" data-tab="kolom">
                   {isAddContent && (
                     <AddImages
-                      sections={sections}
                       idSection={setting.id}
                       defaultSection={defaultSection}
                       setPreviewSection={setPreviewSection}
@@ -403,12 +401,8 @@ const ListImagesControl = ({
 
                   {isEditing && (
                     <EditImages
-                      sections={sections}
                       idSection={setting.id}
-                      idContent={selectedSection.id}
-                      altValue={selectedSection.content?.alt}
-                      target={selectedSection.target}
-                      image={selectedSection.content.image}
+                      selectedSectionToEdit={selectedSection}
                       setPreviewSection={setPreviewSection}
                     />
                   )}
