@@ -1,4 +1,5 @@
 import React, { forwardRef } from "react";
+import { handleScrollToTop } from "../../../../hooks/useScrollToTop";
 
 const ViewListImages = forwardRef(
   (
@@ -13,19 +14,6 @@ const ViewListImages = forwardRef(
     },
     ref
   ) => {
-    const scrollToTop = () => {
-      containerRef.current.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    };
-
-    const handleScrollToTop = (valueTarget) => {
-      if (valueTarget === "back-to-top") {
-        scrollToTop();
-      }
-    };
-
     return (
       <div
         key={content.id}
@@ -96,7 +84,9 @@ const ViewListImages = forwardRef(
                     section.target.whatApps.message
                   )}`}
                   rel={
-                    section.target.url.isOpenNewTab ? "noopener noreferrer" : ""
+                    section.target.whatApps.isOpenNewTab
+                      ? "noopener noreferrer"
+                      : ""
                   }
                   style={{
                     textDecoration: "none",
@@ -155,7 +145,10 @@ const ViewListImages = forwardRef(
                   >
                     <div
                       onClick={() =>
-                        handleScrollToTop(section.target.scrollTarget.value)
+                        handleScrollToTop(
+                          section.target.scrollTarget.value,
+                          containerRef
+                        )
                       }
                       className={`w-full text-center px-${
                         content?.wrapperStyle?.paddingX

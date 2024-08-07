@@ -4,27 +4,131 @@ import { useSelector } from "react-redux";
 import Select from "react-select";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import { customStyles } from "./ListButtonControl";
+import UrlInput from "../../common/UrlInput";
+import WhatsAppInput from "../../common/WhatAppsInput";
+import ScrollTargetInput from "../../common/ScrollTargetSelect";
+import { useUrlChange } from "../../../../../hooks/useUrlChange";
+import { useWhatAppsChange } from "../../../../../hooks/useWhatAppsChange";
+import { useSCrollTargetChange } from "../../../../../hooks/useScrolltargetChange";
+import SelectOptions from "../../common/SelectOptions";
+import Input from "../../common/Input";
+import ColorPicker from "../../common/ColorPicker";
+import FacebookPixel from "../../FacebookPixel";
 
 const variantButton = [
   { value: "fill", label: "Fill" },
   { value: "ghost", label: "Ghost" },
 ];
 
+const roundedButtonOptions = [
+  { value: "rounded", label: "Kecil" },
+  { value: "rounded-md", label: "Sedang" },
+  { value: "rounded-lg", label: "Besar" },
+  { value: "rounded-full", label: "Bulat" },
+];
+
+const ButtonSizeOptions = [
+  { value: "sm", label: "Kecil" },
+  { value: "md", label: "Sedang" },
+  { value: "lg", label: "Besar" },
+  { value: "xl", label: "Extra Besar" },
+];
+
+const ButtonShadowOptions = [
+  { value: undefined, label: "Tidak Ada" },
+  { value: "shadow", label: "Kecil" },
+  { value: "shadow-md", label: "Sedang" },
+  { value: "shadow-lg", label: "Besar" },
+  { value: "shadow-xl", label: "Extra Besar" },
+  { value: "shadow-2xl", label: "Blur" },
+];
+
 const AddButton = ({ idSection, sections, setPreviewSection }) => {
   const { optionsScrollTarget, optionsTarget } = useSelector(
     (state) => state.customLandingPage
   );
-  const [title, setTitle] = useState("Click Me");
+  const [selectedOption, setSelectedOption] = useState(
+    optionsTarget[0].options[0]
+  );
+
   const [setting, setSetting] = useState({});
+
+  const [title, setTitle] = useState("Click Me");
   const [selectedVariantButton, setSelectedVariantButton] = useState(
     variantButton[0]
   );
-
-  const [showColorPickerButton, setShowColorPickerButton] = useState(false);
-  const [showColorPickerText, setShowColorPickertext] = useState(false);
-
   const [selectedColorButton, setSelectedColorButton] = useState("#2196F3");
   const [selectedColorText, setSelectedColorText] = useState("#FFFFFF");
+  const [selectedRoundedButton, setSelectedRoundedButton] = useState(
+    roundedButtonOptions[0]
+  );
+  const [selectedButtonSize, setSelectedButtonSize] = useState(
+    ButtonSizeOptions[1]
+  );
+  const [selectedButtonShadow, setSelectedButtonShadow] = useState(
+    ButtonShadowOptions[0]
+  );
+
+  const { url, handleUrlChange, handleUrlOpenNewTabChange } = useUrlChange(
+    setPreviewSection,
+    idSection,
+    setting.id
+  );
+
+  const {
+    whatApps,
+    handlePhoneNumberChange,
+    handleMessageChange,
+    handleUrlOpenNewTabWaChange,
+  } = useWhatAppsChange(setPreviewSection, idSection, setting.id);
+
+  const {
+    selectedOptionScrollTarget,
+    setSelectedOptionScrollTarget,
+    handleChangeScrollTarget,
+  } = useSCrollTargetChange(setPreviewSection, idSection, setting.id);
+
+  const handleChangeOptions = (selectedOptionValue) => {
+    setSelectedOption(selectedOptionValue);
+    if (!selectedOptionValue.value) {
+      // const resetTarget = {
+      //   url: {
+      //     url: "",
+      //     isOpenNewTab: false,
+      //   },
+      //   whatApps: {
+      //     phoneNumber: "",
+      //     message: "",
+      //     isOpenNewTab: false,
+      //   },
+      //   scrollTarget: {
+      //     id: "",
+      //     value: "",
+      //     label: "",
+      //   },
+      // };
+
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === idSection
+            ? {
+                ...item,
+                content: item.content.map((contentItem) =>
+                  String(contentItem.id) === String(setting.id)
+                    ? {
+                        ...contentItem,
+                        target: {},
+                      }
+                    : contentItem
+                ),
+              }
+            : item
+        )
+      );
+      setSelectedOptionScrollTarget(undefined);
+    }
+  };
+
   const handleChangeVariantButton = (selectedOption) => {
     setSelectedVariantButton(selectedOption);
     setPreviewSection((arr) =>
@@ -106,6 +210,111 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
     );
   };
 
+  const handleChangeRoundedButton = (selectedOption) => {
+    setSelectedRoundedButton(selectedOption);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === idSection
+          ? {
+              ...item,
+              content: item.content.map((contentItem) =>
+                String(contentItem.id) === String(setting.id)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        style: {
+                          ...contentItem.content.style,
+                          rounded: selectedOption.value,
+                        },
+                      },
+                    }
+                  : contentItem
+              ),
+            }
+          : item
+      )
+    );
+  };
+
+  const handleChangeButtonSize = (selectedOption) => {
+    setSelectedButtonSize(selectedOption);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === idSection
+          ? {
+              ...item,
+              content: item.content.map((contentItem) =>
+                String(contentItem.id) === String(setting.id)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        style: {
+                          ...contentItem.content.style,
+                          buttonSize: selectedOption.value,
+                        },
+                      },
+                    }
+                  : contentItem
+              ),
+            }
+          : item
+      )
+    );
+  };
+
+  const handleChangeButtonShadow = (selectedOption) => {
+    setSelectedButtonShadow(selectedOption);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === idSection
+          ? {
+              ...item,
+              content: item.content.map((contentItem) =>
+                String(contentItem.id) === String(setting.id)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        style: {
+                          ...contentItem.content.style,
+                          shadow: selectedOption.value,
+                        },
+                      },
+                    }
+                  : contentItem
+              ),
+            }
+          : item
+      )
+    );
+  };
+
+  const handleTextChange = (value) => {
+    setTitle(value);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === idSection
+          ? {
+              ...item,
+              content: item.content.map((contentItem) =>
+                String(contentItem.id) === String(setting.id)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        title: value,
+                      },
+                    }
+                  : contentItem
+              ),
+            }
+          : item
+      )
+    );
+  };
+
   const handleAddContent = () => {
     let uniqueId = createUniqueID(sections);
     let payload = {
@@ -116,6 +325,9 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
           variant: selectedVariantButton.value,
           btnColor: selectedColorButton,
           textColor: selectedColorText,
+          rounded: selectedRoundedButton.value,
+          buttonSize: selectedButtonSize.value,
+          shadow: selectedButtonShadow.value,
         },
       },
       target: {},
@@ -137,131 +349,135 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const popover = {
-    position: "absolute",
-    zIndex: "2",
-    bottom: "8px",
-  };
-  const cover = {
-    position: "fixed",
-    top: "0px",
-    right: "0px",
-    bottom: "0px",
-    left: "0px",
-  };
+  useEffect(() => {
+    if (selectedOption && selectedOption.value === "scroll-target") {
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === idSection
+            ? {
+                ...item,
+                content: item.content.map((contentItem) =>
+                  String(contentItem.id) === String(setting.id)
+                    ? {
+                        ...contentItem,
+                        target: {
+                          ...contentItem.target,
+                          scrollTarget: optionsScrollTarget[0],
+                        },
+                      }
+                    : contentItem
+                ),
+              }
+            : item
+        )
+      );
+      setSelectedOptionScrollTarget(optionsScrollTarget[0]);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOption]);
 
   return (
     <div>
       <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
-        <div className="w-50">
-          <div className="mb-1" style={{ fontFamily: "Arial" }}>
-            Tombol
-          </div>
-          <div
-            onClick={() => setShowColorPickerButton(!showColorPickerButton)}
-            style={{
-              width: 35,
-              height: 35,
-              backgroundColor: selectedColorButton,
-              cursor: "pointer",
-            }}
-            className="rounded border"
-          />
-          {showColorPickerButton && (
-            <div style={popover}>
-              <div
-                style={cover}
-                onClick={() => setShowColorPickerButton(false)}
-              />
-              <ChromePicker
-                color={selectedColorButton}
-                Title
-                onChange={(e) => handleChangeColorButton(e.hex)}
-              />
-            </div>
-          )}
-        </div>
+        <ColorPicker
+          initialColor={selectedColorButton}
+          label="Tombol"
+          onChange={handleChangeColorButton}
+        />
 
-        <div className="d-flex align-items-center w-50">
-          <div
-            onClick={() => setShowColorPickertext(!showColorPickerText)}
-            style={{
-              width: 35,
-              height: 35,
-              backgroundColor: selectedColorText,
-              cursor: "pointer",
-            }}
-            className="rounded border"
-          />
-          <div className="mb-1 ml-2" style={{ fontFamily: "Arial" }}>
-            Teks
-          </div>
-          {showColorPickerText && (
-            <div style={popover}>
-              <div
-                style={cover}
-                onClick={() => setShowColorPickertext(false)}
-              />
-              <ChromePicker
-                color={selectedColorText}
-                Title
-                onChange={(e) => handleChangeColorText(e.hex)}
-              />
-            </div>
-          )}
-        </div>
+        <ColorPicker
+          initialColor={selectedColorText}
+          label="Teks"
+          onChange={handleChangeColorText}
+        />
       </div>
 
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
-        <div className="form-group w-50 ">
-          <label>Desain</label>
-          <Select
-            theme={(theme) => ({
-              ...theme,
-              colors: {
-                ...theme.colors,
-                primary: "#FED4C6",
-                // Set the color when focused
-              },
-            })}
-            classNames={{
-              control: (state) =>
-                state.isFocused ? "rounded  border-primary" : "rounded",
-            }}
-            options={variantButton}
-            styles={customStyles}
-            onChange={handleChangeVariantButton}
-            isSearchable={false}
-            value={selectedVariantButton}
-          />
-        </div>
-        {/* <div className="form-group w-50 ">
-          <label>Jarak</label>
-          <Select
-            theme={(theme) => ({
-              ...theme,
-              colors: {
-                ...theme.colors,
-                primary: "#FED4C6",
-                // Set the color when focused
-              },
-            })}
-            classNames={{
-              control: (state) =>
-                state.isFocused ? "rounded  border-primary" : "rounded",
-            }}
-            options={distanceOptions}
-            styles={customStyles}
-            onChange={handleChangeDistance}
-            isSearchable={false}
-            value={selectedDistance}
-            defaultValue={{
-              value: 2,
-              label: "2",
-            }}
-          />
-        </div> */}
+        <SelectOptions
+          label="Desain"
+          options={variantButton}
+          onChange={handleChangeVariantButton}
+          value={selectedVariantButton}
+          width="50"
+        />
+
+        <SelectOptions
+          label="Melingkar"
+          options={roundedButtonOptions}
+          onChange={handleChangeRoundedButton}
+          value={selectedRoundedButton}
+          width="50"
+        />
       </div>
+
+      <div style={{ gap: 10 }} className="d-flex align-items-center ">
+        <SelectOptions
+          label="Ukuran"
+          options={ButtonSizeOptions}
+          onChange={handleChangeButtonSize}
+          value={selectedButtonSize}
+          width="50"
+        />
+
+        <SelectOptions
+          label="Bayangan"
+          options={ButtonShadowOptions}
+          onChange={handleChangeButtonShadow}
+          value={selectedButtonShadow}
+          width="50"
+        />
+      </div>
+
+      <div className="form-group mb-2">
+        <Input
+          label="Teks"
+          value={title}
+          onChange={(event) => handleTextChange(event.target.value)}
+          type="text"
+        />
+      </div>
+
+      <h5>Link</h5>
+
+      <form>
+        <SelectOptions
+          label="Target"
+          options={optionsTarget}
+          onChange={handleChangeOptions}
+          value={selectedOption}
+          width="100"
+        />
+
+        {selectedOption?.value === "url" && (
+          <UrlInput
+            id="urlOpenNewTab"
+            url={url}
+            handleUrlChange={handleUrlChange}
+            handleUrlOpenNewTabChange={handleUrlOpenNewTabChange}
+          />
+        )}
+
+        {selectedOption?.value === "whatApps" && (
+          <WhatsAppInput
+            id="waOpenNewTab"
+            whatApps={whatApps}
+            handlePhoneNumberChange={handlePhoneNumberChange}
+            handleMessageChange={handleMessageChange}
+            handleUrlOpenNewTabWaChange={handleUrlOpenNewTabWaChange}
+          />
+        )}
+
+        {selectedOption?.value === "scroll-target" && (
+          <ScrollTargetInput
+            optionsScrollTarget={optionsScrollTarget}
+            handleChangeScrollTarget={handleChangeScrollTarget}
+            selectedOptionScrollTarget={selectedOptionScrollTarget}
+          />
+        )}
+      </form>
+
+      {selectedOption.value !== undefined && <FacebookPixel />}
     </div>
   );
 };

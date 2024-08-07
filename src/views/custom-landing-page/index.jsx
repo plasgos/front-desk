@@ -36,6 +36,7 @@ import {
   removeOptionScrollTarget,
   setLandingPageSection,
 } from "../../redux/modules/custom-landing-page/reducer";
+import ViewButton from "./_components/view-content/ViewButton";
 
 const landingPage = {
   detail: {
@@ -185,6 +186,19 @@ const CustomLandingPage = () => {
       if (section.name === "scroll-target") {
         return (
           <ViewScrollTraget
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
+
+      if (section.name === "button") {
+        return (
+          <ViewButton
+            containerRef={containerRef}
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}

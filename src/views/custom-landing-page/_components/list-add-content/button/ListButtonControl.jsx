@@ -12,7 +12,6 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import Select from "react-select";
 
 import { IoAdd } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
@@ -20,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { RxSwitch } from "react-icons/rx";
 import { ButtonList } from "./ButtonList";
 import AddButton from "./AddButton";
+import SelectOptions from "../../common/SelectOptions";
 
 const contents = [
   {
@@ -85,16 +85,16 @@ const contents = [
 ];
 
 export const distanceOptions = [
-  { value: 0, label: "0" },
-  { value: 1, label: "1" },
-  { value: 2, label: "2" },
-  { value: 3, label: "3" },
-  { value: 4, label: "4" },
+  { value: "0", label: "0" },
+  { value: "1", label: "1" },
+  { value: "2", label: "2" },
+  { value: "3", label: "3" },
+  { value: "4", label: "4" },
 ];
 
 export const alignOptions = [
   {
-    value: "flex-start",
+    value: "justify-start",
     label: "Kiri",
   },
   {
@@ -102,26 +102,15 @@ export const alignOptions = [
     label: "Tengah",
   },
   {
-    value: "flex-end",
+    value: "justify-end",
     label: "Kanan",
   },
 ];
 
 export const flexOptions = [
   { value: "flex-row", label: "Horizontal" },
-  { value: "flex-column", label: "Vertical" },
+  { value: "flex-col", label: "Vertical" },
 ];
-
-export const customStyles = {
-  groupHeading: (provided) => ({
-    ...provided,
-    fontWeight: "bold",
-  }),
-  control: (baseStyles, state) => ({
-    ...baseStyles,
-    cursor: "text",
-  }),
-};
 
 const ListButtonControl = ({
   previewSection,
@@ -151,7 +140,7 @@ const ListButtonControl = ({
               ...item,
               wrapperStyle: {
                 ...item.wrapperStyle,
-                margin: selectedOption.value,
+                marginX: selectedOption.value,
               },
             }
           : item
@@ -176,7 +165,7 @@ const ListButtonControl = ({
     );
   };
 
-  const handleChangeFlex = (selectedOption) => {
+  const handleChangeFlexDirection = (selectedOption) => {
     setSelectedFlex(selectedOption);
 
     setPreviewSection((arr) =>
@@ -186,7 +175,7 @@ const ListButtonControl = ({
               ...item,
               wrapperStyle: {
                 ...item.wrapperStyle,
-                flex: selectedOption.value,
+                flexDirection: selectedOption.value,
               },
             }
           : item
@@ -265,8 +254,8 @@ const ListButtonControl = ({
       content: contents,
       wrapperStyle: {
         jusctifyContent: "justify-center",
-        flex: "flex-wrap",
-        margin: "2",
+        flexDirection: "flex-row",
+        marginX: "2",
       },
     };
 
@@ -384,81 +373,30 @@ const ListButtonControl = ({
                         style={{ gap: 10 }}
                         className="d-flex align-items-center "
                       >
-                        <div className="form-group w-50 ">
-                          <label>Align</label>
-                          <Select
-                            theme={(theme) => ({
-                              ...theme,
-                              colors: {
-                                ...theme.colors,
-                                primary: "#FED4C6",
-                                // Set the color when focused
-                              },
-                            })}
-                            classNames={{
-                              control: (state) =>
-                                state.isFocused
-                                  ? "rounded  border-primary"
-                                  : "rounded",
-                            }}
-                            options={alignOptions}
-                            styles={customStyles}
-                            onChange={handleChangeAlign}
-                            isSearchable={false}
-                            value={selectedAlign}
-                          />
-                        </div>
-                        <div className="form-group w-50 ">
-                          <label>Jarak</label>
-                          <Select
-                            theme={(theme) => ({
-                              ...theme,
-                              colors: {
-                                ...theme.colors,
-                                primary: "#FED4C6",
-                                // Set the color when focused
-                              },
-                            })}
-                            classNames={{
-                              control: (state) =>
-                                state.isFocused
-                                  ? "rounded  border-primary"
-                                  : "rounded",
-                            }}
-                            options={distanceOptions}
-                            styles={customStyles}
-                            onChange={handleChangeDistance}
-                            isSearchable={false}
-                            value={selectedDistance}
-                          />
-                        </div>
+                        <SelectOptions
+                          label="Align"
+                          options={alignOptions}
+                          onChange={handleChangeAlign}
+                          value={selectedAlign}
+                          width="50"
+                        />
+
+                        <SelectOptions
+                          label="Jarak"
+                          options={distanceOptions}
+                          onChange={handleChangeDistance}
+                          value={selectedDistance}
+                          width="50"
+                        />
                       </div>
-                      <div>
-                        <div className="form-group w-50 ">
-                          <label>Barisan</label>
-                          <Select
-                            theme={(theme) => ({
-                              ...theme,
-                              colors: {
-                                ...theme.colors,
-                                primary: "#FED4C6",
-                                // Set the color when focused
-                              },
-                            })}
-                            classNames={{
-                              control: (state) =>
-                                state.isFocused
-                                  ? "rounded  border-primary"
-                                  : "rounded",
-                            }}
-                            options={flexOptions}
-                            styles={customStyles}
-                            onChange={handleChangeFlex}
-                            isSearchable={false}
-                            value={selectedFlex}
-                          />
-                        </div>
-                      </div>
+
+                      <SelectOptions
+                        label="Jarak"
+                        options={flexOptions}
+                        onChange={handleChangeFlexDirection}
+                        value={selectedFlex}
+                        width="50"
+                      />
 
                       <div>
                         {previewSection
