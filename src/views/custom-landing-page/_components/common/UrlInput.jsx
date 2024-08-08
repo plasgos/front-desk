@@ -7,7 +7,7 @@ const UrlInput = ({ id, url, handleUrlChange, handleUrlOpenNewTabChange }) => (
     <label>URL</label>
     <Input
       value={url.url}
-      onChange={(e) => handleUrlChange(e.target.value)}
+      onChange={(e) => handleUrlChange(e.target.value, "url")}
       type="text"
     />
     <Checkbox

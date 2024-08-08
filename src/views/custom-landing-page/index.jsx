@@ -37,6 +37,7 @@ import {
   setLandingPageSection,
 } from "../../redux/modules/custom-landing-page/reducer";
 import ViewButton from "./_components/view-content/ViewButton";
+import EditListButton from "./_components/list-edit-content/EditListButton";
 
 const landingPage = {
   detail: {
@@ -56,7 +57,6 @@ const CustomLandingPage = () => {
   const [shouldSave, setShouldSave] = useState(false);
   const [isSelectedView, setIsSelectedView] = useState("laptop");
   const [sections, setSections] = useState(landingPage.detail.contents || []); //final section save to db
-  console.log("🚀 ~ CustomLandingPage ~ sections:", sections);
   const [editing, setEditing] = useState("");
   const [isAddContent, setIsAddContent] = useState(false);
   const [previewSection, setPreviewSection] = useState([]);
@@ -302,6 +302,22 @@ const CustomLandingPage = () => {
             isShowContent={(value) => setEditing(value)}
             sections={sections}
             setSections={(value) => setSections(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+          />
+        );
+      }
+
+      if (
+        editing.name === "button" &&
+        section.name === "button" &&
+        editing.id === section.id
+      ) {
+        return (
+          <EditListButton
+            id={section.id}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
           />
         );

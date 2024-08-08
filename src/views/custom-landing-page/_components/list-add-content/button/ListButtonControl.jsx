@@ -15,11 +15,11 @@ import {
 
 import { IoAdd } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
-import { useDispatch } from "react-redux";
 import { RxSwitch } from "react-icons/rx";
 import { ButtonList } from "./ButtonList";
 import AddButton from "./AddButton";
 import SelectOptions from "../../common/SelectOptions";
+import EditButton from "./EditButton";
 
 const contents = [
   {
@@ -30,27 +30,12 @@ const contents = [
         btnColor: "#2196F3",
         textColor: "#FFFFFF",
         variant: "fill",
-        rounded: "rounded",
+        rounded: "tw-rounded",
         buttonSize: "md",
-        shadow: "shadow",
+        shadow: "tw-shadow",
       },
     },
-    target: {
-      url: {
-        url: "",
-        isOpenNewTab: false,
-      },
-      whatApps: {
-        phoneNumber: "",
-        message: "",
-        isOpenNewTab: false,
-      },
-      scrollTarget: {
-        id: "",
-        value: "",
-        label: "",
-      },
-    },
+    target: {},
   },
   {
     id: "btn02",
@@ -65,22 +50,7 @@ const contents = [
         shadow: "shadow",
       },
     },
-    target: {
-      url: {
-        url: "",
-        isOpenNewTab: false,
-      },
-      whatApps: {
-        phoneNumber: "",
-        message: "",
-        isOpenNewTab: false,
-      },
-      scrollTarget: {
-        id: "",
-        value: "",
-        label: "",
-      },
-    },
+    target: {},
   },
 ];
 
@@ -94,22 +64,22 @@ export const distanceOptions = [
 
 export const alignOptions = [
   {
-    value: "justify-start",
+    value: "tw-justify-start",
     label: "Kiri",
   },
   {
-    value: "justify-center",
+    value: "tw-justify-center",
     label: "Tengah",
   },
   {
-    value: "justify-end",
+    value: "tw-justify-end",
     label: "Kanan",
   },
 ];
 
 export const flexOptions = [
-  { value: "flex-row", label: "Horizontal" },
-  { value: "flex-col", label: "Vertical" },
+  { value: "tw-flex-row", label: "Horizontal" },
+  { value: "tw-flex-col", label: "Vertical" },
 ];
 
 const ListButtonControl = ({
@@ -123,8 +93,6 @@ const ListButtonControl = ({
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
 
   const [setting, setSetting] = useState({});
-
-  const dispatch = useDispatch();
 
   const [selectedDistance, setSelectedDistance] = useState(distanceOptions[2]);
   const [selectedAlign, setSelectedAlign] = useState(alignOptions[1]);
@@ -253,8 +221,8 @@ const ListButtonControl = ({
       icon: <RxSwitch size={20} />,
       content: contents,
       wrapperStyle: {
-        jusctifyContent: "justify-center",
-        flexDirection: "flex-row",
+        jusctifyContent: "tw-justify-center",
+        flexDirection: "tw-flex-row",
         marginX: "2",
       },
     };
@@ -358,14 +326,14 @@ const ListButtonControl = ({
                       setPreviewSection={setPreviewSection}
                     />
                   )}
-                  {/* 
+
                   {isEditing && (
-                    <EditImages
+                    <EditButton
                       idSection={setting.id}
                       selectedSectionToEdit={selectedSection}
                       setPreviewSection={setPreviewSection}
                     />
-                  )} */}
+                  )}
 
                   {!isAddContent && !isEditing && (
                     <>

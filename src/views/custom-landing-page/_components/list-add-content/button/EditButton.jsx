@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { createUniqueID } from "../../../../../lib/unique-id";
 import UrlInput from "../../common/UrlInput";
 import WhatsAppInput from "../../common/WhatAppsInput";
 import ScrollTargetInput from "../../common/ScrollTargetSelect";
@@ -11,63 +10,36 @@ import SelectOptions from "../../common/SelectOptions";
 import Input from "../../common/Input";
 import ColorPicker from "../../common/ColorPicker";
 import FacebookPixel from "../../FacebookPixel";
+import {
+  ButtonShadowOptions,
+  ButtonSizeOptions,
+  roundedButtonOptions,
+  variantButton,
+} from "./AddButton";
 
-export const variantButton = [
-  { value: "fill", label: "Fill" },
-  { value: "ghost", label: "Ghost" },
-];
-
-export const roundedButtonOptions = [
-  { value: "tw-rounded", label: "Kecil" },
-  { value: "tw-rounded-md", label: "Sedang" },
-  { value: "tw-rounded-lg", label: "Besar" },
-  { value: "tw-rounded-full", label: "Bulat" },
-];
-
-export const ButtonSizeOptions = [
-  { value: "sm", label: "Kecil" },
-  { value: "md", label: "Sedang" },
-  { value: "lg", label: "Besar" },
-  { value: "xl", label: "Extra Besar" },
-];
-
-export const ButtonShadowOptions = [
-  { value: undefined, label: "Tidak Ada" },
-  { value: "tw-shadow", label: "Kecil" },
-  { value: "tw-shadow-md", label: "Sedang" },
-  { value: "tw-shadow-lg", label: "Besar" },
-  { value: "tw-shadow-xl", label: "Extra Besar" },
-  { value: "tw-shadow-2xl", label: "Blur" },
-];
-
-const AddButton = ({ idSection, sections, setPreviewSection }) => {
+const EditButton = ({
+  idSection,
+  selectedSectionToEdit,
+  setPreviewSection,
+}) => {
   const { optionsScrollTarget, optionsTarget } = useSelector(
     (state) => state.customLandingPage
   );
-  const [selectedOption, setSelectedOption] = useState(
-    optionsTarget[0].options[0]
+  const [selectedOption, setSelectedOption] = useState(optionsTarget[0]);
+  const [title, setTitle] = useState(selectedSectionToEdit.content.title);
+  const [selectedVariantButton, setSelectedVariantButton] = useState(undefined);
+  const [selectedColorButton, setSelectedColorButton] = useState(
+    selectedSectionToEdit.content.style.btnColor
   );
-
-  const [setting, setSetting] = useState({});
-
-  const [title, setTitle] = useState("Click Me");
-  const [selectedVariantButton, setSelectedVariantButton] = useState(
-    variantButton[0]
+  const [selectedColorText, setSelectedColorText] = useState(
+    selectedSectionToEdit.content.style.textColor
   );
-  const [selectedColorButton, setSelectedColorButton] = useState("#2196F3");
-  const [selectedColorText, setSelectedColorText] = useState("#FFFFFF");
-  const [selectedRoundedButton, setSelectedRoundedButton] = useState(
-    roundedButtonOptions[0]
-  );
-  const [selectedButtonSize, setSelectedButtonSize] = useState(
-    ButtonSizeOptions[1]
-  );
-  const [selectedButtonShadow, setSelectedButtonShadow] = useState(
-    ButtonShadowOptions[0]
-  );
+  const [selectedRoundedButton, setSelectedRoundedButton] = useState(undefined);
+  const [selectedButtonSize, setSelectedButtonSize] = useState(undefined);
+  const [selectedButtonShadow, setSelectedButtonShadow] = useState(undefined);
 
   const { url, setUrl, handleUrlChange, handleUrlOpenNewTabChange } =
-    useUrlChange(setPreviewSection, idSection, setting);
+    useUrlChange(setPreviewSection, idSection, selectedSectionToEdit);
 
   const {
     whatApps,
@@ -75,13 +47,73 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
     handlePhoneNumberChange,
     handleMessageChange,
     handleUrlOpenNewTabWaChange,
-  } = useWhatAppsChange(setPreviewSection, idSection, setting);
+  } = useWhatAppsChange(setPreviewSection, idSection, selectedSectionToEdit);
 
   const {
     selectedOptionScrollTarget,
     setSelectedOptionScrollTarget,
     handleChangeScrollTarget,
-  } = useSCrollTargetChange(setPreviewSection, idSection, setting);
+  } = useSCrollTargetChange(
+    setPreviewSection,
+    idSection,
+    selectedSectionToEdit
+  );
+  useEffect(() => {
+    const currentSelectedOptionShadow = ButtonShadowOptions.find(
+      (opt) => opt.value === selectedSectionToEdit.content.style.shadow
+    );
+    if (currentSelectedOptionShadow) {
+      setSelectedButtonShadow(currentSelectedOptionShadow);
+    }
+
+    const currentSelectedOptionBtnSize = ButtonSizeOptions.find(
+      (opt) => opt.value === selectedSectionToEdit.content.style.buttonSize
+    );
+    if (currentSelectedOptionBtnSize) {
+      setSelectedButtonSize(currentSelectedOptionBtnSize);
+    }
+
+    const currentSelectedOptionRoundedBtn = roundedButtonOptions.find(
+      (opt) => opt.value === selectedSectionToEdit.content.style.rounded
+    );
+    if (currentSelectedOptionRoundedBtn) {
+      setSelectedRoundedButton(currentSelectedOptionRoundedBtn);
+    }
+
+    const currentSelectedOptionVariantBtn = variantButton.find(
+      (opt) => opt.value === selectedSectionToEdit.content.style.variant
+    );
+    if (currentSelectedOptionVariantBtn) {
+      setSelectedVariantButton(currentSelectedOptionVariantBtn);
+    }
+  }, [
+    selectedSectionToEdit.content.style.buttonSize,
+    selectedSectionToEdit.content.style.rounded,
+    selectedSectionToEdit.content.style.shadow,
+    selectedSectionToEdit.content.style.variant,
+  ]);
+
+  useEffect(() => {
+    if (url?.url) {
+      setSelectedOption({ value: "url", label: "URL" });
+    }
+  }, [url]);
+
+  useEffect(() => {
+    if (whatApps?.phoneNumber) {
+      setSelectedOption({ value: "whatApps", label: "Whatapps" });
+    }
+  }, [whatApps]);
+
+  useEffect(() => {
+    if (
+      selectedSectionToEdit.target &&
+      selectedSectionToEdit.target?.scrollTarget?.value
+    ) {
+      setSelectedOption({ value: "scroll-target", label: "Scroll Target" });
+      setSelectedOptionScrollTarget(selectedSectionToEdit.target?.scrollTarget);
+    }
+  }, [selectedSectionToEdit.target, setSelectedOptionScrollTarget]);
 
   const handleChangeOptions = (selectedOptionValue) => {
     setSelectedOption(selectedOptionValue);
@@ -92,7 +124,7 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
             ? {
                 ...item,
                 content: item.content.map((contentItem) =>
-                  String(contentItem.id) === String(setting.id)
+                  String(contentItem.id) === String(selectedSectionToEdit.id)
                     ? {
                         ...contentItem,
                         target: {},
@@ -119,7 +151,7 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -146,7 +178,7 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -173,7 +205,7 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -200,7 +232,7 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -227,7 +259,7 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -254,7 +286,7 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -281,7 +313,7 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: {
@@ -297,49 +329,82 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
     );
   };
 
-  const handleAddContent = () => {
-    let uniqueId = createUniqueID(sections);
-    let payload = {
-      id: uniqueId,
-      content: {
-        title,
-        style: {
-          variant: selectedVariantButton.value,
-          btnColor: selectedColorButton,
-          textColor: selectedColorText,
-          rounded: selectedRoundedButton.value,
-          buttonSize: selectedButtonSize.value,
-          shadow: selectedButtonShadow.value,
-        },
-      },
-      target: {},
-    };
-
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) =>
-        section.id === idSection
-          ? { ...section, content: [...section.content, payload] }
-          : section
-      )
-    );
-
-    setSetting(payload);
-  };
-
   useEffect(() => {
-    handleAddContent();
+    if (
+      selectedOption &&
+      selectedOption.value === "scroll-target" &&
+      selectedOptionScrollTarget &&
+      optionsScrollTarget
+    ) {
+      const updatedOption = optionsScrollTarget.find(
+        (option) => option.id === selectedOptionScrollTarget.id
+      );
+
+      if (!updatedOption) {
+        setPreviewSection((arr) =>
+          arr.map((item) =>
+            String(item.id) === idSection
+              ? {
+                  ...item,
+                  content: item.content.map((contentItem) =>
+                    String(contentItem.id) === String(selectedSectionToEdit.id)
+                      ? {
+                          ...contentItem,
+                          target: {},
+                        }
+                      : contentItem
+                  ),
+                }
+              : item
+          )
+        );
+        setSelectedOptionScrollTarget({
+          value: "deleted",
+          label: "--Di Hapus--",
+        });
+      } else {
+        setPreviewSection((arr) =>
+          arr.map((item) =>
+            String(item.id) === idSection
+              ? {
+                  ...item,
+                  content: item.content.map((contentItem) =>
+                    String(contentItem.id) === String(selectedSectionToEdit.id)
+                      ? {
+                          ...contentItem,
+                          target: {
+                            scrollTarget: {
+                              ...contentItem.target.scrollTarget,
+                              value: updatedOption.value,
+                              label: updatedOption.label,
+                            },
+                          },
+                        }
+                      : contentItem
+                  ),
+                }
+              : item
+          )
+        );
+        setSelectedOptionScrollTarget(updatedOption);
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [optionsScrollTarget, selectedOption]);
 
   useEffect(() => {
-    if (selectedOption && selectedOption.value === "scroll-target") {
+    if (
+      selectedOption &&
+      selectedOption.value === "scroll-target" &&
+      !selectedSectionToEdit.target?.scrollTarget?.value
+    ) {
       setPreviewSection((arr) =>
         arr.map((item) =>
           String(item.id) === idSection
             ? {
                 ...item,
                 content: item.content.map((contentItem) =>
-                  String(contentItem.id) === String(setting.id)
+                  String(contentItem.id) === String(selectedSectionToEdit.id)
                     ? {
                         ...contentItem,
                         target: {
@@ -463,4 +528,4 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
   );
 };
 
-export default AddButton;
+export default EditButton;

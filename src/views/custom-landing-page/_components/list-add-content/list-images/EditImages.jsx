@@ -308,6 +308,7 @@ export const EditImages = ({
     setWhatApps({
       phoneNumber: "",
       message: "",
+
       isOpenNewTab: false,
     });
   };

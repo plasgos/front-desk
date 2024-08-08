@@ -303,7 +303,7 @@ export const EditContent = ({
                       ...contentItem,
                       content: {
                         ...contentItem.content,
-                        description: description,
+                        description: value,
                       },
                     }
                   : contentItem

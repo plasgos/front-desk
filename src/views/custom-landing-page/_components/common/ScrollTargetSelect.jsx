@@ -40,7 +40,7 @@ const ScrollTargetInput = ({
           cursor: "text",
         }),
       }}
-      onChange={handleChangeScrollTarget}
+      onChange={(options) => handleChangeScrollTarget(options)}
       isSearchable={false}
       value={selectedOptionScrollTarget}
     />

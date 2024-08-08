@@ -3,13 +3,14 @@ import { useState } from "react";
 export const useSCrollTargetChange = (
   setPreviewSection,
   idSection,
-  idContent
+  selectedSectionToEdit
 ) => {
   const [selectedOptionScrollTarget, setSelectedOptionScrollTarget] =
     useState(undefined);
-
   const handleChangeScrollTarget = (selectedOption) => {
     setSelectedOptionScrollTarget(selectedOption);
+
+    console.log("SIAPA YANG SET LAGI");
 
     setPreviewSection((arr) =>
       arr.map((item) =>
@@ -17,11 +18,10 @@ export const useSCrollTargetChange = (
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
-                        ...contentItem.target,
                         scrollTarget: {
                           ...contentItem.target.scrollTarget,
                           id: selectedOption.id,

@@ -1,8 +1,11 @@
 import { useState } from "react";
 
-export const useUrlChange = (setPreviewSection, idSection, idContent) => {
-  const [url, setUrl] = useState({});
-
+export const useUrlChange = (
+  setPreviewSection,
+  idSection,
+  selectedSectionToEdit
+) => {
+  const [url, setUrl] = useState(selectedSectionToEdit?.target?.url || {});
   const handleUrlChange = (value) => {
     setUrl((prevValue) => ({
       ...prevValue,
@@ -15,11 +18,10 @@ export const useUrlChange = (setPreviewSection, idSection, idContent) => {
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
-                        ...contentItem.target,
                         url: {
                           ...contentItem.target.url,
                           url: value,
@@ -46,11 +48,10 @@ export const useUrlChange = (setPreviewSection, idSection, idContent) => {
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idContent)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       target: {
-                        ...contentItem.target,
                         url: {
                           ...contentItem.target.url,
                           isOpenNewTab: value,
@@ -67,6 +68,7 @@ export const useUrlChange = (setPreviewSection, idSection, idContent) => {
 
   return {
     url,
+    setUrl,
     handleUrlChange,
     handleUrlOpenNewTabChange,
   };
