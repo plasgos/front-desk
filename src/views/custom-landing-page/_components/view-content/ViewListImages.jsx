@@ -23,23 +23,23 @@ const ViewListImages = forwardRef(
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
         }}
-        className="flex flex-row flex-wrap justify-center items-center p-3 gap-y-3 "
+        className="tw-flex tw-flex-row tw-flex-wrap tw-justify-center tw-items-center tw-p-3 tw-gap-y-3 "
       >
         {content.content.map((section) => {
           return (
             <React.Fragment key={section.id}>
-              {section.target?.url?.url ? (
+              {section.target && section.target?.url?.url ? (
                 <div
                   className={
                     isPreview
-                      ? `flex  ${
+                      ? `tw-flex  ${
                           width === "100%" || width >= 640
-                            ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                            ? `tw-w-[${content?.wrapperStyle?.maxColumn}]`
                             : width > 320 && width < 640
-                            ? "w-1/3"
-                            : "w-full"
+                            ? "tw-w-1/3"
+                            : "tw-w-full"
                         }  `
-                      : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
+                      : `tw-flex tw-w-full sm:tw-w-1/3 md:tw-w-[${content?.wrapperStyle?.maxColumn}] `
                   }
                 >
                   <a
@@ -57,7 +57,7 @@ const ViewListImages = forwardRef(
                     }}
                   >
                     <div
-                      className={`w-full text-center px-${content?.wrapperStyle?.paddingX}   `}
+                      className={`tw-w-full tw-text-center tw-px-${content?.wrapperStyle?.paddingX}   `}
                     >
                       <img
                         src={section.content?.image}
@@ -73,7 +73,7 @@ const ViewListImages = forwardRef(
                     </div>
                   </a>
                 </div>
-              ) : section.target?.whatApps?.phoneNumber ? (
+              ) : section.target && section.target?.whatApps?.phoneNumber ? (
                 <a
                   target={
                     section.target.whatApps.isOpenNewTab ? "_blank" : "_self"
@@ -93,18 +93,18 @@ const ViewListImages = forwardRef(
                   }}
                   className={
                     isPreview
-                      ? `flex  ${
+                      ? `tw-flex  ${
                           width === "100%" || width >= 640
-                            ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                            ? `tw-w-[${content?.wrapperStyle?.maxColumn}]`
                             : width > 320 && width < 640
-                            ? "w-1/3"
-                            : "w-full"
+                            ? "tw-w-1/3"
+                            : "tw-w-full"
                         }  `
-                      : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
+                      : `tw-flex tw-w-full sm:tw-w-1/3 md:tw-w-[${content?.wrapperStyle?.maxColumn}] `
                   }
                 >
                   <div
-                    className={`w-full text-center px-${content?.wrapperStyle?.paddingX}  `}
+                    className={`tw-w-full tw-text-center tw-px-${content?.wrapperStyle?.paddingX}  `}
                   >
                     <img
                       src={section.content?.image}
@@ -119,18 +119,18 @@ const ViewListImages = forwardRef(
                     />
                   </div>
                 </a>
-              ) : section.target?.scrollTarget?.value ? (
+              ) : section.target && section.target?.scrollTarget?.value ? (
                 <div
                   className={
                     isPreview
-                      ? `flex  ${
+                      ? `tw-flex  ${
                           width === "100%" || width >= 640
-                            ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                            ? `tw-w-[${content?.wrapperStyle?.maxColumn}]`
                             : width > 320 && width < 640
-                            ? "w-1/3"
-                            : "w-full"
+                            ? "tw-w-1/3"
+                            : "tw-w-full"
                         }  `
-                      : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
+                      : `tw-flex tw-w-full sm:tw-w-1/3 md:tw-w-[${content?.wrapperStyle?.maxColumn}] `
                   }
                 >
                   <a
@@ -150,11 +150,11 @@ const ViewListImages = forwardRef(
                           containerRef
                         )
                       }
-                      className={`w-full text-center px-${
+                      className={`tw-w-full tw-text-center tw-px-${
                         content?.wrapperStyle?.paddingX
                       } ${
                         section.target.scrollTarget.value === "back-to-top" &&
-                        "cursor-pointer"
+                        "tw-cursor-pointer"
                       }   `}
                     >
                       <img
@@ -175,18 +175,18 @@ const ViewListImages = forwardRef(
                 <div
                   className={
                     isPreview
-                      ? `flex  ${
+                      ? `tw-flex  ${
                           width === "100%" || width >= 640
-                            ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                            ? `tw-w-[${content?.wrapperStyle?.maxColumn}]`
                             : width > 320 && width < 640
-                            ? "w-1/3"
-                            : "w-full"
+                            ? "tw-w-1/3"
+                            : "tw-w-full"
                         }  `
-                      : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
+                      : `tw-flex tw-w-full sm:tw-w-1/3 md:tw-w-[${content?.wrapperStyle?.maxColumn}] `
                   }
                 >
                   <div
-                    className={`w-full text-center px-${content?.wrapperStyle?.paddingX}  `}
+                    className={`tw-w-full tw-text-center tw-px-${content?.wrapperStyle?.paddingX}  `}
                   >
                     <img
                       src={section.content?.image}

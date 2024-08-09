@@ -1,18 +1,16 @@
 import { CButton } from "@coreui/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../lib/unique-id";
 import { PiTargetDuotone } from "react-icons/pi";
 import { useDispatch } from "react-redux";
 import {
   removeOptionScrollTarget,
-  setLandingPageSection,
   setOptionsScrollTarget,
 } from "../../../../redux/modules/custom-landing-page/reducer";
 
 const ScrollTarget = ({
   previewSection,
   setPreviewSection,
-  setSections,
   isShowContent,
   toggleAddContent,
 }) => {

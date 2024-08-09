@@ -12,7 +12,6 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import Select from "react-select";
 
 import image from "../../../../../assets/action-figure.jpg";
 
@@ -24,13 +23,11 @@ import { MdViewColumn } from "react-icons/md";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import {
   aspectRatioOptions,
-  customStyles,
   distanceOptions,
   maxColumnOptions,
 } from "../list-images/ListImagesControl";
-import { ChromePicker } from "react-color";
-import { useDispatch } from "react-redux";
-import { setLandingPageSection } from "../../../../../redux/modules/custom-landing-page/reducer";
+import SelectOptions from "../../common/SelectOptions";
+import ColorPicker from "../../common/ColorPicker";
 
 const contents = [
   {
@@ -42,22 +39,7 @@ const contents = [
         "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
       image: image,
     },
-    target: {
-      url: {
-        url: "",
-        isOpenNewTab: false,
-      },
-      whatApps: {
-        phoneNumber: "",
-        message: "",
-        isOpenNewTab: false,
-      },
-      scrollTarget: {
-        id: "",
-        value: "",
-        label: "",
-      },
-    },
+    target: {},
   },
   {
     id: "adgdawdw",
@@ -68,22 +50,7 @@ const contents = [
         "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
       image: image,
     },
-    target: {
-      url: {
-        url: "",
-        isOpenNewTab: false,
-      },
-      whatApps: {
-        phoneNumber: "",
-        message: "",
-        isOpenNewTab: false,
-      },
-      scrollTarget: {
-        id: "",
-        value: "",
-        label: "",
-      },
-    },
+    target: {},
   },
   {
     id: "feqawd",
@@ -94,36 +61,20 @@ const contents = [
         "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
       image: image,
     },
-    target: {
-      url: {
-        url: "",
-        isOpenNewTab: false,
-      },
-      whatApps: {
-        phoneNumber: "",
-        message: "",
-        isOpenNewTab: false,
-      },
-      scrollTarget: {
-        id: "",
-        value: "",
-        label: "",
-      },
-    },
+    target: {},
   },
 ];
 
 export const fontSizeOptions = [
-  { value: "16", label: "Kecil" },
-  { value: "18", label: "Sedang" },
-  { value: "22", label: "Besar" },
-  { value: "25", label: "Lebih Besar" },
+  { value: "16px", label: "Kecil" },
+  { value: "18px", label: "Sedang" },
+  { value: "22px", label: "Besar" },
+  { value: "25px", label: "Lebih Besar" },
 ];
 
 const ColumnSection = ({
   previewSection,
   setPreviewSection,
-  setSections,
   isShowContent,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
@@ -134,18 +85,19 @@ const ColumnSection = ({
 
   const [setting, setSetting] = useState({});
 
-  const [showColorPickerTitle, setShowColorPickerTitle] = useState(false);
-  const [showColorPickerDesc, setShowColorPickerDesc] = useState(false);
-
   const [selectedColorTitle, setSelectedColorTitle] = useState("#000000");
 
   const [selectedColorDesc, setSelectedColorDesc] = useState("#000000");
 
-  const [selectedDistance, setSelectedDistance] = useState(undefined);
-  const [selectedMaxColumn, setSelectedMaxColumn] = useState(undefined);
-  const [selectedImageRatio, setSelectedImageRatio] = useState(undefined);
+  const [selectedDistance, setSelectedDistance] = useState(distanceOptions[2]);
+  const [selectedMaxColumn, setSelectedMaxColumn] = useState(
+    maxColumnOptions[1]
+  );
+  const [selectedImageRatio, setSelectedImageRatio] = useState(
+    aspectRatioOptions[0].options[0]
+  );
 
-  const [selectedFontSize, setSelectedFontSize] = useState(undefined);
+  const [selectedFontSize, setSelectedFontSize] = useState(fontSizeOptions[1]);
 
   const handleChangeFontSize = (selectedOption) => {
     setSelectedFontSize(selectedOption);
@@ -282,16 +234,12 @@ const ColumnSection = ({
     }
   };
 
-  const dispatch = useDispatch();
-
   const handelConfirm = () => {
     if (isAddContent || isEditing) {
       setIsAddContent(false);
       setIsEditing(false);
-      // dispatch(setLandingPageSection(previewSection));
     } else {
       isShowContent(false);
-      // dispatch(setLandingPageSection(previewSection));
     }
   };
 
@@ -388,17 +336,6 @@ const ColumnSection = ({
     [moveSection, editSection, removeSection]
   );
 
-  const popover = {
-    position: "absolute",
-    zIndex: "2",
-  };
-  const cover = {
-    position: "fixed",
-    top: "0px",
-    right: "0px",
-    bottom: "0px",
-    left: "0px",
-  };
   return (
     <div>
       <CRow>
@@ -488,190 +425,60 @@ const ColumnSection = ({
                     style={{ gap: 10 }}
                     className="d-flex align-items-center mb-3"
                   >
-                    <div className="w-50">
-                      <div className="mb-1" style={{ fontFamily: "Arial" }}>
-                        Warna Teks
-                      </div>
-                      <div
-                        onClick={() =>
-                          setShowColorPickerTitle(!showColorPickerTitle)
-                        }
-                        style={{
-                          width: 35,
-                          height: 35,
-                          backgroundColor: selectedColorTitle,
-                          cursor: "pointer",
-                        }}
-                        className="rounded border"
-                      />
-                      {showColorPickerTitle && (
-                        <div style={popover}>
-                          <div
-                            style={cover}
-                            onClick={() => setShowColorPickerTitle(false)}
-                          />
-                          <ChromePicker
-                            color={selectedColorTitle}
-                            Title
-                            onChange={(e) => handleColorChangeTitle(e.hex)}
-                          />
-                        </div>
-                      )}
-                    </div>
+                    <ColorPicker
+                      initialColor={selectedColorTitle}
+                      label="Tombol"
+                      onChange={handleColorChangeTitle}
+                    />
 
-                    <div className="w-50">
-                      <div className="mb-1" style={{ fontFamily: "Arial" }}>
-                        Warna Deskripsi
-                      </div>
-                      <div
-                        onClick={() =>
-                          setShowColorPickerDesc(!showColorPickerDesc)
-                        }
-                        style={{
-                          width: 35,
-                          height: 35,
-                          backgroundColor: selectedColorDesc,
-                          cursor: "pointer",
-                        }}
-                        className="rounded border"
-                      />
-                      {showColorPickerDesc && (
-                        <div style={popover}>
-                          <div
-                            style={cover}
-                            onClick={() => setShowColorPickerDesc(false)}
-                          />
-                          <ChromePicker
-                            color={selectedColorDesc}
-                            Title
-                            onChange={(e) => handleColorChangeDesc(e.hex)}
-                          />
-                        </div>
-                      )}
-                    </div>
+                    <ColorPicker
+                      initialColor={selectedColorDesc}
+                      label="Warna Deskripsi"
+                      onChange={handleColorChangeDesc}
+                    />
                   </div>
 
                   <div
                     style={{ gap: 10 }}
                     className="d-flex align-items-center "
                   >
-                    <div className="form-group w-50 ">
-                      <label>Kolom Maksimal</label>
-                      <Select
-                        theme={(theme) => ({
-                          ...theme,
-                          colors: {
-                            ...theme.colors,
-                            primary: "#FED4C6",
-                            // Set the color when focused
-                          },
-                        })}
-                        classNames={{
-                          control: (state) =>
-                            state.isFocused
-                              ? "rounded  border-primary"
-                              : "rounded",
-                        }}
-                        options={maxColumnOptions}
-                        styles={customStyles}
-                        onChange={handleChangeMaxColumn}
-                        isSearchable={false}
-                        value={selectedMaxColumn}
-                        defaultValue={{
-                          value: "33.33%",
-                          label: "3",
-                        }}
-                      />
-                    </div>
-                    <div className="form-group w-50 ">
-                      <label>Jarak</label>
-                      <Select
-                        theme={(theme) => ({
-                          ...theme,
-                          colors: {
-                            ...theme.colors,
-                            primary: "#FED4C6",
-                            // Set the color when focused
-                          },
-                        })}
-                        classNames={{
-                          control: (state) =>
-                            state.isFocused
-                              ? "rounded  border-primary"
-                              : "rounded",
-                        }}
-                        options={distanceOptions}
-                        styles={customStyles}
-                        onChange={handleChangeDistance}
-                        isSearchable={false}
-                        value={selectedDistance}
-                        defaultValue={{
-                          value: 2,
-                          label: "2",
-                        }}
-                      />
-                    </div>
+                    <SelectOptions
+                      label="Kolom Maksimal"
+                      options={maxColumnOptions}
+                      onChange={handleChangeMaxColumn}
+                      value={selectedMaxColumn}
+                      width="50"
+                    />
+
+                    <SelectOptions
+                      label="Jarak"
+                      options={distanceOptions}
+                      onChange={handleChangeDistance}
+                      value={selectedDistance}
+                      width="50"
+                    />
                   </div>
 
                   <h4 className=" my-2">Gambar</h4>
                   <div>
-                    <div className="form-group w-50 ">
-                      <label>Rasio Gambar</label>
-                      <Select
-                        theme={(theme) => ({
-                          ...theme,
-                          colors: {
-                            ...theme.colors,
-                            primary: "#FED4C6",
-                            // Set the color when focused
-                          },
-                        })}
-                        classNames={{
-                          control: (state) =>
-                            state.isFocused
-                              ? "rounded  border-primary"
-                              : "rounded",
-                        }}
-                        options={aspectRatioOptions}
-                        styles={customStyles}
-                        onChange={handleChangeImageRatio}
-                        isSearchable={false}
-                        value={selectedImageRatio}
-                        defaultValue={{
-                          value: 1 / 1,
-                          label: "1:1",
-                        }}
-                      />
-                    </div>
+                    <SelectOptions
+                      label="Rasio Gambar"
+                      options={aspectRatioOptions}
+                      onChange={handleChangeImageRatio}
+                      value={selectedImageRatio}
+                      width="50"
+                    />
                   </div>
 
                   <h4 className=" my-2">Font</h4>
                   <div>
-                    <div className="form-group w-50 ">
-                      <label>Ukuran Judul</label>
-                      <Select
-                        theme={(theme) => ({
-                          ...theme,
-                          colors: {
-                            ...theme.colors,
-                            primary: "#FED4C6",
-                            // Set the color when focused
-                          },
-                        })}
-                        classNames={{
-                          control: (state) =>
-                            state.isFocused
-                              ? "rounded  border-primary"
-                              : "rounded",
-                        }}
-                        options={fontSizeOptions}
-                        styles={customStyles}
-                        onChange={handleChangeFontSize}
-                        isSearchable={false}
-                        value={selectedFontSize}
-                        defaultValue={{ value: "18", label: "Sedang" }}
-                      />
-                    </div>
+                    <SelectOptions
+                      label="Ukuran Judul"
+                      options={fontSizeOptions}
+                      onChange={handleChangeFontSize}
+                      value={selectedFontSize}
+                      width="50"
+                    />
                   </div>
                 </CTabPane>
               </CTabContent>

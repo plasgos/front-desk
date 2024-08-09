@@ -2,20 +2,15 @@ import { CButton, CCol, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../lib/unique-id";
 import { PiArrowsDownUpLight } from "react-icons/pi";
-import { useDispatch } from "react-redux";
-import { setLandingPageSection } from "../../../../redux/modules/custom-landing-page/reducer";
 
 const EmptySpace = ({
   previewSection,
   setPreviewSection,
-  setSections,
   isShowContent,
   toggleAddContent,
 }) => {
   const [height, setHeight] = useState(120);
   const [setting, setSetting] = useState({});
-
-  const dispatch = useDispatch();
 
   const handleChangeRangeInput = (event) => {
     setHeight(+event.target.value);
@@ -93,7 +88,6 @@ const EmptySpace = ({
     handleSetHeightWhenBlur();
     toggleAddContent("");
     isShowContent(false);
-    // dispatch(setLandingPageSection(previewSection));
   };
 
   const handleAddContent = () => {

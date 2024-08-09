@@ -24,7 +24,7 @@ import {
 import { IoAdd } from "react-icons/io5";
 
 const EditListButton = ({
-  id,
+  curentSection,
   previewSection,
   setPreviewSection,
   isShowContent,
@@ -45,7 +45,7 @@ const EditListButton = ({
 
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === id
+        String(item.id) === curentSection.id
           ? {
               ...item,
               wrapperStyle: {
@@ -62,7 +62,7 @@ const EditListButton = ({
     setSelectedAlign(selectedOption);
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === id
+        String(item.id) === curentSection.id
           ? {
               ...item,
               wrapperStyle: {
@@ -80,7 +80,7 @@ const EditListButton = ({
 
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === id
+        String(item.id) === curentSection.id
           ? {
               ...item,
               wrapperStyle: {
@@ -95,7 +95,7 @@ const EditListButton = ({
 
   useEffect(() => {
     const currentSection = previewSection.find(
-      (section) => String(section.id) === id
+      (section) => String(section.id) === curentSection.id
     );
     if (currentSection) {
       const distanceOption = distanceOptions.find(
@@ -119,7 +119,7 @@ const EditListButton = ({
         setSelectedAlign(jusctifyContentOption);
       }
     }
-  }, [id, previewSection]);
+  }, [curentSection.id, previewSection]);
 
   const handleAddContent = () => {
     setIsAddContent(true);
@@ -131,7 +131,7 @@ const EditListButton = ({
       setIsEditing(false);
       setPreviewSection((prevSections) =>
         prevSections.map((section) =>
-          section.id === id
+          section.id === curentSection.id
             ? {
                 ...section,
                 content: section.content.slice(0, -1),
@@ -263,7 +263,7 @@ const EditListButton = ({
                 <CTabPane className="p-1" data-tab="konten">
                   {isAddContent && (
                     <AddButton
-                      idSection={id}
+                      idSection={curentSection.id}
                       sections={previewSection}
                       setPreviewSection={setPreviewSection}
                     />
@@ -271,7 +271,7 @@ const EditListButton = ({
 
                   {isEditing && (
                     <EditButton
-                      idSection={id}
+                      idSection={curentSection.id}
                       selectedSectionToEdit={selectedSection}
                       setPreviewSection={setPreviewSection}
                     />
@@ -310,7 +310,7 @@ const EditListButton = ({
 
                       <div>
                         {previewSection
-                          .filter((section) => section.id === id)
+                          .filter((section) => section.id === curentSection.id)
                           .map((section, i) => renderSection(section, i))}
                       </div>
                       <CCard

@@ -25,7 +25,9 @@ const EditButton = ({
   const { optionsScrollTarget, optionsTarget } = useSelector(
     (state) => state.customLandingPage
   );
-  const [selectedOption, setSelectedOption] = useState(optionsTarget[0]);
+  const [selectedOption, setSelectedOption] = useState(
+    optionsTarget[0].options[0]
+  );
   const [title, setTitle] = useState(selectedSectionToEdit.content.title);
   const [selectedVariantButton, setSelectedVariantButton] = useState(undefined);
   const [selectedColorButton, setSelectedColorButton] = useState(

@@ -38,6 +38,7 @@ import {
 } from "../../redux/modules/custom-landing-page/reducer";
 import ViewButton from "./_components/view-content/ViewButton";
 import EditListButton from "./_components/list-edit-content/EditListButton";
+import ModalConfirmation from "./_components/ModalConfirmation";
 
 const landingPage = {
   detail: {
@@ -69,6 +70,11 @@ const CustomLandingPage = () => {
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
   console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
+  const [modal, setModal] = useState(false);
+
+  const toggleModal = () => {
+    setModal(!modal);
+  };
 
   const dispatch = useDispatch();
 
@@ -222,14 +228,9 @@ const CustomLandingPage = () => {
       ) {
         return (
           <EditText
-            id={section.id}
-            text={section.content?.editorHtml}
-            color={section.content?.style?.color}
-            textAlign={section.content?.style?.textAlign}
-            previewSection={previewSection}
+            currentSection={section}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
-            setSections={(value) => setSections(value)}
             sectionBeforeEdit={sectionBeforeEdit}
           />
         );
@@ -242,12 +243,10 @@ const CustomLandingPage = () => {
       ) {
         return (
           <EditColumnTextAndImage
-            id={section.id}
             curentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
-            setSections={(value) => setSections(value)}
             sectionBeforeEdit={sectionBeforeEdit}
           />
         );
@@ -260,12 +259,9 @@ const CustomLandingPage = () => {
       ) {
         return (
           <EditEmptySpace
-            id={section.id}
-            heightContent={section.content.height}
-            previewSection={previewSection}
+            curentSection={section}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
-            setSections={(value) => setSections(value)}
             sectionBeforeEdit={sectionBeforeEdit}
           />
         );
@@ -278,12 +274,10 @@ const CustomLandingPage = () => {
       ) {
         return (
           <EditListImages
-            id={section.id}
+            curentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
-            sections={sections}
-            setSections={(value) => setSections(value)}
             sectionBeforeEdit={sectionBeforeEdit}
           />
         );
@@ -297,11 +291,8 @@ const CustomLandingPage = () => {
         return (
           <EditScrollTarget
             curentSection={section}
-            previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
-            sections={sections}
-            setSections={(value) => setSections(value)}
             sectionBeforeEdit={sectionBeforeEdit}
           />
         );
@@ -314,7 +305,7 @@ const CustomLandingPage = () => {
       ) {
         return (
           <EditListButton
-            id={section.id}
+            curentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
@@ -325,7 +316,7 @@ const CustomLandingPage = () => {
 
       return null;
     },
-    [editing.id, editing.name, previewSection, sectionBeforeEdit, sections]
+    [editing.id, editing.name, previewSection, sectionBeforeEdit]
   );
 
   const handleSave = () => {
@@ -428,7 +419,7 @@ const CustomLandingPage = () => {
     [previewSection]
   );
 
-  const { optionsScrollTarget, landingPageSection } = useSelector(
+  const { landingPageSection } = useSelector(
     (state) => state.customLandingPage
   );
 
@@ -439,7 +430,28 @@ const CustomLandingPage = () => {
 
   const removeSection = useCallback(
     (index, id) => {
-      setPreviewSection((prev) => prev.filter((item, i) => i !== index));
+      setPreviewSection((prev) => {
+        // Hapus section berdasarkan index
+        const updatedPreviewSection = prev.filter((_, i) => i !== index);
+
+        // Perbarui section yang tersisa dengan mereset target jika ID cocok dengan ID dari optionsScrolltarget
+        return updatedPreviewSection.map((section) => {
+          if (Array.isArray(section.content)) {
+            return {
+              ...section,
+              content: section.content.map((contentItem) => {
+                return contentItem.target.scrollTarget?.id === id
+                  ? { ...contentItem, target: {} }
+                  : contentItem;
+              }),
+            };
+          } else {
+            return section;
+          }
+        });
+      });
+
+      // Dispatch untuk menghapus option scroll target
       dispatch(removeOptionScrollTarget(id));
     },
     [dispatch]
@@ -468,137 +480,146 @@ const CustomLandingPage = () => {
   };
 
   return (
-    <div>
-      <CRow>
-        <CCol md="4">
-          <div style={{ height: "80%" }}>
-            {!editing && !isAddContent && (
-              <CTabs activeTab="konten">
-                <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-                  <div>
-                    <CButton
-                      // onClick={handelCancel}
-                      color="primary"
-                      variant="outline"
-                      className="mx-2"
-                    >
-                      Batal
-                    </CButton>
+    <>
+      <div>
+        <CRow>
+          <CCol md="4">
+            <div style={{ height: "88.10%" }}>
+              {!editing && !isAddContent && (
+                <CTabs activeTab="konten">
+                  <div className="d-flex justify-content-end align-items-center border-bottom p-2">
+                    <div>
+                      <CButton
+                        onClick={toggleModal}
+                        color="primary"
+                        variant="outline"
+                        className="mx-2"
+                      >
+                        Batal
+                      </CButton>
 
-                    <CButton onClick={handleSave} color="primary">
-                      Selesai
-                    </CButton>
+                      <CButton onClick={handleSave} color="primary">
+                        Selesai
+                      </CButton>
+                    </div>
                   </div>
-                </div>
-                <CNav variant="tabs">
-                  <CNavItem>
-                    <CNavLink data-tab="konten">Kolom</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="test1">test1</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="test2">test2</CNavLink>
-                  </CNavItem>
-                </CNav>
-                <CTabContent
-                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
-                  className="pt-3"
-                >
-                  <CTabPane data-tab="konten">
-                    {previewSection.map((section, index) =>
-                      renderListContent(section, index)
-                    )}
-                    <CCard
-                      style={{ cursor: "pointer" }}
-                      onClick={handleAddContent}
-                    >
-                      <CCardBody className="p-1">
-                        <div className="d-flex align-items-center ">
-                          <IoAdd
-                            style={{
-                              cursor: "pointer",
-                              margin: "0px 10px 0px 6px",
-                            }}
-                            size={18}
-                          />
+                  <CNav variant="tabs">
+                    <CNavItem>
+                      <CNavLink data-tab="konten">Kolom</CNavLink>
+                    </CNavItem>
+                    <CNavItem>
+                      <CNavLink data-tab="test1">test1</CNavLink>
+                    </CNavItem>
+                    <CNavItem>
+                      <CNavLink data-tab="test2">test2</CNavLink>
+                    </CNavItem>
+                  </CNav>
+                  <CTabContent
+                    style={{
+                      height: "350px",
+                      paddingRight: 5,
+                      overflowY: "auto",
+                    }}
+                    className="pt-3"
+                  >
+                    <CTabPane data-tab="konten">
+                      {previewSection.map((section, index) =>
+                        renderListContent(section, index)
+                      )}
+                      <CCard
+                        style={{ cursor: "pointer" }}
+                        onClick={handleAddContent}
+                      >
+                        <CCardBody className="p-1">
+                          <div className="d-flex align-items-center ">
+                            <IoAdd
+                              style={{
+                                cursor: "pointer",
+                                margin: "0px 10px 0px 6px",
+                              }}
+                              size={18}
+                            />
 
-                          <div>Tambah Konten</div>
-                        </div>
-                      </CCardBody>
-                    </CCard>
-                  </CTabPane>
-                  <CTabPane data-tab="test1">
-                    <p>test1</p>
-                  </CTabPane>
-                  <CTabPane data-tab="test2">
-                    <p>kolom2</p>
-                  </CTabPane>
-                </CTabContent>
-              </CTabs>
-            )}
+                            <div>Tambah Konten</div>
+                          </div>
+                        </CCardBody>
+                      </CCard>
+                    </CTabPane>
+                    <CTabPane data-tab="test1">
+                      <p>test1</p>
+                    </CTabPane>
+                    <CTabPane data-tab="test2">
+                      <p>kolom2</p>
+                    </CTabPane>
+                  </CTabContent>
+                </CTabs>
+              )}
 
-            {editing &&
-              previewSection.map((section) => (
-                <div key={section.id}>{renderEditSection(section)}</div>
-              ))}
+              {editing &&
+                previewSection.map((section) => (
+                  <div key={section.id}>{renderEditSection(section)}</div>
+                ))}
 
-            {isAddContent && (
-              <ListContent
-                previewSection={previewSection}
-                setPreviewSection={(value) => setPreviewSection(value)}
-                sections={sections}
-                setSections={(value) => setSections(value)}
-                isShowContent={(value) => setIsAddContent(value)}
-              />
-            )}
-          </div>
-          <div
-            // style={{ position: "absolute", bottom: 0, width: "92%" }}
-            className="d-flex justify-content-between align-items-center border rounded-sm p-2 mb-2"
-          >
-            <div
-              className="d-flex align-items-center"
-              style={{ cursor: "pointer" }}
-            >
-              {viewTypes.map((view) => (
-                <div
-                  key={view}
-                  onClick={() => setIsSelectedView(view)}
-                  style={{
-                    backgroundColor:
-                      isSelectedView === view ? "#fa541c" : "transparent",
-                  }}
-                  className="border p-1 px-2 "
-                >
-                  {React.cloneElement(viewIcon[view], {
-                    color: isSelectedView === view ? "white" : "black",
-                  })}
-                </div>
-              ))}
+              {isAddContent && (
+                <ListContent
+                  previewSection={previewSection}
+                  setPreviewSection={(value) => setPreviewSection(value)}
+                  sections={sections}
+                  setSections={(value) => setSections(value)}
+                  isShowContent={(value) => setIsAddContent(value)}
+                />
+              )}
             </div>
-          </div>
-        </CCol>
+            <div className="d-flex justify-content-between align-items-center border rounded-sm p-2 mb-2 shadow-sm">
+              <div
+                className="d-flex align-items-center"
+                style={{ cursor: "pointer" }}
+              >
+                {viewTypes.map((view) => (
+                  <div
+                    key={view}
+                    onClick={() => setIsSelectedView(view)}
+                    style={{
+                      backgroundColor:
+                        isSelectedView === view ? "#fa541c" : "transparent",
+                    }}
+                    className="border p-1 px-2 "
+                  >
+                    {React.cloneElement(viewIcon[view], {
+                      color: isSelectedView === view ? "white" : "black",
+                    })}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </CCol>
 
-        <CCol md="8">
-          <ResizableView
-            containerRef={containerRef}
-            dimensions={dimensions}
-            isSelectedView={isSelectedView}
-            isResizing={isResizing}
-            handleMouseDown={handleMouseDown}
-          >
-            {previewSection.map((item, index) => (
-              <div key={item.id}>{renderViewComponent(item, index)}</div>
-            ))}
-          </ResizableView>
-        </CCol>
-      </CRow>
+          <CCol md="8">
+            <ResizableView
+              containerRef={containerRef}
+              dimensions={dimensions}
+              isSelectedView={isSelectedView}
+              isResizing={isResizing}
+              handleMouseDown={handleMouseDown}
+            >
+              {previewSection.map((item, index) => (
+                <div key={item.id}>{renderViewComponent(item, index)}</div>
+              ))}
+            </ResizableView>
+          </CCol>
+        </CRow>
 
-      {strViewContent && (
-        <div dangerouslySetInnerHTML={{ __html: strViewContent }} />
-      )}
-    </div>
+        {strViewContent && Object.keys(strViewContent).length > 0 && (
+          <div dangerouslySetInnerHTML={{ __html: strViewContent }} />
+        )}
+      </div>
+
+      <ModalConfirmation
+        show={modal}
+        toggleModal={toggleModal}
+        setPreviewSection={(value) => setPreviewSection(value)}
+      />
+    </>
   );
 };
 

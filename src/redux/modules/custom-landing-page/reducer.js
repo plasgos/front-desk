@@ -22,11 +22,14 @@ const initialState = {
   optionsScrollTarget: [
     { id: "hakdjw", value: "back-to-top", label: "Kembali Ke Atas" },
   ],
-  optionsFacebookPixel: [
+  optionsFbPixelId: [
+    { id: "fb-id-1", value: "randomId123", label: "Old Habassy" },
+  ],
+  optionsFbPixelEvent: [
     {
       label: "Utama",
       options: [
-        { value: "notFound", label: "Tidak Ada" },
+        { value: undefined, label: "Tidak Ada" },
         { value: "custom", label: "Custom" },
       ],
     },

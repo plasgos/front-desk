@@ -22,30 +22,29 @@ import {
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 import { ChromePicker } from "react-color";
-import { setLandingPageSection } from "../../../../redux/modules/custom-landing-page/reducer";
-import { useDispatch } from "react-redux";
 
 const EditText = ({
-  id,
-  text,
-  color,
-  textAlign,
-  previewSection,
+  currentSection,
   setPreviewSection,
   isShowContent,
-  setSections,
   sectionBeforeEdit,
 }) => {
-  const [editorHtml, setEditorHtml] = useState(text);
+  const [editorHtml, setEditorHtml] = useState(
+    currentSection.content?.editorHtml
+  );
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const [selectAlign, setSelectAlign] = useState(textAlign);
-  const [selectedColor, setSelectedColor] = useState(color);
+  const [selectAlign, setSelectAlign] = useState(
+    currentSection.content?.style?.textAlign
+  );
+  const [selectedColor, setSelectedColor] = useState(
+    currentSection.content?.style?.color
+  );
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(id)
+        String(item.id) === String(currentSection.id)
           ? {
               ...item,
               content: {
@@ -65,7 +64,7 @@ const EditText = ({
     setSelectAlign(value);
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(id)
+        String(item.id) === String(currentSection.id)
           ? {
               ...item,
               content: {
@@ -85,7 +84,7 @@ const EditText = ({
     setEditorHtml(html);
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(id)
+        String(item.id) === String(currentSection.id)
           ? {
               ...item,
               content: {
@@ -116,11 +115,8 @@ const EditText = ({
     setPreviewSection([...sectionBeforeEdit]);
   };
 
-  const dispatch = useDispatch();
-
   const handelConfirm = () => {
     isShowContent("");
-    // dispatch(setLandingPageSection(previewSection));
   };
 
   return (

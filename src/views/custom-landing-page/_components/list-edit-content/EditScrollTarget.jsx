@@ -1,29 +1,17 @@
 import { CButton } from "@coreui/react";
 import React, { useState } from "react";
-import {
-  setLandingPageSection,
-  setOptionsScrollTarget,
-} from "../../../../redux/modules/custom-landing-page/reducer";
-import { useDispatch, useSelector } from "react-redux";
+import { setOptionsScrollTarget } from "../../../../redux/modules/custom-landing-page/reducer";
+import { useDispatch } from "react-redux";
 
 const EditScrollTarget = ({
   curentSection,
-  previewSection,
   setPreviewSection,
-  sections,
-  setSections,
   isShowContent,
   sectionBeforeEdit,
 }) => {
   const [name, setName] = useState(curentSection.content.name);
   const [isCopiedLink, setIsCopiedLink] = useState(false);
   const [isCopiedAnchor, setIsCopiedAnchor] = useState(false);
-
-  const { optionsScrollTarget } = useSelector(
-    (state) => state.customLandingPage
-  );
-
-  console.log("🚀 ~ optionsScrollTarget:", optionsScrollTarget);
 
   const dispatch = useDispatch();
   const copyToClipboardAnchor = () => {
@@ -89,7 +77,6 @@ const EditScrollTarget = ({
       setOptionsScrollTarget({ id: curentSection.id, value: name, label: name })
     );
     isShowContent("");
-    // await dispatch(setLandingPageSection(previewSection));
   };
   return (
     <div>

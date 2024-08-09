@@ -359,7 +359,7 @@ const ListButtonControl = ({
                       </div>
 
                       <SelectOptions
-                        label="Jarak"
+                        label="Barisan"
                         options={flexOptions}
                         onChange={handleChangeFlexDirection}
                         value={selectedFlex}

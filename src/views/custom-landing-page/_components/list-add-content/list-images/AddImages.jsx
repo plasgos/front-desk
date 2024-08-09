@@ -1,14 +1,20 @@
-import { CButton, CCard, CTooltip } from "@coreui/react";
+import { CButton, CCard } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import image from "../../../../../assets/action-figure.jpg";
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 import { createUniqueID } from "../../../../../lib/unique-id";
-import Select from "react-select";
-import { FaCircleInfo } from "react-icons/fa6";
 
 import FacebookPixel from "../../FacebookPixel";
 import { useSelector } from "react-redux";
+import ScrollTargetInput from "../../common/ScrollTargetSelect";
+import WhatsAppInput from "../../common/WhatAppsInput";
+import UrlInput from "../../common/UrlInput";
+import SelectOptions from "../../common/SelectOptions";
+import { useUrlChange } from "../../../../../hooks/useUrlChange";
+import { useWhatAppsChange } from "../../../../../hooks/useWhatAppsChange";
+import { useSCrollTargetChange } from "../../../../../hooks/useScrolltargetChange";
+import Input from "../../common/Input";
 
 export const AddImages = ({ idSection, defaultSection, setPreviewSection }) => {
   const { optionsScrollTarget, optionsTarget } = useSelector(
@@ -17,50 +23,27 @@ export const AddImages = ({ idSection, defaultSection, setPreviewSection }) => {
 
   const [imageUrl, setImageUrl] = useState(image);
   const [alt, setAlt] = useState("");
-  const [whatApps, setWhatApps] = useState({});
-  const [url, setUrl] = useState({});
-  const [scrollTarget, setScrollTarget] = useState({});
   const [setting, setSetting] = useState({});
   const [selectedOption, setSelectedOption] = useState(
     optionsTarget[0].options[0]
   );
 
-  const [selectedOptionScrollTarget, setSelectedOptionScrollTarget] =
-    useState(undefined);
+  const { url, setUrl, handleUrlChange, handleUrlOpenNewTabChange } =
+    useUrlChange(setPreviewSection, idSection, setting);
 
-  const handleChangeScrollTarget = (selectedOption) => {
-    setSelectedOptionScrollTarget(selectedOption);
+  const {
+    whatApps,
+    setWhatApps,
+    handlePhoneNumberChange,
+    handleMessageChange,
+    handleUrlOpenNewTabWaChange,
+  } = useWhatAppsChange(setPreviewSection, idSection, setting);
 
-    resetUrlValue();
-    resetWhatAppsValue();
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === idSection
-          ? {
-              ...item,
-              content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
-                  ? {
-                      ...contentItem,
-                      target: {
-                        ...contentItem.target,
-                        whatApps,
-                        url,
-                        scrollTarget: {
-                          id: selectedOption.id,
-                          value: selectedOption.value,
-                          label: selectedOption.label,
-                        },
-                      },
-                    }
-                  : contentItem
-              ),
-            }
-          : item
-      )
-    );
-  };
+  const {
+    selectedOptionScrollTarget,
+    setSelectedOptionScrollTarget,
+    handleChangeScrollTarget,
+  } = useSCrollTargetChange(setPreviewSection, idSection, setting);
 
   useEffect(() => {
     if (selectedOption && selectedOption.value === "scroll-target") {
@@ -74,9 +57,6 @@ export const AddImages = ({ idSection, defaultSection, setPreviewSection }) => {
                     ? {
                         ...contentItem,
                         target: {
-                          ...contentItem.target,
-                          whatApps,
-                          url,
                           scrollTarget: optionsScrollTarget[0],
                         },
                       }
@@ -92,27 +72,9 @@ export const AddImages = ({ idSection, defaultSection, setPreviewSection }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOption]);
 
-  const handleChange = (selectedOptionValue) => {
+  const handleChangeOptions = (selectedOptionValue) => {
     setSelectedOption(selectedOptionValue);
-
     if (!selectedOptionValue.value) {
-      const resetTarget = {
-        url: {
-          url: "",
-          isOpenNewTab: false,
-        },
-        whatApps: {
-          phoneNumber: "",
-          message: "",
-          isOpenNewTab: false,
-        },
-        scrollTarget: {
-          id: "",
-          value: "",
-          label: "",
-        },
-      };
-
       setPreviewSection((arr) =>
         arr.map((item) =>
           String(item.id) === idSection
@@ -122,7 +84,7 @@ export const AddImages = ({ idSection, defaultSection, setPreviewSection }) => {
                   String(contentItem.id) === String(setting.id)
                     ? {
                         ...contentItem,
-                        target: resetTarget,
+                        target: {},
                       }
                     : contentItem
                 ),
@@ -132,6 +94,10 @@ export const AddImages = ({ idSection, defaultSection, setPreviewSection }) => {
       );
       setSelectedOptionScrollTarget(undefined);
     }
+
+    setWhatApps({});
+    setUrl({});
+    setSelectedOptionScrollTarget(undefined);
   };
 
   const handleFileUpload = () => {
@@ -202,204 +168,6 @@ export const AddImages = ({ idSection, defaultSection, setPreviewSection }) => {
     );
   };
 
-  const resetWhatAppsValue = () => {
-    setWhatApps({
-      phoneNumber: "",
-      message: "",
-      isOpenNewTab: false,
-    });
-  };
-
-  const resetUrlValue = () => {
-    setUrl({
-      url: "",
-      isOpenNewTab: false,
-    });
-  };
-
-  const resetScrolltargetValue = () => {
-    setScrollTarget({
-      id: "",
-      value: "",
-      label: "",
-    });
-  };
-
-  const handleUrlChange = (value) => {
-    resetWhatAppsValue();
-    resetScrolltargetValue();
-    setUrl((prevValue) => ({
-      ...prevValue,
-      url: value,
-    }));
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === idSection
-          ? {
-              ...item,
-              content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
-                  ? {
-                      ...contentItem,
-                      target: {
-                        ...contentItem.target,
-                        whatApps,
-                        scrollTarget,
-                        url: {
-                          ...contentItem.target.url,
-                          url: value,
-                        },
-                      },
-                    }
-                  : contentItem
-              ),
-            }
-          : item
-      )
-    );
-  };
-
-  const handleUrlOpenNewTabChange = (value) => {
-    resetWhatAppsValue();
-    resetScrolltargetValue();
-    setUrl((prevValue) => ({
-      ...prevValue,
-      isOpenNewTab: value,
-    }));
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === idSection
-          ? {
-              ...item,
-              content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
-                  ? {
-                      ...contentItem,
-                      target: {
-                        ...contentItem.target,
-                        whatApps,
-                        scrollTarget,
-                        url: {
-                          ...contentItem.target.url,
-                          isOpenNewTab: value,
-                        },
-                      },
-                    }
-                  : contentItem
-              ),
-            }
-          : item
-      )
-    );
-  };
-
-  const handlePhoneNumberChange = (value) => {
-    resetUrlValue();
-    resetScrolltargetValue();
-    setWhatApps((prevValue) => ({
-      ...prevValue,
-      phoneNumber: value,
-    }));
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === idSection
-          ? {
-              ...item,
-              content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
-                  ? {
-                      ...contentItem,
-                      target: {
-                        ...contentItem.target,
-                        url,
-                        scrollTarget,
-                        whatApps: {
-                          ...contentItem.target.whatApps,
-                          phoneNumber: value,
-                        },
-                      },
-                    }
-                  : contentItem
-              ),
-            }
-          : item
-      )
-    );
-  };
-
-  const handleMessageChange = (value) => {
-    resetUrlValue();
-    resetScrolltargetValue();
-    setWhatApps((prevValue) => ({
-      ...prevValue,
-      message: value,
-    }));
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === idSection
-          ? {
-              ...item,
-              content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
-                  ? {
-                      ...contentItem,
-                      target: {
-                        ...contentItem.target,
-                        url,
-                        scrollTarget,
-                        whatApps: {
-                          ...contentItem.target.whatApps,
-                          message: value,
-                        },
-                      },
-                    }
-                  : contentItem
-              ),
-            }
-          : item
-      )
-    );
-  };
-
-  const handleUrlOpenNewTabWaChange = (value) => {
-    resetUrlValue();
-    resetScrolltargetValue();
-    setWhatApps((prevValue) => ({
-      ...prevValue,
-      isOpenNewTab: value,
-    }));
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === idSection
-          ? {
-              ...item,
-              content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
-                  ? {
-                      ...contentItem,
-                      target: {
-                        ...contentItem.target,
-                        url,
-                        scrollTarget,
-                        whatApps: {
-                          ...contentItem.target.whatApps,
-                          isOpenNewTab: value,
-                        },
-                      },
-                    }
-                  : contentItem
-              ),
-            }
-          : item
-      )
-    );
-  };
-
   const handleAddContent = () => {
     let uniqueId = createUniqueID(defaultSection);
     let payload = {
@@ -408,22 +176,7 @@ export const AddImages = ({ idSection, defaultSection, setPreviewSection }) => {
         image: imageUrl,
         alt,
       },
-      target: {
-        url: {
-          url: "",
-          isOpenNewTab: false,
-        },
-        whatApps: {
-          phoneNumber: "",
-          message: "",
-          isOpenNewTab: false,
-        },
-        scrollTarget: {
-          id: "",
-          value: "",
-          label: "",
-        },
-      },
+      target: {},
     };
 
     setPreviewSection((prevSections) =>
@@ -441,17 +194,6 @@ export const AddImages = ({ idSection, defaultSection, setPreviewSection }) => {
     handleAddContent();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const customStyles = {
-    groupHeading: (provided) => ({
-      ...provided,
-      fontWeight: "bold",
-    }),
-    control: (baseStyles, state) => ({
-      ...baseStyles,
-      cursor: "text",
-    }),
-  };
 
   return (
     <CCard
@@ -487,148 +229,47 @@ export const AddImages = ({ idSection, defaultSection, setPreviewSection }) => {
           </CButton>
         </div>
 
-        <form>
-          <div className="form-group">
-            <label>Alt</label>
-            <input
-              value={alt}
-              onChange={(event) => handleAltChange(event.target.value)}
-              type="text"
-              className="form-control"
-            />
-          </div>
+        <Input
+          label="Alt"
+          value={alt}
+          onChange={(event) => handleAltChange(event.target.value)}
+          type="text"
+        />
 
-          <div className="form-group ">
-            <label>Target</label>
-            <Select
-              theme={(theme) => ({
-                ...theme,
-                colors: {
-                  ...theme.colors,
-                  primary: "#FED4C6",
-                  // Set the color when focused
-                },
-              })}
-              classNames={{
-                control: (state) =>
-                  state.isFocused ? "rounded  border-primary" : "rounded",
-              }}
-              options={optionsTarget}
-              styles={customStyles}
-              onChange={handleChange}
-              isSearchable={false}
-              value={selectedOption}
-            />
-          </div>
+        <form>
+          <SelectOptions
+            label="Target"
+            options={optionsTarget}
+            onChange={handleChangeOptions}
+            value={selectedOption}
+            width="100"
+          />
 
           {selectedOption?.value === "url" && (
-            <div className="form-group">
-              <label>URL</label>
-              <input
-                value={url.url}
-                onChange={(event) => handleUrlChange(event.target.value)}
-                type="text"
-                className="form-control"
-              />
-
-              <div className="d-flex align-items-center my-1">
-                <input
-                  checked={url.isOpenNewTab}
-                  onChange={(event) =>
-                    handleUrlOpenNewTabChange(event.target.checked)
-                  }
-                  style={{ cursor: "pointer" }}
-                  type="checkbox"
-                />
-                <div className="ml-1">Buka di tab baru</div>
-              </div>
-            </div>
+            <UrlInput
+              id="urlOpenNewTab"
+              url={url}
+              handleUrlChange={handleUrlChange}
+              handleUrlOpenNewTabChange={handleUrlOpenNewTabChange}
+            />
           )}
 
           {selectedOption?.value === "whatApps" && (
-            <>
-              <div className="form-group">
-                <div className="d-flex align-items-center mb-2">
-                  <label className="p-0 m-0">Nomor Telepon</label>
-                  <CTooltip content="Aka langsung membuka aplikasi Whatapps untuk memulai percakapan dengan nomor tertera ">
-                    <FaCircleInfo style={{ marginLeft: 4 }} size={12} />
-                  </CTooltip>
-                </div>
-
-                <div className="input-group">
-                  <div className="input-group-prepend">
-                    <span className="input-group-text" id="basic-addon1">
-                      +62
-                    </span>
-                    <input
-                      style={{ borderRadius: "0px 0.5rem 0.5rem 0px" }}
-                      aria-describedby="basic-addon1"
-                      placeholder="8114002323"
-                      value={whatApps.phoneNumber}
-                      onChange={(event) =>
-                        handlePhoneNumberChange(event.target.value)
-                      }
-                      type="number"
-                      className="form-control"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Pesan (Opsional)</label>
-                <input
-                  placeholder="Tuliskan pesan kamu di sini"
-                  value={whatApps.message}
-                  onChange={(event) => handleMessageChange(event.target.value)}
-                  type="text"
-                  className="form-control"
-                />
-                <div className="d-flex align-items-center my-1">
-                  <input
-                    checked={whatApps.isOpenNewTab}
-                    onChange={(event) =>
-                      handleUrlOpenNewTabWaChange(event.target.checked)
-                    }
-                    style={{ cursor: "pointer" }}
-                    type="checkbox"
-                  />
-                  <div className="ml-1">Buka di tab baru</div>
-                </div>
-              </div>
-            </>
+            <WhatsAppInput
+              id="waOpenNewTab"
+              whatApps={whatApps}
+              handlePhoneNumberChange={handlePhoneNumberChange}
+              handleMessageChange={handleMessageChange}
+              handleUrlOpenNewTabWaChange={handleUrlOpenNewTabWaChange}
+            />
           )}
 
           {selectedOption?.value === "scroll-target" && (
-            <div className="form-group ">
-              <div className="d-flex align-items-center mb-2">
-                <label className="p-0 m-0">Target</label>
-                <CTooltip
-                  content={`Untuk menggunakan tipe link ini, mohon tambahkan seksi "Scroll Target di halaman ini" `}
-                >
-                  <FaCircleInfo style={{ marginLeft: 4 }} size={12} />
-                </CTooltip>
-              </div>
-              <Select
-                theme={(theme) => ({
-                  ...theme,
-                  colors: {
-                    ...theme.colors,
-                    primary: "#FED4C6",
-                    // Set the color when focused
-                  },
-                })}
-                classNames={{
-                  control: (state) =>
-                    state.isFocused ? "rounded  border-primary" : "rounded",
-                }}
-                options={optionsScrollTarget}
-                styles={customStyles}
-                onChange={handleChangeScrollTarget}
-                isSearchable={false}
-                value={selectedOptionScrollTarget}
-              />
-            </div>
+            <ScrollTargetInput
+              optionsScrollTarget={optionsScrollTarget}
+              handleChangeScrollTarget={handleChangeScrollTarget}
+              selectedOptionScrollTarget={selectedOptionScrollTarget}
+            />
           )}
         </form>
 

@@ -12,7 +12,6 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import Select from "react-select";
 
 import image from "../../../../../assets/action-figure.jpg";
 
@@ -22,8 +21,7 @@ import { EditImages } from "./EditImages";
 import { ImagesList } from "./ImagesList";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import { IoMdImages } from "react-icons/io";
-import { useDispatch } from "react-redux";
-import { setLandingPageSection } from "../../../../../redux/modules/custom-landing-page/reducer";
+import SelectOptions from "../../common/SelectOptions";
 
 const contents = [
   {
@@ -31,75 +29,30 @@ const contents = [
     content: {
       image: image,
     },
-    target: {
-      url: {
-        url: "",
-        isOpenNewTab: false,
-      },
-      whatApps: {
-        phoneNumber: "",
-        message: "",
-        isOpenNewTab: false,
-      },
-      scrollTarget: {
-        id: "",
-        value: "",
-        label: "",
-      },
-    },
+    target: {},
   },
   {
     id: "adgdawdw",
     content: {
       image: image,
     },
-    target: {
-      url: {
-        url: "",
-        isOpenNewTab: false,
-      },
-      whatApps: {
-        phoneNumber: "",
-        message: "",
-        isOpenNewTab: false,
-      },
-      scrollTarget: {
-        id: "",
-        value: "",
-        label: "",
-      },
-    },
+    target: {},
   },
   {
     id: "feqawd",
     content: {
       image: image,
     },
-    target: {
-      url: {
-        url: "",
-        isOpenNewTab: false,
-      },
-      whatApps: {
-        phoneNumber: "",
-        message: "",
-        isOpenNewTab: false,
-      },
-      scrollTarget: {
-        id: "",
-        value: "",
-        label: "",
-      },
-    },
+    target: {},
   },
 ];
 
 export const distanceOptions = [
-  { value: 0, label: "0" },
-  { value: 1, label: "1" },
-  { value: 2, label: "2" },
-  { value: 3, label: "3" },
-  { value: 4, label: "4" },
+  { value: "0", label: "0" },
+  { value: "1", label: "1" },
+  { value: "2", label: "2" },
+  { value: "3", label: "3" },
+  { value: "4", label: "4" },
 ];
 
 export const maxColumnOptions = [
@@ -138,22 +91,9 @@ export const aspectRatioOptions = [
   },
 ];
 
-export const customStyles = {
-  groupHeading: (provided) => ({
-    ...provided,
-    fontWeight: "bold",
-  }),
-  control: (baseStyles, state) => ({
-    ...baseStyles,
-    cursor: "text",
-  }),
-};
-
 const ListImagesControl = ({
   previewSection,
   setPreviewSection,
-  sections,
-  setSections,
   isShowContent,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
@@ -164,11 +104,13 @@ const ListImagesControl = ({
 
   const [setting, setSetting] = useState({});
 
-  const dispatch = useDispatch();
-
-  const [selectedDistance, setSelectedDistance] = useState(undefined);
-  const [selectedMaxColumn, setSelectedMaxColumn] = useState(undefined);
-  const [selectedImageRatio, setSelectedImageRatio] = useState(undefined);
+  const [selectedDistance, setSelectedDistance] = useState(distanceOptions[2]);
+  const [selectedMaxColumn, setSelectedMaxColumn] = useState(
+    maxColumnOptions[1]
+  );
+  const [selectedImageRatio, setSelectedImageRatio] = useState(
+    aspectRatioOptions[0].options[0]
+  );
 
   const handleChangeDistance = (selectedOption) => {
     setSelectedDistance(selectedOption);
@@ -258,10 +200,8 @@ const ListImagesControl = ({
     if (isAddContent || isEditing) {
       setIsAddContent(false);
       setIsEditing(false);
-      // dispatch(setLandingPageSection(previewSection));
     } else {
       isShowContent(false);
-      // dispatch(setLandingPageSection(previewSection));
     }
   };
 
@@ -293,7 +233,7 @@ const ListImagesControl = ({
       icon: <IoMdImages size={20} />,
       content: defaultSection,
       wrapperStyle: {
-        paddingX: 2,
+        paddingX: "2",
         maxColumn: "16.66%",
         aspectRatio: 1 / 1,
       },
@@ -413,92 +353,30 @@ const ListImagesControl = ({
                         style={{ gap: 10 }}
                         className="d-flex align-items-center "
                       >
-                        <div className="form-group w-50 ">
-                          <label>Kolom Maksimal</label>
-                          <Select
-                            theme={(theme) => ({
-                              ...theme,
-                              colors: {
-                                ...theme.colors,
-                                primary: "#FED4C6",
-                                // Set the color when focused
-                              },
-                            })}
-                            classNames={{
-                              control: (state) =>
-                                state.isFocused
-                                  ? "rounded  border-primary"
-                                  : "rounded",
-                            }}
-                            options={maxColumnOptions}
-                            styles={customStyles}
-                            onChange={handleChangeMaxColumn}
-                            isSearchable={false}
-                            value={selectedMaxColumn}
-                            defaultValue={{
-                              value: "16.66%",
-                              label: "6",
-                            }}
-                          />
-                        </div>
-                        <div className="form-group w-50 ">
-                          <label>Rasio Gambar</label>
-                          <Select
-                            theme={(theme) => ({
-                              ...theme,
-                              colors: {
-                                ...theme.colors,
-                                primary: "#FED4C6",
-                                // Set the color when focused
-                              },
-                            })}
-                            classNames={{
-                              control: (state) =>
-                                state.isFocused
-                                  ? "rounded  border-primary"
-                                  : "rounded",
-                            }}
-                            options={aspectRatioOptions}
-                            styles={customStyles}
-                            onChange={handleChangeImageRatio}
-                            isSearchable={false}
-                            value={selectedImageRatio}
-                            defaultValue={{
-                              value: 1 / 1,
-                              label: "1:1",
-                            }}
-                          />
-                        </div>
+                        <SelectOptions
+                          label="Kolom Maksimal"
+                          options={maxColumnOptions}
+                          onChange={handleChangeMaxColumn}
+                          value={selectedMaxColumn}
+                          width="50"
+                        />
+
+                        <SelectOptions
+                          label="Rasio Gambar"
+                          options={aspectRatioOptions}
+                          onChange={handleChangeImageRatio}
+                          value={selectedImageRatio}
+                          width="50"
+                        />
                       </div>
                       <div>
-                        <div className="form-group w-50 ">
-                          <label>Jarak</label>
-                          <Select
-                            theme={(theme) => ({
-                              ...theme,
-                              colors: {
-                                ...theme.colors,
-                                primary: "#FED4C6",
-                                // Set the color when focused
-                              },
-                            })}
-                            classNames={{
-                              control: (state) =>
-                                state.isFocused
-                                  ? "rounded  border-primary"
-                                  : "rounded",
-                            }}
-                            options={distanceOptions}
-                            styles={customStyles}
-                            onChange={handleChangeDistance}
-                            isSearchable={false}
-                            value={selectedDistance}
-                            defaultValue={{
-                              value: 2,
-                              label: "2",
-                            }}
-                          />
-                        </div>
+                        <SelectOptions
+                          label="Jarak"
+                          options={distanceOptions}
+                          onChange={handleChangeDistance}
+                          value={selectedDistance}
+                          width="50"
+                        />
                       </div>
 
                       <div>

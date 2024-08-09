@@ -15,7 +15,6 @@ export const ImagesList = ({
   moveSection,
   editSection,
   removeSection,
-  // focusContent,
 }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({

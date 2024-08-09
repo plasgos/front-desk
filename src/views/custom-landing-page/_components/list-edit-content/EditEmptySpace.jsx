@@ -1,23 +1,18 @@
 import { CButton, CCol, CRow } from "@coreui/react";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setLandingPageSection } from "../../../../redux/modules/custom-landing-page/reducer";
 
 const EditEmptySpace = ({
-  id,
-  heightContent,
-  previewSection,
+  curentSection,
   setPreviewSection,
   isShowContent,
-  setSections,
   sectionBeforeEdit,
 }) => {
-  const [height, setHeight] = useState(heightContent);
+  const [height, setHeight] = useState(curentSection.content.height);
   const handleChange = (event) => {
     setHeight(+event.target.value);
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(id)
+        String(item.id) === String(curentSection.id)
           ? {
               ...item,
               content: {
@@ -33,7 +28,7 @@ const EditEmptySpace = ({
     setHeight(+event.target.value);
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === String(id)
+        String(item.id) === String(curentSection.id)
           ? {
               ...item,
               content: {
@@ -50,7 +45,7 @@ const EditEmptySpace = ({
       setHeight(1200);
       setPreviewSection((arr) =>
         arr.map((item) =>
-          String(item.id) === String(id)
+          String(item.id) === String(curentSection.id)
             ? {
                 ...item,
                 content: {
@@ -64,7 +59,7 @@ const EditEmptySpace = ({
       setHeight(10);
       setPreviewSection((arr) =>
         arr.map((item) =>
-          String(item.id) === String(id)
+          String(item.id) === String(curentSection.id)
             ? {
                 ...item,
                 content: {
@@ -86,12 +81,9 @@ const EditEmptySpace = ({
     setPreviewSection([...sectionBeforeEdit]);
   };
 
-  const dispatch = useDispatch();
-
   const handelConfirm = () => {
     handleSetHeightWhenBlur();
     isShowContent("");
-    // dispatch(setLandingPageSection(previewSection));
   };
 
   return (

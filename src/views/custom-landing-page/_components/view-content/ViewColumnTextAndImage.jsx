@@ -34,22 +34,22 @@ const ViewColumnTextAndImage = forwardRef(
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
         }}
-        className="flex flex-row justify-center items-center flex-wrap p-3 gap-y-3"
+        className="tw-flex tw-flex-row tw-justify-center tw-items-center tw-flex-wrap tw-p-3 tw-gap-y-3"
       >
         {content.content.map((section) => (
           <React.Fragment key={section.id}>
-            {section.target?.url?.url ? (
+            {section.target && section.target?.url?.url ? (
               <div
                 className={
                   isPreview
-                    ? `flex  ${
+                    ? `tw-flex  ${
                         width === "100%" || width >= 640
-                          ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                          ? `tw-w-[${content?.wrapperStyle?.maxColumn}]`
                           : width > 320 && width < 640
-                          ? "w-1/3"
-                          : "w-full"
+                          ? "tw-w-1/3"
+                          : "tw-w-full"
                       }  `
-                    : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
+                    : `tw-flex tw-w-full sm:tw-w-1/3 md:tw-w-[${content?.wrapperStyle?.maxColumn}] `
                 }
               >
                 <a
@@ -67,10 +67,10 @@ const ViewColumnTextAndImage = forwardRef(
                   }}
                 >
                   <div
-                    className={`w-full text-center px-${content?.wrapperStyle?.paddingX}  `}
+                    className={`tw-w-full tw-text-center tw-px-${content?.wrapperStyle?.paddingX}  `}
                   >
                     <div
-                      className={`text-[${content?.wrapperStyle?.colorTitle}] text-[${content?.wrapperStyle?.fontSizeTitle}px] tw-leading-normal`}
+                      className={`tw-text-[${content?.wrapperStyle?.colorTitle}] tw-text-[${content?.wrapperStyle?.fontSizeTitle}] tw-leading-normal`}
                     >
                       {section.content?.title}
                     </div>
@@ -87,7 +87,7 @@ const ViewColumnTextAndImage = forwardRef(
                       }}
                     />
                     <div
-                      className={`text-[${content?.wrapperStyle?.colorDescription}]`}
+                      className={`tw-text-[${content?.wrapperStyle?.colorDescription}]`}
                       style={{ lineHeight: 1.4 }}
                       dangerouslySetInnerHTML={{
                         __html: section.content?.description,
@@ -96,18 +96,18 @@ const ViewColumnTextAndImage = forwardRef(
                   </div>
                 </a>
               </div>
-            ) : section.target?.whatApps?.phoneNumber ? (
+            ) : section.target && section.target?.whatApps?.phoneNumber ? (
               <div
                 className={
                   isPreview
-                    ? `flex  ${
+                    ? `tw-flex  ${
                         width === "100%" || width >= 640
-                          ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                          ? `tw-w-[${content?.wrapperStyle?.maxColumn}]`
                           : width > 320 && width < 640
-                          ? "w-1/3"
-                          : "w-full"
+                          ? "tw-w-1/3"
+                          : "tw-w-full"
                       }  `
-                    : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
+                    : `tw-flex tw-w-full sm:tw-w-1/3 md:tw-w-[${content?.wrapperStyle?.maxColumn}] `
                 }
               >
                 <a
@@ -129,10 +129,10 @@ const ViewColumnTextAndImage = forwardRef(
                   }}
                 >
                   <div
-                    className={`w-full text-center px-${content?.wrapperStyle?.paddingX}  `}
+                    className={`tw-w-full tw-text-center tw-px-${content?.wrapperStyle?.paddingX}`}
                   >
                     <div
-                      className={`text-[${content?.wrapperStyle?.colorTitle}] text-[${content?.wrapperStyle?.fontSizeTitle}px] tw-leading-normal`}
+                      className={`tw-text-[${content?.wrapperStyle?.colorTitle}] tw-text-[${content?.wrapperStyle?.fontSizeTitle}] tw-leading-normal`}
                     >
                       {section.content?.title}
                     </div>
@@ -149,7 +149,7 @@ const ViewColumnTextAndImage = forwardRef(
                       }}
                     />
                     <div
-                      className={`text-[${content?.wrapperStyle?.colorDescription}]`}
+                      className={`tw-text-[${content?.wrapperStyle?.colorDescription}]`}
                       style={{ lineHeight: 1.4 }}
                       dangerouslySetInnerHTML={{
                         __html: section.content?.description,
@@ -158,18 +158,18 @@ const ViewColumnTextAndImage = forwardRef(
                   </div>
                 </a>
               </div>
-            ) : section.target?.scrollTarget?.value ? (
+            ) : section.target && section.target?.scrollTarget?.value ? (
               <div
                 className={
                   isPreview
-                    ? `flex  ${
+                    ? `tw-flex  ${
                         width === "100%" || width >= 640
-                          ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                          ? `tw-w-[${content?.wrapperStyle?.maxColumn}]`
                           : width > 320 && width < 640
-                          ? "w-1/3"
-                          : "w-full"
+                          ? "tw-w-1/3"
+                          : "tw-w-full"
                       }  `
-                    : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
+                    : `tw-flex tw-w-full sm:tw-w-1/3 md:tw-w-[${content?.wrapperStyle?.maxColumn}] `
                 }
               >
                 <a
@@ -186,15 +186,15 @@ const ViewColumnTextAndImage = forwardRef(
                     onClick={() =>
                       handleScrollToTop(section.target.scrollTarget.value)
                     }
-                    className={`w-full text-center px-${
+                    className={`tw-w-full tw-text-center tw-px-${
                       content?.wrapperStyle?.paddingX
                     } ${
                       section.target.scrollTarget.value === "back-to-top" &&
-                      "cursor-pointer"
+                      "tw-cursor-pointer"
                     }   `}
                   >
                     <div
-                      className={`text-[${content?.wrapperStyle?.colorTitle}] text-[${content?.wrapperStyle?.fontSizeTitle}px] tw-leading-normal`}
+                      className={`tw-text-[${content?.wrapperStyle?.colorTitle}] tw-text-[${content?.wrapperStyle?.fontSizeTitle}] tw-leading-normal`}
                     >
                       {section.content?.title}
                     </div>
@@ -211,7 +211,7 @@ const ViewColumnTextAndImage = forwardRef(
                       }}
                     />
                     <div
-                      className={`text-[${content?.wrapperStyle?.colorDescription}]`}
+                      className={`tw-text-[${content?.wrapperStyle?.colorDescription}]`}
                       style={{ lineHeight: 1.4 }}
                       dangerouslySetInnerHTML={{
                         __html: section.content?.description,
@@ -224,21 +224,21 @@ const ViewColumnTextAndImage = forwardRef(
               <div
                 className={
                   isPreview
-                    ? `flex  ${
+                    ? `tw-flex  ${
                         width === "100%" || width >= 640
-                          ? `w-[${content?.wrapperStyle?.maxColumn}]`
+                          ? `tw-w-[${content?.wrapperStyle?.maxColumn}]`
                           : width > 320 && width < 640
-                          ? "w-1/3"
-                          : "w-full"
+                          ? "tw-w-1/3"
+                          : "tw-w-full"
                       }  `
-                    : `flex w-full sm:w-1/3 md:w-[${content?.wrapperStyle?.maxColumn}] `
+                    : `tw-flex tw-w-full sm:tw-w-1/3 md:tw-w-[${content?.wrapperStyle?.maxColumn}] `
                 }
               >
                 <div
-                  className={`w-full text-center px-${content?.wrapperStyle?.paddingX}  `}
+                  className={`tw-w-full tw-text-center tw-px-${content?.wrapperStyle?.paddingX}  `}
                 >
                   <div
-                    className={`text-[${content?.wrapperStyle?.colorTitle}] text-[${content?.wrapperStyle?.fontSizeTitle}px] tw-leading-normal`}
+                    className={`tw-text-[${content?.wrapperStyle?.colorTitle}] tw-text-[${content?.wrapperStyle?.fontSizeTitle}] tw-leading-normal`}
                   >
                     {section.content?.title}
                   </div>
@@ -255,7 +255,7 @@ const ViewColumnTextAndImage = forwardRef(
                     }}
                   />
                   <div
-                    className={`text-[${content?.wrapperStyle?.colorDescription}]`}
+                    className={`tw-text-[${content?.wrapperStyle?.colorDescription}]`}
                     style={{ lineHeight: 1.4 }}
                     dangerouslySetInnerHTML={{
                       __html: section.content?.description,

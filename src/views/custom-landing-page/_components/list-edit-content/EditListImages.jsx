@@ -12,7 +12,6 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import Select from "react-select";
 
 import { IoAdd } from "react-icons/io5";
 import { ImagesList } from "../list-add-content/list-images/ImagesList";
@@ -23,9 +22,10 @@ import {
   distanceOptions,
   maxColumnOptions,
 } from "../list-add-content/list-images/ListImagesControl";
+import SelectOptions from "../common/SelectOptions";
 
 const EditListImages = ({
-  id,
+  curentSection,
   previewSection,
   setPreviewSection,
   isShowContent,
@@ -40,11 +40,12 @@ const EditListImages = ({
   const [selectedDistance, setSelectedDistance] = useState(undefined);
   const [selectedMaxColumn, setSelectedMaxColumn] = useState(undefined);
   const [selectedImageRatio, setSelectedImageRatio] = useState(undefined);
+
   const handleChangeDistance = (selectedOption) => {
     setSelectedDistance(selectedOption);
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === id
+        String(item.id) === curentSection.id
           ? {
               ...item,
               wrapperStyle: {
@@ -61,7 +62,7 @@ const EditListImages = ({
     setSelectedMaxColumn(selectedOption);
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === id
+        String(item.id) === curentSection.id
           ? {
               ...item,
               wrapperStyle: {
@@ -78,7 +79,7 @@ const EditListImages = ({
     setSelectedMaxColumn(selectedOption);
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === id
+        String(item.id) === curentSection.id
           ? {
               ...item,
               wrapperStyle: {
@@ -93,7 +94,7 @@ const EditListImages = ({
 
   useEffect(() => {
     const selectedSectionToEdit = previewSection.find(
-      (section) => String(section.id) === id
+      (section) => String(section.id) === curentSection.id
     );
     if (selectedSectionToEdit) {
       const distanceOption = distanceOptions.find(
@@ -119,7 +120,7 @@ const EditListImages = ({
         setSelectedImageRatio(aspectRatioOption);
       }
     }
-  }, [id, previewSection]);
+  }, [curentSection.id, previewSection]);
 
   const handleAddContent = () => {
     setIsAddContent(true);
@@ -131,7 +132,7 @@ const EditListImages = ({
       setIsEditing(false);
       setPreviewSection((prevSections) =>
         prevSections.map((section) =>
-          section.id === id
+          section.id === curentSection.id
             ? {
                 ...section,
                 content: section.content.slice(0, -1),
@@ -226,17 +227,6 @@ const EditListImages = ({
     [moveSection, editSection, removeSection]
   );
 
-  const customStyles = {
-    groupHeading: (provided) => ({
-      ...provided,
-      fontWeight: "bold",
-    }),
-    control: (baseStyles, state) => ({
-      ...baseStyles,
-      cursor: "text",
-    }),
-  };
-
   return (
     <div>
       <CRow>
@@ -275,7 +265,7 @@ const EditListImages = ({
                 <CTabPane className="p-1" data-tab="kolom">
                   {isAddContent && (
                     <AddImages
-                      idSection={id}
+                      idSection={curentSection.id}
                       defaultSection={previewSection}
                       setPreviewSection={setPreviewSection}
                     />
@@ -283,7 +273,7 @@ const EditListImages = ({
 
                   {isEditing && (
                     <EditImages
-                      idSection={id}
+                      idSection={curentSection.id}
                       selectedSectionToEdit={selectedSection}
                       setPreviewSection={setPreviewSection}
                     />
@@ -295,84 +285,35 @@ const EditListImages = ({
                         style={{ gap: 10 }}
                         className="d-flex align-items-center "
                       >
-                        <div className="form-group w-50 ">
-                          <label>Kolom Maksimal</label>
-                          <Select
-                            theme={(theme) => ({
-                              ...theme,
-                              colors: {
-                                ...theme.colors,
-                                primary: "#FED4C6",
-                                // Set the color when focused
-                              },
-                            })}
-                            classNames={{
-                              control: (state) =>
-                                state.isFocused
-                                  ? "rounded  border-primary"
-                                  : "rounded",
-                            }}
-                            options={maxColumnOptions}
-                            styles={customStyles}
-                            onChange={handleChangeMaxColumn}
-                            isSearchable={false}
-                            value={selectedMaxColumn}
-                          />
-                        </div>
-                        <div className="form-group w-50 ">
-                          <label>Rasio Gambar</label>
-                          <Select
-                            theme={(theme) => ({
-                              ...theme,
-                              colors: {
-                                ...theme.colors,
-                                primary: "#FED4C6",
-                                // Set the color when focused
-                              },
-                            })}
-                            classNames={{
-                              control: (state) =>
-                                state.isFocused
-                                  ? "rounded  border-primary"
-                                  : "rounded",
-                            }}
-                            options={aspectRatioOptions}
-                            styles={customStyles}
-                            onChange={handleChangeImageRatio}
-                            isSearchable={false}
-                            value={selectedImageRatio}
-                          />
-                        </div>
+                        <SelectOptions
+                          label="Kolom Maksimal"
+                          options={maxColumnOptions}
+                          onChange={handleChangeMaxColumn}
+                          value={selectedMaxColumn}
+                          width="50"
+                        />
+
+                        <SelectOptions
+                          label="Rasio Gambar"
+                          options={aspectRatioOptions}
+                          onChange={handleChangeImageRatio}
+                          value={selectedImageRatio}
+                          width="50"
+                        />
                       </div>
                       <div>
-                        <div className="form-group w-50 ">
-                          <label>Jarak</label>
-                          <Select
-                            theme={(theme) => ({
-                              ...theme,
-                              colors: {
-                                ...theme.colors,
-                                primary: "#FED4C6",
-                                // Set the color when focused
-                              },
-                            })}
-                            classNames={{
-                              control: (state) =>
-                                state.isFocused
-                                  ? "rounded  border-primary"
-                                  : "rounded",
-                            }}
-                            options={distanceOptions}
-                            styles={customStyles}
-                            onChange={handleChangeDistance}
-                            isSearchable={false}
-                            value={selectedDistance}
-                          />
-                        </div>
+                        <SelectOptions
+                          label="Jarak"
+                          options={distanceOptions}
+                          onChange={handleChangeDistance}
+                          value={selectedDistance}
+                          width="50"
+                        />
                       </div>
+
                       <div>
                         {previewSection
-                          .filter((section) => section.id === id)
+                          .filter((section) => section.id === curentSection.id)
                           .map((section, i) => renderSection(section, i))}
                       </div>
                       <CCard

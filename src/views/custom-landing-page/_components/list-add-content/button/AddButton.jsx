@@ -410,14 +410,12 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
         />
       </div>
 
-      <div className="form-group mb-2">
-        <Input
-          label="Teks"
-          value={title}
-          onChange={(event) => handleTextChange(event.target.value)}
-          type="text"
-        />
-      </div>
+      <Input
+        label="Teks"
+        value={title}
+        onChange={(event) => handleTextChange(event.target.value)}
+        type="text"
+      />
 
       <h5>Link</h5>
 

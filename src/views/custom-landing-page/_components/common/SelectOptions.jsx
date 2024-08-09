@@ -1,7 +1,7 @@
 import React from "react";
 import Select from "react-select";
 
-const customStyles = {
+const basicStyles = {
   groupHeading: (provided) => ({
     ...provided,
     fontWeight: "bold",
@@ -12,7 +12,15 @@ const customStyles = {
   }),
 };
 
-const SelectOptions = ({ options, onChange, value, label, width = "50" }) => {
+const SelectOptions = ({
+  options,
+  onChange,
+  value,
+  label,
+  width = "50",
+  customStyles,
+  positionShown,
+}) => {
   return (
     <div className={`form-group w-${width} `}>
       <label>{label}</label>
@@ -30,10 +38,11 @@ const SelectOptions = ({ options, onChange, value, label, width = "50" }) => {
             state.isFocused ? "rounded  border-primary" : "rounded",
         }}
         options={options}
-        styles={customStyles}
+        styles={customStyles ? customStyles : basicStyles}
         onChange={onChange}
         isSearchable={false}
         value={value}
+        menuPlacement={positionShown ? positionShown : "auto"}
       />
     </div>
   );

@@ -10,8 +10,6 @@ export const useSCrollTargetChange = (
   const handleChangeScrollTarget = (selectedOption) => {
     setSelectedOptionScrollTarget(selectedOption);
 
-    console.log("SIAPA YANG SET LAGI");
-
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === idSection

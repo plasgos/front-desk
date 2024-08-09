@@ -13,11 +13,11 @@ const ViewText = forwardRef(
             ...(isFocused && { border: "2px solid green" }),
           })
         }
-        className={`${content?.style?.textAlign} my-2`}
+        className={`${content?.style?.textAlign} tw-my-2`}
       >
         {content.editorHtml && (
           <div
-            className="p-2"
+            className="tw-p-2"
             dangerouslySetInnerHTML={{ __html: content.editorHtml }}
           />
         )}
