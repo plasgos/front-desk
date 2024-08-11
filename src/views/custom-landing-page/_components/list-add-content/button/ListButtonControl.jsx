@@ -186,10 +186,8 @@ const ListButtonControl = ({
     if (isAddContent || isEditing) {
       setIsAddContent(false);
       setIsEditing(false);
-      // dispatch(setLandingPageSection(previewSection));
     } else {
       isShowContent(false);
-      // dispatch(setLandingPageSection(previewSection));
     }
   };
 
@@ -218,6 +216,7 @@ const ListButtonControl = ({
     let payload = {
       id: uniqueId,
       name: "button",
+      title: "Tombol",
       icon: <RxSwitch size={20} />,
       content: contents,
       wrapperStyle: {

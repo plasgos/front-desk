@@ -95,6 +95,7 @@ const EmptySpace = ({
     let payload = {
       id: uniqueId,
       name: "empty-space",
+      title: "Empty Space",
       icon: <PiArrowsDownUpLight size={24} />,
       content: {
         height,
@@ -143,7 +144,7 @@ const EmptySpace = ({
           </div>
         </CCol>
 
-        <CCol md={9} className="p-0">
+        <CCol md={8} className="p-0">
           <div style={{ gap: 10 }} className="d-flex align-items-center">
             <div className="text-secondary">10</div>
             <input

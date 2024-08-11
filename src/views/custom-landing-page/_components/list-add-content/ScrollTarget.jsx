@@ -91,6 +91,7 @@ const ScrollTarget = ({
         let payload = {
           id: uniqueId,
           name: "scroll-target",
+          title: "Scrol Target",
           icon: <PiTargetDuotone size={24} />,
           content: {
             name,

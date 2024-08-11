@@ -483,7 +483,7 @@ const CustomLandingPage = () => {
     <>
       <div>
         <CRow>
-          <CCol md="4">
+          <CCol className="p-0" md="4">
             <div style={{ height: "88.10%" }}>
               {!editing && !isAddContent && (
                 <CTabs activeTab="konten">

@@ -268,6 +268,7 @@ const ColumnSection = ({
     let payload = {
       id: uniqueId,
       name: "column-text-and-image",
+      title: "Column Text And Image",
       icon: <MdViewColumn size={20} />,
       content: defaultSection,
       wrapperStyle: {
@@ -478,6 +479,7 @@ const ColumnSection = ({
                       onChange={handleChangeFontSize}
                       value={selectedFontSize}
                       width="50"
+                      positionShown="top"
                     />
                   </div>
                 </CTabPane>

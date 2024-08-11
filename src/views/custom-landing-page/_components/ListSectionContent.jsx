@@ -94,7 +94,7 @@ export const ListSectionContent = ({
             </div>
 
             <div style={{ flexGrow: 1 }} className="capitalize">
-              {section.name}
+              {section.title}
             </div>
 
             <FaMagnifyingGlass

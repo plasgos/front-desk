@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ChromePicker } from "react-color";
 
-const ColorPicker = ({ label, initialColor, onChange }) => {
+const ColorPicker = ({ label, initialColor, onChange, flexEnd }) => {
   const [selectedColor, setSelectedColor] = useState(initialColor);
   const [showColorPicker, setShowColorPicker] = useState(false);
 
@@ -34,7 +34,11 @@ const ColorPicker = ({ label, initialColor, onChange }) => {
   };
 
   return (
-    <div className="d-flex align-items-center w-50">
+    <div
+      className={`d-flex  align-items-center ${
+        flexEnd && `${flexEnd} mr-3`
+      }  w-50`}
+    >
       <div
         onClick={toggleColorPicker}
         style={{

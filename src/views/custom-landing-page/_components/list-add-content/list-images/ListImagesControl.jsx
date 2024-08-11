@@ -230,6 +230,7 @@ const ListImagesControl = ({
     let payload = {
       id: uniqueId,
       name: "list-images",
+      title: "List Images",
       icon: <IoMdImages size={20} />,
       content: defaultSection,
       wrapperStyle: {
