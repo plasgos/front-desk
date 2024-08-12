@@ -23,12 +23,7 @@ import { createUniqueID } from "../../../../lib/unique-id";
 import { MdTextFields } from "react-icons/md";
 import ColorPicker from "../common/ColorPicker";
 
-const Text = ({
-  previewSection,
-  setPreviewSection,
-  isShowContent,
-  toggleAddContent,
-}) => {
+const Text = ({ previewSection, setPreviewSection, isShowContent }) => {
   const [editorHtml, setEditorHtml] = useState("Type your text here");
 
   const [selectAlign, setSelectAlign] = useState("text-center");
@@ -118,7 +113,6 @@ const Text = ({
   }, []);
 
   const handelCancel = () => {
-    toggleAddContent("");
     isShowContent(false);
     setPreviewSection((prevSections) =>
       prevSections.filter((section) => section.id !== settingText.id)
@@ -126,7 +120,6 @@ const Text = ({
   };
 
   const handelConfirm = () => {
-    toggleAddContent("");
     isShowContent(false);
   };
 

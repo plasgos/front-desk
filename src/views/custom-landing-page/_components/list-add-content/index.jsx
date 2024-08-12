@@ -9,7 +9,9 @@ import { IoMdImages } from "react-icons/io";
 import ListImagesControl from "./list-images/ListImagesControl";
 import ScrollTarget from "./ScrollTarget";
 import { RxSwitch } from "react-icons/rx";
+import { BsFillChatSquareQuoteFill } from "react-icons/bs";
 import ListButtonControl from "./button/ListButtonControl";
+import ListTestimonyControl from "./testimony/ListTestimonyControl";
 
 const ListContent = ({
   previewSection,
@@ -62,6 +64,12 @@ const ListContent = ({
       icon: <RxSwitch style={{ marginRight: 5 }} size={24} />,
       action: () => setAddContent("button"),
     },
+    {
+      name: "testimony",
+      title: "Testimoni / Review",
+      icon: <BsFillChatSquareQuoteFill style={{ marginRight: 5 }} size={24} />,
+      action: () => setAddContent("testimony"),
+    },
   ];
 
   return (
@@ -89,9 +97,7 @@ const ListContent = ({
         <Text
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          setSections={(value) => setSections(value)}
           isShowContent={isShowContent}
-          toggleAddContent={(value) => setAddContent(value)}
         />
       ) : null}
 
@@ -99,9 +105,7 @@ const ListContent = ({
         <ColumnSection
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          setSections={(value) => setSections(value)}
           isShowContent={isShowContent}
-          toggleAddContent={(value) => setAddContent(value)}
         />
       )}
 
@@ -109,9 +113,7 @@ const ListContent = ({
         <EmptySpace
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          setSections={(value) => setSections(value)}
           isShowContent={isShowContent}
-          toggleAddContent={(value) => setAddContent(value)}
         />
       )}
 
@@ -119,10 +121,7 @@ const ListContent = ({
         <ListImagesControl
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          sections={sections}
-          setSections={(value) => setSections(value)}
           isShowContent={isShowContent}
-          toggleAddContent={(value) => setAddContent(value)}
         />
       )}
 
@@ -130,9 +129,7 @@ const ListContent = ({
         <ScrollTarget
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          setSections={(value) => setSections(value)}
           isShowContent={isShowContent}
-          toggleAddContent={(value) => setAddContent(value)}
         />
       )}
 
@@ -140,9 +137,15 @@ const ListContent = ({
         <ListButtonControl
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          setSections={(value) => setSections(value)}
           isShowContent={isShowContent}
-          toggleAddContent={(value) => setAddContent(value)}
+        />
+      )}
+
+      {addContent === "testimony" && (
+        <ListTestimonyControl
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
         />
       )}
 

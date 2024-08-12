@@ -11,6 +11,7 @@ import SelectOptions from "../../common/SelectOptions";
 import Input from "../../common/Input";
 import ColorPicker from "../../common/ColorPicker";
 import FacebookPixel from "../../FacebookPixel";
+import { shadowOptions } from "../../SelectOptions";
 
 export const variantButton = [
   { value: "fill", label: "Fill" },
@@ -29,15 +30,6 @@ export const ButtonSizeOptions = [
   { value: "md", label: "Sedang" },
   { value: "lg", label: "Besar" },
   { value: "xl", label: "Extra Besar" },
-];
-
-export const ButtonShadowOptions = [
-  { value: undefined, label: "Tidak Ada" },
-  { value: "tw-shadow", label: "Kecil" },
-  { value: "tw-shadow-md", label: "Sedang" },
-  { value: "tw-shadow-lg", label: "Besar" },
-  { value: "tw-shadow-xl", label: "Extra Besar" },
-  { value: "tw-shadow-2xl", label: "Blur" },
 ];
 
 const AddButton = ({ idSection, sections, setPreviewSection }) => {
@@ -63,7 +55,7 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
     ButtonSizeOptions[1]
   );
   const [selectedButtonShadow, setSelectedButtonShadow] = useState(
-    ButtonShadowOptions[0]
+    shadowOptions[0]
   );
 
   const { url, setUrl, handleUrlChange, handleUrlOpenNewTabChange } =
@@ -403,7 +395,7 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
 
         <SelectOptions
           label="Bayangan"
-          options={ButtonShadowOptions}
+          options={shadowOptions}
           onChange={handleChangeButtonShadow}
           value={selectedButtonShadow}
           width="50"

@@ -28,6 +28,7 @@ import {
 } from "../list-images/ListImagesControl";
 import SelectOptions from "../../common/SelectOptions";
 import ColorPicker from "../../common/ColorPicker";
+import { fontSizeOptions } from "../../SelectOptions";
 
 const contents = [
   {
@@ -63,13 +64,6 @@ const contents = [
     },
     target: {},
   },
-];
-
-export const fontSizeOptions = [
-  { value: "16px", label: "Kecil" },
-  { value: "18px", label: "Sedang" },
-  { value: "22px", label: "Besar" },
-  { value: "25px", label: "Lebih Besar" },
 ];
 
 const ColumnSection = ({

@@ -8,12 +8,7 @@ import {
   setOptionsScrollTarget,
 } from "../../../../redux/modules/custom-landing-page/reducer";
 
-const ScrollTarget = ({
-  previewSection,
-  setPreviewSection,
-  isShowContent,
-  toggleAddContent,
-}) => {
+const ScrollTarget = ({ previewSection, setPreviewSection, isShowContent }) => {
   const [name, setName] = useState("");
   const [isCopiedLink, setIsCopiedLink] = useState(false);
   const [isCopiedAnchor, setIsCopiedAnchor] = useState(false);
@@ -114,7 +109,6 @@ const ScrollTarget = ({
   }, [name, hasAddedContent, dispatch]);
 
   const handelCancel = () => {
-    toggleAddContent("");
     isShowContent(false);
     setPreviewSection((prevSections) =>
       prevSections.filter((section) => section.id !== setting.id)
@@ -123,7 +117,6 @@ const ScrollTarget = ({
   };
 
   const handelConfirm = () => {
-    toggleAddContent("");
     isShowContent(false);
   };
 

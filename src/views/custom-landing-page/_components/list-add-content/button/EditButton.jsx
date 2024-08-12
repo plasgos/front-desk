@@ -11,11 +11,11 @@ import Input from "../../common/Input";
 import ColorPicker from "../../common/ColorPicker";
 import FacebookPixel from "../../FacebookPixel";
 import {
-  ButtonShadowOptions,
   ButtonSizeOptions,
   roundedButtonOptions,
   variantButton,
 } from "./AddButton";
+import { shadowOptions } from "../../SelectOptions";
 
 const EditButton = ({
   idSection,
@@ -61,7 +61,7 @@ const EditButton = ({
     selectedSectionToEdit
   );
   useEffect(() => {
-    const currentSelectedOptionShadow = ButtonShadowOptions.find(
+    const currentSelectedOptionShadow = shadowOptions.find(
       (opt) => opt.value === selectedSectionToEdit.content.style.shadow
     );
     if (currentSelectedOptionShadow) {
@@ -470,7 +470,7 @@ const EditButton = ({
 
         <SelectOptions
           label="Bayangan"
-          options={ButtonShadowOptions}
+          options={shadowOptions}
           onChange={handleChangeButtonShadow}
           value={selectedButtonShadow}
           width="50"

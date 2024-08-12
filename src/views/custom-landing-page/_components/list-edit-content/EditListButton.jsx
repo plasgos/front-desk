@@ -17,11 +17,11 @@ import AddButton from "../list-add-content/button/AddButton";
 import EditButton from "../list-add-content/button/EditButton";
 import SelectOptions from "../common/SelectOptions";
 import {
-  alignOptions,
   distanceOptions,
   flexOptions,
 } from "../list-add-content/button/ListButtonControl";
 import { IoAdd } from "react-icons/io5";
+import { alignOptions } from "../SelectOptions";
 
 const EditListButton = ({
   curentSection,

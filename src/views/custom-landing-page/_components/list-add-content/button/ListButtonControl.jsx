@@ -20,6 +20,7 @@ import { ButtonList } from "./ButtonList";
 import AddButton from "./AddButton";
 import SelectOptions from "../../common/SelectOptions";
 import EditButton from "./EditButton";
+import { alignOptions } from "../../SelectOptions";
 
 const contents = [
   {
@@ -45,9 +46,9 @@ const contents = [
         btnColor: "#EF5350",
         textColor: "#FFFFFF",
         variant: "fill",
-        rounded: "rounded",
+        rounded: "tw-rounded",
         buttonSize: "md",
-        shadow: "shadow",
+        shadow: "tw-shadow",
       },
     },
     target: {},
@@ -60,21 +61,6 @@ export const distanceOptions = [
   { value: "2", label: "2" },
   { value: "3", label: "3" },
   { value: "4", label: "4" },
-];
-
-export const alignOptions = [
-  {
-    value: "tw-justify-start",
-    label: "Kiri",
-  },
-  {
-    value: "tw-justify-center",
-    label: "Tengah",
-  },
-  {
-    value: "tw-justify-end",
-    label: "Kanan",
-  },
 ];
 
 export const flexOptions = [

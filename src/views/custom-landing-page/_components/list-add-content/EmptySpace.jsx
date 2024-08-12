@@ -3,12 +3,7 @@ import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../lib/unique-id";
 import { PiArrowsDownUpLight } from "react-icons/pi";
 
-const EmptySpace = ({
-  previewSection,
-  setPreviewSection,
-  isShowContent,
-  toggleAddContent,
-}) => {
+const EmptySpace = ({ previewSection, setPreviewSection, isShowContent }) => {
   const [height, setHeight] = useState(120);
   const [setting, setSetting] = useState({});
 
@@ -77,7 +72,6 @@ const EmptySpace = ({
   };
 
   const handelCancel = () => {
-    toggleAddContent("");
     isShowContent(false);
     setPreviewSection((prevSections) =>
       prevSections.filter((section) => section.id !== setting.id)
@@ -86,7 +80,6 @@ const EmptySpace = ({
 
   const handelConfirm = () => {
     handleSetHeightWhenBlur();
-    toggleAddContent("");
     isShowContent(false);
   };
 
@@ -131,8 +124,11 @@ const EmptySpace = ({
       </div>
 
       <CRow className="align-items-center">
+        <CCol md={12}>
+          <label className="mb-1 font-xs">Tinggi</label>
+        </CCol>
         <CCol md={3}>
-          <div className="input-group flex-nowrap">
+          <div className="input-group ">
             <input
               type="number"
               value={height !== 0 ? height : ""}

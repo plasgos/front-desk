@@ -22,9 +22,10 @@ import {
   distanceOptions,
   maxColumnOptions,
 } from "../list-add-content/list-images/ListImagesControl";
-import { fontSizeOptions } from "../list-add-content/colum-text-and-image/ColumnSection";
+
 import SelectOptions from "../common/SelectOptions";
 import ColorPicker from "../common/ColorPicker";
+import { fontSizeOptions } from "../SelectOptions";
 
 const EditColumnTextAndImage = ({
   curentSection,
