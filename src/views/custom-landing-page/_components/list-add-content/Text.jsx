@@ -209,6 +209,8 @@ const Text = ({ previewSection, setPreviewSection, isShowContent }) => {
                   label="Warna Teks"
                   onChange={handleColorChange}
                   flexEnd="justify-content-end"
+                  bottom={"77px"}
+                  left={"236px"}
                 />
               </div>
 

@@ -36,7 +36,7 @@ const contents = [
     id: "testi-2",
     name: "Mozart",
     image: profilePicture,
-    content: "Senang sekali memakai produk in",
+    content: "Senang sekali memakai produk ini",
   },
   {
     id: "testi-3",
@@ -64,6 +64,19 @@ const ListTestimonyControl = ({
 
   const handleChangeColumnTestimony = (selectedOptionValue) => {
     setSelectedColumnTestimony(selectedOptionValue);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === setting.id
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                column: selectedOptionValue.value,
+              },
+            }
+          : item
+      )
+    );
   };
 
   const handelCancel = () => {
@@ -144,25 +157,24 @@ const ListTestimonyControl = ({
       profileStyle: {
         colorName: "",
         fontSizeName: 18,
-        paddingBottomName: 8,
+        distanceName: 8,
         shadowImageName: "tw-shadow",
         borderPictColor: "#BDBDBD",
-        imageSize: 80,
-        borderRadius: 70,
-        borderWidth: 1,
+        imageSize: 40,
+        borderRadiusImage: 70,
+        borderWidthImage: 1,
       },
       contentStyle: {
-        textAlign: "center",
-        fontSize: 14,
-        paddingBottom: 16,
+        textAlign: "tw-text-center",
+        fontSize: "18px",
+        distanceContent: 16,
       },
       startStyle: {
         icon: <FaStar />,
         amount: 5,
-        starColor: "#FDD835",
         size: 18,
         marginX: 4,
-        margin: 0,
+        margin: 6,
         position: "top-name",
       },
       wrapperStyle: {
@@ -171,8 +183,8 @@ const ListTestimonyControl = ({
         layout: "8",
         column: "tw-w-1/3",
         paddingX: 8,
-        paddingTop: 4,
-        padingBotom: 0,
+        paddingTop: 0,
+        paddingBotom: 0,
         borderRadius: 12,
         borderWidth: 2,
       },
@@ -354,7 +366,11 @@ const ListTestimonyControl = ({
                       </>
                     )}
                   </CTabPane>
-                  <CTabPane className="p-1" data-tab="desain">
+                  <CTabPane
+                    style={{ overflowX: "hidden" }}
+                    className="p-1"
+                    data-tab="desain"
+                  >
                     {Object.keys(setting).length > 0 ? (
                       <DesignTab
                         currentSection={setting}

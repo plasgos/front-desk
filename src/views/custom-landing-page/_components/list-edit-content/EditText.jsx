@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import {
   CButton,
-  CCol,
   CFormGroup,
   CLabel,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CTabs,
@@ -21,7 +19,7 @@ import {
 } from "react-icons/fa6";
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
-import { ChromePicker } from "react-color";
+import ColorPicker from "../common/ColorPicker";
 
 const EditText = ({
   currentSection,
@@ -32,7 +30,6 @@ const EditText = ({
   const [editorHtml, setEditorHtml] = useState(
     currentSection.content?.editorHtml
   );
-  const [showColorPicker, setShowColorPicker] = useState(false);
   const [selectAlign, setSelectAlign] = useState(
     currentSection.content?.style?.textAlign
   );
@@ -97,19 +94,6 @@ const EditText = ({
     );
   };
 
-  const popover = {
-    position: "absolute",
-    zIndex: "2",
-    right: 0,
-  };
-  const cover = {
-    position: "fixed",
-    top: "0px",
-    right: "0px",
-    bottom: "0px",
-    left: "0px",
-  };
-
   const handelCancel = () => {
     isShowContent("");
     setPreviewSection([...sectionBeforeEdit]);
@@ -150,88 +134,66 @@ const EditText = ({
         >
           <CTabPane data-tab="konten">
             <div>
-              <CRow className="p-2 mb-2">
-                <CCol>
-                  <CFormGroup>
-                    <CLabel className="mb-0">Posisi Teks</CLabel>
-                    <div className="d-flex justify-content-start">
-                      <div
-                        className={`d-flex align-items-center justify-content-center mr-1 rounded ${
-                          selectAlign === "text-left"
-                            ? "bg-primary border-primary text-white"
-                            : "bg-white border-dark"
-                        }`}
-                        style={{ cursor: "pointer", width: 35, height: 35 }}
-                        onClick={() => onChangeAlign("text-left")}
-                      >
-                        <FaAlignLeft style={{ fontSize: 15 }} />
-                      </div>
-                      <div
-                        className={`d-flex align-items-center justify-content-center mr-1 rounded ${
-                          selectAlign === "text-center"
-                            ? "bg-primary border-primary text-white"
-                            : "bg-white border-dark"
-                        }`}
-                        style={{ cursor: "pointer", width: 35, height: 35 }}
-                        onClick={() => onChangeAlign("text-center")}
-                      >
-                        <FaAlignCenter style={{ fontSize: 15 }} />
-                      </div>
-                      <div
-                        className={`d-flex align-items-center justify-content-center mr-1 rounded ${
-                          selectAlign === "text-right"
-                            ? "bg-primary border-primary text-white"
-                            : "bg-white border-dark"
-                        }`}
-                        style={{ cursor: "pointer", width: 35, height: 35 }}
-                        onClick={() => onChangeAlign("text-right")}
-                      >
-                        <FaAlignRight style={{ fontSize: 15 }} />
-                      </div>
-                      <div
-                        className={`d-flex align-items-center justify-content-center mr-1 rounded ${
-                          selectAlign === "text-justify"
-                            ? "bg-primary border-primary text-white"
-                            : "bg-white border-dark"
-                        }`}
-                        style={{ cursor: "pointer", width: 35, height: 35 }}
-                        onClick={() => onChangeAlign("text-justify")}
-                      >
-                        <FaAlignJustify style={{ fontSize: 15 }} />
-                      </div>
-                    </div>
-                  </CFormGroup>
-                </CCol>
-                <CCol>
-                  <CFormGroup>
-                    <CLabel className="mb-0" style={{ fontFamily: "Arial" }}>
-                      Warna Teks
-                    </CLabel>
+              <div className="d-flex align-items-center justify-content-between">
+                <CFormGroup>
+                  <CLabel className="mb-2">Posisi Teks</CLabel>
+                  <div className="d-flex justify-content-start">
                     <div
-                      onClick={() => setShowColorPicker(!showColorPicker)}
-                      style={{
-                        width: 35,
-                        height: 35,
-                        backgroundColor: selectedColor,
-                        cursor: "pointer",
-                      }}
-                      className="rounded border"
-                    />
-                    {showColorPicker && (
-                      <div style={popover}>
-                        <div
-                          style={cover}
-                          onClick={() => setShowColorPicker(false)}
-                        />
-                        <ChromePicker
-                          color={selectedColor}
-                          onChange={(e) => handleColorChange(e.hex)}
-                        />
-                      </div>
-                    )}
-                  </CFormGroup>
-                </CCol>
-              </CRow>
+                      className={`d-flex align-items-center justify-content-center mr-1 rounded ${
+                        selectAlign === "text-left"
+                          ? "bg-primary border-primary text-white"
+                          : "bg-white border-dark"
+                      }`}
+                      style={{ cursor: "pointer", width: 35, height: 35 }}
+                      onClick={() => onChangeAlign("text-left")}
+                    >
+                      <FaAlignLeft style={{ fontSize: 15 }} />
+                    </div>
+                    <div
+                      className={`d-flex align-items-center justify-content-center mr-1 rounded ${
+                        selectAlign === "text-center"
+                          ? "bg-primary border-primary text-white"
+                          : "bg-white border-dark"
+                      }`}
+                      style={{ cursor: "pointer", width: 35, height: 35 }}
+                      onClick={() => onChangeAlign("text-center")}
+                    >
+                      <FaAlignCenter style={{ fontSize: 15 }} />
+                    </div>
+                    <div
+                      className={`d-flex align-items-center justify-content-center mr-1 rounded ${
+                        selectAlign === "text-right"
+                          ? "bg-primary border-primary text-white"
+                          : "bg-white border-dark"
+                      }`}
+                      style={{ cursor: "pointer", width: 35, height: 35 }}
+                      onClick={() => onChangeAlign("text-right")}
+                    >
+                      <FaAlignRight style={{ fontSize: 15 }} />
+                    </div>
+                    <div
+                      className={`d-flex align-items-center justify-content-center mr-1 rounded ${
+                        selectAlign === "text-justify"
+                          ? "bg-primary border-primary text-white"
+                          : "bg-white border-dark"
+                      }`}
+                      style={{ cursor: "pointer", width: 35, height: 35 }}
+                      onClick={() => onChangeAlign("text-justify")}
+                    >
+                      <FaAlignJustify style={{ fontSize: 15 }} />
+                    </div>
+                  </div>
+                </CFormGroup>
+                <ColorPicker
+                  initialColor={selectedColor}
+                  label="Warna Teks"
+                  onChange={handleColorChange}
+                  flexEnd="justify-content-end"
+                  bottom={"77px"}
+                  left={"236px"}
+                />
+              </div>
+
               <ReactQuill
                 modules={{
                   toolbar: [

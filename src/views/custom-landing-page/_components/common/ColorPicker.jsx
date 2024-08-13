@@ -1,7 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChromePicker } from "react-color";
 
-const ColorPicker = ({ label, initialColor, onChange, flexEnd }) => {
+const ColorPicker = ({
+  label,
+  initialColor,
+  onChange,
+  flexEnd = false,
+  bottom,
+  left,
+  right,
+}) => {
   const [selectedColor, setSelectedColor] = useState(initialColor);
   const [showColorPicker, setShowColorPicker] = useState(false);
 
@@ -20,9 +28,16 @@ const ColorPicker = ({ label, initialColor, onChange, flexEnd }) => {
     setShowColorPicker(false);
   };
 
+  useEffect(() => {
+    setSelectedColor(initialColor);
+  }, [initialColor, selectedColor]);
+
   const popover = {
     position: "absolute",
     zIndex: "2",
+    bottom,
+    left,
+    right,
   };
 
   const cover = {

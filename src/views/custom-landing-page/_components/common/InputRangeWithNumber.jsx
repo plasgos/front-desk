@@ -1,23 +1,24 @@
 import React from "react";
 import { CRow, CCol } from "@coreui/react";
 
-const InputRange = ({
+const InputRangeWithNumber = ({
   label,
   value,
-  handleChangeNumberInput,
-  handleBlur,
-  handleChangeRangeInput,
   min = 10,
   max = 1200,
+  onChange,
+  onBlur,
 }) => {
-  return (
-    <CRow className="align-items-center mb-3">
-      {/* Label */}
-      <CCol md={12}>
-        <label className="mb-1">{label}</label>
-      </CCol>
+  const handleChange = (e) => {
+    const newValue = Number(e.target.value);
+    onChange(newValue);
+  };
 
-      {/* Input Number */}
+  return (
+    <CRow className="align-items-center mb-3 p-0 ">
+      <CCol md={12} className="mb-2">
+        <label className="mb-0 font-xs">{label}</label>
+      </CCol>
       <CCol md={3}>
         <div className="input-group flex-nowrap">
           <input
@@ -25,13 +26,11 @@ const InputRange = ({
             value={value !== 0 ? value : ""}
             className="form-control text-center"
             placeholder="0"
-            onChange={handleChangeNumberInput}
-            onBlur={handleBlur}
+            onChange={handleChange}
+            onBlur={onBlur}
           />
         </div>
       </CCol>
-
-      {/* Input Range */}
       <CCol md={8} className="p-0">
         <div style={{ gap: 10 }} className="d-flex align-items-center">
           <div className="text-secondary">{min}</div>
@@ -43,7 +42,7 @@ const InputRange = ({
             min={min}
             max={max}
             value={value}
-            onChange={handleChangeRangeInput}
+            onChange={handleChange}
           />
           <div className="text-secondary">{max}</div>
         </div>
@@ -52,4 +51,4 @@ const InputRange = ({
   );
 };
 
-export default InputRange;
+export default InputRangeWithNumber;

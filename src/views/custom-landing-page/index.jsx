@@ -39,6 +39,7 @@ import {
 import ViewButton from "./_components/view-content/ViewButton";
 import EditListButton from "./_components/list-edit-content/EditListButton";
 import ModalConfirmation from "./_components/ModalConfirmation";
+import ViewTestimony from "./_components/view-content/ViewTestimony";
 
 const landingPage = {
   detail: {
@@ -210,6 +211,21 @@ const CustomLandingPage = () => {
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
+          />
+        );
+      }
+
+      if (section.name === "testimony") {
+        return (
+          <ViewTestimony
+            containerRef={containerRef}
+            isDragging={isDragging && section.id === id}
+            width={dimensions.width}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+            isPreview={isPreview}
           />
         );
       }

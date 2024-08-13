@@ -357,12 +357,14 @@ const AddButton = ({ idSection, sections, setPreviewSection }) => {
           initialColor={selectedColorButton}
           label="Tombol"
           onChange={handleChangeColorButton}
+          bottom={"10px"}
         />
 
         <ColorPicker
           initialColor={selectedColorText}
           label="Teks"
           onChange={handleChangeColorText}
+          bottom={"10px"}
         />
       </div>
 

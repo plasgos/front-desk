@@ -424,12 +424,14 @@ const ColumnSection = ({
                       initialColor={selectedColorTitle}
                       label="Tombol"
                       onChange={handleColorChangeTitle}
+                      bottom={"10px"}
                     />
 
                     <ColorPicker
                       initialColor={selectedColorDesc}
                       label="Warna Deskripsi"
                       onChange={handleColorChangeDesc}
+                      bottom={"10px"}
                     />
                   </div>
 

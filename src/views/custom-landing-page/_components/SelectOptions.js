@@ -14,7 +14,7 @@ export const fontSizeOptions = [
   { value: "25px", label: "Lebih Besar" },
 ];
 
-export const textAlign = [
+export const textAlignOptions = [
   { value: "tw-text-left", label: "Kiri" },
   { value: "tw-text-center", label: "Tengah" },
   { value: "tw-text-right", label: "Kanan" },
