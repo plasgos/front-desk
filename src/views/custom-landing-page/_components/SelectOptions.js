@@ -7,11 +7,22 @@ export const shadowOptions = [
   { value: "tw-shadow-2xl", label: "Blur" },
 ];
 
+// export const fontSizeOptions = [
+//   { value: "12px", label: "Lebih Kecil" },
+//   { value: "14px", label: "Kecil" },
+//   { value: "16px", label: "Sedang" },
+//   { value: "18px", label: "Besar" },
+//   { value: "20px", label: "Lebih Besar" },
+//   { value: "24px", label: "Extra Besar" },
+// ];
+
 export const fontSizeOptions = [
-  { value: "16px", label: "Kecil" },
-  { value: "18px", label: "Sedang" },
-  { value: "22px", label: "Besar" },
-  { value: "25px", label: "Lebih Besar" },
+  { value: "tw-text-xs", label: "Lebih Kecil" },
+  { value: "tw-text-sm", label: "Kecil" },
+  { value: "tw-text-base", label: "Sedang" },
+  { value: "tw-text-lg", label: "Besar" },
+  { value: "tw-text-xl", label: "Lebih Besar" },
+  { value: "tw-text-2xl", label: "Extra Besar" },
 ];
 
 export const textAlignOptions = [
@@ -47,4 +58,14 @@ export const columnTestimonyOptions = [
   },
   { value: "tw-w-1/3", label: "3" },
   { value: "tw-w-1/4", label: "4" },
+];
+
+export const fontStyleOptions = [
+  { value: "tw-font-normal", label: "Normal" },
+  { value: "tw-font-semibold", label: "Semi Bold" },
+  { value: "tw-font-bold", label: "Bold" },
+  { value: "tw-italic", label: "Italic" },
+  { value: "tw-font-semibold tw-italic", label: "Bold Italic" },
+  { value: "tw-underline", label: "Underline" },
+  { value: "tw-line-through", label: "Line Through" },
 ];

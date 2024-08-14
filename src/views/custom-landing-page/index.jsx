@@ -39,7 +39,8 @@ import {
 import ViewButton from "./_components/view-content/ViewButton";
 import EditListButton from "./_components/list-edit-content/EditListButton";
 import ModalConfirmation from "./_components/ModalConfirmation";
-import ViewTestimony from "./_components/view-content/ViewTestimony";
+import ViewTestimony from "./_components/view-content/ViewTestimony/index";
+import EditListTestimony from "./_components/list-edit-content/EditListTestimony/index";
 
 const landingPage = {
   detail: {
@@ -81,7 +82,7 @@ const CustomLandingPage = () => {
 
   const getInitialDimensions = (view) => {
     return {
-      width: view === "laptop" ? "100%" : view === "tablet" ? 600 : 320,
+      width: view === "laptop" ? "100%" : view === "tablet" ? 640 : 320,
       height: 480,
     };
   };
@@ -322,6 +323,22 @@ const CustomLandingPage = () => {
         return (
           <EditListButton
             curentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+          />
+        );
+      }
+
+      if (
+        editing.name === "testimony" &&
+        section.name === "testimony" &&
+        editing.id === section.id
+      ) {
+        return (
+          <EditListTestimony
+            currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}

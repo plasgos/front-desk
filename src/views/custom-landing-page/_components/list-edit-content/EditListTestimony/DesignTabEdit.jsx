@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ColorPicker from "../../common/ColorPicker";
 import SelectOptions from "../../common/SelectOptions";
 import {
@@ -43,7 +43,8 @@ const starPositionOptions = [
   { value: "bottom-content", label: "Di Bawah Content" },
 ];
 
-const DesignTab = ({
+const DesignTabEdit = ({
+  previewSection,
   currentSection,
   setPreviewSection,
   selectedColum,
@@ -61,47 +62,142 @@ const DesignTab = ({
     currentSection?.cardStyle?.starColor || ""
   );
 
-  const [selectedAlign, setSelectedAlign] = useState(alignOptions[1]);
-  const [selectedLayout, setSelectedLayout] = useState(layoutOptions[7]);
-  const [selectedShadow, setSelectedShadow] = useState(shadowOptions[1]);
+  const [selectedAlign, setSelectedAlign] = useState(undefined);
+  const [selectedLayout, setSelectedLayout] = useState(undefined);
+  const [selectedShadow, setSelectedShadow] = useState(undefined);
 
-  const [distance, setDistance] = useState(8);
-  const [borderRadius, setBorderRadius] = useState(12);
-  const [borderWidth, setBorderWidth] = useState(2);
-  const [paddingTop, setPaddingTop] = useState(0);
-  const [paddingBottom, setPaddingBottom] = useState(0);
+  const [distance, setDistance] = useState(
+    currentSection?.wrapperStyle?.paddingX
+  );
+  const [borderRadius, setBorderRadius] = useState(
+    currentSection?.wrapperStyle?.borderRadius
+  );
+  const [borderWidth, setBorderWidth] = useState(
+    currentSection?.wrapperStyle?.borderWidth
+  );
+  const [paddingTop, setPaddingTop] = useState(
+    currentSection?.wrapperStyle?.paddingTop
+  );
+  const [paddingBottom, setPaddingBottom] = useState(
+    currentSection?.wrapperStyle?.paddingBottom
+  );
 
   // Profile Style
-  const [fontSizeName, setfontSizeName] = useState(18);
-  const [selectedColorName, setSetselectedColorName] = useState("#000000");
-  const [selectedColorBorderpict, setSetselectedBorderpict] =
-    useState("#BDBDBD");
-  const [distanceName, setSetdistanceName] = useState(8);
-  const [selectedShadowPict, setSelectedShadowPict] = useState(
-    shadowOptions[1]
+  const [fontSizeName, setfontSizeName] = useState(
+    currentSection?.profileStyle?.fontSizeName
   );
-  const [imageSize, seImageSize] = useState(40);
-  const [borderRadiusImage, setBorderRadiusImage] = useState(70);
-  const [borderWidthImage, setBorderWidthImage] = useState(1);
-  const [selectedFontStyle, setSelectedFontStyle] = useState(
-    fontStyleOptions[4]
+  const [selectedColorName, setSetselectedColorName] = useState(
+    currentSection?.profileStyle?.colorName
   );
+  const [selectedColorBorderpict, setSetselectedBorderpict] = useState(
+    currentSection?.profileStyle?.borderPictColor
+  );
+  const [distanceName, setSetdistanceName] = useState(
+    currentSection?.profileStyle?.distanceName
+  );
+  const [selectedShadowPict, setSelectedShadowPict] = useState(undefined);
+  const [imageSize, seImageSize] = useState(
+    currentSection?.profileStyle?.imageSize
+  );
+  const [borderRadiusImage, setBorderRadiusImage] = useState(
+    currentSection?.profileStyle?.borderRadiusImage
+  );
+  const [borderWidthImage, setBorderWidthImage] = useState(
+    currentSection?.profileStyle?.borderWidthImage
+  );
+  const [selectedFontStyle, setSelectedFontStyle] = useState(undefined);
 
   // Content style
-  const [selectedTextAlignContent, setSelectedTextAlignContent] = useState(
-    textAlignOptions[1]
+  const [selectedTextAlignContent, setSelectedTextAlignContent] =
+    useState(undefined);
+  const [selectedFontSizeContent, setSelectedFontSizeContent] =
+    useState(undefined);
+  const [distanceContent, setdistanceContent] = useState(
+    currentSection?.contentStyle?.distanceContent
   );
-  const [selectedFontSizeContent, setSelectedFontSizeContent] = useState(
-    fontSizeOptions[1]
-  );
-  const [distanceContent, setdistanceContent] = useState(16);
 
   // Star Style
-  const [amountStar, setAmountStar] = useState(starAmountOptions[4]);
-  const [positionStar, setPositionStar] = useState(starPositionOptions[1]);
-  const [sizeStar, setSizeStar] = useState(18);
-  const [marginXStar, setMarginXStar] = useState(4);
-  const [marginStar, setMarginStar] = useState(6);
+  const [amountStar, setAmountStar] = useState(undefined);
+  const [positionStar, setPositionStar] = useState(undefined);
+  const [sizeStar, setSizeStar] = useState(currentSection?.starStyle?.size);
+  const [marginXStar, setMarginXStar] = useState(
+    currentSection?.starStyle?.marginX
+  );
+  const [marginStar, setMarginStar] = useState(
+    currentSection?.starStyle?.margin
+  );
+
+  useEffect(() => {
+    const selectedSectionToEdit = previewSection.find(
+      (section) => String(section.id) === currentSection.id
+    );
+    if (selectedSectionToEdit) {
+      const alignOption = alignOptions.find(
+        (opt) =>
+          opt.value === selectedSectionToEdit.wrapperStyle?.jusctifyContent
+      );
+      if (alignOption) {
+        setSelectedAlign(alignOption);
+      }
+
+      const layoutOption = layoutOptions.find(
+        (opt) => opt.value === selectedSectionToEdit.wrapperStyle?.layout
+      );
+      if (layoutOption) {
+        setSelectedLayout(layoutOption);
+      }
+
+      const shadowOption = shadowOptions.find(
+        (opt) => opt.value === selectedSectionToEdit.cardStyle?.shadowCard
+      );
+      if (shadowOption) {
+        setSelectedShadow(shadowOption);
+      }
+
+      const shadowPictOption = shadowOptions.find(
+        (opt) =>
+          opt.value === selectedSectionToEdit.profileStyle?.shadowImageName
+      );
+      if (shadowPictOption) {
+        setSelectedShadowPict(shadowPictOption);
+      }
+
+      const fontStyleOption = fontStyleOptions.find(
+        (opt) => opt.value === selectedSectionToEdit.profileStyle?.fontStyle
+      );
+      if (fontStyleOption) {
+        setSelectedFontStyle(fontStyleOption);
+      }
+
+      const textAlignOption = textAlignOptions.find(
+        (opt) => opt.value === selectedSectionToEdit.contentStyle?.textAlign
+      );
+      if (textAlignOption) {
+        setSelectedTextAlignContent(textAlignOption);
+      }
+
+      const fontSizeContentOption = fontSizeOptions.find(
+        (opt) => opt.value === selectedSectionToEdit.contentStyle?.fontSize
+      );
+      if (fontSizeContentOption) {
+        setSelectedFontSizeContent(fontSizeContentOption);
+      }
+
+      const amountStarOption = starAmountOptions.find(
+        (opt) => opt.value === selectedSectionToEdit.starStyle?.amount
+      );
+      if (amountStarOption) {
+        setAmountStar(amountStarOption);
+      }
+
+      const positionStarOption = starPositionOptions.find(
+        (opt) => opt.value === selectedSectionToEdit.starStyle?.position
+      );
+      if (positionStarOption) {
+        setPositionStar(positionStarOption);
+      }
+    }
+  }, [currentSection.id, previewSection]);
 
   const handleUpdateSectionStarStyle = (key, value) => {
     setPreviewSection((arr) =>
@@ -848,4 +944,4 @@ const DesignTab = ({
   );
 };
 
-export default DesignTab;
+export default DesignTabEdit;

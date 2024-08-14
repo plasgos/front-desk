@@ -11,11 +11,8 @@ const EditTestimony = ({
   selectedSectionToEdit,
   setPreviewSection,
 }) => {
-  console.log("🚀 ~ selectedSectionToEdit:", selectedSectionToEdit);
   const [imageUrl, setImageUrl] = useState(selectedSectionToEdit.image);
-
   const [content, setContent] = useState(selectedSectionToEdit.content);
-
   const [name, setName] = useState(selectedSectionToEdit.name);
 
   const handleChangeName = (value) => {
@@ -27,7 +24,7 @@ const EditTestimony = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idSection)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       name: value,
@@ -48,7 +45,7 @@ const EditTestimony = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idSection)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
                       content: value,
@@ -69,7 +66,7 @@ const EditTestimony = ({
           ? {
               ...item,
               content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(idSection)
+                String(contentItem.id) === String(selectedSectionToEdit.id)
                   ? {
                       ...contentItem,
 

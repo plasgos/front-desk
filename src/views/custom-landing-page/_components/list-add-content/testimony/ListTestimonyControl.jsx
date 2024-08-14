@@ -24,6 +24,29 @@ import AddTestimony from "./AddTestimony";
 import EditTestimony from "./EditTestimony";
 import DesignTab from "./DesignTab";
 import { columnTestimonyOptions } from "../../SelectOptions";
+import { ShapeList } from "./ShapeList";
+
+const shape = [
+  // {},
+  {
+    id: "shape-0",
+    type: "triangle",
+    position: "top",
+    color: "#FDC87D",
+    height1: 40,
+    height2: 40,
+    circle: 0,
+  },
+  {
+    id: "shape-1",
+    type: "triangleX",
+    position: "top",
+    color: "#FDC87D",
+    height1: 40,
+    height2: 40,
+    circle: 0,
+  },
+];
 
 const contents = [
   {
@@ -53,7 +76,10 @@ const ListTestimonyControl = ({
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isAddShape, setIsAddShape] = useState(false);
+  const [isEditingShape, setIsEditingShape] = useState(false);
   const [selectedSection, setSelectedSection] = useState({});
+  const [selectedSectionShape, setSelectedSectionShape] = useState({});
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
 
   const [selectedColumnTestimony, setSelectedColumnTestimony] = useState(
@@ -139,6 +165,26 @@ const ListTestimonyControl = ({
     [setPreviewSection]
   );
 
+  const moveSectionShape = useCallback(
+    (dragIndex, hoverIndex) => {
+      setPreviewSection((prevSections) => {
+        return prevSections.map((section) => {
+          if (section.name === "testimony") {
+            const updatedContent = [...section.shape];
+            const draggedItem = updatedContent[dragIndex];
+            updatedContent.splice(dragIndex, 1);
+            updatedContent.splice(hoverIndex, 0, draggedItem);
+            return { ...section, shape: updatedContent };
+          }
+          return section;
+        });
+      });
+
+      return () => {};
+    },
+    [setPreviewSection]
+  );
+
   const onAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
 
@@ -148,6 +194,7 @@ const ListTestimonyControl = ({
       title: "Testimoni / Review",
       icon: <BsFillChatSquareQuoteFill size={20} />,
       content: contents,
+      shape: shape,
       cardStyle: {
         bgColor: "#FFFFFF",
         starColor: "#FDD835",
@@ -155,8 +202,9 @@ const ListTestimonyControl = ({
         shadowCard: "tw-shadow",
       },
       profileStyle: {
-        colorName: "",
+        colorName: "#000000",
         fontSizeName: 18,
+        fontStyle: "tw-font-semibold tw-italic",
         distanceName: 8,
         shadowImageName: "tw-shadow",
         borderPictColor: "#BDBDBD",
@@ -165,17 +213,17 @@ const ListTestimonyControl = ({
         borderWidthImage: 1,
       },
       contentStyle: {
-        textAlign: "tw-text-center",
-        fontSize: "18px",
+        textAlign: "tw-text-left",
+        fontSize: "tw-text-sm",
         distanceContent: 16,
       },
-      startStyle: {
+      starStyle: {
         icon: <FaStar />,
         amount: 5,
         size: 18,
         marginX: 4,
         margin: 6,
-        position: "top-name",
+        position: "bottom-name",
       },
       wrapperStyle: {
         jusctifyContent: "tw-justify-center",
@@ -184,7 +232,7 @@ const ListTestimonyControl = ({
         column: "tw-w-1/3",
         paddingX: 8,
         paddingTop: 0,
-        paddingBotom: 0,
+        paddingBottom: 0,
         borderRadius: 12,
         borderWidth: 2,
       },
@@ -209,6 +257,15 @@ const ListTestimonyControl = ({
     [previewSection]
   );
 
+  const editSectionShape = useCallback(
+    (section) => {
+      setSectionBeforeEdit([...previewSection]);
+      setSelectedSectionShape(section);
+      setIsEditingShape(true);
+    },
+    [previewSection]
+  );
+
   const removeSection = useCallback(
     (sectionId, contentIndex) => {
       setPreviewSection((prevSections) =>
@@ -217,6 +274,23 @@ const ListTestimonyControl = ({
             return {
               ...section,
               content: section.content.filter((_, i) => i !== contentIndex),
+            };
+          }
+          return section;
+        })
+      );
+    },
+    [setPreviewSection]
+  );
+
+  const removeSectionShape = useCallback(
+    (sectionId, contentIndex) => {
+      setPreviewSection((prevSections) =>
+        prevSections.map((section) => {
+          if (section.id === sectionId) {
+            return {
+              ...section,
+              shape: section.shape.filter((_, i) => i !== contentIndex),
             };
           }
           return section;
@@ -245,6 +319,27 @@ const ListTestimonyControl = ({
       );
     },
     [moveSection, editSection, removeSection]
+  );
+
+  const renderSectionShape = useCallback(
+    (section) => {
+      return (
+        <div key={section.id}>
+          {section.shape.map((contentItem, contentIndex) => (
+            <ShapeList
+              key={contentItem.id || contentIndex}
+              index={contentIndex}
+              id={contentItem.id}
+              section={contentItem}
+              moveSection={moveSectionShape}
+              editSection={() => editSectionShape(contentItem)}
+              removeSection={() => removeSectionShape(section.id, contentIndex)}
+            />
+          ))}
+        </div>
+      );
+    },
+    [editSectionShape, moveSectionShape, removeSectionShape]
   );
 
   return (
@@ -304,28 +399,15 @@ const ListTestimonyControl = ({
                   <CNavItem>
                     <CNavLink data-tab="desain">Desain</CNavLink>
                   </CNavItem>
+                  <CNavItem>
+                    <CNavLink data-tab="tirai">Tirai</CNavLink>
+                  </CNavItem>
                 </CNav>
                 <CTabContent
                   style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
                   <CTabPane className="p-1" data-tab="konten">
-                    {isAddContent && (
-                      <AddTestimony
-                        idSection={setting.id}
-                        sections={contents}
-                        setPreviewSection={setPreviewSection}
-                      />
-                    )}
-
-                    {/* {isEditing && (
-                    <EditButton
-                      idSection={setting.id}
-                      selectedSectionToEdit={selectedSection}
-                      setPreviewSection={setPreviewSection}
-                    />
-                  )} */}
-
                     {!isAddContent && !isEditing && (
                       <>
                         <div
@@ -375,9 +457,80 @@ const ListTestimonyControl = ({
                       <DesignTab
                         currentSection={setting}
                         setPreviewSection={setPreviewSection}
+                        selectedColum={selectedColumnTestimony}
+                        setSelectedColum={(value) =>
+                          setSelectedColumnTestimony(value)
+                        }
                       />
                     ) : (
                       <div>Loading...</div>
+                    )}
+                  </CTabPane>
+
+                  <CTabPane
+                    style={{ overflowX: "hidden" }}
+                    className="p-1"
+                    data-tab="tirai"
+                  >
+                    {isAddShape ? (
+                      <CTabs>
+                        <CTabContent
+                          style={{
+                            height: 340,
+                            paddingRight: 5,
+                            overflowY: "auto",
+                          }}
+                          className="pt-3"
+                        >
+                          <div>ADD</div>
+                        </CTabContent>
+                      </CTabs>
+                    ) : isEditingShape ? (
+                      <CTabs>
+                        <CTabContent
+                          style={{
+                            height: 340,
+                            paddingRight: 5,
+                            overflowY: "auto",
+                          }}
+                          className="pt-3"
+                        >
+                          <div>Edit</div>
+                        </CTabContent>
+                      </CTabs>
+                    ) : (
+                      <div>
+                        {!isAddShape && !isEditingShape && (
+                          <>
+                            <div>
+                              {previewSection
+                                .filter((section) => section.id === setting.id)
+                                .map((section, i) =>
+                                  renderSectionShape(section, i)
+                                )}
+                            </div>
+
+                            <CCard
+                              style={{ cursor: "pointer" }}
+                              onClick={() => setIsAddShape(true)}
+                            >
+                              <CCardBody className="p-1">
+                                <div className="d-flex align-items-center ">
+                                  <IoAdd
+                                    style={{
+                                      cursor: "pointer",
+                                      margin: "0px 10px 0px 6px",
+                                    }}
+                                    size={18}
+                                  />
+
+                                  <div>Tambah Konten</div>
+                                </div>
+                              </CCardBody>
+                            </CCard>
+                          </>
+                        )}
+                      </div>
                     )}
                   </CTabPane>
                 </CTabContent>
