@@ -25,27 +25,29 @@ import EditTestimony from "./EditTestimony";
 import DesignTab from "./DesignTab";
 import { columnTestimonyOptions } from "../../SelectOptions";
 import { ShapeList } from "./ShapeList";
+import AddShape from "./AddShape";
+import InputRangeWithNumber from "../../common/InputRangeWithNumber";
+import EditShape from "./EditShape";
 
 const shape = [
-  // {},
-  {
-    id: "shape-0",
-    type: "triangle",
-    position: "top",
-    color: "#FDC87D",
-    height1: 40,
-    height2: 40,
-    circle: 0,
-  },
-  {
-    id: "shape-1",
-    type: "triangleX",
-    position: "top",
-    color: "#FDC87D",
-    height1: 40,
-    height2: 40,
-    circle: 0,
-  },
+  // {
+  //   id: "shape-0",
+  //   type: "triangle",
+  //   position: "top",
+  //   color: "#FDC87D",
+  //   height1: 40,
+  //   height2: 40,
+  //   circle1: 0,
+  // },
+  // {
+  //   id: "shape-1",
+  //   type: "triangleX",
+  //   position: "top",
+  //   color: "#FDC87D",
+  //   height1: 40,
+  //   height2: 40,
+  //   circle1: 0,
+  // },
 ];
 
 const contents = [
@@ -81,12 +83,16 @@ const ListTestimonyControl = ({
   const [selectedSection, setSelectedSection] = useState({});
   const [selectedSectionShape, setSelectedSectionShape] = useState({});
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
+  const [activeTab, setActiveTab] = useState("konten");
 
   const [selectedColumnTestimony, setSelectedColumnTestimony] = useState(
     columnTestimonyOptions[2]
   );
 
   const [setting, setSetting] = useState({});
+
+  const [paddingTop, setPaddingTop] = useState(0);
+  const [paddingBottom, setPaddingBottom] = useState(0);
 
   const handleChangeColumnTestimony = (selectedOptionValue) => {
     setSelectedColumnTestimony(selectedOptionValue);
@@ -119,12 +125,34 @@ const ListTestimonyControl = ({
             : section
         )
       );
+      setActiveTab("konten");
+    } else if (isAddShape) {
+      setIsAddShape(false);
+      setIsEditingShape(false);
+      setPreviewSection((prevSections) =>
+        prevSections.map((section) =>
+          section.id === setting.id
+            ? {
+                ...section,
+                shape: section.shape.slice(0, -1),
+              }
+            : section
+        )
+      );
+      setActiveTab("tirai");
     } else if (isEditing) {
       setPreviewSection([...sectionBeforeEdit]);
       setIsAddContent(false);
       setIsEditing(false);
+      setActiveTab("konten");
+    } else if (isEditingShape) {
+      setPreviewSection([...sectionBeforeEdit]);
+      setIsAddShape(false);
+      setIsEditingShape(false);
+      setActiveTab("tirai");
     } else {
       setIsAddContent(false);
+      setActiveTab("konten");
       isShowContent(false);
       setPreviewSection((prevSections) =>
         prevSections.filter((section) => section.id !== setting.id)
@@ -136,6 +164,11 @@ const ListTestimonyControl = ({
     if (isAddContent || isEditing) {
       setIsAddContent(false);
       setIsEditing(false);
+      setActiveTab("konten");
+    } else if (isAddShape || isEditingShape) {
+      setIsAddShape(false);
+      setIsEditingShape(false);
+      setActiveTab("tirai");
     } else {
       isShowContent(false);
     }
@@ -342,6 +375,32 @@ const ListTestimonyControl = ({
     [editSectionShape, moveSectionShape, removeSectionShape]
   );
 
+  const handleUpdateSectionWrapperStyle = (key, value) => {
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === setting.id
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                [key]: value,
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  const handleSetValueWhenBlurWrapperStyle = (value, min, max, key) => {
+    const newValue = Math.min(Math.max(value, min), max);
+    if (key === "paddingTop") {
+      setPaddingTop(newValue);
+    } else if (key === "paddingBottom") {
+      setPaddingBottom(newValue);
+    }
+    handleUpdateSectionWrapperStyle(key, newValue);
+  };
+
   return (
     <div>
       <CRow>
@@ -385,13 +444,49 @@ const ListTestimonyControl = ({
                 >
                   <EditTestimony
                     idSection={setting.id}
-                    selectedSectionToEdit={selectedSection}
+                    selectedSectionToEdit={selectedSectionShape}
+                    setPreviewSection={setPreviewSection}
+                  />
+                </CTabContent>
+              </CTabs>
+            ) : isAddShape ? (
+              <CTabs>
+                <CTabContent
+                  style={{
+                    height: 340,
+                    paddingRight: 5,
+                    overflowY: "auto",
+                    overflowX: "hidden",
+                  }}
+                  className="pt-3"
+                >
+                  <AddShape
+                    idSection={setting.id}
+                    exitingShape={shape}
+                    setPreviewSection={setPreviewSection}
+                  />
+                </CTabContent>
+              </CTabs>
+            ) : isEditingShape ? (
+              <CTabs>
+                <CTabContent
+                  style={{
+                    height: 340,
+                    paddingRight: 5,
+                    overflowY: "auto",
+                  }}
+                  className="pt-3"
+                >
+                  <EditShape
+                    idSection={setting.id}
+                    prevSections={previewSection}
+                    selectedSectionToEdit={selectedSectionShape}
                     setPreviewSection={setPreviewSection}
                   />
                 </CTabContent>
               </CTabs>
             ) : (
-              <CTabs activeTab="konten">
+              <CTabs activeTab={activeTab}>
                 <CNav variant="tabs">
                   <CNavItem>
                     <CNavLink data-tab="konten">Konten</CNavLink>
@@ -461,6 +556,10 @@ const ListTestimonyControl = ({
                         setSelectedColum={(value) =>
                           setSelectedColumnTestimony(value)
                         }
+                        paddingTop={paddingTop}
+                        setPaddingTop={(value) => setPaddingTop(value)}
+                        paddingBottom={paddingBottom}
+                        setPaddingBottom={(value) => setPaddingBottom(value)}
                       />
                     ) : (
                       <div>Loading...</div>
@@ -472,66 +571,83 @@ const ListTestimonyControl = ({
                     className="p-1"
                     data-tab="tirai"
                   >
-                    {isAddShape ? (
-                      <CTabs>
-                        <CTabContent
-                          style={{
-                            height: 340,
-                            paddingRight: 5,
-                            overflowY: "auto",
-                          }}
-                          className="pt-3"
-                        >
-                          <div>ADD</div>
-                        </CTabContent>
-                      </CTabs>
-                    ) : isEditingShape ? (
-                      <CTabs>
-                        <CTabContent
-                          style={{
-                            height: 340,
-                            paddingRight: 5,
-                            overflowY: "auto",
-                          }}
-                          className="pt-3"
-                        >
-                          <div>Edit</div>
-                        </CTabContent>
-                      </CTabs>
-                    ) : (
-                      <div>
-                        {!isAddShape && !isEditingShape && (
-                          <>
-                            <div>
-                              {previewSection
-                                .filter((section) => section.id === setting.id)
-                                .map((section, i) =>
-                                  renderSectionShape(section, i)
-                                )}
-                            </div>
+                    <div>
+                      <InputRangeWithNumber
+                        label="Ruang Pengisi Atas"
+                        value={paddingTop}
+                        onChange={(newValue) => {
+                          setPaddingTop(newValue);
+                          handleUpdateSectionWrapperStyle(
+                            "paddingTop",
+                            newValue
+                          );
+                        }}
+                        min={0}
+                        max={120}
+                        onBlur={() =>
+                          handleSetValueWhenBlurWrapperStyle(
+                            paddingTop,
+                            0,
+                            120,
+                            "paddingTop"
+                          )
+                        }
+                      />
+                      <InputRangeWithNumber
+                        label="Ruang Pengisi Bawah"
+                        value={paddingBottom}
+                        onChange={(newValue) => {
+                          setPaddingBottom(newValue);
+                          handleUpdateSectionWrapperStyle(
+                            "paddingBottom",
+                            newValue
+                          );
+                        }}
+                        min={0}
+                        max={120}
+                        onBlur={() =>
+                          handleSetValueWhenBlurWrapperStyle(
+                            paddingBottom,
+                            0,
+                            120,
+                            "paddingBottom"
+                          )
+                        }
+                      />
+                    </div>
 
-                            <CCard
-                              style={{ cursor: "pointer" }}
-                              onClick={() => setIsAddShape(true)}
-                            >
-                              <CCardBody className="p-1">
-                                <div className="d-flex align-items-center ">
-                                  <IoAdd
-                                    style={{
-                                      cursor: "pointer",
-                                      margin: "0px 10px 0px 6px",
-                                    }}
-                                    size={18}
-                                  />
+                    <div>
+                      {!isAddShape && !isEditingShape && (
+                        <>
+                          <div>
+                            {previewSection
+                              .filter((section) => section.id === setting.id)
+                              .map((section, i) =>
+                                renderSectionShape(section, i)
+                              )}
+                          </div>
 
-                                  <div>Tambah Konten</div>
-                                </div>
-                              </CCardBody>
-                            </CCard>
-                          </>
-                        )}
-                      </div>
-                    )}
+                          <CCard
+                            style={{ cursor: "pointer" }}
+                            onClick={() => setIsAddShape(true)}
+                          >
+                            <CCardBody className="p-1">
+                              <div className="d-flex align-items-center ">
+                                <IoAdd
+                                  style={{
+                                    cursor: "pointer",
+                                    margin: "0px 10px 0px 6px",
+                                  }}
+                                  size={18}
+                                />
+
+                                <div>Tambah Konten</div>
+                              </div>
+                            </CCardBody>
+                          </CCard>
+                        </>
+                      )}
+                    </div>
                   </CTabPane>
                 </CTabContent>
               </CTabs>

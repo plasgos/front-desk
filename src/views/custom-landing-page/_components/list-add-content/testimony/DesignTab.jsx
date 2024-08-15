@@ -48,6 +48,10 @@ const DesignTab = ({
   setPreviewSection,
   selectedColum,
   setSelectedColum,
+  paddingTop,
+  setPaddingTop,
+  paddingBottom,
+  setPaddingBottom,
 }) => {
   const [selectedBackgroundColor, setSelectedBackgroundColor] = useState(
     currentSection?.cardStyle?.bgColor || ""
@@ -68,8 +72,8 @@ const DesignTab = ({
   const [distance, setDistance] = useState(8);
   const [borderRadius, setBorderRadius] = useState(12);
   const [borderWidth, setBorderWidth] = useState(2);
-  const [paddingTop, setPaddingTop] = useState(0);
-  const [paddingBottom, setPaddingBottom] = useState(0);
+  // const [paddingTop, setPaddingTop] = useState(0);
+  // const [paddingBottom, setPaddingBottom] = useState(0);
 
   // Profile Style
   const [fontSizeName, setfontSizeName] = useState(18);

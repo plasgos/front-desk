@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ChromePicker } from "react-color";
-
+// import { SketchPicker } from "react-color";
 const ColorPicker = ({
   label,
   initialColor,

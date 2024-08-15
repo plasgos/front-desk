@@ -16,7 +16,6 @@ export const ShapeList = ({
   editSection,
   removeSection,
 }) => {
-  console.log("🚀 ~ section:", section);
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
     accept: ItemTypes.CARD,
@@ -93,7 +92,7 @@ export const ShapeList = ({
                 fontSize: 14,
               }}
             >
-              {section?.type}
+              Tirai {section?.position.label}
             </div>
 
             {/* <FaMagnifyingGlass
