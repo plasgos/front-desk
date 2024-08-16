@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ChromePicker } from "react-color";
-// import { SketchPicker } from "react-color";
+import { SketchPicker } from "react-color";
 const ColorPicker = ({
   label,
   initialColor,
@@ -9,6 +9,8 @@ const ColorPicker = ({
   bottom,
   left,
   right,
+  top,
+  type,
 }) => {
   const [selectedColor, setSelectedColor] = useState(initialColor);
   const [showColorPicker, setShowColorPicker] = useState(false);
@@ -17,10 +19,20 @@ const ColorPicker = ({
     setShowColorPicker(!showColorPicker);
   };
 
-  const changeColor = (color) => {
-    setSelectedColor(color.hex);
-    if (onChange) {
-      onChange(color.hex); // Call the onChange prop function with the new color
+  const changeColor = (color, shapeColor) => {
+    const { r, g, b, a } = color.rgb;
+    const rgba = `rgba(${r}, ${g}, ${b}, ${a})`;
+
+    if (shapeColor) {
+      setSelectedColor(rgba);
+      if (onChange) {
+        onChange(rgba); // Call the onChange prop function with the new color
+      }
+    } else {
+      setSelectedColor(color.hex);
+      if (onChange) {
+        onChange(color.hex); // Call the onChange prop function with the new color
+      }
     }
   };
 
@@ -38,6 +50,7 @@ const ColorPicker = ({
     bottom,
     left,
     right,
+    top,
   };
 
   const cover = {
@@ -70,10 +83,18 @@ const ColorPicker = ({
       {showColorPicker && (
         <div style={popover}>
           <div style={cover} onClick={closeColorPicker} />
-          <ChromePicker
-            color={selectedColor}
-            onChange={(color) => changeColor(color)}
-          />
+
+          {type === "shapeColor" ? (
+            <SketchPicker
+              color={selectedColor}
+              onChange={(color) => changeColor(color, "shapeColor")}
+            />
+          ) : (
+            <ChromePicker
+              color={selectedColor}
+              onChange={(color) => changeColor(color)}
+            />
+          )}
         </div>
       )}
     </div>

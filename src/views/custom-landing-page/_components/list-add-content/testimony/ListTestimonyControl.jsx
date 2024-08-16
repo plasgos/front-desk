@@ -261,7 +261,7 @@ const ListTestimonyControl = ({
       wrapperStyle: {
         jusctifyContent: "tw-justify-center",
         flexDirection: "tw-flex-row",
-        layout: "8",
+        layout: "1",
         column: "tw-w-1/3",
         paddingX: 8,
         paddingTop: 0,

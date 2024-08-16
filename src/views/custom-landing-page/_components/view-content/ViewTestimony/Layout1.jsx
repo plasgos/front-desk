@@ -4,7 +4,7 @@ import SvgCurve from "./SvgShape";
 
 const Layout1 = ({ content, item }) => {
   return (
-    <div className="tw-flex tw-justify-end tw-items-center tw-relative  ">
+    <div className="tw-flex tw-justify-end tw-items-center tw-relative   ">
       <div
         style={{
           position: "relative",

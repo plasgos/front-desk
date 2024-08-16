@@ -13,7 +13,10 @@ const EditShape = ({
 }) => {
   const [selectedType, setSelectedType] = useState(undefined);
   const [selectedPostion, setSelectedPostion] = useState(undefined);
-  const [selectedShapeColor, setSelectedShapeColor] = useState("#FDC97D");
+  console.log("🚀 ~ selectedPostion:", selectedPostion);
+  const [selectedShapeColor, setSelectedShapeColor] = useState(
+    selectedSectionToEdit.color
+  );
   const [height1, setHeight1] = useState(selectedSectionToEdit.height1);
   const [height2, setHeight2] = useState(selectedSectionToEdit.height2);
   const [circle1, setCircle1] = useState(selectedSectionToEdit.circle1);
@@ -25,11 +28,11 @@ const EditShape = ({
     if (currentTypeOption) {
       setSelectedType(currentTypeOption);
       if (currentTypeOption.value === "circle") {
-        const currentTypeCirclePostionOptions = circleTypePosition.find(
+        const currentTypeCirclePositionOptions = circleTypePosition.find(
           (opt) => opt.value === selectedSectionToEdit.position.value
         );
-        if (currentTypeCirclePostionOptions) {
-          setSelectedPostion(currentTypeCirclePostionOptions);
+        if (currentTypeCirclePositionOptions) {
+          setSelectedPostion(currentTypeCirclePositionOptions);
         }
       } else {
         const currentPositionOptions = positionOptions.find(
@@ -47,61 +50,6 @@ const EditShape = ({
     selectedSectionToEdit.type,
     selectedSectionToEdit.position,
   ]);
-
-  //   useEffect(() => {
-  //     if (selectedType?.value === "circle") {
-  //       const newPosition = selectedPostion.value.includes("bottom")
-  //         ? circleTypePosition[2]
-  //         : circleTypePosition[0];
-
-  //       setSelectedPostion(newPosition);
-  //       setPreviewSection((arr) =>
-  //         arr.map((item) =>
-  //           String(item.id) === idSection
-  //             ? {
-  //                 ...item,
-  //                 shape: item.shape.map((contentItem) =>
-  //                   String(contentItem.id) === String(selectedSectionToEdit.id)
-  //                     ? {
-  //                         ...contentItem,
-  //                         position: newPosition,
-  //                       }
-  //                     : contentItem
-  //                 ),
-  //               }
-  //             : item
-  //         )
-  //       );
-  //     } else if (
-  //       selectedType?.value === "triangle" ||
-  //       selectedType?.value === "curve"
-  //     ) {
-  //       const newPosition = selectedPostion.value.includes("bottom")
-  //         ? positionOptions[1]
-  //         : positionOptions[0];
-
-  //       setSelectedPostion(newPosition);
-  //       setPreviewSection((arr) =>
-  //         arr.map((item) =>
-  //           String(item.id) === idSection
-  //             ? {
-  //                 ...item,
-  //                 shape: item.shape.map((contentItem) =>
-  //                   String(contentItem.id) === String(selectedSectionToEdit.id)
-  //                     ? {
-  //                         ...contentItem,
-  //                         position: newPosition,
-  //                       }
-  //                     : contentItem
-  //                 ),
-  //               }
-  //             : item
-  //         )
-  //       );
-  //     }
-
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, [selectedType]);
 
   const handleUpdateSectionWrapperStyle = (key, value) => {
     setPreviewSection((arr) =>
@@ -137,6 +85,54 @@ const EditShape = ({
 
   const handleChangeType = (selectedOptionValue) => {
     setSelectedType(selectedOptionValue);
+
+    if (selectedOptionValue.value !== "circle") {
+      const newPosition = selectedPostion.value.includes("bottom")
+        ? positionOptions[1]
+        : positionOptions[0];
+      setSelectedPostion(newPosition);
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === idSection
+            ? {
+                ...item,
+                shape: item.shape.map((contentItem) =>
+                  String(contentItem.id) === String(selectedSectionToEdit.id)
+                    ? {
+                        ...contentItem,
+                        position: newPosition,
+                      }
+                    : contentItem
+                ),
+              }
+            : item
+        )
+      );
+    } else {
+      const circlePosition = selectedPostion.value.includes("bottom")
+        ? circleTypePosition[2]
+        : circleTypePosition[0];
+
+      setSelectedPostion(circlePosition);
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === idSection
+            ? {
+                ...item,
+                shape: item.shape.map((contentItem) =>
+                  String(contentItem.id) === String(selectedSectionToEdit.id)
+                    ? {
+                        ...contentItem,
+                        position: circlePosition,
+                      }
+                    : contentItem
+                ),
+              }
+            : item
+        )
+      );
+    }
+
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === idSection
@@ -233,8 +229,9 @@ const EditShape = ({
             initialColor={selectedShapeColor}
             label="Warna"
             onChange={handleChangeShapeColor}
-            bottom={"-30px"}
+            top={"0"}
             right={"34px"}
+            type="shapeColor"
           />
         </div>
 

@@ -9,8 +9,8 @@ const SvgCurve = ({
   position = "top", // Posisi dari SVG: top, bottom, top-left, top-right, bottom-left, bottom-right
   fill = "rgba(255,152,0,0.5)", // Warna isi SVG
 }) => {
-  console.log("🚀 ~ position:", position);
   const transformStyle = position.includes("bottom") ? "scaleY(-1)" : "";
+  console.log("🚀 ~ fill:", fill);
 
   // Menyesuaikan posisi berdasarkan nilai `position`
   const positionStyles = {

@@ -66,7 +66,7 @@ const DesignTab = ({
   );
 
   const [selectedAlign, setSelectedAlign] = useState(alignOptions[1]);
-  const [selectedLayout, setSelectedLayout] = useState(layoutOptions[7]);
+  const [selectedLayout, setSelectedLayout] = useState(layoutOptions[0]);
   const [selectedShadow, setSelectedShadow] = useState(shadowOptions[1]);
 
   const [distance, setDistance] = useState(8);
