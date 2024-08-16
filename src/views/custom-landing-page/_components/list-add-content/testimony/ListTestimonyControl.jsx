@@ -212,11 +212,12 @@ const ListTestimonyControl = ({
         bgType: undefined,
         bgColor: "",
         bgImage: "",
-        blur: "",
-        opacity: "",
+        blur: 0,
+        opacity: 0,
         paddingY: 0,
         paddingTop: 0,
         paddingBottom: 0,
+        paddingType: "equal",
       },
       cardStyle: {
         bgColor: "#FFFFFF",
@@ -650,6 +651,7 @@ const ListTestimonyControl = ({
                     <BackgroundTab
                       currentSection={setting}
                       setPreviewSection={setPreviewSection}
+                      type="add"
                     />
                   </CTabPane>
                 </CTabContent>

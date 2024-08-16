@@ -71,7 +71,10 @@ const CustomLandingPage = () => {
   const containerRef = useRef(null);
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
-  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
+  console.log(
+    "🚀 ~ CustomLandingPage ~ previewSection:",
+    previewSection[0]?.background
+  );
   const [modal, setModal] = useState(false);
 
   const toggleModal = () => {

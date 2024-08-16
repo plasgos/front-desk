@@ -20,11 +20,11 @@ import AddTestimony from "../../list-add-content/testimony/AddTestimony";
 import EditTestimony from "../../list-add-content/testimony/EditTestimony";
 import SelectOptions from "../../common/SelectOptions";
 import DesignTabEdit from "./DesignTabEdit";
-import BackgroundTabEdit from "./BackgroundTabEdit";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import EditShape from "../../list-add-content/testimony/EditShape";
 import AddShape from "../../list-add-content/testimony/AddShape";
 import { ShapeList } from "../../list-add-content/testimony/ShapeList";
+import BackgroundTab from "../../list-add-content/testimony/BackgroundTab";
 
 const EditListTestimony = ({
   currentSection,
@@ -563,9 +563,10 @@ const EditListTestimony = ({
                     className="p-1"
                     data-tab="wadah"
                   >
-                    <BackgroundTabEdit
+                    <BackgroundTab
                       currentSection={currentSection}
                       setPreviewSection={setPreviewSection}
+                      type="edit"
                     />
                   </CTabPane>
                 </CTabContent>
