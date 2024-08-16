@@ -10,6 +10,35 @@ import Layout1 from "./Layout1";
 
 const ViewTestimony = forwardRef(
   ({ isPreview, width, isDragging, content, isResizing, isFocused }, ref) => {
+    const paddingTop = content.background?.paddingTop
+      ? `calc(16px + ${content.background.paddingTop}px)`
+      : content.background?.paddingY
+      ? `calc(16px + ${content.background.paddingY}px)`
+      : "16px";
+
+    const paddingBottom = content.background?.paddingBottom
+      ? `calc(16px + ${content.background.paddingBottom}px)`
+      : content.background?.paddingY
+      ? `calc(16px + ${content.background.paddingY}px)`
+      : "16px";
+
+    const backgroundImgStyle = {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      backgroundImage: `url(${content.background.bgImage})` || "",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      filter: `blur(${content.background?.blur}px)`,
+      zIndex: -1,
+      overflow: "hidden",
+    };
+
+    const calculateOpacity = content.background?.opacity / 100;
+
     return (
       <div
         ref={ref}
@@ -17,9 +46,29 @@ const ViewTestimony = forwardRef(
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
+          // ...backgroundImgStyle,
+          paddingTop,
+          paddingBottom,
+          backgroundColor: content.background.bgColor || "",
+          position: "relative",
+          zIndex: 1,
         }}
-        className={`tw-w-full tw-flex tw-flex-wrap ${content.wrapperStyle?.jusctifyContent} tw-items-center  tw-p-4  `}
+        className={`tw-w-full tw-flex tw-flex-wrap ${content.wrapperStyle?.jusctifyContent} tw-items-center tw-p-4 
+          `}
       >
+        <div style={backgroundImgStyle}></div>
+
+        {content.background?.opacity ? (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor:
+                content.background?.opacity < 0 ? "black" : "white",
+              opacity: Math.abs(calculateOpacity),
+            }}
+          ></div>
+        ) : null}
         {content.content?.map((item) => (
           <div
             style={{
@@ -36,8 +85,8 @@ const ViewTestimony = forwardRef(
                     width === "100%" || width >= 640
                       ? `${content?.wrapperStyle?.column}`
                       : "tw-w-full"
-                  }`
-                : `tw-w-full sm:${content.wrapperStyle?.column} `
+                  } `
+                : `tw-w-full sm:${content.wrapperStyle?.column}   `
             }
           >
             {content.wrapperStyle?.layout === "1" && (

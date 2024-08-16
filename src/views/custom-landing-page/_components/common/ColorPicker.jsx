@@ -84,7 +84,7 @@ const ColorPicker = ({
         <div style={popover}>
           <div style={cover} onClick={closeColorPicker} />
 
-          {type === "shapeColor" ? (
+          {type === "rgba" ? (
             <SketchPicker
               color={selectedColor}
               onChange={(color) => changeColor(color, "shapeColor")}

@@ -28,27 +28,7 @@ import { ShapeList } from "./ShapeList";
 import AddShape from "./AddShape";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import EditShape from "./EditShape";
-
-const shape = [
-  // {
-  //   id: "shape-0",
-  //   type: "triangle",
-  //   position: "top",
-  //   color: "#FDC87D",
-  //   height1: 40,
-  //   height2: 40,
-  //   circle1: 0,
-  // },
-  // {
-  //   id: "shape-1",
-  //   type: "triangleX",
-  //   position: "top",
-  //   color: "#FDC87D",
-  //   height1: 40,
-  //   height2: 40,
-  //   circle1: 0,
-  // },
-];
+import BackgroundTab from "./BackgroundTab";
 
 const contents = [
   {
@@ -227,7 +207,17 @@ const ListTestimonyControl = ({
       title: "Testimoni / Review",
       icon: <BsFillChatSquareQuoteFill size={20} />,
       content: contents,
-      shape: shape,
+      shape: [],
+      background: {
+        bgType: undefined,
+        bgColor: "",
+        bgImage: "",
+        blur: "",
+        opacity: "",
+        paddingY: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
+      },
       cardStyle: {
         bgColor: "#FFFFFF",
         starColor: "#FDD835",
@@ -444,7 +434,7 @@ const ListTestimonyControl = ({
                 >
                   <EditTestimony
                     idSection={setting.id}
-                    selectedSectionToEdit={selectedSectionShape}
+                    selectedSectionToEdit={selectedSection}
                     setPreviewSection={setPreviewSection}
                   />
                 </CTabContent>
@@ -462,7 +452,7 @@ const ListTestimonyControl = ({
                 >
                   <AddShape
                     idSection={setting.id}
-                    exitingShape={shape}
+                    exitingShape={[]}
                     setPreviewSection={setPreviewSection}
                   />
                 </CTabContent>
@@ -479,7 +469,6 @@ const ListTestimonyControl = ({
                 >
                   <EditShape
                     idSection={setting.id}
-                    prevSections={previewSection}
                     selectedSectionToEdit={selectedSectionShape}
                     setPreviewSection={setPreviewSection}
                   />
@@ -496,6 +485,9 @@ const ListTestimonyControl = ({
                   </CNavItem>
                   <CNavItem>
                     <CNavLink data-tab="tirai">Tirai</CNavLink>
+                  </CNavItem>
+                  <CNavItem>
+                    <CNavLink data-tab="wadah">Wadah</CNavLink>
                   </CNavItem>
                 </CNav>
                 <CTabContent
@@ -648,6 +640,17 @@ const ListTestimonyControl = ({
                         </>
                       )}
                     </div>
+                  </CTabPane>
+
+                  <CTabPane
+                    style={{ overflowX: "hidden", height: "100%" }}
+                    className="p-1"
+                    data-tab="wadah"
+                  >
+                    <BackgroundTab
+                      currentSection={setting}
+                      setPreviewSection={setPreviewSection}
+                    />
                   </CTabPane>
                 </CTabContent>
               </CTabs>

@@ -7,15 +7,6 @@ export const shadowOptions = [
   { value: "tw-shadow-2xl", label: "Blur" },
 ];
 
-// export const fontSizeOptions = [
-//   { value: "12px", label: "Lebih Kecil" },
-//   { value: "14px", label: "Kecil" },
-//   { value: "16px", label: "Sedang" },
-//   { value: "18px", label: "Besar" },
-//   { value: "20px", label: "Lebih Besar" },
-//   { value: "24px", label: "Extra Besar" },
-// ];
-
 export const fontSizeOptions = [
   { value: "tw-text-xs", label: "Lebih Kecil" },
   { value: "tw-text-sm", label: "Kecil" },
@@ -68,4 +59,15 @@ export const fontStyleOptions = [
   { value: "tw-font-semibold tw-italic", label: "Bold Italic" },
   { value: "tw-underline", label: "Underline" },
   { value: "tw-line-through", label: "Line Through" },
+];
+
+export const PaddingYOptions = [
+  { value: "equal", label: "Sama" },
+  { value: "different", label: "Berbeda" },
+];
+
+export const backgroundType = [
+  { value: undefined, label: "Tidak Ada" },
+  { value: "color", label: "Warna" },
+  { value: "image", label: "Gambar" },
 ];

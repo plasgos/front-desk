@@ -5,12 +5,7 @@ import SelectOptions from "../../common/SelectOptions";
 import ColorPicker from "../../common/ColorPicker";
 import { circleTypePosition, positionOptions, typeOptions } from "./AddShape";
 
-const EditShape = ({
-  idSection,
-  previewSection,
-  selectedSectionToEdit,
-  setPreviewSection,
-}) => {
+const EditShape = ({ idSection, selectedSectionToEdit, setPreviewSection }) => {
   const [selectedType, setSelectedType] = useState(undefined);
   const [selectedPostion, setSelectedPostion] = useState(undefined);
   console.log("🚀 ~ selectedPostion:", selectedPostion);
@@ -45,7 +40,6 @@ const EditShape = ({
     }
   }, [
     selectedSectionToEdit.id,
-    previewSection,
     idSection,
     selectedSectionToEdit.type,
     selectedSectionToEdit.position,
@@ -231,7 +225,7 @@ const EditShape = ({
             onChange={handleChangeShapeColor}
             top={"0"}
             right={"34px"}
-            type="shapeColor"
+            type="rgba"
           />
         </div>
 

@@ -12,7 +12,7 @@ import {
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import { FaStar } from "react-icons/fa6";
 
-const layoutOptions = [
+export const layoutOptions = [
   { value: "1", label: "1" },
   { value: "2", label: "2" },
   { value: "3", label: "3" },
@@ -23,7 +23,7 @@ const layoutOptions = [
   { value: "8", label: "8" },
 ];
 
-const starAmountOptions = [
+export const starAmountOptions = [
   { value: 1, label: "1" },
   { value: 2, label: "2" },
   { value: 3, label: "3" },
@@ -36,7 +36,7 @@ const starAmountOptions = [
   { value: 10, label: "10" },
 ];
 
-const starPositionOptions = [
+export const starPositionOptions = [
   { value: "top-name", label: "Di Atas Nama" },
   { value: "bottom-name", label: "Di Bawah Nama" },
   { value: "top-content", label: "Di Atas Content" },

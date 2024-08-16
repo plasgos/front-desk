@@ -10,8 +10,6 @@ const SvgCurve = ({
   fill = "rgba(255,152,0,0.5)", // Warna isi SVG
 }) => {
   const transformStyle = position.includes("bottom") ? "scaleY(-1)" : "";
-  console.log("🚀 ~ fill:", fill);
-
   // Menyesuaikan posisi berdasarkan nilai `position`
   const positionStyles = {
     position: "absolute",

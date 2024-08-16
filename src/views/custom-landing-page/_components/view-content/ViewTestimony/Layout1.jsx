@@ -11,7 +11,6 @@ const Layout1 = ({ content, item }) => {
           zIndex: 3,
           borderRadius: content.wrapperStyle.borderRadius,
           borderWidth: content.wrapperStyle.borderWidth,
-          // padding: `14px`,
           paddingTop: content.wrapperStyle.paddingTop
             ? `calc(14px + ${content.wrapperStyle.paddingTop}px)`
             : "14px",

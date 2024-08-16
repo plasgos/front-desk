@@ -23,7 +23,7 @@ const SelectOptions = ({
 }) => {
   return (
     <div className={`form-group w-${width} `}>
-      <label>{label}</label>
+      <label style={{ fontSize: 12 }}>{label}</label>
       <Select
         theme={(theme) => ({
           ...theme,

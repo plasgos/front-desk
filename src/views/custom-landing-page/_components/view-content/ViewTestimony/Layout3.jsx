@@ -1,14 +1,16 @@
 import React from "react";
 import { FaStar } from "react-icons/fa6";
+import SvgCurve from "./SvgShape";
 
 const Layout3 = ({ content, item }) => {
   return (
-    <div className="tw-flex tw-items-center  ">
+    <div className="tw-flex tw-items-center tw-relative    ">
       <div
         style={{
+          position: "relative",
+          zIndex: 3,
           borderRadius: content.wrapperStyle.borderRadius,
           borderWidth: content.wrapperStyle.borderWidth,
-          padding: `14px`, // Default padding untuk semua sisi
           paddingTop: content.wrapperStyle.paddingTop
             ? `calc(14px + ${content.wrapperStyle.paddingTop}px)`
             : "14px",
@@ -20,7 +22,19 @@ const Layout3 = ({ content, item }) => {
            
              ${content.cardStyle.shadowCard} tw-w-full tw-overflow-hidden`}
       >
-        <div className="tw-flex tw-flex-col tw-items-center ">
+        {content.shape.map((shape) => (
+          <SvgCurve
+            key={shape.id}
+            type={shape.type}
+            height1={shape.height1}
+            height2={shape.height2}
+            curveDepth={shape.circle1}
+            position={shape.position.value}
+            fill={shape.color}
+          />
+        ))}
+
+        <div className="tw-flex tw-flex-col tw-items-center tw-p-3 ">
           <div id="profile-picture">
             <div
               style={{

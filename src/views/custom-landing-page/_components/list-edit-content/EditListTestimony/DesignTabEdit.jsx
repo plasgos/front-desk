@@ -11,44 +11,21 @@ import {
 } from "../../SelectOptions";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import { FaStar } from "react-icons/fa6";
-
-const layoutOptions = [
-  { value: "1", label: "1" },
-  { value: "2", label: "2" },
-  { value: "3", label: "3" },
-  { value: "4", label: "4" },
-  { value: "5", label: "5" },
-  { value: "6", label: "6" },
-  { value: "7", label: "7" },
-  { value: "8", label: "8" },
-];
-
-const starAmountOptions = [
-  { value: 1, label: "1" },
-  { value: 2, label: "2" },
-  { value: 3, label: "3" },
-  { value: 4, label: "4" },
-  { value: 5, label: "5" },
-  { value: 6, label: "6" },
-  { value: 7, label: "7" },
-  { value: 8, label: "8" },
-  { value: 9, label: "9" },
-  { value: 10, label: "10" },
-];
-
-const starPositionOptions = [
-  { value: "top-name", label: "Di Atas Nama" },
-  { value: "bottom-name", label: "Di Bawah Nama" },
-  { value: "top-content", label: "Di Atas Content" },
-  { value: "bottom-content", label: "Di Bawah Content" },
-];
+import {
+  layoutOptions,
+  starAmountOptions,
+  starPositionOptions,
+} from "../../list-add-content/testimony/DesignTab";
 
 const DesignTabEdit = ({
-  previewSection,
   currentSection,
   setPreviewSection,
   selectedColum,
   setSelectedColum,
+  paddingTop,
+  setPaddingTop,
+  paddingBottom,
+  setPaddingBottom,
 }) => {
   const [selectedBackgroundColor, setSelectedBackgroundColor] = useState(
     currentSection?.cardStyle?.bgColor || ""
@@ -74,12 +51,6 @@ const DesignTabEdit = ({
   );
   const [borderWidth, setBorderWidth] = useState(
     currentSection?.wrapperStyle?.borderWidth
-  );
-  const [paddingTop, setPaddingTop] = useState(
-    currentSection?.wrapperStyle?.paddingTop
-  );
-  const [paddingBottom, setPaddingBottom] = useState(
-    currentSection?.wrapperStyle?.paddingBottom
   );
 
   // Profile Style
@@ -128,76 +99,79 @@ const DesignTabEdit = ({
   );
 
   useEffect(() => {
-    const selectedSectionToEdit = previewSection.find(
-      (section) => String(section.id) === currentSection.id
+    const alignOption = alignOptions.find(
+      (opt) => opt.value === currentSection.wrapperStyle?.jusctifyContent
     );
-    if (selectedSectionToEdit) {
-      const alignOption = alignOptions.find(
-        (opt) =>
-          opt.value === selectedSectionToEdit.wrapperStyle?.jusctifyContent
-      );
-      if (alignOption) {
-        setSelectedAlign(alignOption);
-      }
-
-      const layoutOption = layoutOptions.find(
-        (opt) => opt.value === selectedSectionToEdit.wrapperStyle?.layout
-      );
-      if (layoutOption) {
-        setSelectedLayout(layoutOption);
-      }
-
-      const shadowOption = shadowOptions.find(
-        (opt) => opt.value === selectedSectionToEdit.cardStyle?.shadowCard
-      );
-      if (shadowOption) {
-        setSelectedShadow(shadowOption);
-      }
-
-      const shadowPictOption = shadowOptions.find(
-        (opt) =>
-          opt.value === selectedSectionToEdit.profileStyle?.shadowImageName
-      );
-      if (shadowPictOption) {
-        setSelectedShadowPict(shadowPictOption);
-      }
-
-      const fontStyleOption = fontStyleOptions.find(
-        (opt) => opt.value === selectedSectionToEdit.profileStyle?.fontStyle
-      );
-      if (fontStyleOption) {
-        setSelectedFontStyle(fontStyleOption);
-      }
-
-      const textAlignOption = textAlignOptions.find(
-        (opt) => opt.value === selectedSectionToEdit.contentStyle?.textAlign
-      );
-      if (textAlignOption) {
-        setSelectedTextAlignContent(textAlignOption);
-      }
-
-      const fontSizeContentOption = fontSizeOptions.find(
-        (opt) => opt.value === selectedSectionToEdit.contentStyle?.fontSize
-      );
-      if (fontSizeContentOption) {
-        setSelectedFontSizeContent(fontSizeContentOption);
-      }
-
-      const amountStarOption = starAmountOptions.find(
-        (opt) => opt.value === selectedSectionToEdit.starStyle?.amount
-      );
-      if (amountStarOption) {
-        setAmountStar(amountStarOption);
-      }
-
-      const positionStarOption = starPositionOptions.find(
-        (opt) => opt.value === selectedSectionToEdit.starStyle?.position
-      );
-      if (positionStarOption) {
-        setPositionStar(positionStarOption);
-      }
+    if (alignOption) {
+      setSelectedAlign(alignOption);
     }
-  }, [currentSection.id, previewSection]);
+
+    const layoutOption = layoutOptions.find(
+      (opt) => opt.value === currentSection.wrapperStyle?.layout
+    );
+    if (layoutOption) {
+      setSelectedLayout(layoutOption);
+    }
+
+    const shadowOption = shadowOptions.find(
+      (opt) => opt.value === currentSection.cardStyle?.shadowCard
+    );
+    if (shadowOption) {
+      setSelectedShadow(shadowOption);
+    }
+
+    const shadowPictOption = shadowOptions.find(
+      (opt) => opt.value === currentSection.profileStyle?.shadowImageName
+    );
+    if (shadowPictOption) {
+      setSelectedShadowPict(shadowPictOption);
+    }
+
+    const fontStyleOption = fontStyleOptions.find(
+      (opt) => opt.value === currentSection.profileStyle?.fontStyle
+    );
+    if (fontStyleOption) {
+      setSelectedFontStyle(fontStyleOption);
+    }
+
+    const textAlignOption = textAlignOptions.find(
+      (opt) => opt.value === currentSection.contentStyle?.textAlign
+    );
+    if (textAlignOption) {
+      setSelectedTextAlignContent(textAlignOption);
+    }
+
+    const fontSizeContentOption = fontSizeOptions.find(
+      (opt) => opt.value === currentSection.contentStyle?.fontSize
+    );
+    if (fontSizeContentOption) {
+      setSelectedFontSizeContent(fontSizeContentOption);
+    }
+
+    const amountStarOption = starAmountOptions.find(
+      (opt) => opt.value === currentSection.starStyle?.amount
+    );
+    if (amountStarOption) {
+      setAmountStar(amountStarOption);
+    }
+
+    const positionStarOption = starPositionOptions.find(
+      (opt) => opt.value === currentSection.starStyle?.position
+    );
+    if (positionStarOption) {
+      setPositionStar(positionStarOption);
+    }
+  }, [
+    currentSection.cardStyle.shadowCard,
+    currentSection.contentStyle.fontSize,
+    currentSection.contentStyle.textAlign,
+    currentSection.profileStyle.fontStyle,
+    currentSection.profileStyle.shadowImageName,
+    currentSection.starStyle.amount,
+    currentSection.starStyle.position,
+    currentSection.wrapperStyle.jusctifyContent,
+    currentSection.wrapperStyle.layout,
+  ]);
 
   const handleUpdateSectionStarStyle = (key, value) => {
     setPreviewSection((arr) =>

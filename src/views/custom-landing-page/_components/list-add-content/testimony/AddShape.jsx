@@ -289,7 +289,7 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
             onChange={handleChangeShapeColor}
             top={"0"}
             right={"34px"}
-            type="shapeColor"
+            type="rgba"
           />
         </div>
 
