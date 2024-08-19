@@ -2,6 +2,7 @@ import { CButton, CCard } from "@coreui/react";
 import React, { useState } from "react";
 import { MdTextFields, MdViewColumn } from "react-icons/md";
 import { PiArrowsDownUpLight, PiTargetDuotone } from "react-icons/pi";
+import { FaGripLines } from "react-icons/fa6";
 import Text from "./Text";
 import ColumnSection from "../list-add-content/colum-text-and-image/ColumnSection";
 import EmptySpace from "./EmptySpace";
@@ -12,14 +13,9 @@ import { RxSwitch } from "react-icons/rx";
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
 import ListButtonControl from "./button/ListButtonControl";
 import ListTestimonyControl from "./testimony/ListTestimonyControl";
+import Line from "./Line";
 
-const ListContent = ({
-  previewSection,
-  setPreviewSection,
-  sections,
-  setSections,
-  isShowContent,
-}) => {
+const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
   const [addContent, setAddContent] = useState("");
 
   const handelCancelAddContent = () => {
@@ -70,10 +66,16 @@ const ListContent = ({
       icon: <BsFillChatSquareQuoteFill style={{ marginRight: 5 }} size={24} />,
       action: () => setAddContent("testimony"),
     },
+    {
+      name: "line",
+      title: "Garis",
+      icon: <FaGripLines style={{ marginRight: 5 }} size={24} />,
+      action: () => setAddContent("line"),
+    },
   ];
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", height: 400 }}>
       {!addContent && (
         <>
           <div className="d-flex justify-content-end align-items-center border-bottom p-2 mb-2">
@@ -143,6 +145,14 @@ const ListContent = ({
 
       {addContent === "testimony" && (
         <ListTestimonyControl
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
+      {addContent === "line" && (
+        <Line
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}

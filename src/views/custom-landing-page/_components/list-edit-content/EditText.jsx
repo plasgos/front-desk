@@ -95,12 +95,12 @@ const EditText = ({
   };
 
   const handelCancel = () => {
-    isShowContent("");
+    isShowContent(false);
     setPreviewSection([...sectionBeforeEdit]);
   };
 
   const handelConfirm = () => {
-    isShowContent("");
+    isShowContent(false);
   };
 
   return (
