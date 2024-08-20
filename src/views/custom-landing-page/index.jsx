@@ -43,6 +43,7 @@ import ViewTestimony from "./_components/view-content/ViewTestimony/index";
 import EditListTestimony from "./_components/list-edit-content/EditListTestimony/index";
 import Line from "./_components/list-add-content/Line";
 import ViewLine from "./_components/view-content/ViewLine";
+import ListFeature from "./_components/list-add-content/ListFeature";
 
 const landingPage = {
   detail: {
@@ -73,10 +74,7 @@ const CustomLandingPage = () => {
   const containerRef = useRef(null);
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
-  console.log(
-    "🚀 ~ CustomLandingPage ~ previewSection:",
-    previewSection[0]?.content
-  );
+  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection[0]);
   const [modal, setModal] = useState(false);
 
   const toggleModal = () => {
@@ -371,6 +369,23 @@ const CustomLandingPage = () => {
       ) {
         return (
           <Line
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditing={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "list-feature" &&
+        section.name === "list-feature" &&
+        editing.id === section.id
+      ) {
+        return (
+          <ListFeature
             currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}

@@ -1,8 +1,8 @@
-import { CButton, CCard } from "@coreui/react";
+import { CButton, CCard, CTabContent } from "@coreui/react";
 import React, { useState } from "react";
 import { MdTextFields, MdViewColumn } from "react-icons/md";
 import { PiArrowsDownUpLight, PiTargetDuotone } from "react-icons/pi";
-import { FaGripLines } from "react-icons/fa6";
+import { FaGripLines, FaListCheck } from "react-icons/fa6";
 import Text from "./Text";
 import ColumnSection from "../list-add-content/colum-text-and-image/ColumnSection";
 import EmptySpace from "./EmptySpace";
@@ -14,6 +14,7 @@ import { BsFillChatSquareQuoteFill } from "react-icons/bs";
 import ListButtonControl from "./button/ListButtonControl";
 import ListTestimonyControl from "./testimony/ListTestimonyControl";
 import Line from "./Line";
+import ListFeature from "./ListFeature/index";
 
 const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
   const [addContent, setAddContent] = useState("");
@@ -71,6 +72,12 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
       title: "Garis",
       icon: <FaGripLines style={{ marginRight: 5 }} size={24} />,
       action: () => setAddContent("line"),
+    },
+    {
+      name: "list-feature",
+      title: "Daftar Fitur",
+      icon: <FaListCheck style={{ marginRight: 5 }} size={24} />,
+      action: () => setAddContent("list-feature"),
     },
   ];
 
@@ -159,19 +166,35 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
         />
       )}
 
-      {!addContent &&
-        dataListContent.map((item, index) => (
-          <CCard
-            key={index}
-            style={{ marginBottom: 10, cursor: "pointer" }}
-            onClick={item.action}
-          >
-            <div className="d-flex align-items-center py-1 px-2">
-              <div>{item.icon}</div>
-              <div>{item.title}</div>
-            </div>
-          </CCard>
-        ))}
+      {addContent === "list-feature" && (
+        <ListFeature
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
+      <CTabContent
+        style={{
+          height: addContent ? 0 : 340,
+          paddingRight: 5,
+          overflowY: "auto",
+        }}
+      >
+        {!addContent &&
+          dataListContent.map((item, index) => (
+            <CCard
+              key={index}
+              style={{ marginBottom: 10, cursor: "pointer" }}
+              onClick={item.action}
+            >
+              <div className="d-flex align-items-center py-1 px-2">
+                <div>{item.icon}</div>
+                <div>{item.title}</div>
+              </div>
+            </CCard>
+          ))}
+      </CTabContent>
     </div>
   );
 };

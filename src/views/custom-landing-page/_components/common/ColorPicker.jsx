@@ -5,6 +5,7 @@ const ColorPicker = ({
   label,
   initialColor,
   onChange,
+  width = "w-50",
   flexEnd = false,
   bottom,
   left,
@@ -63,9 +64,9 @@ const ColorPicker = ({
 
   return (
     <div
-      className={`d-flex  align-items-center ${
+      className={`${width} d-flex  align-items-center ${
         flexEnd && `${flexEnd} mr-3`
-      }  w-50`}
+      }  `}
     >
       <div
         onClick={toggleColorPicker}
