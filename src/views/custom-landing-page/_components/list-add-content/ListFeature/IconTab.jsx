@@ -3,14 +3,28 @@ import React, { useEffect, useState } from "react";
 import ColorPicker from "../../common/ColorPicker";
 import SelectOptions from "../../common/SelectOptions";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
+import IconPicker from "../../common/IconPicker";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack";
 
 const shadowOptions = [
   { value: "", label: "Tidak Ada" },
   { value: "tw-shadow", label: "Ringan" },
 ];
 
-const IconTab = ({ setPreviewSection, currentSection, isEditing }) => {
-  const [imageUrl, setImageUrl] = useState("");
+const IconTab = ({
+  previewSection,
+  setPreviewSection,
+  currentSection,
+  isEditing,
+  visible,
+  setVisible,
+  setIconBeforeEdit,
+  iconName,
+  setIconName,
+  imageUrl,
+  setImageUrl,
+}) => {
   const [colorIcon, setColorIcon] = useState(
     currentSection.iconStyle?.color || "#424242"
   );
@@ -27,6 +41,25 @@ const IconTab = ({ setPreviewSection, currentSection, isEditing }) => {
       ? currentSection?.iconStyle?.horizontalPosition
       : 14
   );
+
+  const iconPack = useFontAwesomeIconPack();
+
+  useEffect(() => {
+    if (iconPack) {
+      const iconToSet = !isEditing
+        ? currentSection?.iconStyle?.icon || "hand-point-right"
+        : currentSection?.iconStyle?.icon;
+      const iconExists = iconPack.some((icon) => icon.iconName === iconToSet);
+
+      if (iconExists) {
+        setIconName(iconToSet);
+      } else {
+        console.warn(`Icon ${iconToSet} not found in iconPack`);
+        setIconName(null); // Atau set ke ikon default yang pasti ada
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [iconPack, currentSection, isEditing]);
 
   useEffect(() => {
     if (isEditing) {
@@ -74,6 +107,24 @@ const IconTab = ({ setPreviewSection, currentSection, isEditing }) => {
     );
   };
 
+  const handleChangeIcon = (value) => {
+    setIconName(value);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === currentSection.id
+          ? {
+              ...item,
+              iconStyle: {
+                ...item.iconStyle,
+                icon: value,
+                image: "",
+              },
+            }
+          : item
+      )
+    );
+  };
+
   const handleUpdateValue = (key, value) => {
     setPreviewSection((arr) =>
       arr.map((item) =>
@@ -103,19 +154,9 @@ const IconTab = ({ setPreviewSection, currentSection, isEditing }) => {
   };
 
   useEffect(() => {
-    // Memeriksa apakah iconStyle.icon adalah string (URL) atau bukan
-    if (typeof currentSection?.iconStyle?.icon === "string") {
-      setImageUrl(currentSection.iconStyle?.icon);
-    } else {
-      setImageUrl(""); // Reset jika bukan string
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     if (imageUrl !== "") {
       // Update tempSections hanya jika imageUrl bukan string kosong
+      setIconName(null);
       setPreviewSection((arr) =>
         arr.map((item) =>
           String(item.id) === currentSection.id
@@ -123,7 +164,8 @@ const IconTab = ({ setPreviewSection, currentSection, isEditing }) => {
                 ...item,
                 iconStyle: {
                   ...item.iconStyle,
-                  icon: imageUrl,
+                  image: imageUrl,
+                  icon: "",
                 },
               }
             : item
@@ -150,125 +192,144 @@ const IconTab = ({ setPreviewSection, currentSection, isEditing }) => {
       reader.readAsDataURL(file);
     };
   };
+
+  const handleSearchIcon = () => {
+    setIconBeforeEdit([...previewSection]);
+    setVisible(true);
+  };
+
   return (
     <div>
-      <div className="d-flex align-items-center mb-2 ">
-        <div className="">
-          {imageUrl && (
-            <div
-              style={{
-                backgroundColor: "#F5F5F5",
-                width: 146,
-                height: 40,
-                overflow: "hidden",
-              }}
-              className="mx-auto mb-2"
-            >
-              <img
-                style={{ objectFit: "contain", width: "100%", height: 100 }}
-                src={imageUrl}
-                alt="img"
-              />
+      {visible ? (
+        <IconPicker
+          value={iconName}
+          onChange={(value) => handleChangeIcon(value)}
+        />
+      ) : (
+        <div>
+          <div className="d-flex align-items-center mb-2 ">
+            <div className="">
+              {imageUrl && (
+                <div
+                  style={{
+                    backgroundColor: "#F5F5F5",
+                    width: 146,
+                    height: 40,
+                    overflow: "hidden",
+                  }}
+                  className="mx-auto mb-2"
+                >
+                  <img
+                    style={{ objectFit: "contain", width: "100%", height: 100 }}
+                    src={imageUrl}
+                    alt="img"
+                  />
+                </div>
+              )}
+
+              {iconName && iconPack && (
+                <div
+                  style={{
+                    backgroundColor: "#F5F5F5",
+                    width: "100%",
+                    overflow: "hidden",
+                  }}
+                  className="mx-auto mb-2 p-2"
+                >
+                  <div>
+                    <FontAwesomeIcon icon={["fas", iconName]} size="xl" />
+                  </div>
+                </div>
+              )}
+
+              <div style={{ gap: 5 }} className="d-flex align-items-center">
+                <ColorPicker
+                  initialColor={colorIcon}
+                  onChange={handleChangeColorIcon}
+                  width="w-0"
+                  bottom={"-10px"}
+                />
+
+                <CButton
+                  onClick={handleFileUpload}
+                  color="primary"
+                  variant="outline"
+                >
+                  Upload
+                </CButton>
+
+                <CButton
+                  onClick={handleSearchIcon}
+                  color="primary"
+                  variant="outline"
+                >
+                  Cari
+                </CButton>
+              </div>
             </div>
-          )}
-
-          {!imageUrl && (
-            <div
-              style={{
-                backgroundColor: "#F5F5F5",
-                width: "100%",
-                overflow: "hidden",
-              }}
-              className="mx-auto mb-2 p-2"
-            >
-              <div>{currentSection?.iconStyle?.icon}</div>
-            </div>
-          )}
-
-          <div style={{ gap: 5 }} className="d-flex align-items-center">
-            <ColorPicker
-              initialColor={colorIcon}
-              onChange={handleChangeColorIcon}
-              width="w-0"
-              bottom={"-10px"}
-            />
-
-            <CButton
-              onClick={handleFileUpload}
-              color="primary"
-              variant="outline"
-            >
-              Upload
-            </CButton>
-
-            <CButton
-              onClick={handleFileUpload}
-              color="primary"
-              variant="outline"
-            >
-              Cari
-            </CButton>
           </div>
+
+          <SelectOptions
+            label="Bayangan"
+            options={shadowOptions}
+            onChange={handleCangeShadow}
+            value={shadow}
+            width="50"
+          />
+
+          <InputRangeWithNumber
+            label="Ukuran Icon"
+            value={iconSize}
+            onChange={(newValue) => {
+              setIconSize(newValue);
+              handleUpdateValue("iconSize", newValue);
+            }}
+            min={10}
+            max={60}
+            onBlur={() =>
+              handleSetValueWhenBlurValue(iconSize, 10, 60, "iconSize")
+            }
+          />
+
+          <InputRangeWithNumber
+            label="Posisi Vertical"
+            value={verticalPosition}
+            onChange={(newValue) => {
+              setVerticalPosition(newValue);
+              handleUpdateValue("verticalPosition", newValue);
+            }}
+            min={-40}
+            max={40}
+            onBlur={() =>
+              handleSetValueWhenBlurValue(
+                verticalPosition,
+                -40,
+                40,
+                "verticalPosition"
+              )
+            }
+          />
+
+          <InputRangeWithNumber
+            label="Horizontal Vertical"
+            value={horizontalPosition}
+            onChange={(newValue) => {
+              setHorizontalPosition(newValue);
+              handleUpdateValue("horizontalPosition", newValue);
+            }}
+            min={-40}
+            max={40}
+            onBlur={() =>
+              handleSetValueWhenBlurValue(
+                horizontalPosition,
+                -40,
+                40,
+                "horizontalPosition"
+              )
+            }
+          />
         </div>
-      </div>
-
-      <SelectOptions
-        label="Bayangan"
-        options={shadowOptions}
-        onChange={handleCangeShadow}
-        value={shadow}
-        width="50"
-      />
-
-      <InputRangeWithNumber
-        label="Ukuran Icon"
-        value={iconSize}
-        onChange={(newValue) => {
-          setIconSize(newValue);
-          handleUpdateValue("iconSize", newValue);
-        }}
-        min={10}
-        max={60}
-        onBlur={() => handleSetValueWhenBlurValue(iconSize, 10, 60, "iconSize")}
-      />
-
-      <InputRangeWithNumber
-        label="Posisi Vertical"
-        value={verticalPosition}
-        onChange={(newValue) => {
-          setVerticalPosition(newValue);
-          handleUpdateValue("verticalPosition", newValue);
-        }}
-        min={-40}
-        max={40}
-        onBlur={() =>
-          handleSetValueWhenBlurValue(
-            verticalPosition,
-            -40,
-            40,
-            "verticalPosition"
-          )
-        }
-      />
-
-      <InputRangeWithNumber
-        label="Horizontal Vertical"
-        value={horizontalPosition}
-        onChange={(newValue) => {
-          setHorizontalPosition(newValue);
-          handleUpdateValue("horizontalPosition", newValue);
-        }}
-        min={-40}
-        max={40}
-        onBlur={() =>
-          handleSetValueWhenBlurValue(
-            horizontalPosition,
-            -40,
-            40,
-            "horizontalPosition"
-          )
-        }
-      />
+      )}
     </div>
   );
 };

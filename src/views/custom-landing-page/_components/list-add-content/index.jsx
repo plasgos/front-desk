@@ -13,7 +13,7 @@ import { RxSwitch } from "react-icons/rx";
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
 import ListButtonControl from "./button/ListButtonControl";
 import ListTestimonyControl from "./testimony/ListTestimonyControl";
-import Line from "./Line";
+import Line from "./Line/index";
 import ListFeature from "./ListFeature/index";
 
 const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {

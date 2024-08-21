@@ -9,12 +9,17 @@ import SelectOptions from "../../common/SelectOptions";
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 
+const convertArrayToHtml = (lines) => {
+  if (!Array.isArray(lines)) return ""; // Pastikan lines adalah array
+  return lines.map((line) => `<p>${line}</p>`).join("");
+};
+
 const ContentTab = ({ setPreviewSection, currentSection }) => {
   const [selectedTextColor, setSelectedTextColor] = useState(
     currentSection?.content?.textColor || "#424242"
   );
   const [selectAlign, setSelectAlign] = useState(
-    currentSection?.content?.textAlign || "text-center"
+    currentSection?.content?.textAlign || "tw-justify-center"
   );
   const [fontSize, setFontSize] = useState(
     currentSection?.content?.fontSize || 18
@@ -25,10 +30,25 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
       : 20
   );
   const [editorHtml, setEditorHtml] = useState(
-    currentSection.content?.text || "Type your text here"
+    convertArrayToHtml(currentSection.content?.text) ||
+      convertArrayToHtml([
+        "Mudah Digunakan",
+        "Dijamin 100% Bahan Terbaik",
+        "Menghilangkan Bau Badan",
+        "Waterproof (Tahan Air)",
+      ])
   );
 
   const handleEditorChange = (html) => {
+    // Buat elemen DOM sementara untuk mengonversi HTML menjadi teks tanpa tag
+    const tempElement = document.createElement("div");
+    tempElement.innerHTML = html;
+
+    // Menghapus tag HTML dan memisahkan berdasarkan <p> atau <br>
+    const lines = tempElement.innerHTML
+      .split(/<p>|<\/p>|<br\s*\/?>/i)
+      .filter(Boolean);
+
     setEditorHtml(html);
     setPreviewSection((arr) =>
       arr.map((item) =>
@@ -37,7 +57,7 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
               ...item,
               content: {
                 ...item.content,
-                text: html,
+                text: lines, // Simpan sebagai array per baris
               },
             }
           : item
@@ -125,38 +145,38 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
 
         <div>
           <CFormGroup>
-            <CLabel className="mb-2">Posisi Teks</CLabel>
+            <CLabel className="mb-2">Align</CLabel>
             <div className="d-flex justify-content-start">
               <div
                 className={`d-flex align-items-center justify-content-center mr-1 rounded ${
-                  selectAlign === "text-left"
+                  selectAlign === "tw-justify-left"
                     ? "bg-primary border-primary text-white"
                     : "bg-white border-dark"
                 }`}
                 style={{ cursor: "pointer", width: 35, height: 35 }}
-                onClick={() => onChangeAlign("text-left")}
+                onClick={() => onChangeAlign("tw-justify-left")}
               >
                 <FaAlignLeft style={{ fontSize: 15 }} />
               </div>
               <div
                 className={`d-flex align-items-center justify-content-center mr-1 rounded ${
-                  selectAlign === "text-center"
+                  selectAlign === "tw-justify-center"
                     ? "bg-primary border-primary text-white"
                     : "bg-white border-dark"
                 }`}
                 style={{ cursor: "pointer", width: 35, height: 35 }}
-                onClick={() => onChangeAlign("text-center")}
+                onClick={() => onChangeAlign("tw-justify-center")}
               >
                 <FaAlignCenter style={{ fontSize: 15 }} />
               </div>
               <div
                 className={`d-flex align-items-center justify-content-center mr-1 rounded ${
-                  selectAlign === "text-right"
+                  selectAlign === "tw-justify-end"
                     ? "bg-primary border-primary text-white"
                     : "bg-white border-dark"
                 }`}
                 style={{ cursor: "pointer", width: 35, height: 35 }}
-                onClick={() => onChangeAlign("text-right")}
+                onClick={() => onChangeAlign("tw-justify-end")}
               >
                 <FaAlignRight style={{ fontSize: 15 }} />
               </div>
@@ -221,7 +241,7 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
         theme="snow"
         value={editorHtml}
         onChange={handleEditorChange}
-        className="text-editor rounded"
+        className="custom-quill text-editor rounded"
       />
     </div>
   );

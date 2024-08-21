@@ -15,7 +15,6 @@ import BackgroundTab from "../testimony/BackgroundTab";
 import ContentTab from "./ContentTab";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import { FaListCheck } from "react-icons/fa6";
-import { TfiHandPointRight } from "react-icons/tfi";
 import IconTab from "./IconTab";
 
 const ListFeature = ({
@@ -27,6 +26,12 @@ const ListFeature = ({
   currentSection,
 }) => {
   const [setting, setSetting] = useState({});
+  const [listIconVisible, setListIconVisible] = useState(false);
+  const [iconBeforeEdit, setIconBeforeEdit] = useState([]);
+  const [iconName, setIconName] = useState(null);
+  const [imageUrl, setImageUrl] = useState(
+    currentSection?.iconStyle?.image || ""
+  );
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
@@ -37,14 +42,20 @@ const ListFeature = ({
       icon: <FaListCheck size={24} />,
       content: {
         typeFont: "",
-        textAlign: "text-center",
+        textAlign: "tw-justify-center",
         fontSize: 18,
         distance: 20,
-        text: "",
+        text: [
+          "Mudah Digunakan",
+          "Dijamin 100% Bahan Terbaik",
+          "Menghilangkan Bau Badan",
+          "Waterproof (Tahan Air)",
+        ],
         textColor: "#424242",
       },
       iconStyle: {
-        icon: <TfiHandPointRight size={24} style={{ margin: "auto" }} />,
+        icon: "hand-point-right",
+        image: "",
         iconSize: 24,
         shadow: "",
         color: "#424242",
@@ -76,9 +87,19 @@ const ListFeature = ({
   }, [isEditing]);
 
   const handelCancel = () => {
-    if (isEditing) {
+    if (isEditing && !listIconVisible) {
       isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
+    } else if (isEditing && listIconVisible) {
+      setListIconVisible(false);
+      setPreviewSection([...iconBeforeEdit]);
+    } else if (listIconVisible) {
+      setListIconVisible(false);
+      if (imageUrl) {
+        console.log("first");
+        setIconName(null);
+      }
+      setPreviewSection([...iconBeforeEdit]);
     } else {
       isShowContent(false);
       setPreviewSection((prevSections) =>
@@ -88,7 +109,14 @@ const ListFeature = ({
   };
 
   const handelConfirm = () => {
-    isShowContent(false);
+    if (listIconVisible) {
+      setListIconVisible(false);
+      if (imageUrl && iconName) {
+        setImageUrl("");
+      }
+    } else {
+      isShowContent(false);
+    }
   };
 
   return (
@@ -143,9 +171,17 @@ const ListFeature = ({
 
                 <CTabPane className="p-1" data-tab="icon">
                   <IconTab
+                    previewSection={previewSection}
                     setPreviewSection={setPreviewSection}
                     currentSection={isEditing ? currentSection : setting}
                     isEditing={isEditing}
+                    visible={listIconVisible}
+                    setVisible={(value) => setListIconVisible(value)}
+                    setIconBeforeEdit={(value) => setIconBeforeEdit(value)}
+                    iconName={iconName}
+                    setIconName={(value) => setIconName(value)}
+                    imageUrl={imageUrl}
+                    setImageUrl={(value) => setImageUrl(value)}
                   />
                 </CTabPane>
 

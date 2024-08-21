@@ -11,6 +11,9 @@ const ViewLine = forwardRef(
       distance,
       isFlip,
       isFloating,
+      variant,
+      heightBasicLine,
+      colorBasicLine,
     } = content || {};
     // Ensure valid width values (avoid division by zero)
     const adjustedWidth1 = Math.max(width1 || 0, 1);
@@ -53,25 +56,34 @@ const ViewLine = forwardRef(
           transformOrigin: "center",
           position: "relative",
         }}
-        className={`${content?.style?.textAlign} tw-my-2`}
       >
-        <div
-          style={{
-            height: `${height}px`,
-            zIndex: 1,
-            width: "100%",
-            backgroundImage: `url("data:image/svg+xml;utf8,${encodeURIComponent(
-              svgBackground
-            )}")`,
-            backgroundRepeat: "repeat-x",
-            ...(isFloating && {
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: "-5px",
-            }),
-          }}
-        />
+        {variant === "Basic" ? (
+          <div
+            style={{
+              width: "100%",
+              height: heightBasicLine,
+              backgroundColor: colorBasicLine,
+            }}
+          ></div>
+        ) : (
+          <div
+            style={{
+              height: `${height}px`,
+              zIndex: 1,
+              width: "100%",
+              backgroundImage: `url("data:image/svg+xml;utf8,${encodeURIComponent(
+                svgBackground
+              )}")`,
+              backgroundRepeat: "repeat-x",
+              ...(isFloating && {
+                position: "absolute",
+                left: 0,
+                right: 0,
+                top: "-5px",
+              }),
+            }}
+          />
+        )}
       </div>
     );
   }

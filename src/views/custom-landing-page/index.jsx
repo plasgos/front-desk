@@ -41,9 +41,10 @@ import EditListButton from "./_components/list-edit-content/EditListButton";
 import ModalConfirmation from "./_components/ModalConfirmation";
 import ViewTestimony from "./_components/view-content/ViewTestimony/index";
 import EditListTestimony from "./_components/list-edit-content/EditListTestimony/index";
-import Line from "./_components/list-add-content/Line";
+import Line from "./_components/list-add-content/Line/index";
 import ViewLine from "./_components/view-content/ViewLine";
 import ListFeature from "./_components/list-add-content/ListFeature";
+import ViewListFeature from "./_components/view-content/ViewListFeature";
 
 const landingPage = {
   detail: {
@@ -239,6 +240,18 @@ const CustomLandingPage = () => {
           <ViewLine
             isDragging={isDragging && section.id === id}
             content={section.content}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
+
+      if (section.name === "list-feature") {
+        return (
+          <ViewListFeature
+            isDragging={isDragging && section.id === id}
+            content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
