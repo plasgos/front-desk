@@ -71,3 +71,32 @@ export const backgroundType = [
   { value: "color", label: "Warna" },
   { value: "image", label: "Gambar" },
 ];
+
+export const widthPageOptions = [
+  {
+    label: "Kecil",
+    options: [
+      { value: "400px", label: "400px" },
+      { value: "520px", label: "520px" },
+      { value: "640px", label: "640px" },
+    ],
+  },
+  {
+    label: "Sedang",
+    options: [
+      { value: "800px", label: "800px" },
+      { value: "900px", label: "900px" },
+      { value: "1024px", label: "1024px" },
+      { value: "1280px", label: "1280px" },
+    ],
+  },
+  {
+    label: "Lebar",
+    options: [
+      { value: "1360px", label: "1360px" },
+      { value: "1440px", label: "1440px" },
+      { value: "1600px", label: "1600px" },
+      { value: "1920px", label: "1920px" },
+    ],
+  },
+];

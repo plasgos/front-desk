@@ -16,7 +16,6 @@ import {
 import { IoAdd } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import SelectOptions from "../../common/SelectOptions";
-import { BsFillChatSquareQuoteFill } from "react-icons/bs";
 import { TestimonyList } from "./TestimonyList";
 import { FaStar } from "react-icons/fa6";
 import profilePicture from "../../../../../assets/profile.jpg";
@@ -205,7 +204,6 @@ const ListTestimonyControl = ({
       id: uniqueId,
       name: "testimony",
       title: "Testimoni / Review",
-      icon: <BsFillChatSquareQuoteFill size={20} />,
       content: contents,
       shape: [],
       background: {

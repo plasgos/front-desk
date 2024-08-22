@@ -20,7 +20,6 @@ import { AddImages } from "./AddImages";
 import { EditImages } from "./EditImages";
 import { ImagesList } from "./ImagesList";
 import { createUniqueID } from "../../../../../lib/unique-id";
-import { IoMdImages } from "react-icons/io";
 import SelectOptions from "../../common/SelectOptions";
 
 const contents = [
@@ -57,13 +56,13 @@ export const distanceOptions = [
 
 export const maxColumnOptions = [
   {
-    value: "50%",
+    value: "tw-w-1/2",
     label: "2",
   },
-  { value: "33.33%", label: "3" },
-  { value: "25%", label: "4" },
-  { value: "20%", label: "5" },
-  { value: "16.66%", label: "6" },
+  { value: "tw-w-1/3", label: "3" },
+  { value: "tw-w-1/4", label: "4" },
+  { value: "tw-w-1/5", label: "5" },
+  { value: "tw-w-1/6", label: "6" },
 ];
 
 export const aspectRatioOptions = [
@@ -106,7 +105,7 @@ const ListImagesControl = ({
 
   const [selectedDistance, setSelectedDistance] = useState(distanceOptions[2]);
   const [selectedMaxColumn, setSelectedMaxColumn] = useState(
-    maxColumnOptions[1]
+    maxColumnOptions[4]
   );
   const [selectedImageRatio, setSelectedImageRatio] = useState(
     aspectRatioOptions[0].options[0]
@@ -231,11 +230,10 @@ const ListImagesControl = ({
       id: uniqueId,
       name: "list-images",
       title: "List Images",
-      icon: <IoMdImages size={20} />,
       content: defaultSection,
       wrapperStyle: {
         paddingX: "2",
-        maxColumn: "16.66%",
+        maxColumn: "tw-w-1/6",
         aspectRatio: 1 / 1,
       },
     };

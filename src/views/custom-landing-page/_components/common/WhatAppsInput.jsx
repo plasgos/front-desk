@@ -20,7 +20,7 @@ const WhatsAppInput = ({
         </CTooltip>
       </div>
 
-      <div className="input-group">
+      <div className="input-group mb-3">
         <div className="input-group-prepend">
           <span className="input-group-text" id="basic-addon1">
             +62
@@ -36,21 +36,20 @@ const WhatsAppInput = ({
           />
         </div>
       </div>
+      <Input
+        label="Pesan (Opsional)"
+        value={whatApps.message}
+        onChange={(e) => handleMessageChange(e.target.value)}
+        type="text"
+        placeholder="Tuliskan pesan kamu di sini"
+      />
+      <Checkbox
+        id={id}
+        checked={whatApps.isOpenNewTab}
+        onChange={(e) => handleUrlOpenNewTabWaChange(e.target.checked)}
+        label="Buka di tab baru"
+      />
     </div>
-
-    <Input
-      label="Pesan (Opsional)"
-      value={whatApps.message}
-      onChange={(e) => handleMessageChange(e.target.value)}
-      type="text"
-      placeholder="Tuliskan pesan kamu di sini"
-    />
-    <Checkbox
-      id={id}
-      checked={whatApps.isOpenNewTab}
-      onChange={(e) => handleUrlOpenNewTabWaChange(e.target.checked)}
-      label="Buka di tab baru"
-    />
   </>
 );
 

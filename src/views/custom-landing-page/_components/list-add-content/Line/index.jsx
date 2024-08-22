@@ -1,6 +1,6 @@
 import { CButton, CCard, CTabContent } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import { FaCheck, FaGripLines } from "react-icons/fa6";
+import { FaCheck } from "react-icons/fa6";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import StripeLineControl from "./StripeLineControl";
 import BasicLineControl from "./BasicLineControl";
@@ -26,7 +26,6 @@ const Line = ({
       id: uniqueId,
       name: "line",
       title: "Garis",
-      icon: <FaGripLines size={24} />,
       content: {
         height: 10,
         width1: 40,

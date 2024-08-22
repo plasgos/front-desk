@@ -17,8 +17,10 @@ const Layout8 = ({ content, item }) => {
           paddingBottom: content.wrapperStyle.paddingBottom
             ? `calc(14px + ${content.wrapperStyle.paddingBottom}px)`
             : "14px",
+          backgroundColor: content.cardStyle.bgColor,
+          border: `2px solid ${content.cardStyle.borderColor}`,
         }}
-        className={`tw-bg-[${content.cardStyle.bgColor}]  tw-border-2 tw-border-[${content.cardStyle.borderColor}]
+        className={`
            
              ${content.cardStyle.shadowCard} tw-w-full tw-overflow-hidden`}
       >
@@ -112,8 +114,9 @@ const Layout8 = ({ content, item }) => {
               <div
                 style={{
                   fontSize: content.profileStyle?.fontSizeName,
+                  color: content.profileStyle.colorName,
                 }}
-                className={`tw-mx-2 tw-text-[${content.profileStyle.colorName}] ${content.profileStyle?.fontStyle}   `}
+                className={`tw-mx-2  ${content.profileStyle?.fontStyle}   `}
               >
                 {item.name}
               </div>

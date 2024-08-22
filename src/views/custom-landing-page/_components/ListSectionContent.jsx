@@ -1,12 +1,58 @@
 import { CCard, CCardBody } from "@coreui/react";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoCloseOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
 import { useDrag, useDrop } from "react-dnd";
 
+import { MdTextFields, MdViewColumn } from "react-icons/md";
+import { PiArrowsDownUpLight, PiTargetDuotone } from "react-icons/pi";
+import { FaGripLines, FaListCheck } from "react-icons/fa6";
+import { RxSwitch } from "react-icons/rx";
+import { BsFillChatSquareQuoteFill } from "react-icons/bs";
+import { IoMdImages } from "react-icons/io";
+
 export const ItemTypes = {
   CARD: "card",
 };
+
+const iconListContent = [
+  {
+    name: "text",
+    icon: <MdTextFields style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "column-text-and-image",
+    icon: <MdViewColumn style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "empty-space",
+    icon: <PiArrowsDownUpLight style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "list-images",
+    icon: <IoMdImages style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "scroll-target",
+    icon: <PiTargetDuotone style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "button",
+    icon: <RxSwitch style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "testimony",
+    icon: <BsFillChatSquareQuoteFill style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "line",
+    icon: <FaGripLines style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "list-feature",
+    icon: <FaListCheck style={{ marginRight: 5 }} size={24} />,
+  },
+];
 
 export const ListSectionContent = ({
   index,
@@ -76,6 +122,16 @@ export const ListSectionContent = ({
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
 
+  const [icon, setIcon] = useState(undefined);
+  useEffect(() => {
+    const selectedIcon = iconListContent.find(
+      (icon) => icon.name === section.name
+    );
+    if (selectedIcon) {
+      setIcon(selectedIcon);
+    }
+  }, [section.name]);
+
   return (
     <div style={{ opacity }} ref={ref} data-handler-id={handlerId}>
       <CCard style={{ cursor: "move" }} className="mb-2">
@@ -83,15 +139,17 @@ export const ListSectionContent = ({
           <div style={{ gap: 10 }} className="d-flex align-items-center">
             <IoMenu style={{ cursor: "move" }} size={18} />
 
-            <div
-              style={{
-                // width: 60,
-                // height: 40,
-                overflow: "hidden",
-              }}
-            >
-              {section.icon}
-            </div>
+            {icon && (
+              <>
+                <div
+                  style={{
+                    overflow: "hidden",
+                  }}
+                >
+                  {icon.icon}
+                </div>
+              </>
+            )}
 
             <div style={{ flexGrow: 1 }} className="capitalize">
               {section.title}

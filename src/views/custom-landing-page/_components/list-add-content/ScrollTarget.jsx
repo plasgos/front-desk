@@ -1,7 +1,6 @@
 import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../lib/unique-id";
-import { PiTargetDuotone } from "react-icons/pi";
 import { useDispatch } from "react-redux";
 import {
   removeOptionScrollTarget,
@@ -87,7 +86,6 @@ const ScrollTarget = ({ previewSection, setPreviewSection, isShowContent }) => {
           id: uniqueId,
           name: "scroll-target",
           title: "Scrol Target",
-          icon: <PiTargetDuotone size={24} />,
           content: {
             name,
             anchor: `#${name}`,

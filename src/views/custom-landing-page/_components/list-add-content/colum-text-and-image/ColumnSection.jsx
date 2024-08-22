@@ -19,7 +19,6 @@ import { IoAdd } from "react-icons/io5";
 import { AddContent } from "./AddContent";
 import { EditContent } from "./EditContent";
 import { CardList } from "./CardList";
-import { MdViewColumn } from "react-icons/md";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import {
   aspectRatioOptions,
@@ -263,15 +262,14 @@ const ColumnSection = ({
       id: uniqueId,
       name: "column-text-and-image",
       title: "Column Text And Image",
-      icon: <MdViewColumn size={20} />,
       content: defaultSection,
       wrapperStyle: {
         paddingX: 2,
-        maxColumn: "33.33%",
+        maxColumn: "tw-w-1/3",
         aspectRatio: 1 / 1,
         colorTitle: "#000000",
         colorDescription: "#000000",
-        fontSizeTitle: "18",
+        fontSizeTitle: "tw-text-sm",
       },
     };
 
@@ -422,7 +420,7 @@ const ColumnSection = ({
                   >
                     <ColorPicker
                       initialColor={selectedColorTitle}
-                      label="Tombol"
+                      label="Warna Judul"
                       onChange={handleColorChangeTitle}
                       bottom={"10px"}
                     />

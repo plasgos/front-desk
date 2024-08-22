@@ -8,7 +8,6 @@ import { circleTypePosition, positionOptions, typeOptions } from "./AddShape";
 const EditShape = ({ idSection, selectedSectionToEdit, setPreviewSection }) => {
   const [selectedType, setSelectedType] = useState(undefined);
   const [selectedPostion, setSelectedPostion] = useState(undefined);
-  console.log("🚀 ~ selectedPostion:", selectedPostion);
   const [selectedShapeColor, setSelectedShapeColor] = useState(
     selectedSectionToEdit.color
   );

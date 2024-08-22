@@ -1,6 +1,7 @@
 import React from "react";
 
 const ResizableView = ({
+  pageSetting,
   children,
   dimensions,
   isSelectedView,
@@ -23,15 +24,16 @@ const ResizableView = ({
         transformOrigin: "center top",
         minHeight: isSelectedView === "phone" ? "100%" : "initial",
         border: "1px solid black",
+        backgroundColor: pageSetting.bgColor, //
       }}
     >
       <div
         ref={containerRef}
         style={{
           width: "100%",
-          maxWidth: 1024,
+          maxWidth: pageSetting.maxWidth, //
           height: "100%",
-          overflowY: "scroll",
+          margin: "auto",
         }}
       >
         {children}

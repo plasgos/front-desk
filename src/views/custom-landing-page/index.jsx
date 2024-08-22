@@ -36,7 +36,6 @@ import {
   removeOptionScrollTarget,
   setLandingPageSection,
 } from "../../redux/modules/custom-landing-page/reducer";
-import ViewButton from "./_components/view-content/ViewButton";
 import EditListButton from "./_components/list-edit-content/EditListButton";
 import ModalConfirmation from "./_components/ModalConfirmation";
 import ViewTestimony from "./_components/view-content/ViewTestimony/index";
@@ -45,6 +44,8 @@ import Line from "./_components/list-add-content/Line/index";
 import ViewLine from "./_components/view-content/ViewLine";
 import ListFeature from "./_components/list-add-content/ListFeature";
 import ViewListFeature from "./_components/view-content/ViewListFeature";
+import ViewButtonUpdate from "./_components/view-content/ViewButtonUpdate";
+import DesignTabControl from "./_components/DesignTabControl";
 
 const landingPage = {
   detail: {
@@ -75,7 +76,7 @@ const CustomLandingPage = () => {
   const containerRef = useRef(null);
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
-  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection[0]);
+  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
   const [modal, setModal] = useState(false);
 
   const toggleModal = () => {
@@ -209,7 +210,7 @@ const CustomLandingPage = () => {
 
       if (section.name === "button") {
         return (
-          <ViewButton
+          <ViewButtonUpdate
             containerRef={containerRef}
             isDragging={isDragging && section.id === id}
             content={section}
@@ -535,7 +536,7 @@ const CustomLandingPage = () => {
             return {
               ...section,
               content: section.content.map((contentItem) => {
-                return contentItem.target.scrollTarget?.id === id
+                return contentItem?.target?.scrollTarget?.id === id
                   ? { ...contentItem, target: {} }
                   : contentItem;
               }),
@@ -574,6 +575,11 @@ const CustomLandingPage = () => {
     setIsAddContent(true);
   };
 
+  const [pageSetting, setPageSetting] = useState({
+    maxWidth: "1440px",
+    bgColor: "white",
+  });
+
   return (
     <>
       <div>
@@ -603,7 +609,7 @@ const CustomLandingPage = () => {
                       <CNavLink data-tab="konten">Kolom</CNavLink>
                     </CNavItem>
                     <CNavItem>
-                      <CNavLink data-tab="test1">test1</CNavLink>
+                      <CNavLink data-tab="desain">Desain</CNavLink>
                     </CNavItem>
                     <CNavItem>
                       <CNavLink data-tab="test2">test2</CNavLink>
@@ -640,12 +646,15 @@ const CustomLandingPage = () => {
                         </CCardBody>
                       </CCard>
                     </CTabPane>
-                    <CTabPane data-tab="test1">
-                      <p>test1</p>
+                    <CTabPane data-tab="desain">
+                      <DesignTabControl
+                        previewSection={previewSection}
+                        setPreviewSection={(value) => setPreviewSection(value)}
+                        pageSetting={pageSetting}
+                        setPageSetting={(value) => setPageSetting(value)}
+                      />
                     </CTabPane>
-                    <CTabPane data-tab="test2">
-                      <p>kolom2</p>
-                    </CTabPane>
+                    <CTabPane data-tab="test2"></CTabPane>
                   </CTabContent>
                 </CTabs>
               )}
@@ -691,6 +700,7 @@ const CustomLandingPage = () => {
 
           <CCol md="8">
             <ResizableView
+              pageSetting={pageSetting}
               containerRef={containerRef}
               dimensions={dimensions}
               isSelectedView={isSelectedView}

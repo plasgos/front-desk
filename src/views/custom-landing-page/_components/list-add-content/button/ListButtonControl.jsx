@@ -15,7 +15,6 @@ import {
 
 import { IoAdd } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
-import { RxSwitch } from "react-icons/rx";
 import { ButtonList } from "./ButtonList";
 import AddButton from "./AddButton";
 import SelectOptions from "../../common/SelectOptions";
@@ -203,7 +202,6 @@ const ListButtonControl = ({
       id: uniqueId,
       name: "button",
       title: "Tombol",
-      icon: <RxSwitch size={20} />,
       content: contents,
       wrapperStyle: {
         jusctifyContent: "tw-justify-center",

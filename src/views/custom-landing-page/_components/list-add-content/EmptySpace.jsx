@@ -1,7 +1,6 @@
 import { CButton, CCol, CRow } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../lib/unique-id";
-import { PiArrowsDownUpLight } from "react-icons/pi";
 
 const EmptySpace = ({ previewSection, setPreviewSection, isShowContent }) => {
   const [height, setHeight] = useState(120);
@@ -89,7 +88,6 @@ const EmptySpace = ({ previewSection, setPreviewSection, isShowContent }) => {
       id: uniqueId,
       name: "empty-space",
       title: "Empty Space",
-      icon: <PiArrowsDownUpLight size={24} />,
       content: {
         height,
       },

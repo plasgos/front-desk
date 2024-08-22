@@ -20,7 +20,6 @@ import {
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 import { createUniqueID } from "../../../../lib/unique-id";
-import { MdTextFields } from "react-icons/md";
 import ColorPicker from "../common/ColorPicker";
 
 const Text = ({ previewSection, setPreviewSection, isShowContent }) => {
@@ -94,7 +93,6 @@ const Text = ({ previewSection, setPreviewSection, isShowContent }) => {
       id: uniqueId,
       name: "text",
       title: "Teks",
-      icon: <MdTextFields size={24} />,
       content: {
         editorHtml,
         style: {

@@ -14,7 +14,6 @@ import React, { useEffect, useState } from "react";
 import BackgroundTab from "../testimony/BackgroundTab";
 import ContentTab from "./ContentTab";
 import { createUniqueID } from "../../../../../lib/unique-id";
-import { FaListCheck } from "react-icons/fa6";
 import IconTab from "./IconTab";
 
 const ListFeature = ({
@@ -39,7 +38,6 @@ const ListFeature = ({
       id: uniqueId,
       name: "list-feature",
       title: "List Fitur",
-      icon: <FaListCheck size={24} />,
       content: {
         typeFont: "",
         textAlign: "tw-justify-center",
