@@ -18,7 +18,6 @@ import image from "../../../../../assets/action-figure.jpg";
 import { IoAdd } from "react-icons/io5";
 import { AddContent } from "./AddContent";
 import { EditContent } from "./EditContent";
-import { CardList } from "./CardList";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import {
   aspectRatioOptions,
@@ -28,6 +27,7 @@ import {
 import SelectOptions from "../../common/SelectOptions";
 import ColorPicker from "../../common/ColorPicker";
 import { fontSizeOptions } from "../../SelectOptions";
+import { DraggableList } from "../../common/DraggableList";
 
 const contents = [
   {
@@ -313,11 +313,12 @@ const ColumnSection = ({
       return (
         <div key={section.id}>
           {section.content.map((contentItem, contentIndex) => (
-            <CardList
-              key={contentItem.id || contentIndex} // Ensure a unique key for each item
+            <DraggableList
+              key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              section={contentItem}
+              showInfoText={contentItem.content?.title}
+              showThumbnail={contentItem.content?.image}
               moveSection={moveSection}
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}

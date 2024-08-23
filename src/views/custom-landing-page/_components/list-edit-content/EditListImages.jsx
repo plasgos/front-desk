@@ -23,6 +23,7 @@ import {
   maxColumnOptions,
 } from "../list-add-content/list-images/ListImagesControl";
 import SelectOptions from "../common/SelectOptions";
+import { DraggableList } from "../common/DraggableList";
 
 const EditListImages = ({
   curentSection,
@@ -211,11 +212,11 @@ const EditListImages = ({
       return (
         <div key={section.id}>
           {section.content.map((contentItem, contentIndex) => (
-            <ImagesList
-              key={contentItem.id || contentIndex} // Ensure a unique key for each item
+            <DraggableList
+              key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              section={contentItem}
+              showThumbnail={contentItem?.content?.image}
               moveSection={moveSection}
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}

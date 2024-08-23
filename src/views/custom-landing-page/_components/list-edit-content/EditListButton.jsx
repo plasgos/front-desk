@@ -12,7 +12,7 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import { ButtonList } from "../list-add-content/button/ButtonList";
+
 import AddButton from "../list-add-content/button/AddButton";
 import EditButton from "../list-add-content/button/EditButton";
 import SelectOptions from "../common/SelectOptions";
@@ -22,6 +22,7 @@ import {
 } from "../list-add-content/button/ListButtonControl";
 import { IoAdd } from "react-icons/io5";
 import { alignOptions } from "../SelectOptions";
+import { DraggableList } from "../common/DraggableList";
 
 const EditListButton = ({
   curentSection,
@@ -210,11 +211,11 @@ const EditListButton = ({
       return (
         <div key={section.id}>
           {section.content.map((contentItem, contentIndex) => (
-            <ButtonList
+            <DraggableList
               key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              section={contentItem}
+              showInfoText={contentItem.content.title}
               moveSection={moveSection}
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}

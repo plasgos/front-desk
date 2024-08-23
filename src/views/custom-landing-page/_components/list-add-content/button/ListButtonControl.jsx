@@ -15,11 +15,11 @@ import {
 
 import { IoAdd } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
-import { ButtonList } from "./ButtonList";
 import AddButton from "./AddButton";
 import SelectOptions from "../../common/SelectOptions";
 import EditButton from "./EditButton";
 import { alignOptions } from "../../SelectOptions";
+import { DraggableList } from "../../common/DraggableList";
 
 const contents = [
   {
@@ -250,11 +250,11 @@ const ListButtonControl = ({
       return (
         <div key={section.id}>
           {section.content.map((contentItem, contentIndex) => (
-            <ButtonList
+            <DraggableList
               key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              section={contentItem}
+              showInfoText={contentItem.content.title}
               moveSection={moveSection}
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}

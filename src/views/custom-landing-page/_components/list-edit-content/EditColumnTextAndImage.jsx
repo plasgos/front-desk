@@ -16,7 +16,7 @@ import {
 import { IoAdd } from "react-icons/io5";
 import { AddContent } from "../list-add-content/colum-text-and-image/AddContent";
 import { EditContent } from "../list-add-content/colum-text-and-image/EditContent";
-import { CardList } from "../list-add-content/colum-text-and-image/CardList";
+
 import {
   aspectRatioOptions,
   distanceOptions,
@@ -26,6 +26,7 @@ import {
 import SelectOptions from "../common/SelectOptions";
 import ColorPicker from "../common/ColorPicker";
 import { fontSizeOptions } from "../SelectOptions";
+import { DraggableList } from "../common/DraggableList";
 
 const EditColumnTextAndImage = ({
   curentSection,
@@ -284,11 +285,12 @@ const EditColumnTextAndImage = ({
       return (
         <div key={section.id}>
           {section.content.map((contentItem, contentIndex) => (
-            <CardList
-              key={contentItem.id || contentIndex} // Ensure a unique key for each item
+            <DraggableList
+              key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              section={contentItem}
+              showInfoText={contentItem.content?.title}
+              showThumbnail={contentItem.content?.image}
               moveSection={moveSection}
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}

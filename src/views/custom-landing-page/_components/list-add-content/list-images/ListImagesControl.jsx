@@ -21,6 +21,7 @@ import { EditImages } from "./EditImages";
 import { ImagesList } from "./ImagesList";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import SelectOptions from "../../common/SelectOptions";
+import { DraggableList } from "../../common/DraggableList";
 
 const contents = [
   {
@@ -278,11 +279,11 @@ const ListImagesControl = ({
       return (
         <div key={section.id}>
           {section.content.map((contentItem, contentIndex) => (
-            <ImagesList
+            <DraggableList
               key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              section={contentItem}
+              showThumbnail={contentItem?.content?.image}
               moveSection={moveSection}
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}

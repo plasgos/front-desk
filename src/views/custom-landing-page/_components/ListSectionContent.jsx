@@ -10,6 +10,8 @@ import { FaGripLines, FaListCheck } from "react-icons/fa6";
 import { RxSwitch } from "react-icons/rx";
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
 import { IoMdImages } from "react-icons/io";
+import { LuQuote } from "react-icons/lu";
+import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 
 export const ItemTypes = {
   CARD: "card",
@@ -51,6 +53,15 @@ const iconListContent = [
   {
     name: "list-feature",
     icon: <FaListCheck style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "quote",
+    icon: <LuQuote style={{ marginRight: 5 }} size={24} />,
+  },
+
+  {
+    name: "faq",
+    icon: <TfiLayoutAccordionSeparated style={{ marginRight: 5 }} size={24} />,
   },
 ];
 

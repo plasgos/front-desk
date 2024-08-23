@@ -79,7 +79,7 @@ const DesignTabControl = ({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "data.txt"; // Nama file yang diunduh
+    a.download = `${pageSetting.title}.txt`; // Nama file yang diunduh
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -132,6 +132,7 @@ const DesignTabControl = ({
 
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
         <CButton
+          disabled={previewSection.length === 0}
           onClick={() => exportData(previewSection)}
           variant="outline"
           color="primary"

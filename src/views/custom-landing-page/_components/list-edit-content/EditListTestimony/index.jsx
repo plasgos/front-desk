@@ -15,7 +15,7 @@ import {
 
 import { IoAdd } from "react-icons/io5";
 import { columnTestimonyOptions } from "../../SelectOptions";
-import { TestimonyList } from "../../list-add-content/testimony/TestimonyList";
+
 import AddTestimony from "../../list-add-content/testimony/AddTestimony";
 import EditTestimony from "../../list-add-content/testimony/EditTestimony";
 import SelectOptions from "../../common/SelectOptions";
@@ -23,8 +23,9 @@ import DesignTabEdit from "./DesignTabEdit";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import EditShape from "../../list-add-content/testimony/EditShape";
 import AddShape from "../../list-add-content/testimony/AddShape";
-import { ShapeList } from "../../list-add-content/testimony/ShapeList";
+
 import BackgroundTab from "../../list-add-content/testimony/BackgroundTab";
+import { DraggableList } from "../../common/DraggableList";
 
 const EditListTestimony = ({
   currentSection,
@@ -240,11 +241,11 @@ const EditListTestimony = ({
       return (
         <div key={section.id}>
           {section.content.map((contentItem, contentIndex) => (
-            <TestimonyList
+            <DraggableList
               key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              section={contentItem}
+              showInfoText={contentItem.name}
               moveSection={moveSection}
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
@@ -261,11 +262,11 @@ const EditListTestimony = ({
       return (
         <div key={section.id}>
           {section.shape.map((contentItem, contentIndex) => (
-            <ShapeList
+            <DraggableList
               key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              section={contentItem}
+              showInfoText={`Tirai ${contentItem.position?.label}`}
               moveSection={moveSectionShape}
               editSection={() => editSectionShape(contentItem)}
               removeSection={() => removeSectionShape(section.id, contentIndex)}

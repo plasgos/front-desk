@@ -1,6 +1,5 @@
 import { CCard, CCardBody } from "@coreui/react";
 import React, { useRef } from "react";
-import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoCloseOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
 import { useDrag, useDrop } from "react-dnd";
 
@@ -8,10 +7,11 @@ export const ItemTypes = {
   CARD: "card",
 };
 
-export const ShapeList = ({
+export const DraggableList = ({
   index,
   id,
-  section,
+  showInfoText,
+  showThumbnail,
   moveSection,
   editSection,
   removeSection,
@@ -82,24 +82,52 @@ export const ShapeList = ({
           <div style={{ gap: 10 }} className="d-flex align-items-center">
             <IoMenu style={{ cursor: "move" }} size={18} />
 
-            <div
-              style={{
-                flexGrow: 1,
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                textOverflow: "ellipsis",
-                width: 80,
-                fontSize: 14,
-              }}
-            >
-              Tirai {section?.position.label}
-            </div>
+            {showThumbnail && (
+              <div
+                style={{
+                  width: 60,
+                  height: 40,
+                  overflow: "hidden",
+                }}
+              >
+                <img
+                  src={showThumbnail}
+                  alt="img"
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    objectFit: "contain",
+                  }}
+                />
+              </div>
+            )}
 
-            {/* <FaMagnifyingGlass
-              onClick={() => focusContent()}
-              style={{ cursor: "pointer" }}
-              size={16}
-            /> */}
+            {showInfoText ? (
+              <div
+                style={{
+                  flexGrow: 1,
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  width: 80,
+                  fontSize: 14,
+                }}
+              >
+                {showInfoText}
+              </div>
+            ) : (
+              <div
+                style={{
+                  flexGrow: 1,
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                  textOverflow: "ellipsis",
+                  width: 80,
+                  fontSize: 14,
+                }}
+              />
+            )}
+
             <IoSettingsOutline
               onClick={() => editSection()}
               style={{ cursor: "pointer" }}

@@ -46,6 +46,9 @@ import ListFeature from "./_components/list-add-content/ListFeature";
 import ViewListFeature from "./_components/view-content/ViewListFeature";
 import ViewButtonUpdate from "./_components/view-content/ViewButtonUpdate";
 import DesignTabControl from "./_components/DesignTabControl";
+import Input from "./_components/common/Input";
+import Quote from "./_components/list-add-content/quote";
+import ViewQuote from "./_components/view-content/ViewQuote";
 
 const landingPage = {
   detail: {
@@ -60,6 +63,11 @@ const viewIcon = {
 };
 
 const CustomLandingPage = () => {
+  const [pageSetting, setPageSetting] = useState({
+    title: "",
+    maxWidth: "1440px",
+    bgColor: "white",
+  });
   const [isResizing, setIsResizing] = useState(false);
   const [isPreview, setIsPreview] = useState(true);
   const [shouldSave, setShouldSave] = useState(false);
@@ -260,6 +268,18 @@ const CustomLandingPage = () => {
         );
       }
 
+      if (section.name === "quote") {
+        return (
+          <ViewQuote
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
+
       return null;
     },
     [dimensions.width, focusedIndex, id, isDragging, isPreview, isResizing]
@@ -400,6 +420,23 @@ const CustomLandingPage = () => {
       ) {
         return (
           <ListFeature
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditing={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "quote" &&
+        section.name === "quote" &&
+        editing.id === section.id
+      ) {
+        return (
+          <Quote
             currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
@@ -575,10 +612,12 @@ const CustomLandingPage = () => {
     setIsAddContent(true);
   };
 
-  const [pageSetting, setPageSetting] = useState({
-    maxWidth: "1440px",
-    bgColor: "white",
-  });
+  const handleChangeTitlePage = (value) => {
+    setPageSetting((prev) => ({
+      ...prev,
+      title: value,
+    }));
+  };
 
   return (
     <>
@@ -621,9 +660,24 @@ const CustomLandingPage = () => {
                       paddingRight: 5,
                       overflowY: "auto",
                     }}
-                    className="pt-3"
+                    className="pt-2"
                   >
                     <CTabPane data-tab="konten">
+                      <div
+                        style={{ backgroundColor: "white" }}
+                        className=" w-100 px-2 pt-2 mb-3 border-bottom   "
+                      >
+                        <Input
+                          label="Nama halaman"
+                          placeholder="Masukan judul di sini"
+                          type="text"
+                          value={pageSetting.title}
+                          onChange={(e) =>
+                            handleChangeTitlePage(e.target.value)
+                          }
+                        />
+                      </div>
+
                       {previewSection.map((section, index) =>
                         renderListContent(section, index)
                       )}

@@ -8,7 +8,7 @@ const Input = ({
   placeholder,
   readOnly,
 }) => (
-  <div className="form-group">
+  <div className="form-group ">
     {label && <label>{label}</label>}
     <input
       value={value || ""}
