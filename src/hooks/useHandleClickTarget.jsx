@@ -1,6 +1,7 @@
 import { handleScrollToTop } from "./useScrollToTop";
 
 export const useHandleClickTarget = (target, containerRef) => {
+  console.log("🚀 ~ useHandleClickTarget ~ containerRef:", containerRef);
   if (target?.url?.url) {
     window.open(
       target.url.url,
@@ -18,6 +19,7 @@ export const useHandleClickTarget = (target, containerRef) => {
     );
   } else if (target?.scrollTarget?.value) {
     const targetId = target.scrollTarget.value;
+    console.log("🚀 ~ useHandleClickTarget ~ targetId:", targetId);
 
     if (targetId === "back-to-top") {
       handleScrollToTop(targetId, containerRef);

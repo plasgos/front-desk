@@ -16,6 +16,8 @@ import BackgroundTab from "../testimony/BackgroundTab";
 import { IoAdd } from "react-icons/io5";
 import { DraggableList } from "../../common/DraggableList";
 import { createUniqueID } from "../../../../../lib/unique-id";
+import { useMoveSection } from "../../../../../hooks/useMoveSection";
+import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 
 const contents = [
   {
@@ -64,42 +66,8 @@ const FAQ = ({
     [previewSection]
   );
 
-  const removeSection = useCallback(
-    (sectionId, contentIndex) => {
-      setPreviewSection((prevSections) =>
-        prevSections.map((section) => {
-          if (section.id === sectionId) {
-            return {
-              ...section,
-              content: section.content.filter((_, i) => i !== contentIndex),
-            };
-          }
-          return section;
-        })
-      );
-    },
-    [setPreviewSection]
-  );
-
-  const moveSection = useCallback(
-    (dragIndex, hoverIndex) => {
-      setPreviewSection((prevSections) => {
-        return prevSections.map((section) => {
-          if (section.name === "faq") {
-            const updatedContent = [...section.content];
-            const draggedItem = updatedContent[dragIndex];
-            updatedContent.splice(dragIndex, 1);
-            updatedContent.splice(hoverIndex, 0, draggedItem);
-            return { ...section, content: updatedContent };
-          }
-          return section;
-        });
-      });
-
-      return () => {};
-    },
-    [setPreviewSection]
-  );
+  const removeSection = useRemoveSection(setPreviewSection);
+  const moveSection = useMoveSection(setPreviewSection);
 
   const renderSection = useCallback(
     (section) => {
@@ -111,7 +79,9 @@ const FAQ = ({
               index={contentIndex}
               id={contentItem.id}
               showInfoText={contentItem.title}
-              moveSection={moveSection}
+              moveSection={(dragIndex, hoverIndex) =>
+                moveSection(section.name, dragIndex, hoverIndex)
+              }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
             />

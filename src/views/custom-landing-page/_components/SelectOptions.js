@@ -100,3 +100,47 @@ export const widthPageOptions = [
     ],
   },
 ];
+
+export const distanceOptions = [
+  { value: "0", label: "0" },
+  { value: "1", label: "1" },
+  { value: "2", label: "2" },
+  { value: "3", label: "3" },
+  { value: "4", label: "4" },
+];
+
+export const maxColumnOptions = [
+  {
+    value: "tw-w-1/2",
+    label: "2",
+  },
+  { value: "tw-w-1/3", label: "3" },
+  { value: "tw-w-1/4", label: "4" },
+  { value: "tw-w-1/5", label: "5" },
+  { value: "tw-w-1/6", label: "6" },
+];
+
+export const aspectRatioOptions = [
+  {
+    label: "Kotak",
+    options: [{ value: 1 / 1, label: "1:1" }],
+  },
+  {
+    label: "Melebar",
+    options: [
+      { value: 5 / 4, label: "5:4" },
+      { value: 4 / 3, label: "4:3" },
+      { value: 5 / 3, label: "5:3" },
+      { value: 2 / 1, label: "2:1" },
+    ],
+  },
+  {
+    label: "Potret",
+    options: [
+      { value: 4 / 5, label: "4:5" },
+      { value: 3 / 4, label: "3:4" },
+      { value: 3 / 5, label: "3:5" },
+      { value: 1 / 2, label: "1:2" },
+    ],
+  },
+];

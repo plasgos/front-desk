@@ -18,7 +18,6 @@ import image from "../../../../../assets/action-figure.jpg";
 import { IoAdd } from "react-icons/io5";
 import { AddImages } from "./AddImages";
 import { EditImages } from "./EditImages";
-import { ImagesList } from "./ImagesList";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import SelectOptions from "../../common/SelectOptions";
 import { DraggableList } from "../../common/DraggableList";

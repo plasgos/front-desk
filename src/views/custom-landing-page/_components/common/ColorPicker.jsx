@@ -20,11 +20,11 @@ const ColorPicker = ({
     setShowColorPicker(!showColorPicker);
   };
 
-  const changeColor = (color, shapeColor) => {
+  const changeColor = (color, rgbaColor) => {
     const { r, g, b, a } = color.rgb;
     const rgba = `rgba(${r}, ${g}, ${b}, ${a})`;
 
-    if (shapeColor) {
+    if (rgbaColor) {
       setSelectedColor(rgba);
       if (onChange) {
         onChange(rgba); // Call the onChange prop function with the new color
@@ -88,7 +88,7 @@ const ColorPicker = ({
           {type === "rgba" ? (
             <SketchPicker
               color={selectedColor}
-              onChange={(color) => changeColor(color, "shapeColor")}
+              onChange={(color) => changeColor(color, "rgbaColor")}
             />
           ) : (
             <ChromePicker

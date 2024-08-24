@@ -19,6 +19,7 @@ import Line from "./Line/index";
 import ListFeature from "./ListFeature/index";
 import Quote from "./quote";
 import FAQ from "./faq";
+import ColumnTextAndImages from "./colum-text-and-image";
 
 const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
   const [addContent, setAddContent] = useState("");
@@ -129,7 +130,7 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
       ) : null}
 
       {addContent === "column-text-and-image" && (
-        <ColumnSection
+        <ColumnTextAndImages
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}

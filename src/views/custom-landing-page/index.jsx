@@ -24,7 +24,6 @@ import { useDragLayer } from "react-dnd";
 import { renderToString } from "react-dom/server";
 import EditText from "./_components/list-edit-content/EditText";
 import ViewColumnTextAndImage from "./_components/view-content/ViewColumnTextAndImage";
-import EditColumnTextAndImage from "./_components/list-edit-content/EditColumnTextAndImage";
 import ViewEmptySpace from "./_components/view-content/ViewEmptySpace";
 import EditEmptySpace from "./_components/list-edit-content/EditEmptySpace";
 import ViewListImages from "./_components/view-content/ViewListImages";
@@ -49,6 +48,7 @@ import DesignTabControl from "./_components/DesignTabControl";
 import Input from "./_components/common/Input";
 import Quote from "./_components/list-add-content/quote";
 import ViewQuote from "./_components/view-content/ViewQuote";
+import ColumnTextAndImages from "./_components/list-add-content/colum-text-and-image";
 
 const landingPage = {
   detail: {
@@ -308,12 +308,13 @@ const CustomLandingPage = () => {
         editing.id === section.id
       ) {
         return (
-          <EditColumnTextAndImage
-            curentSection={section}
+          <ColumnTextAndImages
+            currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }
@@ -755,7 +756,7 @@ const CustomLandingPage = () => {
           <CCol md="8">
             <ResizableView
               pageSetting={pageSetting}
-              containerRef={containerRef}
+              ref={containerRef}
               dimensions={dimensions}
               isSelectedView={isSelectedView}
               isResizing={isResizing}

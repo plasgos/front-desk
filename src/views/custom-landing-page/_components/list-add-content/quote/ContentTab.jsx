@@ -31,9 +31,7 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
     currentSection?.content?.writer || "Tere Liye"
   );
 
-  const [fontSize, setFontSize] = useState(
-    undefined || fontSizeQuoteOptions[0]
-  );
+  const [fontSize, setFontSize] = useState(fontSizeQuoteOptions[0]);
 
   useEffect(() => {
     if (isEditing) {
@@ -45,7 +43,6 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
         setFontSize(currentFontSizeQuoteOption);
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSection, isEditing]);
 
   const handleChangeFontSize = (selectedOption) => {
