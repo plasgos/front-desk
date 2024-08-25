@@ -1,9 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { forwardRef, useEffect, useState } from "react";
 import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
+import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 
 const ViewListFeature = forwardRef(
   ({ isDragging, content, isResizing, isFocused }, ref) => {
+    const stylesBg = useBackgroundStyles(content);
+
     const iconPack = useFontAwesomeIconPack();
     const [iconName, setIconName] = useState(null);
 
@@ -26,35 +29,6 @@ const ViewListFeature = forwardRef(
       }
     }, [content.iconStyle.image]);
 
-    const paddingTop = content.background?.paddingTop
-      ? `calc(16px + ${content.background.paddingTop}px)`
-      : content.background?.paddingY
-      ? `calc(16px + ${content.background.paddingY}px)`
-      : "16px";
-
-    const paddingBottom = content.background?.paddingBottom
-      ? `calc(16px + ${content.background.paddingBottom}px)`
-      : content.background?.paddingY
-      ? `calc(16px + ${content.background.paddingY}px)`
-      : "16px";
-
-    const backgroundImgStyle = {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundImage: `url(${content.background?.bgImage})` || "",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-      filter: `blur(${content.background?.blur}px)`,
-      zIndex: -1,
-      overflow: "hidden",
-    };
-
-    const calculateOpacity = content.background?.opacity / 100;
-
     return (
       <div
         ref={ref}
@@ -62,16 +36,15 @@ const ViewListFeature = forwardRef(
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
-          // ...backgroundImgStyle,
-          paddingTop,
-          paddingBottom,
-          backgroundColor: content.background?.bgColor || "",
+          paddingTop: stylesBg.paddingTop,
+          paddingBottom: stylesBg.paddingBottom,
+          backgroundColor: content.background.bgColor || "",
           position: "relative",
           zIndex: 1,
         }}
         className={` tw-my-2`}
       >
-        <div style={backgroundImgStyle}></div>
+        <div style={stylesBg.backgroundImgStyle}></div>
 
         {content.background?.opacity ? (
           <div
@@ -80,12 +53,12 @@ const ViewListFeature = forwardRef(
               inset: 0,
               backgroundColor:
                 content.background?.opacity < 0 ? "black" : "white",
-              opacity: Math.abs(calculateOpacity),
+              opacity: Math.abs(stylesBg.calculateOpacity),
             }}
           ></div>
         ) : null}
 
-        <div className="tw-flex tw-flex-col tw-p-3">
+        <div style={{ zIndex: 2 }} className="tw-flex tw-flex-col tw-p-3">
           {content?.content?.text.map((item, index) => (
             <div
               style={{

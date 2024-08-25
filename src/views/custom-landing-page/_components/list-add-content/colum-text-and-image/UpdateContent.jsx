@@ -368,7 +368,7 @@ export const UpdateContent = ({
           />
           {selectedOption?.value === "url" && (
             <UrlInput
-              id="urlOpenNewTab"
+              id="urlOpenNewTabText&Img"
               url={url}
               handleUrlChange={handleUrlChange}
               handleUrlOpenNewTabChange={handleUrlOpenNewTabChange}
@@ -377,7 +377,7 @@ export const UpdateContent = ({
 
           {selectedOption?.value === "whatApps" && (
             <WhatsAppInput
-              id="waOpenNewTab"
+              id="waOpenNewTabText&Img"
               whatApps={whatApps}
               handlePhoneNumberChange={handlePhoneNumberChange}
               handleMessageChange={handleMessageChange}

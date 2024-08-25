@@ -11,10 +11,10 @@ import {
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 
-import BackgroundTab from "../testimony/BackgroundTab";
 import ContentTab from "./ContentTab";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import IconTab from "./IconTab";
+import BackgroundTab from "../../common/BackgroundTab";
 
 const ListFeature = ({
   previewSection,

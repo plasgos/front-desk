@@ -1,14 +1,24 @@
 import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import { createUniqueID } from "../../../../lib/unique-id";
 import { useDispatch } from "react-redux";
+
+import { createUniqueID } from "../../../../../lib/unique-id";
 import {
   removeOptionScrollTarget,
   setOptionsScrollTarget,
-} from "../../../../redux/modules/custom-landing-page/reducer";
+} from "../../../../../redux/modules/custom-landing-page/reducer";
 
-const ScrollTarget = ({ previewSection, setPreviewSection, isShowContent }) => {
-  const [name, setName] = useState("");
+const ScrollTarget = ({
+  previewSection,
+  setPreviewSection,
+  isShowContent,
+  isEditingSection = false,
+  sectionBeforeEdit,
+  currentSection,
+}) => {
+  console.log("🚀 ~ currentSection:", currentSection);
+  console.log("🚀 ~ isEditingSection:", isEditingSection);
+  const [name, setName] = useState(currentSection?.content?.name || "");
   const [isCopiedLink, setIsCopiedLink] = useState(false);
   const [isCopiedAnchor, setIsCopiedAnchor] = useState(false);
   const [setting, setSetting] = useState({});
@@ -22,8 +32,10 @@ const ScrollTarget = ({ previewSection, setPreviewSection, isShowContent }) => {
   };
 
   useEffect(() => {
-    setName(`Target-${generateRandomNumberString()}`);
-  }, []);
+    if (!isEditingSection) {
+      setName(`Target-${generateRandomNumberString()}`);
+    }
+  }, [isEditingSection]);
 
   const copyToClipboardAnchor = () => {
     navigator.clipboard
@@ -62,8 +74,12 @@ const ScrollTarget = ({ previewSection, setPreviewSection, isShowContent }) => {
   const handleNameChange = (value) => {
     setName(value);
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === String(setting.id)
+      arr.map((item) => {
+        const contentIdToCheck = isEditingSection
+          ? currentSection.id
+          : setting.id;
+
+        return String(item.id) === contentIdToCheck
           ? {
               ...item,
               content: {
@@ -73,49 +89,67 @@ const ScrollTarget = ({ previewSection, setPreviewSection, isShowContent }) => {
                 link: baseURLandAnchor,
               },
             }
-          : item
-      )
+          : item;
+      })
     );
   };
 
   useEffect(() => {
-    if (name && !hasAddedContent) {
-      const handleAddContent = () => {
-        let uniqueId = createUniqueID(previewSection);
-        let payload = {
-          id: uniqueId,
-          name: "scroll-target",
-          title: "Scrol Target",
-          content: {
-            name,
-            anchor: `#${name}`,
-            link: baseURLandAnchor,
-          },
+    if (!isEditingSection) {
+      if (name && !hasAddedContent) {
+        const handleAddContent = () => {
+          let uniqueId = createUniqueID(previewSection);
+          let payload = {
+            id: uniqueId,
+            name: "scroll-target",
+            title: "Scrol Target",
+            content: {
+              name,
+              anchor: `#${name}`,
+              link: baseURLandAnchor,
+            },
+          };
+
+          setPreviewSection((prevSections) => [...prevSections, payload]);
+          setSetting(payload);
+          setHasAddedContent(true);
+          dispatch(
+            setOptionsScrollTarget({ id: uniqueId, value: name, label: name })
+          );
         };
 
-        setPreviewSection((prevSections) => [...prevSections, payload]);
-        setSetting(payload);
-        setHasAddedContent(true);
-        dispatch(
-          setOptionsScrollTarget({ id: uniqueId, value: name, label: name })
-        );
-      };
-
-      handleAddContent();
+        handleAddContent();
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, hasAddedContent, dispatch]);
+  }, [name, hasAddedContent, dispatch, isEditingSection]);
 
   const handelCancel = () => {
-    isShowContent(false);
-    setPreviewSection((prevSections) =>
-      prevSections.filter((section) => section.id !== setting.id)
-    );
-    dispatch(removeOptionScrollTarget(setting.id));
+    if (isEditingSection) {
+      isShowContent(false);
+      setPreviewSection([...sectionBeforeEdit]);
+    } else {
+      isShowContent(false);
+      setPreviewSection((prevSections) =>
+        prevSections.filter((section) => section.id !== setting.id)
+      );
+      dispatch(removeOptionScrollTarget(setting.id));
+    }
   };
 
-  const handelConfirm = () => {
-    isShowContent(false);
+  const handelConfirm = async () => {
+    if (isEditingSection) {
+      await dispatch(
+        setOptionsScrollTarget({
+          id: currentSection.id,
+          value: name,
+          label: name,
+        })
+      );
+      isShowContent(false);
+    } else {
+      isShowContent(false);
+    }
   };
 
   return (

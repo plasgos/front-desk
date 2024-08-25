@@ -1,4 +1,5 @@
 import React, { forwardRef } from "react";
+import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 
 const ViewQuote = forwardRef(
   ({ isDragging, isResizing, content, isFocused }, ref) => {
@@ -11,34 +12,7 @@ const ViewQuote = forwardRef(
       fontSize,
     } = content.content;
 
-    const paddingTop = content.background?.paddingTop
-      ? `calc(16px + ${content.background.paddingTop}px)`
-      : content.background?.paddingY
-      ? `calc(16px + ${content.background.paddingY}px)`
-      : "16px";
-
-    const paddingBottom = content.background?.paddingBottom
-      ? `calc(16px + ${content.background.paddingBottom}px)`
-      : content.background?.paddingY
-      ? `calc(16px + ${content.background.paddingY}px)`
-      : "16px";
-
-    const backgroundImgStyle = {
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      backgroundImage: `url(${content.background?.bgImage})` || "",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-      filter: `blur(${content.background?.blur}px)`,
-      zIndex: -1,
-      overflow: "hidden",
-    };
-
-    const calculateOpacity = content.background?.opacity / 100;
+    const stylesBg = useBackgroundStyles(content);
 
     const sanitizedQuoteText = quoteText.replace(
       /<p>/g,
@@ -52,16 +26,15 @@ const ViewQuote = forwardRef(
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
-          // ...backgroundImgStyle,
-          paddingTop,
-          paddingBottom,
-          backgroundColor: content.background?.bgColor || "",
+          paddingTop: stylesBg.paddingTop,
+          paddingBottom: stylesBg.paddingBottom,
+          backgroundColor: content.background.bgColor || "",
           position: "relative",
           zIndex: 1,
         }}
         className={` tw-my-2`}
       >
-        <div style={backgroundImgStyle}></div>
+        <div style={stylesBg.backgroundImgStyle}></div>
 
         {content.background?.opacity ? (
           <div
@@ -70,12 +43,15 @@ const ViewQuote = forwardRef(
               inset: 0,
               backgroundColor:
                 content.background?.opacity < 0 ? "black" : "white",
-              opacity: Math.abs(calculateOpacity),
+              opacity: Math.abs(stylesBg.calculateOpacity),
             }}
           ></div>
         ) : null}
 
-        <div className="tw-flex tw-flex-col tw-items-center tw-p-3 tw-w-full ">
+        <div
+          style={{ zIndex: 2 }}
+          className="tw-flex tw-flex-col tw-items-center tw-p-3 tw-w-full "
+        >
           <div className="tw-flex tw-shrink-0 tw-items-center tw-w-full tw-justify-center ">
             <span
               style={{ fontSize: 40, color: quoteTagColor }}

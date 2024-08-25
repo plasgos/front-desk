@@ -17,51 +17,46 @@ import image from "../../../../../assets/action-figure.jpg";
 
 import { IoAdd } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
-
+import SelectOptions from "../../common/SelectOptions";
 import { DraggableList } from "../../common/DraggableList";
+import {
+  aspectRatioOptions,
+  distanceOptions,
+  maxColumnOptions,
+} from "../../SelectOptions";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import { useMoveSection } from "../../../../../hooks/useMoveSection";
-import DesignTab from "./DesignTab";
 import { UpdateContent } from "./UpdateContent";
 import BackgroundTab from "../../common/BackgroundTab";
 
 const initialContents = [
   {
     id: "adguiwbj",
-
     content: {
-      title: "Rahasia ",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
       image: image,
+      alt: "",
     },
     target: {},
   },
   {
     id: "adgdawdw",
-
     content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
       image: image,
+      alt: "",
     },
     target: {},
   },
   {
     id: "feqawd",
-
     content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
       image: image,
+      alt: "",
     },
     target: {},
   },
 ];
 
-const ColumnTextAndImages = ({
+const ListImages = ({
   previewSection,
   setPreviewSection,
   isShowContent,
@@ -75,6 +70,65 @@ const ColumnTextAndImages = ({
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
 
   const [setting, setSetting] = useState({});
+
+  const [selectedDistance, setSelectedDistance] = useState(distanceOptions[2]);
+  const [selectedMaxColumn, setSelectedMaxColumn] = useState(
+    maxColumnOptions[4]
+  );
+  const [selectedImageRatio, setSelectedImageRatio] = useState(
+    aspectRatioOptions[0].options[0]
+  );
+
+  useEffect(() => {
+    if (isEditingSection) {
+      const { wrapperStyle: { paddingX, maxColumn, aspectRatio } = {} } =
+        currentSection || {};
+
+      const currentMaxColumnOption = maxColumnOptions.find(
+        (opt) => opt.value === maxColumn
+      );
+
+      if (currentMaxColumnOption) {
+        setSelectedMaxColumn(currentMaxColumnOption);
+      }
+
+      const currentDistanceOption = distanceOptions.find(
+        (opt) => opt.value === paddingX
+      );
+
+      if (currentDistanceOption) {
+        setSelectedDistance(currentDistanceOption);
+      }
+
+      const currentAcpectRatioOption = aspectRatioOptions.flatMap((ratio) =>
+        ratio.options.find((opt) => opt.value === aspectRatio)
+      );
+
+      if (currentAcpectRatioOption) {
+        setSelectedImageRatio(currentAcpectRatioOption);
+      }
+    }
+  }, [currentSection, isEditingSection]);
+
+  const handleChangeWrapperStyle = (key, selectedOption) => {
+    setPreviewSection((arr) =>
+      arr.map((item) => {
+        const contentIdToCheck = isEditingSection
+          ? currentSection.id
+          : setting.id;
+
+        return String(item.id) === contentIdToCheck
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                [key]: selectedOption.value,
+              },
+            }
+          : item;
+      })
+    );
+  };
 
   const handelCancel = () => {
     if (isAddContent) {
@@ -124,16 +178,13 @@ const ColumnTextAndImages = ({
     let uniqueId = createUniqueID(previewSection);
     let payload = {
       id: uniqueId,
-      name: "column-text-and-image",
-      title: "Column Text And Image",
+      name: "list-images",
+      title: "List Images",
       content: initialContents,
       wrapperStyle: {
-        paddingX: 2,
-        maxColumn: "tw-w-1/3",
+        paddingX: "2",
+        maxColumn: "tw-w-1/6",
         aspectRatio: 1 / 1,
-        colorTitle: "#000000",
-        colorDescription: "#000000",
-        fontSizeTitle: "tw-text-sm",
       },
       background: {
         bgType: undefined,
@@ -180,11 +231,8 @@ const ColumnTextAndImages = ({
               key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              showInfoText={contentItem.content?.title}
-              showThumbnail={contentItem.content?.image}
-              moveSection={(dragIndex, hoverIndex) =>
-                moveSection(section.name, dragIndex, hoverIndex)
-              }
+              showThumbnail={contentItem?.content?.image}
+              moveSection={moveSection}
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
             />
@@ -255,9 +303,6 @@ const ColumnTextAndImages = ({
                     <CNavLink data-tab="kolom">Kolom</CNavLink>
                   </CNavItem>
                   <CNavItem>
-                    <CNavLink data-tab="desain">Desain</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
                     <CNavLink data-tab="background">Background</CNavLink>
                   </CNavItem>
                 </CNav>
@@ -268,6 +313,54 @@ const ColumnTextAndImages = ({
                   <CTabPane className="p-1" data-tab="kolom">
                     {!isAddContent && !isEditingContent && (
                       <>
+                        <div
+                          style={{ gap: 10 }}
+                          className="d-flex align-items-center "
+                        >
+                          <SelectOptions
+                            label="Kolom Maksimal"
+                            options={maxColumnOptions}
+                            onChange={(selectedOption) => {
+                              setSelectedMaxColumn(selectedOption);
+                              handleChangeWrapperStyle(
+                                "maxColumn",
+                                selectedOption
+                              );
+                            }}
+                            value={selectedMaxColumn}
+                            width="50"
+                          />
+
+                          <SelectOptions
+                            label="Rasio Gambar"
+                            options={aspectRatioOptions}
+                            onChange={(selectedOption) => {
+                              setSelectedImageRatio(selectedOption);
+                              handleChangeWrapperStyle(
+                                "aspectRatio",
+                                selectedOption
+                              );
+                            }}
+                            value={selectedImageRatio}
+                            width="50"
+                          />
+                        </div>
+                        <div>
+                          <SelectOptions
+                            label="Jarak"
+                            options={distanceOptions}
+                            onChange={(selectedOption) => {
+                              setSelectedDistance(selectedOption);
+                              handleChangeWrapperStyle(
+                                "paddingX",
+                                selectedOption
+                              );
+                            }}
+                            value={selectedDistance}
+                            width="50"
+                          />
+                        </div>
+
                         <div>
                           {previewSection
                             .filter((section) =>
@@ -277,7 +370,6 @@ const ColumnTextAndImages = ({
                             )
                             .map((section, i) => renderSection(section, i))}
                         </div>
-
                         <CCard
                           style={{ cursor: "pointer" }}
                           onClick={() => setIsAddContent(true)}
@@ -298,16 +390,6 @@ const ColumnTextAndImages = ({
                         </CCard>
                       </>
                     )}
-                  </CTabPane>
-
-                  <CTabPane className="p-1" data-tab="desain">
-                    <DesignTab
-                      setPreviewSection={setPreviewSection}
-                      currentSection={
-                        isEditingSection ? currentSection : setting
-                      }
-                      isEditingSection={isEditingSection}
-                    />
                   </CTabPane>
 
                   <CTabPane
@@ -333,4 +415,4 @@ const ColumnTextAndImages = ({
   );
 };
 
-export default ColumnTextAndImages;
+export default ListImages;

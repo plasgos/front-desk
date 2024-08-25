@@ -4,22 +4,21 @@ import { MdTextFields, MdViewColumn } from "react-icons/md";
 import { PiArrowsDownUpLight, PiTargetDuotone } from "react-icons/pi";
 import { LuQuote } from "react-icons/lu";
 import { FaGripLines, FaListCheck } from "react-icons/fa6";
-import Text from "./Text";
-import ColumnSection from "../list-add-content/colum-text-and-image/ColumnSection";
-import EmptySpace from "./EmptySpace";
+import Text from "./text/index";
+import EmptySpace from "./empty-space/index";
 import { IoMdImages } from "react-icons/io";
-import ListImagesControl from "./list-images/ListImagesControl";
-import ScrollTarget from "./ScrollTarget";
+import ListImagesControl from "./list-images/index";
+import ScrollTarget from "./scroll-target/index";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 import { RxSwitch } from "react-icons/rx";
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
-import ListButtonControl from "./button/ListButtonControl";
 import ListTestimonyControl from "./testimony/ListTestimonyControl";
 import Line from "./Line/index";
 import ListFeature from "./ListFeature/index";
 import Quote from "./quote";
 import FAQ from "./faq";
 import ColumnTextAndImages from "./colum-text-and-image";
+import Buttons from "./button";
 
 const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
   const [addContent, setAddContent] = useState("");
@@ -162,7 +161,7 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
       )}
 
       {addContent === "button" && (
-        <ListButtonControl
+        <Buttons
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}

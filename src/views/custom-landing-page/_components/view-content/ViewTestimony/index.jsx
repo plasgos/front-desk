@@ -46,7 +46,6 @@ const ViewTestimony = forwardRef(
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
-          // ...backgroundImgStyle,
           paddingTop,
           paddingBottom,
           backgroundColor: content.background.bgColor || "",
@@ -72,6 +71,7 @@ const ViewTestimony = forwardRef(
         {content.content?.map((item) => (
           <div
             style={{
+              zIndex: 2,
               paddingLeft: content.wrapperStyle?.paddingX,
               paddingRight: content.wrapperStyle?.paddingX,
               paddingBottom: content.wrapperStyle?.paddingX

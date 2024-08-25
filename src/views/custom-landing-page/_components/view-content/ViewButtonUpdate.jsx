@@ -1,8 +1,11 @@
 import React, { forwardRef } from "react";
 import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
+import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 
 const ViewButtonUpdate = forwardRef(
   ({ containerRef, isDragging, content, isResizing, isFocused }, ref) => {
+    const stylesBg = useBackgroundStyles(content);
+
     const sizeClassesMap = {
       sm: "tw-px-2 tw-py-1 tw-text-xs",
       md: "tw-px-4 tw-py-2 tw-text-sm",
@@ -45,6 +48,11 @@ const ViewButtonUpdate = forwardRef(
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
+          paddingTop: stylesBg.paddingTop,
+          paddingBottom: stylesBg.paddingBottom,
+          backgroundColor: content.background.bgColor || "",
+          position: "relative",
+          zIndex: 1,
         }}
         className={`tw-flex ${
           content.wrapperStyle.flexDirection
@@ -54,6 +62,20 @@ const ViewButtonUpdate = forwardRef(
           content.wrapperStyle.flexDirection === "tw-flex-row" && "tw-gap-y-2"
         }   tw-p-3`}
       >
+        <div style={stylesBg.backgroundImgStyle}></div>
+
+        {content.background?.opacity ? (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor:
+                content.background?.opacity < 0 ? "black" : "white",
+              opacity: Math.abs(stylesBg.calculateOpacity),
+            }}
+          ></div>
+        ) : null}
+
         {content.content.map((section) => {
           const sizeClasses =
             sizeClassesMap[section.content.style.buttonSize] ||
@@ -75,6 +97,7 @@ const ViewButtonUpdate = forwardRef(
 
           return (
             <div
+              style={{ zIndex: 2 }}
               key={section.id}
               className={`${
                 content.wrapperStyle.flexDirection === "tw-flex-row" &&

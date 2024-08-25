@@ -9,9 +9,9 @@ import {
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 
-import BackgroundTab from "../testimony/BackgroundTab";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import ContentTab from "./ContentTab";
+import BackgroundTab from "../../common/BackgroundTab";
 
 export const fontSizeQuoteOptions = [
   { value: "tw-text-base", label: "Normal" },

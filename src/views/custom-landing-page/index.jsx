@@ -22,20 +22,15 @@ import ViewText from "./_components/view-content/ViewText";
 import { useDragLayer } from "react-dnd";
 
 import { renderToString } from "react-dom/server";
-import EditText from "./_components/list-edit-content/EditText";
 import ViewColumnTextAndImage from "./_components/view-content/ViewColumnTextAndImage";
 import ViewEmptySpace from "./_components/view-content/ViewEmptySpace";
-import EditEmptySpace from "./_components/list-edit-content/EditEmptySpace";
 import ViewListImages from "./_components/view-content/ViewListImages";
-import EditListImages from "./_components/list-edit-content/EditListImages";
 import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
-import EditScrollTarget from "./_components/list-edit-content/EditScrollTarget";
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeOptionScrollTarget,
   setLandingPageSection,
 } from "../../redux/modules/custom-landing-page/reducer";
-import EditListButton from "./_components/list-edit-content/EditListButton";
 import ModalConfirmation from "./_components/ModalConfirmation";
 import ViewTestimony from "./_components/view-content/ViewTestimony/index";
 import EditListTestimony from "./_components/list-edit-content/EditListTestimony/index";
@@ -49,6 +44,11 @@ import Input from "./_components/common/Input";
 import Quote from "./_components/list-add-content/quote";
 import ViewQuote from "./_components/view-content/ViewQuote";
 import ColumnTextAndImages from "./_components/list-add-content/colum-text-and-image";
+import ListImages from "./_components/list-add-content/list-images";
+import Text from "./_components/list-add-content/text/index";
+import ScrollTarget from "./_components/list-add-content/scroll-target";
+import EmptySpace from "./_components/list-add-content/empty-space";
+import Buttons from "./_components/list-add-content/button";
 
 const landingPage = {
   detail: {
@@ -84,7 +84,7 @@ const CustomLandingPage = () => {
   const containerRef = useRef(null);
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
-  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
+  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection[0]);
   const [modal, setModal] = useState(false);
 
   const toggleModal = () => {
@@ -293,11 +293,12 @@ const CustomLandingPage = () => {
         editing.id === section.id
       ) {
         return (
-          <EditText
+          <Text
             currentSection={section}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }
@@ -325,11 +326,12 @@ const CustomLandingPage = () => {
         editing.id === section.id
       ) {
         return (
-          <EditEmptySpace
-            curentSection={section}
+          <EmptySpace
+            currentSection={section}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }
@@ -340,12 +342,13 @@ const CustomLandingPage = () => {
         editing.id === section.id
       ) {
         return (
-          <EditListImages
-            curentSection={section}
+          <ListImages
+            currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }
@@ -356,11 +359,12 @@ const CustomLandingPage = () => {
         editing.id === section.id
       ) {
         return (
-          <EditScrollTarget
-            curentSection={section}
+          <ScrollTarget
+            currentSection={section}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }
@@ -371,12 +375,13 @@ const CustomLandingPage = () => {
         editing.id === section.id
       ) {
         return (
-          <EditListButton
-            curentSection={section}
+          <Buttons
+            currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }

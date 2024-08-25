@@ -1,34 +1,49 @@
 import { CButton, CCard } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import image from "../../../../../assets/action-figure.jpg";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import "react-slideshow-image/dist/styles.css";
+import { createUniqueID } from "../../../../../lib/unique-id";
+
 import FacebookPixel from "../../FacebookPixel";
-import ScrollTargetInput from "../../common/ScrollTargetSelect";
-import WhatsAppInput from "../../common/WhatAppsInput";
-import UrlInput from "../../common/UrlInput";
+import { useSelector } from "react-redux";
 import SelectOptions from "../../common/SelectOptions";
-import Input from "../../common/Input";
-import { useUrlChange } from "../../../../../hooks/useUrlChange";
 import { useWhatAppsChange } from "../../../../../hooks/useWhatAppsChange";
 import { useSCrollTargetChange } from "../../../../../hooks/useScrolltargetChange";
+import { useUrlChange } from "../../../../../hooks/useUrlChange";
+import UrlInput from "../../common/UrlInput";
+import WhatsAppInput from "../../common/WhatAppsInput";
+import ScrollTargetInput from "../../common/ScrollTargetSelect";
+import Input from "../../common/Input";
 
-export const EditImages = ({
-  selectedSectionToEdit,
+export const UpdateContent = ({
   idSection,
+  currentContent,
   setPreviewSection,
+  isEditingContent,
 }) => {
   const { optionsScrollTarget, optionsTarget } = useSelector(
     (state) => state.customLandingPage
   );
 
-  const [imageUrl, setImageUrl] = useState(selectedSectionToEdit.content.image);
-  const [alt, setAlt] = useState(selectedSectionToEdit.content?.alt);
+  const [imageUrl, setImageUrl] = useState(
+    currentContent?.content?.image || image
+  );
 
+  const [alt, setAlt] = useState(currentContent?.content?.alt || "");
+
+  const [setting, setSetting] = useState({});
   const [selectedOption, setSelectedOption] = useState(
     optionsTarget[0].options[0]
   );
 
   const { url, setUrl, handleUrlChange, handleUrlOpenNewTabChange } =
-    useUrlChange(setPreviewSection, idSection, selectedSectionToEdit);
+    useUrlChange(
+      setPreviewSection,
+      idSection,
+      isEditingContent ? currentContent : setting
+    );
 
   const {
     whatApps,
@@ -36,7 +51,11 @@ export const EditImages = ({
     handlePhoneNumberChange,
     handleMessageChange,
     handleUrlOpenNewTabWaChange,
-  } = useWhatAppsChange(setPreviewSection, idSection, selectedSectionToEdit);
+  } = useWhatAppsChange(
+    setPreviewSection,
+    idSection,
+    isEditingContent ? currentContent : setting
+  );
 
   const {
     selectedOptionScrollTarget,
@@ -45,78 +64,27 @@ export const EditImages = ({
   } = useSCrollTargetChange(
     setPreviewSection,
     idSection,
-    selectedSectionToEdit
+    isEditingContent ? currentContent : setting
   );
 
-  const handleChangeOptions = (selectedOptionValue) => {
-    setSelectedOption(selectedOptionValue);
-    if (!selectedOptionValue.value) {
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === idSection
-            ? {
-                ...item,
-                content: item.content.map((contentItem) =>
-                  String(contentItem.id) === String(selectedSectionToEdit.id)
-                    ? {
-                        ...contentItem,
-                        target: {},
-                      }
-                    : contentItem
-                ),
-              }
-            : item
-        )
-      );
-      setSelectedOptionScrollTarget(undefined);
-    }
-
-    setWhatApps({});
-    setUrl({});
-    setSelectedOptionScrollTarget(undefined);
-  };
-
   useEffect(() => {
-    if (
-      selectedOption &&
-      selectedOption.value === "scroll-target" &&
-      selectedOptionScrollTarget &&
-      optionsScrollTarget
-    ) {
-      const updatedOption = optionsScrollTarget.find(
-        (option) => option.id === selectedOptionScrollTarget.id
-      );
-
-      if (!updatedOption) {
-        setPreviewSection((arr) =>
-          arr.map((item) =>
-            String(item.id) === idSection
-              ? {
-                  ...item,
-                  content: item.content.map((contentItem) =>
-                    String(contentItem.id) === String(selectedSectionToEdit.id)
-                      ? {
-                          ...contentItem,
-                          target: {},
-                        }
-                      : contentItem
-                  ),
-                }
-              : item
-          )
+    if (isEditingContent) {
+      if (
+        selectedOption &&
+        selectedOption.value === "scroll-target" &&
+        selectedOptionScrollTarget &&
+        optionsScrollTarget
+      ) {
+        const updatedOption = optionsScrollTarget.find(
+          (option) => option.id === selectedOptionScrollTarget.id
         );
-        setSelectedOptionScrollTarget({
-          value: "deleted",
-          label: "--Di Hapus--",
-        });
-      } else {
         setPreviewSection((arr) =>
           arr.map((item) =>
             String(item.id) === idSection
               ? {
                   ...item,
                   content: item.content.map((contentItem) =>
-                    String(contentItem.id) === String(selectedSectionToEdit.id)
+                    String(contentItem.id) === String(currentContent.id)
                       ? {
                           ...contentItem,
                           target: {
@@ -136,30 +104,90 @@ export const EditImages = ({
         setSelectedOptionScrollTarget(updatedOption);
       }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [optionsScrollTarget, selectedOption]);
+  }, [isEditingContent, optionsScrollTarget, selectedOption]);
+
+  useEffect(() => {
+    if (isEditingContent) {
+      const currentTargetOption = optionsTarget
+        .flatMap((group) => group.options)
+        .find((opt) => {
+          const targetType = currentContent?.target;
+          return (
+            (targetType?.scrollTarget && opt.value === "scroll-target") ||
+            (targetType?.url && opt.value === "url") ||
+            (targetType?.whatApps && opt.value === "whatApps")
+          );
+        });
+
+      if (currentTargetOption) {
+        setSelectedOption(currentTargetOption);
+      }
+    }
+  }, [isEditingContent, currentContent, optionsTarget]);
+
+  const handleChangeOptions = (selectedOptionValue) => {
+    setSelectedOption(selectedOptionValue);
+    if (!selectedOptionValue.value) {
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === idSection
+            ? {
+                ...item,
+                content: item.content.map((contentItem) => {
+                  const contentIdToCheck = isEditingContent
+                    ? currentContent.id
+                    : setting.id;
+
+                  return String(contentItem.id) === String(contentIdToCheck)
+                    ? {
+                        ...contentItem,
+                        target: {},
+                      }
+                    : contentItem;
+                }),
+              }
+            : item
+        )
+      );
+      setSelectedOptionScrollTarget(undefined);
+    }
+
+    setWhatApps({});
+    setUrl({});
+    setSelectedOptionScrollTarget(undefined);
+  };
 
   useEffect(() => {
     if (
-      selectedOption &&
-      selectedOption.value === "scroll-target" &&
-      !selectedSectionToEdit.target?.scrollTarget?.value
+      (!isEditingContent &&
+        selectedOption &&
+        selectedOption.value === "scroll-target") ||
+      (isEditingContent &&
+        selectedOption &&
+        selectedOption.value === "scroll-target" &&
+        !currentContent.target?.scrollTarget?.value)
     ) {
       setPreviewSection((arr) =>
         arr.map((item) =>
           String(item.id) === idSection
             ? {
                 ...item,
-                content: item.content.map((contentItem) =>
-                  String(contentItem.id) === String(selectedSectionToEdit.id)
+                content: item.content.map((contentItem) => {
+                  const contentIdToCheck = isEditingContent
+                    ? currentContent.id
+                    : setting.id;
+
+                  return String(contentItem.id) === String(contentIdToCheck)
                     ? {
                         ...contentItem,
                         target: {
                           scrollTarget: optionsScrollTarget[0],
                         },
                       }
-                    : contentItem
-                ),
+                    : contentItem;
+                }),
               }
             : item
         )
@@ -171,26 +199,21 @@ export const EditImages = ({
   }, [selectedOption]);
 
   useEffect(() => {
-    if (url?.url) {
-      setSelectedOption({ value: "url", label: "URL" });
-    }
-  }, [url]);
+    if (isEditingContent) {
+      const currentScrollTarget = optionsScrollTarget.find(
+        (opt) => opt.id === currentContent.target?.scrollTarget?.id
+      );
 
-  useEffect(() => {
-    if (whatApps?.phoneNumber) {
-      setSelectedOption({ value: "whatApps", label: "Whatapps" });
+      if (currentScrollTarget) {
+        setSelectedOptionScrollTarget(currentScrollTarget);
+      }
     }
-  }, [whatApps]);
-
-  useEffect(() => {
-    if (
-      selectedSectionToEdit.target &&
-      selectedSectionToEdit.target?.scrollTarget?.value
-    ) {
-      setSelectedOption({ value: "scroll-target", label: "Scroll Target" });
-      setSelectedOptionScrollTarget(selectedSectionToEdit.target?.scrollTarget);
-    }
-  }, [selectedSectionToEdit.target, setSelectedOptionScrollTarget]);
+  }, [
+    currentContent,
+    isEditingContent,
+    optionsScrollTarget,
+    setSelectedOptionScrollTarget,
+  ]);
 
   const handleFileUpload = () => {
     const input = document.createElement("input");
@@ -210,7 +233,6 @@ export const EditImages = ({
     };
   };
 
-  // Efek ini akan dipanggil setiap kali imageUrl berubah
   useEffect(() => {
     // Update tempSections setelah imageUrl berubah
     setPreviewSection((arr) =>
@@ -218,8 +240,12 @@ export const EditImages = ({
         String(item.id) === idSection
           ? {
               ...item,
-              content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(selectedSectionToEdit.id)
+              content: item.content.map((contentItem) => {
+                const contentIdToCheck = isEditingContent
+                  ? currentContent.id
+                  : setting.id;
+
+                return String(contentItem.id) === String(contentIdToCheck)
                   ? {
                       ...contentItem,
                       content: {
@@ -227,8 +253,8 @@ export const EditImages = ({
                         image: imageUrl,
                       },
                     }
-                  : contentItem
-              ),
+                  : contentItem;
+              }),
             }
           : item
       )
@@ -236,30 +262,60 @@ export const EditImages = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl]);
 
-  const handleAltChange = (value) => {
-    setAlt(value);
-
+  const handleChangeContent = (key, value) => {
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === idSection
           ? {
               ...item,
-              content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(selectedSectionToEdit.id)
+              content: item.content.map((contentItem) => {
+                const contentIdToCheck = isEditingContent
+                  ? currentContent.id
+                  : setting.id;
+
+                return String(contentItem.id) === String(contentIdToCheck)
                   ? {
                       ...contentItem,
                       content: {
                         ...contentItem.content,
-                        alt: value,
+                        [key]: value,
                       },
                     }
-                  : contentItem
-              ),
+                  : contentItem;
+              }),
             }
           : item
       )
     );
   };
+
+  const handleAddContent = () => {
+    let uniqueId = createUniqueID(currentContent);
+    let payload = {
+      id: uniqueId,
+      content: {
+        image: imageUrl,
+      },
+      target: {},
+    };
+
+    setPreviewSection((prevSections) =>
+      prevSections.map((section) =>
+        section.id === idSection
+          ? { ...section, content: [...section.content, payload] }
+          : section
+      )
+    );
+
+    setSetting(payload);
+  };
+
+  useEffect(() => {
+    if (!isEditingContent) {
+      handleAddContent();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditingContent]);
 
   return (
     <CCard
@@ -280,7 +336,7 @@ export const EditImages = ({
           >
             <img
               style={{ objectFit: "contain", width: "100%", height: 100 }}
-              src={imageUrl || selectedSectionToEdit.content.image}
+              src={imageUrl || image}
               alt="img"
             />
           </div>
@@ -294,10 +350,15 @@ export const EditImages = ({
             Upload
           </CButton>
         </div>
+
         <Input
           label="Alt"
           value={alt}
-          onChange={(event) => handleAltChange(event.target.value)}
+          onChange={(event) => {
+            const { value } = event.target;
+            setAlt(value);
+            handleChangeContent("alt", value);
+          }}
           type="text"
         />
 
@@ -309,10 +370,9 @@ export const EditImages = ({
             value={selectedOption}
             width="100"
           />
-
           {selectedOption?.value === "url" && (
             <UrlInput
-              id="urlOpenNewTab"
+              id="urlOpenNewTabListImg"
               url={url}
               handleUrlChange={handleUrlChange}
               handleUrlOpenNewTabChange={handleUrlOpenNewTabChange}
@@ -321,7 +381,7 @@ export const EditImages = ({
 
           {selectedOption?.value === "whatApps" && (
             <WhatsAppInput
-              id="waOpenNewTab"
+              id="waOpenNewTabListImg"
               whatApps={whatApps}
               handlePhoneNumberChange={handlePhoneNumberChange}
               handleMessageChange={handleMessageChange}

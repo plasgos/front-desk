@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   CButton,
   CFormGroup,
@@ -19,69 +19,62 @@ import {
 } from "react-icons/fa6";
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
-import ColorPicker from "../common/ColorPicker";
+import { createUniqueID } from "../../../../../lib/unique-id";
+import ColorPicker from "../../common/ColorPicker";
 
-const EditText = ({
-  currentSection,
+const Text = ({
+  previewSection,
   setPreviewSection,
   isShowContent,
+  isEditingSection = false,
   sectionBeforeEdit,
+  currentSection,
 }) => {
   const [editorHtml, setEditorHtml] = useState(
-    currentSection.content?.editorHtml
+    currentSection?.content?.editorHtml || "Type your text here"
   );
+
   const [selectAlign, setSelectAlign] = useState(
-    currentSection.content?.style?.textAlign
+    currentSection?.content?.style?.textAlign || "tw-text-center"
   );
   const [selectedColor, setSelectedColor] = useState(
-    currentSection.content?.style?.color
+    currentSection?.content?.style?.color || "#000000"
   );
 
-  const handleColorChange = (color) => {
-    setSelectedColor(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === String(currentSection.id)
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                style: {
-                  ...item.content.style,
-                  color,
-                },
-              },
-            }
-          : item
-      )
-    );
-  };
+  const [settingText, setSettingText] = useState({});
 
-  const onChangeAlign = (value) => {
-    setSelectAlign(value);
+  const handleChangeContentStyle = (key, value) => {
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === String(currentSection.id)
+      arr.map((item) => {
+        const contentIdToCheck = isEditingSection
+          ? currentSection.id
+          : settingText.id;
+
+        return String(item.id) === contentIdToCheck
           ? {
               ...item,
               content: {
                 ...item.content,
                 style: {
                   ...item.content.style,
-                  textAlign: value,
+                  [key]: value,
                 },
               },
             }
-          : item
-      )
+          : item;
+      })
     );
   };
 
   const handleEditorChange = (html) => {
     setEditorHtml(html);
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === String(currentSection.id)
+      arr.map((item) => {
+        const contentIdToCheck = isEditingSection
+          ? currentSection.id
+          : settingText.id;
+
+        return String(item.id) === contentIdToCheck
           ? {
               ...item,
               content: {
@@ -89,14 +82,47 @@ const EditText = ({
                 editorHtml: html,
               },
             }
-          : item
-      )
+          : item;
+      })
     );
   };
 
+  const handleAddContent = () => {
+    let uniqueId = createUniqueID(previewSection);
+    let payload = {
+      id: uniqueId,
+      name: "text",
+      title: "Teks",
+      content: {
+        editorHtml,
+        style: {
+          textAlign: selectAlign,
+          color: selectedColor,
+        },
+      },
+    };
+
+    setPreviewSection((prevSections) => [...prevSections, payload]);
+    setSettingText(payload);
+  };
+
+  useEffect(() => {
+    if (!isEditingSection) {
+      handleAddContent();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditingSection]);
+
   const handelCancel = () => {
-    isShowContent(false);
-    setPreviewSection([...sectionBeforeEdit]);
+    if (isEditingSection) {
+      isShowContent(false);
+      setPreviewSection([...sectionBeforeEdit]);
+    } else {
+      isShowContent(false);
+      setPreviewSection((prevSections) =>
+        prevSections.filter((section) => section.id !== settingText.id)
+      );
+    }
   };
 
   const handelConfirm = () => {
@@ -140,45 +166,65 @@ const EditText = ({
                   <div className="d-flex justify-content-start">
                     <div
                       className={`d-flex align-items-center justify-content-center mr-1 rounded ${
-                        selectAlign === "text-left"
+                        selectAlign === "tw-text-left"
                           ? "bg-primary border-primary text-white"
                           : "bg-white border-dark"
                       }`}
                       style={{ cursor: "pointer", width: 35, height: 35 }}
-                      onClick={() => onChangeAlign("text-left")}
+                      data-value="tw-text-left"
+                      onClick={({ currentTarget }) => {
+                        const value = currentTarget.dataset.value;
+                        setSelectAlign(value);
+                        handleChangeContentStyle("textAlign", value);
+                      }}
                     >
                       <FaAlignLeft style={{ fontSize: 15 }} />
                     </div>
                     <div
                       className={`d-flex align-items-center justify-content-center mr-1 rounded ${
-                        selectAlign === "text-center"
+                        selectAlign === "tw-text-center"
                           ? "bg-primary border-primary text-white"
                           : "bg-white border-dark"
                       }`}
                       style={{ cursor: "pointer", width: 35, height: 35 }}
-                      onClick={() => onChangeAlign("text-center")}
+                      data-value="tw-text-center"
+                      onClick={({ currentTarget }) => {
+                        const value = currentTarget.dataset.value;
+                        setSelectAlign(value);
+                        handleChangeContentStyle("textAlign", value);
+                      }}
                     >
                       <FaAlignCenter style={{ fontSize: 15 }} />
                     </div>
                     <div
                       className={`d-flex align-items-center justify-content-center mr-1 rounded ${
-                        selectAlign === "text-right"
+                        selectAlign === "tw-text-right"
                           ? "bg-primary border-primary text-white"
                           : "bg-white border-dark"
                       }`}
                       style={{ cursor: "pointer", width: 35, height: 35 }}
-                      onClick={() => onChangeAlign("text-right")}
+                      data-value="tw-text-right"
+                      onClick={({ currentTarget }) => {
+                        const value = currentTarget.dataset.value;
+                        setSelectAlign(value);
+                        handleChangeContentStyle("textAlign", value);
+                      }}
                     >
                       <FaAlignRight style={{ fontSize: 15 }} />
                     </div>
                     <div
                       className={`d-flex align-items-center justify-content-center mr-1 rounded ${
-                        selectAlign === "text-justify"
+                        selectAlign === "tw-text-justify"
                           ? "bg-primary border-primary text-white"
                           : "bg-white border-dark"
                       }`}
                       style={{ cursor: "pointer", width: 35, height: 35 }}
-                      onClick={() => onChangeAlign("text-justify")}
+                      data-value="tw-text-justify"
+                      onClick={({ currentTarget }) => {
+                        const value = currentTarget.dataset.value;
+                        setSelectAlign(value);
+                        handleChangeContentStyle("textAlign", value);
+                      }}
                     >
                       <FaAlignJustify style={{ fontSize: 15 }} />
                     </div>
@@ -187,7 +233,10 @@ const EditText = ({
                 <ColorPicker
                   initialColor={selectedColor}
                   label="Warna Teks"
-                  onChange={handleColorChange}
+                  onChange={(color) => {
+                    setSelectedColor(color);
+                    handleChangeContentStyle("color", color);
+                  }}
                   flexEnd="justify-content-end"
                   bottom={"77px"}
                   left={"236px"}
@@ -242,4 +291,4 @@ const EditText = ({
   );
 };
 
-export default EditText;
+export default Text;

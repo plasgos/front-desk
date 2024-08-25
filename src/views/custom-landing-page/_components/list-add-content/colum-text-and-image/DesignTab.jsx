@@ -29,15 +29,19 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
 
   useEffect(() => {
     if (isEditingSection) {
+      const {
+        wrapperStyle: { paddingX, maxColumn, fontSizeTitle, aspectRatio } = {},
+      } = currentSection || {};
+
       const currentDistanceOption = distanceOptions.find(
-        (opt) => opt.value === currentSection?.wrapperStyle?.paddingX
+        (opt) => opt.value === paddingX
       );
       if (currentDistanceOption) {
         setSelectedDistance(currentDistanceOption);
       }
 
       const currentMaxColumnOption = maxColumnOptions.find(
-        (opt) => opt.value === currentSection?.wrapperStyle?.maxColumn
+        (opt) => opt.value === maxColumn
       );
 
       if (currentMaxColumnOption) {
@@ -45,17 +49,15 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
       }
 
       const currentFontSizeOption = fontSizeOptions.find(
-        (opt) => opt.value === currentSection?.wrapperStyle?.fontSizeTitle
+        (opt) => opt.value === fontSizeTitle
       );
 
       if (currentFontSizeOption) {
-        setSelectedFontSize(currentMaxColumnOption);
+        setSelectedFontSize(currentFontSizeOption);
       }
 
       const currentAcpectRatioOption = aspectRatioOptions.flatMap((ratio) =>
-        ratio.options.find(
-          (opt) => opt.value === currentSection?.wrapperStyle?.aspectRatio
-        )
+        ratio.options.find((opt) => opt.value === aspectRatio)
       );
 
       if (currentAcpectRatioOption) {

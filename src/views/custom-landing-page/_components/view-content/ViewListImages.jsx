@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
 import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
+import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 
 const ViewListImages = forwardRef(
   (
@@ -14,6 +15,8 @@ const ViewListImages = forwardRef(
     },
     ref
   ) => {
+    const stylesBg = useBackgroundStyles(content);
+
     return (
       <div
         key={content.id}
@@ -22,12 +25,32 @@ const ViewListImages = forwardRef(
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
+          paddingTop: stylesBg.paddingTop,
+          paddingBottom: stylesBg.paddingBottom,
+          backgroundColor: content.background.bgColor || "",
+          position: "relative",
+          zIndex: 1,
         }}
         className=" tw-flex tw-flex-row tw-flex-wrap tw-justify-center tw-items-center tw-p-3 tw-gap-y-3 "
       >
+        <div style={stylesBg.backgroundImgStyle}></div>
+
+        {content.background?.opacity ? (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              backgroundColor:
+                content.background?.opacity < 0 ? "black" : "white",
+              opacity: Math.abs(stylesBg.calculateOpacity),
+            }}
+          ></div>
+        ) : null}
+
         {content.content.map((section) => {
           return (
             <div
+              style={{ zIndex: 2 }}
               key={section.id}
               className={
                 isPreview

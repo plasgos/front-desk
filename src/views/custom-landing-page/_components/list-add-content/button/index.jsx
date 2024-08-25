@@ -13,55 +13,63 @@ import {
   CTabs,
 } from "@coreui/react";
 
-import image from "../../../../../assets/action-figure.jpg";
-
 import { IoAdd } from "react-icons/io5";
-import { createUniqueID } from "../../../../../lib/unique-id";
-
-import { DraggableList } from "../../common/DraggableList";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import { useMoveSection } from "../../../../../hooks/useMoveSection";
-import DesignTab from "./DesignTab";
-import { UpdateContent } from "./UpdateContent";
+import SelectOptions from "../../common/SelectOptions";
+import { alignOptions } from "../../SelectOptions";
+import { DraggableList } from "../../common/DraggableList";
 import BackgroundTab from "../../common/BackgroundTab";
+import { createUniqueID } from "../../../../../lib/unique-id";
+import UpdateContent from "./UpdateContent";
 
 const initialContents = [
   {
-    id: "adguiwbj",
-
+    id: "btn01",
     content: {
-      title: "Rahasia ",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
+      title: "Please Click Me",
+      style: {
+        btnColor: "#2196F3",
+        textColor: "#FFFFFF",
+        variant: "fill",
+        rounded: "tw-rounded",
+        buttonSize: "md",
+        shadow: "tw-shadow",
+      },
     },
     target: {},
   },
   {
-    id: "adgdawdw",
-
+    id: "btn02",
     content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-    target: {},
-  },
-  {
-    id: "feqawd",
-
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
+      title: "Dont't Click Me",
+      style: {
+        btnColor: "#EF5350",
+        textColor: "#FFFFFF",
+        variant: "fill",
+        rounded: "tw-rounded",
+        buttonSize: "md",
+        shadow: "tw-shadow",
+      },
     },
     target: {},
   },
 ];
 
-const ColumnTextAndImages = ({
+export const distanceOptions = [
+  { value: "0", label: "0" },
+  { value: "1", label: "1" },
+  { value: "2", label: "2" },
+  { value: "3", label: "3" },
+  { value: "4", label: "4" },
+];
+
+export const flexOptions = [
+  { value: "tw-flex-row", label: "Horizontal" },
+  { value: "tw-flex-col", label: "Vertical" },
+];
+
+const Buttons = ({
   previewSection,
   setPreviewSection,
   isShowContent,
@@ -75,6 +83,58 @@ const ColumnTextAndImages = ({
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
 
   const [setting, setSetting] = useState({});
+
+  const [selectedDistance, setSelectedDistance] = useState(distanceOptions[2]);
+  const [selectedAlign, setSelectedAlign] = useState(alignOptions[1]);
+  const [selectedFlex, setSelectedFlex] = useState(flexOptions[0]);
+
+  useEffect(() => {
+    if (isEditingSection) {
+      const { wrapperStyle: { marginX, flexDirection, jusctifyContent } = {} } =
+        currentSection || {};
+
+      const distanceOption = distanceOptions.find(
+        (opt) => opt.value === marginX
+      );
+      if (distanceOption) {
+        setSelectedDistance(distanceOption);
+      }
+
+      const flexDirectionOption = flexOptions.find(
+        (opt) => opt.value === flexDirection
+      );
+      if (flexDirectionOption) {
+        setSelectedFlex(flexDirectionOption);
+      }
+
+      const jusctifyContentOption = alignOptions.find(
+        (opt) => opt.value === jusctifyContent
+      );
+      if (jusctifyContentOption) {
+        setSelectedAlign(jusctifyContentOption);
+      }
+    }
+  }, [currentSection, isEditingSection]);
+
+  const handleChangeWrapperStyle = (key, selectedOption) => {
+    setPreviewSection((arr) =>
+      arr.map((item) => {
+        const contentIdToCheck = isEditingSection
+          ? currentSection.id
+          : setting.id;
+
+        return String(item.id) === contentIdToCheck
+          ? {
+              ...item,
+              wrapperStyle: {
+                ...item.wrapperStyle,
+                [key]: selectedOption.value,
+              },
+            }
+          : item;
+      })
+    );
+  };
 
   const handelCancel = () => {
     if (isAddContent) {
@@ -124,16 +184,13 @@ const ColumnTextAndImages = ({
     let uniqueId = createUniqueID(previewSection);
     let payload = {
       id: uniqueId,
-      name: "column-text-and-image",
-      title: "Column Text And Image",
+      name: "button",
+      title: "Tombol",
       content: initialContents,
       wrapperStyle: {
-        paddingX: 2,
-        maxColumn: "tw-w-1/3",
-        aspectRatio: 1 / 1,
-        colorTitle: "#000000",
-        colorDescription: "#000000",
-        fontSizeTitle: "tw-text-sm",
+        jusctifyContent: "tw-justify-center",
+        flexDirection: "tw-flex-row",
+        marginX: "2",
       },
       background: {
         bgType: undefined,
@@ -249,25 +306,69 @@ const ColumnTextAndImages = ({
                 </CTabContent>
               </CTabs>
             ) : (
-              <CTabs activeTab="kolom">
+              <CTabs activeTab="konten">
                 <CNav variant="tabs">
                   <CNavItem>
-                    <CNavLink data-tab="kolom">Kolom</CNavLink>
+                    <CNavLink data-tab="konten">Konten</CNavLink>
                   </CNavItem>
                   <CNavItem>
-                    <CNavLink data-tab="desain">Desain</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="background">Background</CNavLink>
+                    <CNavLink data-tab="wadah">Wadah</CNavLink>
                   </CNavItem>
                 </CNav>
                 <CTabContent
                   style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
-                  <CTabPane className="p-1" data-tab="kolom">
+                  <CTabPane className="p-1" data-tab="konten">
                     {!isAddContent && !isEditingContent && (
                       <>
+                        <div
+                          style={{ gap: 10 }}
+                          className="d-flex align-items-center "
+                        >
+                          <SelectOptions
+                            label="Align"
+                            options={alignOptions}
+                            onChange={(selectedOption) => {
+                              setSelectedAlign(selectedOption);
+                              handleChangeWrapperStyle(
+                                "jusctifyContent",
+                                selectedOption
+                              );
+                            }}
+                            value={selectedAlign}
+                            width="50"
+                          />
+
+                          <SelectOptions
+                            label="Jarak"
+                            options={distanceOptions}
+                            onChange={(selectedOption) => {
+                              setSelectedDistance(selectedOption);
+                              handleChangeWrapperStyle(
+                                "marginX",
+                                selectedOption
+                              );
+                            }}
+                            value={selectedDistance}
+                            width="50"
+                          />
+                        </div>
+
+                        <SelectOptions
+                          label="Barisan"
+                          options={flexOptions}
+                          onChange={(selectedOption) => {
+                            setSelectedFlex(selectedOption);
+                            handleChangeWrapperStyle(
+                              "flexDirection",
+                              selectedOption
+                            );
+                          }}
+                          value={selectedFlex}
+                          width="50"
+                        />
+
                         <div>
                           {previewSection
                             .filter((section) =>
@@ -277,7 +378,6 @@ const ColumnTextAndImages = ({
                             )
                             .map((section, i) => renderSection(section, i))}
                         </div>
-
                         <CCard
                           style={{ cursor: "pointer" }}
                           onClick={() => setIsAddContent(true)}
@@ -299,21 +399,10 @@ const ColumnTextAndImages = ({
                       </>
                     )}
                   </CTabPane>
-
-                  <CTabPane className="p-1" data-tab="desain">
-                    <DesignTab
-                      setPreviewSection={setPreviewSection}
-                      currentSection={
-                        isEditingSection ? currentSection : setting
-                      }
-                      isEditingSection={isEditingSection}
-                    />
-                  </CTabPane>
-
                   <CTabPane
                     style={{ overflowX: "hidden", height: "100%" }}
                     className="p-1"
-                    data-tab="background"
+                    data-tab="wadah"
                   >
                     <BackgroundTab
                       currentSection={
@@ -333,4 +422,4 @@ const ColumnTextAndImages = ({
   );
 };
 
-export default ColumnTextAndImages;
+export default Buttons;
