@@ -18,17 +18,17 @@ import { createUniqueID } from "../../../../../lib/unique-id";
 import SelectOptions from "../../common/SelectOptions";
 import { FaStar } from "react-icons/fa6";
 import profilePicture from "../../../../../assets/profile.jpg";
-import AddTestimony from "./AddTestimony";
-import EditTestimony from "./EditTestimony";
 import DesignTab from "./DesignTab";
 import { columnTestimonyOptions } from "../../SelectOptions";
-import AddShape from "./AddShape";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
-import EditShape from "./EditShape";
-import BackgroundTab from "./BackgroundTab";
 import { DraggableList } from "../../common/DraggableList";
+import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
+import { useMoveSection } from "../../../../../hooks/useMoveSection";
+import BackgroundTab from "../../common/BackgroundTab";
+import { UpdateContents } from "./UpdateContents";
+import { UpdateShapes } from "./UpdateShapes";
 
-const contents = [
+const initialContent = [
   {
     id: "testi-1",
     name: "John Smith",
@@ -49,18 +49,21 @@ const contents = [
   },
 ];
 
-const ListTestimonyControl = ({
+const Testimony = ({
   previewSection,
   setPreviewSection,
   isShowContent,
+  isEditingSection = false,
+  sectionBeforeEdit,
+  currentSection,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditingContent, setIsEditingContent] = useState(false);
   const [isAddShape, setIsAddShape] = useState(false);
   const [isEditingShape, setIsEditingShape] = useState(false);
-  const [selectedSection, setSelectedSection] = useState({});
+  const [selectedContent, setSelectedContent] = useState({});
   const [selectedSectionShape, setSelectedSectionShape] = useState({});
-  const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
+  const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
   const [activeTab, setActiveTab] = useState("konten");
 
   const [selectedColumnTestimony, setSelectedColumnTestimony] = useState(
@@ -69,14 +72,32 @@ const ListTestimonyControl = ({
 
   const [setting, setSetting] = useState({});
 
-  const [paddingTop, setPaddingTop] = useState(0);
-  const [paddingBottom, setPaddingBottom] = useState(0);
+  const [paddingTop, setPaddingTop] = useState(
+    currentSection?.wrapperStyle?.paddingTop || 0
+  );
+  const [paddingBottom, setPaddingBottom] = useState(
+    currentSection?.wrapperStyle?.paddingBottom || 0
+  );
+
+  useEffect(() => {
+    if (isEditingSection) {
+      const columnOption = columnTestimonyOptions.find(
+        (opt) => opt.value === currentSection?.wrapperStyle?.column
+      );
+      if (columnOption) {
+        setSelectedColumnTestimony(columnOption);
+      }
+    }
+  }, [currentSection, isEditingSection, previewSection]);
 
   const handleChangeColumnTestimony = (selectedOptionValue) => {
     setSelectedColumnTestimony(selectedOptionValue);
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === setting.id
+      arr.map((item) => {
+        const contentIdToCheck = isEditingSection
+          ? currentSection.id
+          : setting.id;
+        return String(item.id) === contentIdToCheck
           ? {
               ...item,
               wrapperStyle: {
@@ -84,64 +105,61 @@ const ListTestimonyControl = ({
                 column: selectedOptionValue.value,
               },
             }
-          : item
-      )
+          : item;
+      })
     );
   };
 
-  const handelCancel = () => {
-    if (isAddContent) {
-      setIsAddContent(false);
-      setIsEditing(false);
+  const handleCancel = () => {
+    const resetSectionContent = (key) => {
       setPreviewSection((prevSections) =>
         prevSections.map((section) =>
-          section.id === setting.id
-            ? {
-                ...section,
-                content: section.content.slice(0, -1),
-              }
+          section.id === (isEditingSection ? currentSection.id : setting.id)
+            ? { ...section, [key]: section[key].slice(0, -1) }
             : section
         )
       );
+    };
+
+    const resetEditingState = () => {
+      setPreviewSection([...currentContentBeforeEdit]);
+      setIsAddContent(false);
+      setIsEditingContent(false);
+      setIsAddShape(false);
+      setIsEditingShape(false);
+    };
+
+    if (isAddContent) {
+      resetSectionContent("content");
+      setIsAddContent(false);
+      setIsEditingContent(false);
       setActiveTab("konten");
     } else if (isAddShape) {
-      setIsAddShape(false);
-      setIsEditingShape(false);
-      setPreviewSection((prevSections) =>
-        prevSections.map((section) =>
-          section.id === setting.id
-            ? {
-                ...section,
-                shape: section.shape.slice(0, -1),
-              }
-            : section
-        )
-      );
-      setActiveTab("tirai");
-    } else if (isEditing) {
-      setPreviewSection([...sectionBeforeEdit]);
-      setIsAddContent(false);
-      setIsEditing(false);
-      setActiveTab("konten");
-    } else if (isEditingShape) {
-      setPreviewSection([...sectionBeforeEdit]);
+      resetSectionContent("shape");
       setIsAddShape(false);
       setIsEditingShape(false);
       setActiveTab("tirai");
+    } else if (isEditingContent || isEditingShape) {
+      resetEditingState();
+      setActiveTab(isEditingContent ? "konten" : "tirai");
+    } else if (isEditingSection) {
+      resetEditingState();
+      setPreviewSection([...sectionBeforeEdit]);
+      isShowContent(false);
     } else {
       setIsAddContent(false);
-      setActiveTab("konten");
       isShowContent(false);
       setPreviewSection((prevSections) =>
         prevSections.filter((section) => section.id !== setting.id)
       );
+      setActiveTab("konten");
     }
   };
 
-  const handelConfirm = () => {
-    if (isAddContent || isEditing) {
+  const handleConfirm = () => {
+    if (isAddContent || isEditingContent) {
       setIsAddContent(false);
-      setIsEditing(false);
+      setIsEditingContent(false);
       setActiveTab("konten");
     } else if (isAddShape || isEditingShape) {
       setIsAddShape(false);
@@ -151,30 +169,6 @@ const ListTestimonyControl = ({
       isShowContent(false);
     }
   };
-
-  const handleAddContent = () => {
-    setIsAddContent(true);
-  };
-
-  const moveSection = useCallback(
-    (dragIndex, hoverIndex) => {
-      setPreviewSection((prevSections) => {
-        return prevSections.map((section) => {
-          if (section.name === "testimony") {
-            const updatedContent = [...section.content];
-            const draggedItem = updatedContent[dragIndex];
-            updatedContent.splice(dragIndex, 1);
-            updatedContent.splice(hoverIndex, 0, draggedItem);
-            return { ...section, content: updatedContent };
-          }
-          return section;
-        });
-      });
-
-      return () => {};
-    },
-    [setPreviewSection]
-  );
 
   const moveSectionShape = useCallback(
     (dragIndex, hoverIndex) => {
@@ -203,7 +197,7 @@ const ListTestimonyControl = ({
       id: uniqueId,
       name: "testimony",
       title: "Testimoni / Review",
-      content: contents,
+      content: initialContent,
       shape: [],
       background: {
         bgType: undefined,
@@ -265,43 +259,28 @@ const ListTestimonyControl = ({
   };
 
   useEffect(() => {
-    onAddContent();
+    if (!isEditingSection) {
+      onAddContent();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isEditingSection]);
 
   const editSection = useCallback(
     (section) => {
-      setSectionBeforeEdit([...previewSection]);
-      setSelectedSection(section);
-      setIsEditing(true);
+      setCurrentContentBeforeEdit([...previewSection]);
+      setSelectedContent(section);
+      setIsEditingContent(true);
     },
     [previewSection]
   );
 
   const editSectionShape = useCallback(
     (section) => {
-      setSectionBeforeEdit([...previewSection]);
+      setCurrentContentBeforeEdit([...previewSection]);
       setSelectedSectionShape(section);
       setIsEditingShape(true);
     },
     [previewSection]
-  );
-
-  const removeSection = useCallback(
-    (sectionId, contentIndex) => {
-      setPreviewSection((prevSections) =>
-        prevSections.map((section) => {
-          if (section.id === sectionId) {
-            return {
-              ...section,
-              content: section.content.filter((_, i) => i !== contentIndex),
-            };
-          }
-          return section;
-        })
-      );
-    },
-    [setPreviewSection]
   );
 
   const removeSectionShape = useCallback(
@@ -321,6 +300,9 @@ const ListTestimonyControl = ({
     [setPreviewSection]
   );
 
+  const removeSection = useRemoveSection(setPreviewSection);
+  const moveSection = useMoveSection(setPreviewSection);
+
   const renderSection = useCallback(
     (section) => {
       return (
@@ -331,7 +313,9 @@ const ListTestimonyControl = ({
               index={contentIndex}
               id={contentItem.id}
               showInfoText={contentItem.name}
-              moveSection={moveSection}
+              moveSection={(dragIndex, hoverIndex) =>
+                moveSection(section.name, dragIndex, hoverIndex)
+              }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
             />
@@ -365,8 +349,11 @@ const ListTestimonyControl = ({
 
   const handleUpdateSectionWrapperStyle = (key, value) => {
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === setting.id
+      arr.map((item) => {
+        const contentIdToCheck = isEditingSection
+          ? currentSection.id
+          : setting.id;
+        return String(item.id) === contentIdToCheck
           ? {
               ...item,
               wrapperStyle: {
@@ -374,8 +361,8 @@ const ListTestimonyControl = ({
                 [key]: value,
               },
             }
-          : item
-      )
+          : item;
+      })
     );
   };
 
@@ -397,7 +384,7 @@ const ListTestimonyControl = ({
             <div className="d-flex justify-content-end align-items-center border-bottom p-2">
               <div>
                 <CButton
-                  onClick={handelCancel}
+                  onClick={handleCancel}
                   color="primary"
                   variant="outline"
                   className="mx-2"
@@ -405,7 +392,7 @@ const ListTestimonyControl = ({
                   Batal
                 </CButton>
 
-                <CButton onClick={handelConfirm} color="primary">
+                <CButton onClick={handleConfirm} color="primary">
                   Selesai
                 </CButton>
               </div>
@@ -417,23 +404,28 @@ const ListTestimonyControl = ({
                   style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
-                  <AddTestimony
-                    idSection={setting.id}
-                    sections={contents}
+                  <UpdateContents
+                    idSection={
+                      isEditingSection ? currentSection.id : setting.id
+                    }
+                    currentContent={initialContent}
                     setPreviewSection={setPreviewSection}
                   />
                 </CTabContent>
               </CTabs>
-            ) : isEditing ? (
+            ) : isEditingContent ? (
               <CTabs>
                 <CTabContent
                   style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
-                  <EditTestimony
-                    idSection={setting.id}
-                    selectedSectionToEdit={selectedSection}
+                  <UpdateContents
+                    idSection={
+                      isEditingSection ? currentSection.id : setting.id
+                    }
+                    currentContent={selectedContent}
                     setPreviewSection={setPreviewSection}
+                    isEditingContent={true}
                   />
                 </CTabContent>
               </CTabs>
@@ -448,9 +440,11 @@ const ListTestimonyControl = ({
                   }}
                   className="pt-3"
                 >
-                  <AddShape
-                    idSection={setting.id}
-                    exitingShape={[]}
+                  <UpdateShapes
+                    idSection={
+                      isEditingSection ? currentSection.id : setting.id
+                    }
+                    currentShape={[]}
                     setPreviewSection={setPreviewSection}
                   />
                 </CTabContent>
@@ -465,10 +459,13 @@ const ListTestimonyControl = ({
                   }}
                   className="pt-3"
                 >
-                  <EditShape
-                    idSection={setting.id}
-                    selectedSectionToEdit={selectedSectionShape}
+                  <UpdateShapes
+                    idSection={
+                      isEditingSection ? currentSection.id : setting.id
+                    }
+                    currentShape={selectedSectionShape}
                     setPreviewSection={setPreviewSection}
+                    isEditingShape={true}
                   />
                 </CTabContent>
               </CTabs>
@@ -493,7 +490,7 @@ const ListTestimonyControl = ({
                   className="pt-3"
                 >
                   <CTabPane className="p-1" data-tab="konten">
-                    {!isAddContent && !isEditing && (
+                    {!isAddContent && !isEditingContent && (
                       <>
                         <div
                           style={{ gap: 10 }}
@@ -509,12 +506,16 @@ const ListTestimonyControl = ({
                         </div>
                         <div>
                           {previewSection
-                            .filter((section) => section.id === setting.id)
+                            .filter((section) =>
+                              isEditingSection
+                                ? section.id === currentSection.id
+                                : section.id === setting.id
+                            )
                             .map((section, i) => renderSection(section, i))}
                         </div>
                         <CCard
                           style={{ cursor: "pointer" }}
-                          onClick={handleAddContent}
+                          onClick={() => setIsAddContent(true)}
                         >
                           <CCardBody className="p-1">
                             <div className="d-flex align-items-center ">
@@ -538,9 +539,12 @@ const ListTestimonyControl = ({
                     className="p-1"
                     data-tab="desain"
                   >
-                    {Object.keys(setting).length > 0 ? (
+                    {Object.keys(isEditingSection ? currentSection : setting)
+                      .length > 0 ? (
                       <DesignTab
-                        currentSection={setting}
+                        currentSection={
+                          isEditingSection ? currentSection : setting
+                        }
                         setPreviewSection={setPreviewSection}
                         selectedColum={selectedColumnTestimony}
                         setSelectedColum={(value) =>
@@ -550,6 +554,7 @@ const ListTestimonyControl = ({
                         setPaddingTop={(value) => setPaddingTop(value)}
                         paddingBottom={paddingBottom}
                         setPaddingBottom={(value) => setPaddingBottom(value)}
+                        isEditingDesignTab={isEditingSection ? true : false}
                       />
                     ) : (
                       <div>Loading...</div>
@@ -611,7 +616,11 @@ const ListTestimonyControl = ({
                         <>
                           <div>
                             {previewSection
-                              .filter((section) => section.id === setting.id)
+                              .filter((section) =>
+                                isEditingSection
+                                  ? section.id === currentSection.id
+                                  : section.id === setting.id
+                              )
                               .map((section, i) =>
                                 renderSectionShape(section, i)
                               )}
@@ -646,9 +655,11 @@ const ListTestimonyControl = ({
                     data-tab="wadah"
                   >
                     <BackgroundTab
-                      currentSection={setting}
+                      currentSection={
+                        isEditingSection ? currentSection : setting
+                      }
                       setPreviewSection={setPreviewSection}
-                      type="add"
+                      type={isEditingSection ? "edit" : "add"}
                     />
                   </CTabPane>
                 </CTabContent>
@@ -661,4 +672,4 @@ const ListTestimonyControl = ({
   );
 };
 
-export default ListTestimonyControl;
+export default Testimony;

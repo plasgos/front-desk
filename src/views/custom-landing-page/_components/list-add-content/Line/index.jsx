@@ -52,7 +52,7 @@ const Line = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditing]);
 
-  const handelCancel = () => {
+  const handleCancel = () => {
     if (isEditing) {
       isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
@@ -67,7 +67,7 @@ const Line = ({
     }
   };
 
-  const handelConfirm = () => {
+  const handleConfirm = () => {
     if (isEditDesign) {
       setIsEditDesign(false);
     } else {
@@ -133,7 +133,7 @@ const Line = ({
       <div className="d-flex justify-content-end align-items-center border-bottom p-2">
         <div>
           <CButton
-            onClick={handelCancel}
+            onClick={handleCancel}
             color="primary"
             variant="outline"
             className="mx-2"
@@ -141,7 +141,7 @@ const Line = ({
             Batal
           </CButton>
 
-          <CButton onClick={handelConfirm} color="primary">
+          <CButton onClick={handleConfirm} color="primary">
             Selesai
           </CButton>
         </div>

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import ReactQuill from "react-quill";
 import Input from "../../common/Input";
 import SelectOptions from "../../common/SelectOptions";
 import ColorPicker from "../../common/ColorPicker";
-import "react-quill/dist/quill.snow.css";
-import "react-slideshow-image/dist/styles.css";
+import { CustomReactQuill } from "../../common/ReactQuill";
 
 const fontSizeQuoteOptions = [
   { value: "tw-text-base", label: "Normal" },
@@ -45,8 +43,7 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
     }
   }, [currentSection, isEditing]);
 
-  const handleChangeFontSize = (selectedOption) => {
-    setFontSize(selectedOption);
+  const handleChangeContent = (key, value) => {
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === String(currentSection.id)
@@ -54,92 +51,7 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
               ...item,
               content: {
                 ...item.content,
-                fontSize: selectedOption.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeQuoteTagColor = (color) => {
-    setQuoteTagColor(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === String(currentSection.id)
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                quoteTagColor: color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeWriterColor = (value) => {
-    setWriterColor(value);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === String(currentSection.id)
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                writerColor: value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeWriter = (value) => {
-    setWriter(value);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === String(currentSection.id)
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                writer: value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeQuoteText = (html) => {
-    setQuoteText(html);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === String(currentSection.id)
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                quoteText: html,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeQuoteTextColor = (color) => {
-    setQuoteTextColor(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === String(currentSection.id)
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                quoteTextColor: color,
+                [key]: value,
               },
             }
           : item
@@ -153,14 +65,20 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
         <ColorPicker
           initialColor={quoteTextColor}
           label="Quote Teks"
-          onChange={handleChangeQuoteTextColor}
+          onChange={(color) => {
+            setQuoteTextColor(color);
+            handleChangeContent("quoteTextColor", color);
+          }}
           bottom={"100px"}
         />
 
         <ColorPicker
           initialColor={quoteTagColor}
           label="Quote"
-          onChange={handleChangeQuoteTagColor}
+          onChange={(color) => {
+            setQuoteTagColor(color);
+            handleChangeContent("quoteTagColor", color);
+          }}
           bottom={"100px"}
         />
       </div>
@@ -169,7 +87,10 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
         <ColorPicker
           initialColor={writerColor}
           label="Teks Penulis"
-          onChange={handleChangeWriterColor}
+          onChange={(color) => {
+            setWriterColor(color);
+            handleChangeContent("writerColor", color);
+          }}
           bottom={"100px"}
         />
       </div>
@@ -177,7 +98,10 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
       <SelectOptions
         label="Jenis Font"
         options={fontSizeQuoteOptions}
-        onChange={handleChangeFontSize}
+        onChange={(selectedOption) => {
+          setFontSize(selectedOption);
+          handleChangeContent("fontSize", selectedOption);
+        }}
         value={fontSize}
         width="55px"
       />
@@ -185,35 +109,21 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
       <Input
         label="Penulis"
         value={writer}
-        onChange={(e) => handleChangeWriter(e.target.value)}
+        onChange={(e) => {
+          const { value } = e.target;
+          setWriter(value);
+          handleChangeContent("writer", value);
+        }}
         type="text"
       />
 
-      <ReactQuill
-        modules={{
-          toolbar: [
-            ["bold", "italic", "underline", "strike"],
-            ["link", "image"],
-            ["clean"],
-          ],
-          clipboard: {
-            // toggle to add extra line breaks when pasting HTML:
-            matchVisual: true,
-          },
-        }}
-        formats={[
-          "bold",
-          "italic",
-          "underline",
-          "strike",
-          "link",
-          "image",
-          "clean",
-        ]}
-        theme="snow"
+      <CustomReactQuill
         value={quoteText}
-        onChange={handleChangeQuoteText}
-        className="text-editor rounded"
+        onChange={(value) => {
+          setQuoteText(value);
+          handleChangeContent("quoteText", value);
+        }}
+        version="basic"
       />
     </div>
   );

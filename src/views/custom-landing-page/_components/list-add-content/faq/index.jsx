@@ -12,14 +12,16 @@ import {
   CTabs,
 } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
-import BackgroundTab from "../testimony/BackgroundTab";
+import BackgroundTab from "../../common/BackgroundTab";
 import { IoAdd } from "react-icons/io5";
 import { DraggableList } from "../../common/DraggableList";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
+import SelectVariant from "../../common/SelectVariant";
+import UpdateContent from "./UpdateContent";
 
-const contents = [
+const initialContents = [
   {
     id: "faq-1",
     title: "Kenyamanan adalah penjara kebebasan dan hambatan untuk berkembang",
@@ -42,26 +44,51 @@ const contents = [
   },
 ];
 
+const optionVariant = [
+  { group: "Plain", options: [{ value: "simple", label: "Simple" }] },
+  { group: "Kapsul", options: [{ value: "simple", label: "Simple" }] },
+  {
+    group: "Buka / Tutup",
+    options: [
+      { value: "thick", label: "Thick" },
+      { value: "clean", label: "Clean" },
+    ],
+  },
+];
+
+const flattenedOptions = optionVariant.flatMap((group) =>
+  group.options.map((option) => ({
+    ...option,
+    group: group.group,
+  }))
+);
+console.log("🚀 ~ flattenedOptions:", flattenedOptions);
+
 const FAQ = ({
   previewSection,
   setPreviewSection,
   isShowContent,
-  isEditingFaq = false,
+  isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
 }) => {
-  const [activeTab, setActiveTab] = useState("faqs");
-  const [setting, setSetting] = useState({});
   const [isAddContent, setIsAddContent] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [selectedSection, setSelectedSection] = useState({});
-  const [currentDataBeforeEdit, setCurrentDataBeforeEdit] = useState([]);
+  const [isEditingContent, setIsEditingContent] = useState(false);
+  const [isSelectVariant, setIsSelectVariant] = useState(false);
+  // const [selectedVariant, setSelectedVariant] = useState(optionVariant[2]);
+  const [selectedVariant, setSelectedVariant] = useState(
+    flattenedOptions.find((option) => option.value === "thick")
+  );
+  console.log("🚀 ~ selectedVariant:", selectedVariant);
+  const [selectedContent, setSelectedContent] = useState({});
+  const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
+  const [setting, setSetting] = useState({});
 
   const editSection = useCallback(
     (section) => {
-      setCurrentDataBeforeEdit([...previewSection]);
-      setSelectedSection(section);
-      setIsEditing(true);
+      setCurrentContentBeforeEdit([...previewSection]);
+      setSelectedContent(section);
+      setIsEditingContent(true);
     },
     [previewSection]
   );
@@ -92,29 +119,34 @@ const FAQ = ({
     [moveSection, editSection, removeSection]
   );
 
-  const handelCancel = () => {
+  const handleCancel = () => {
     if (isAddContent) {
       setIsAddContent(false);
-      setIsEditing(false);
+      setIsEditingContent(false);
       setPreviewSection((prevSections) =>
-        prevSections.map((section) =>
-          section.id === setting.id
+        prevSections.map((section) => {
+          const contentIdToCheck = isEditingSection
+            ? currentSection.id
+            : setting.id;
+
+          return section.id === contentIdToCheck
             ? {
                 ...section,
                 content: section.content.slice(0, -1),
               }
-            : section
-        )
+            : section;
+        })
       );
-      setActiveTab("faqs");
-    } else if (isEditing) {
-      setPreviewSection([...currentDataBeforeEdit]);
+    } else if (isEditingContent) {
+      setPreviewSection([...currentContentBeforeEdit]);
       setIsAddContent(false);
-      setIsEditing(false);
-      setActiveTab("faqs");
+      setIsEditingContent(false);
+    } else if (isEditingSection) {
+      setIsAddContent(false);
+      isShowContent(false);
+      setPreviewSection([...sectionBeforeEdit]);
     } else {
       setIsAddContent(false);
-      setActiveTab("faqs");
       isShowContent(false);
       setPreviewSection((prevSections) =>
         prevSections.filter((section) => section.id !== setting.id)
@@ -122,11 +154,10 @@ const FAQ = ({
     }
   };
 
-  const handelConfirm = () => {
-    if (isAddContent || isEditing) {
+  const handleConfirm = () => {
+    if (isAddContent || isEditingContent) {
       setIsAddContent(false);
-      setIsEditing(false);
-      setActiveTab("faqs");
+      setIsEditingContent(false);
     } else {
       isShowContent(false);
     }
@@ -138,7 +169,7 @@ const FAQ = ({
       id: uniqueId,
       name: "faq",
       title: "FAQ Buka/Tutup",
-      content: contents,
+      content: initialContents,
       background: {
         bgType: undefined,
         bgColor: "",
@@ -150,6 +181,26 @@ const FAQ = ({
         paddingBottom: 0,
         paddingType: "equal",
       },
+      variant: {
+        group: "Buka / Tutup",
+        name: "thick",
+        style: {
+          colorTitle: "#424242",
+          colorContent: "#424242",
+          bgColor: "#F5F5F5",
+          borderColor: "#757575",
+          dividerColor: "#9E9E9E",
+          iconColor: "#424242",
+          bgContent: "#F5F5F5",
+          shadow: "tw-shadow",
+          fontSize: 18,
+          distance: 18,
+          borderWidth: 2,
+          icon: "plus",
+          iconPosition: "left",
+          iconSize: 18,
+        },
+      },
     };
 
     setPreviewSection((prevSections) => [...prevSections, payload]);
@@ -157,11 +208,20 @@ const FAQ = ({
   };
 
   useEffect(() => {
-    if (!isEditing) {
+    if (!isEditingSection) {
       handleAddContent();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEditing]);
+  }, [isEditingSection]);
+
+  const handleVariantChange = (selectedVariant) => {
+    console.log(
+      "🚀 ~ handleselectedVariantChange ~ selectedVariant:",
+      selectedVariant
+    );
+    setSelectedVariant(selectedVariant);
+    // Lakukan sesuatu ketika varian berubah
+  };
 
   return (
     <div>
@@ -171,7 +231,7 @@ const FAQ = ({
             <div className="d-flex justify-content-end align-items-center border-bottom p-2">
               <div>
                 <CButton
-                  onClick={handelCancel}
+                  onClick={handleCancel}
                   color="primary"
                   variant="outline"
                   className="mx-2"
@@ -179,7 +239,7 @@ const FAQ = ({
                   Batal
                 </CButton>
 
-                <CButton onClick={handelConfirm} color="primary">
+                <CButton onClick={handleConfirm} color="primary">
                   Selesai
                 </CButton>
               </div>
@@ -191,20 +251,39 @@ const FAQ = ({
                   style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
-                  <div>ADD</div>
+                  <UpdateContent
+                    idSection={
+                      isEditingSection ? currentSection.id : setting.id
+                    }
+                    currentContent={initialContents}
+                    setPreviewSection={setPreviewSection}
+                  />
                 </CTabContent>
               </CTabs>
-            ) : isEditing ? (
+            ) : isEditingContent ? (
               <CTabs>
                 <CTabContent
                   style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
-                  <div>EDIT</div>
+                  <UpdateContent
+                    idSection={
+                      isEditingSection ? currentSection.id : setting.id
+                    }
+                    currentContent={selectedContent}
+                    setPreviewSection={setPreviewSection}
+                    isEditingContent={true}
+                  />
                 </CTabContent>
               </CTabs>
+            ) : isSelectVariant ? (
+              <SelectVariant
+                optionVariant={optionVariant}
+                selectedVariant={selectedVariant}
+                onChangeVariant={handleVariantChange}
+              />
             ) : (
-              <CTabs activeTab={activeTab}>
+              <CTabs activeTab="faqs">
                 <CNav variant="tabs">
                   <CNavItem>
                     <CNavLink data-tab="faqs">Konten</CNavLink>
@@ -213,7 +292,7 @@ const FAQ = ({
                     <CNavLink data-tab="desain">Desain</CNavLink>
                   </CNavItem>
                   <CNavItem>
-                    <CNavLink data-tab="wadah">Wadah</CNavLink>
+                    <CNavLink data-tab="background">Background</CNavLink>
                   </CNavItem>
                 </CNav>
                 <CTabContent
@@ -221,15 +300,34 @@ const FAQ = ({
                   className="pt-3"
                 >
                   <CTabPane className="p-1" data-tab="faqs">
-                    {!isAddContent && !isEditing && (
+                    {!isAddContent && !isEditingContent && (
                       <>
                         <div
-                          style={{ gap: 10 }}
-                          className="d-flex align-items-center "
-                        ></div>
+                          style={{
+                            boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
+                          }}
+                          className="mb-3 border-bottom pb-3"
+                        >
+                          <div style={{ fontSize: 12 }} className="mb-2">
+                            Desain
+                          </div>
+                          <div className="d-flex align-items-center">
+                            <div className="mr-3">{selectedVariant.group}</div>
+                            <CButton
+                              onClick={() => setIsSelectVariant(true)}
+                              color="primary"
+                            >
+                              Ubah
+                            </CButton>
+                          </div>
+                        </div>
                         <div>
                           {previewSection
-                            .filter((section) => section.id === setting.id)
+                            .filter((section) =>
+                              isEditingSection
+                                ? section.id === currentSection.id
+                                : section.id === setting.id
+                            )
                             .map((section, i) => renderSection(section, i))}
                         </div>
                         <CCard
@@ -279,12 +377,12 @@ const FAQ = ({
                   <CTabPane
                     style={{ overflowX: "hidden", height: "100%" }}
                     className="p-1"
-                    data-tab="wadah"
+                    data-tab="background"
                   >
                     <BackgroundTab
                       currentSection={setting}
                       setPreviewSection={setPreviewSection}
-                      type={isEditing ? "edit" : "add"}
+                      type={isEditingSection ? "edit" : "add"}
                     />
                   </CTabPane>
                 </CTabContent>

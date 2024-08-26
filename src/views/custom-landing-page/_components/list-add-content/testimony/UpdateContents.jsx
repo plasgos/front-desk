@@ -1,60 +1,46 @@
 import { CButton, CCard } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import "react-slideshow-image/dist/styles.css";
-import image from "../../../../../assets/profile.jpg";
+import defaultImage from "../../../../../assets/profile.jpg";
 import Input from "../../common/Input";
 import { createUniqueID } from "../../../../../lib/unique-id";
+import { CustomReactQuill } from "../../common/ReactQuill";
 
-const AddTestimony = ({ idSection, sections, setPreviewSection }) => {
-  const [imageUrl, setImageUrl] = useState(image);
-
-  const [content, setContent] = useState(
-    "Super bagus sekali barangnya. Paling mantab!"
+export const UpdateContents = ({
+  idSection,
+  currentContent,
+  setPreviewSection,
+  isEditingContent,
+}) => {
+  const [imageUrl, setImageUrl] = useState(
+    currentContent?.image || defaultImage
   );
 
-  const [name, setName] = useState("John Doe");
+  const [content, setContent] = useState(
+    currentContent?.content || "Super bagus sekali barangnya. Paling mantab!"
+  );
+
+  const [name, setName] = useState(currentContent?.name || "John Doe");
 
   const [setting, setSetting] = useState({});
 
-  const handleChangeName = (value) => {
-    setName(value);
-
+  const handleChangeContent = (key, value) => {
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === idSection
           ? {
               ...item,
-              content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
-                  ? {
-                      ...contentItem,
-                      name: value,
-                    }
-                  : contentItem
-              ),
-            }
-          : item
-      )
-    );
-  };
+              content: item.content.map((contentItem) => {
+                const contentIdToCheck = isEditingContent
+                  ? currentContent.id
+                  : setting.id;
 
-  const handleContentChange = (value) => {
-    setContent(value);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === idSection
-          ? {
-              ...item,
-              content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+                return String(contentItem.id) === String(contentIdToCheck)
                   ? {
                       ...contentItem,
-                      content: value,
+                      [key]: value,
                     }
-                  : contentItem
-              ),
+                  : contentItem;
+              }),
             }
           : item
       )
@@ -68,15 +54,18 @@ const AddTestimony = ({ idSection, sections, setPreviewSection }) => {
         String(item.id) === idSection
           ? {
               ...item,
-              content: item.content.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+              content: item.content.map((contentItem) => {
+                const contentIdToCheck = isEditingContent
+                  ? currentContent.id
+                  : setting.id;
+                return String(contentItem.id) === String(contentIdToCheck)
                   ? {
                       ...contentItem,
 
                       image: imageUrl,
                     }
-                  : contentItem
-              ),
+                  : contentItem;
+              }),
             }
           : item
       )
@@ -103,7 +92,7 @@ const AddTestimony = ({ idSection, sections, setPreviewSection }) => {
   };
 
   const handleAddContent = () => {
-    let uniqueId = createUniqueID(sections);
+    let uniqueId = createUniqueID(currentContent);
     let payload = {
       id: uniqueId,
       name,
@@ -123,9 +112,11 @@ const AddTestimony = ({ idSection, sections, setPreviewSection }) => {
   };
 
   useEffect(() => {
-    handleAddContent();
+    if (!isEditingContent) {
+      handleAddContent();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isEditingContent]);
 
   return (
     <CCard
@@ -139,7 +130,11 @@ const AddTestimony = ({ idSection, sections, setPreviewSection }) => {
           label="Nama"
           type="text"
           value={name}
-          onChange={(event) => handleChangeName(event.target.value)}
+          onChange={(e) => {
+            const { value } = e.target;
+            setName(value);
+            handleChangeContent("name", value);
+          }}
         />
 
         <div className="mb-2">
@@ -153,7 +148,7 @@ const AddTestimony = ({ idSection, sections, setPreviewSection }) => {
           >
             <img
               style={{ objectFit: "contain", width: "100%", height: 100 }}
-              src={imageUrl || image}
+              src={imageUrl || defaultImage}
               alt="img"
             />
           </div>
@@ -168,39 +163,15 @@ const AddTestimony = ({ idSection, sections, setPreviewSection }) => {
           </CButton>
         </div>
 
-        <ReactQuill
-          modules={{
-            toolbar: [
-              ["bold", "italic", "underline", "strike"],
-              [{ color: [] }, { background: [] }],
-              ["image"],
-              ["link"],
-              ["clean"],
-            ],
-            clipboard: {
-              // toggle to add extra line breaks when pasting HTML:
-              matchVisual: true,
-            },
-          }}
-          formats={[
-            "bold",
-            "italic",
-            "underline",
-            "strike",
-            "color",
-            "background",
-            "image",
-            "link",
-            "clean",
-          ]}
-          theme="snow"
+        <CustomReactQuill
           value={content}
-          onChange={handleContentChange}
-          className="text-editor rounded"
+          onChange={(value) => {
+            setContent(value);
+            handleChangeContent("content", value);
+          }}
+          version="basic"
         />
       </div>
     </CCard>
   );
 };
-
-export default AddTestimony;

@@ -33,10 +33,9 @@ import {
 } from "../../redux/modules/custom-landing-page/reducer";
 import ModalConfirmation from "./_components/ModalConfirmation";
 import ViewTestimony from "./_components/view-content/ViewTestimony/index";
-import EditListTestimony from "./_components/list-edit-content/EditListTestimony/index";
-import Line from "./_components/list-add-content/Line/index";
+import Line from "./_components/list-add-content/line/index";
 import ViewLine from "./_components/view-content/ViewLine";
-import ListFeature from "./_components/list-add-content/ListFeature";
+import ListFeature from "./_components/list-add-content/list-feature";
 import ViewListFeature from "./_components/view-content/ViewListFeature";
 import ViewButtonUpdate from "./_components/view-content/ViewButtonUpdate";
 import DesignTabControl from "./_components/DesignTabControl";
@@ -49,6 +48,7 @@ import Text from "./_components/list-add-content/text/index";
 import ScrollTarget from "./_components/list-add-content/scroll-target";
 import EmptySpace from "./_components/list-add-content/empty-space";
 import Buttons from "./_components/list-add-content/button";
+import Testimony from "./_components/list-add-content/testimony";
 
 const landingPage = {
   detail: {
@@ -82,6 +82,7 @@ const CustomLandingPage = () => {
     previewRefs.current[index] = el;
   };
   const containerRef = useRef(null);
+  console.log("🚀 ~ CustomLandingPage ~ containerRef:", containerRef);
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
   console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection[0]);
@@ -392,12 +393,13 @@ const CustomLandingPage = () => {
         editing.id === section.id
       ) {
         return (
-          <EditListTestimony
+          <Testimony
             currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }
@@ -431,7 +433,7 @@ const CustomLandingPage = () => {
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
-            isEditing={true}
+            isEditingSection={true}
           />
         );
       }
@@ -558,14 +560,9 @@ const CustomLandingPage = () => {
     [previewSection]
   );
 
-  const { landingPageSection } = useSelector(
-    (state) => state.customLandingPage
-  );
-
-  console.log(
-    "🚀 ~ CustomLandingPage ~ landingPageSection:",
-    landingPageSection
-  );
+  // const { landingPageSection } = useSelector(
+  //   (state) => state.customLandingPage
+  // );
 
   const removeSection = useCallback(
     (index, id) => {

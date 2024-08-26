@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ColorPicker from "../../common/ColorPicker";
 import SelectOptions from "../../common/SelectOptions";
 import {
@@ -52,6 +52,7 @@ const DesignTab = ({
   setPaddingTop,
   paddingBottom,
   setPaddingBottom,
+  isEditingDesignTab,
 }) => {
   const [selectedBackgroundColor, setSelectedBackgroundColor] = useState(
     currentSection?.cardStyle?.bgColor || ""
@@ -69,24 +70,41 @@ const DesignTab = ({
   const [selectedLayout, setSelectedLayout] = useState(layoutOptions[0]);
   const [selectedShadow, setSelectedShadow] = useState(shadowOptions[1]);
 
-  const [distance, setDistance] = useState(8);
-  const [borderRadius, setBorderRadius] = useState(12);
-  const [borderWidth, setBorderWidth] = useState(2);
-  // const [paddingTop, setPaddingTop] = useState(0);
-  // const [paddingBottom, setPaddingBottom] = useState(0);
+  const [distance, setDistance] = useState(
+    currentSection?.wrapperStyle?.paddingX || 8
+  );
+  const [borderRadius, setBorderRadius] = useState(
+    currentSection?.wrapperStyle?.borderRadius || 12
+  );
+  const [borderWidth, setBorderWidth] = useState(
+    currentSection?.wrapperStyle?.borderWidth || 2
+  );
 
   // Profile Style
-  const [fontSizeName, setfontSizeName] = useState(18);
-  const [selectedColorName, setSetselectedColorName] = useState("#000000");
-  const [selectedColorBorderpict, setSetselectedBorderpict] =
-    useState("#BDBDBD");
-  const [distanceName, setSetdistanceName] = useState(8);
+  const [fontSizeName, setFontSizeName] = useState(
+    currentSection?.profileStyle?.fontSizeName || 18
+  );
+  const [selectedColorName, setSelectedColorName] = useState(
+    currentSection?.profileStyle?.colorName || "#000000"
+  );
+  const [selectedColorBorderpict, setSelectedColorBorderpict] = useState(
+    currentSection?.profileStyle?.borderPictColor || "#BDBDBD"
+  );
+  const [distanceName, setDistanceName] = useState(
+    currentSection?.profileStyle?.distanceName || 8
+  );
   const [selectedShadowPict, setSelectedShadowPict] = useState(
     shadowOptions[1]
   );
-  const [imageSize, seImageSize] = useState(40);
-  const [borderRadiusImage, setBorderRadiusImage] = useState(70);
-  const [borderWidthImage, setBorderWidthImage] = useState(1);
+  const [imageSize, setImageSize] = useState(
+    currentSection?.profileStyle?.imageSize || 40
+  );
+  const [borderRadiusImage, setBorderRadiusImage] = useState(
+    currentSection?.profileStyle?.borderRadiusImage || 70
+  );
+  const [borderWidthImage, setBorderWidthImage] = useState(
+    currentSection?.profileStyle?.borderWidthImage || 1
+  );
   const [selectedFontStyle, setSelectedFontStyle] = useState(
     fontStyleOptions[4]
   );
@@ -98,14 +116,100 @@ const DesignTab = ({
   const [selectedFontSizeContent, setSelectedFontSizeContent] = useState(
     fontSizeOptions[1]
   );
-  const [distanceContent, setdistanceContent] = useState(16);
+  const [distanceContent, setDistanceContent] = useState(
+    currentSection?.contentStyle?.distanceContent || 16
+  );
 
   // Star Style
   const [amountStar, setAmountStar] = useState(starAmountOptions[4]);
   const [positionStar, setPositionStar] = useState(starPositionOptions[1]);
-  const [sizeStar, setSizeStar] = useState(18);
-  const [marginXStar, setMarginXStar] = useState(4);
-  const [marginStar, setMarginStar] = useState(6);
+  const [sizeStar, setSizeStar] = useState(
+    currentSection?.starStyle?.size || 18
+  );
+  const [marginXStar, setMarginXStar] = useState(
+    currentSection?.starStyle?.marginX || 4
+  );
+  const [marginStar, setMarginStar] = useState(
+    currentSection?.starStyle?.margin || 6
+  );
+
+  useEffect(() => {
+    if (isEditingDesignTab) {
+      const alignOption = alignOptions.find(
+        (opt) => opt.value === currentSection.wrapperStyle?.jusctifyContent
+      );
+      if (alignOption) {
+        setSelectedAlign(alignOption);
+      }
+
+      const layoutOption = layoutOptions.find(
+        (opt) => opt.value === currentSection.wrapperStyle?.layout
+      );
+      if (layoutOption) {
+        setSelectedLayout(layoutOption);
+      }
+
+      const shadowOption = shadowOptions.find(
+        (opt) => opt.value === currentSection.cardStyle?.shadowCard
+      );
+      if (shadowOption) {
+        setSelectedShadow(shadowOption);
+      }
+
+      const shadowPictOption = shadowOptions.find(
+        (opt) => opt.value === currentSection.profileStyle?.shadowImageName
+      );
+      if (shadowPictOption) {
+        setSelectedShadowPict(shadowPictOption);
+      }
+
+      const fontStyleOption = fontStyleOptions.find(
+        (opt) => opt.value === currentSection.profileStyle?.fontStyle
+      );
+      if (fontStyleOption) {
+        setSelectedFontStyle(fontStyleOption);
+      }
+
+      const textAlignOption = textAlignOptions.find(
+        (opt) => opt.value === currentSection.contentStyle?.textAlign
+      );
+      if (textAlignOption) {
+        setSelectedTextAlignContent(textAlignOption);
+      }
+
+      const fontSizeContentOption = fontSizeOptions.find(
+        (opt) => opt.value === currentSection.contentStyle?.fontSize
+      );
+      if (fontSizeContentOption) {
+        setSelectedFontSizeContent(fontSizeContentOption);
+      }
+
+      const amountStarOption = starAmountOptions.find(
+        (opt) => opt.value === currentSection.starStyle?.amount
+      );
+      if (amountStarOption) {
+        setAmountStar(amountStarOption);
+      }
+
+      const positionStarOption = starPositionOptions.find(
+        (opt) => opt.value === currentSection.starStyle?.position
+      );
+      if (positionStarOption) {
+        setPositionStar(positionStarOption);
+      }
+    }
+  }, [
+    currentSection.cardStyle.shadowCard,
+    currentSection.contentStyle.fontSize,
+    currentSection.contentStyle.textAlign,
+    currentSection.profileStyle.fontStyle,
+    currentSection.profileStyle.shadowImageName,
+    currentSection.starStyle.amount,
+    currentSection.starStyle.position,
+    currentSection.wrapperStyle.jusctifyContent,
+    currentSection.wrapperStyle.layout,
+    isEditingDesignTab,
+  ]);
 
   const handleUpdateSectionStarStyle = (key, value) => {
     setPreviewSection((arr) =>
@@ -171,14 +275,30 @@ const DesignTab = ({
     );
   };
 
+  const handleUpdateSectionCardStyle = (key, value) => {
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === currentSection.id
+          ? {
+              ...item,
+              cardStyle: {
+                ...item.cardStyle,
+                [key]: value,
+              },
+            }
+          : item
+      )
+    );
+  };
+
   const handleSetValueWhenBlurProfileStyle = (value, min, max, key) => {
     const newValue = Math.min(Math.max(value, min), max);
     if (key === "fontSizeName") {
-      setfontSizeName(newValue);
+      setFontSizeName(newValue);
     } else if (key === "distanceName") {
-      setSetdistanceName(newValue);
+      setDistanceName(newValue);
     } else if (key === "imageSize") {
-      seImageSize(newValue);
+      setImageSize(newValue);
     } else if (key === "borderRadiusImage") {
       setBorderRadiusImage(newValue);
     } else if (key === "borderWidthImage") {
@@ -190,7 +310,7 @@ const DesignTab = ({
   const handleSetValueWhenBlurContentStyle = (value, min, max, key) => {
     const newValue = Math.min(Math.max(value, min), max);
     if (key === "distanceContent") {
-      setdistanceContent(newValue);
+      setDistanceContent(newValue);
     }
     handleUpdateSectionContentStyle(key, newValue);
   };
@@ -223,275 +343,26 @@ const DesignTab = ({
     handleUpdateSectionWrapperStyle(key, newValue);
   };
 
-  const handleChangeBackgroundColor = (color) => {
-    setSelectedBackgroundColor(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              cardStyle: {
-                ...item.cardStyle,
-                bgColor: color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeBorderCardColor = (color) => {
-    setSelectedBorderCardColor(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              cardStyle: {
-                ...item.cardStyle,
-                borderColor: color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeStarColor = (color) => {
-    setSelectedStarColor(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              cardStyle: {
-                ...item.cardStyle,
-                starColor: color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeAlign = (selectedOptionValue) => {
-    setSelectedAlign(selectedOptionValue);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              wrapperStyle: {
-                ...item.wrapperStyle,
-                jusctifyContent: selectedOptionValue.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeLayout = (selectedOptionValue) => {
-    setSelectedLayout(selectedOptionValue);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              wrapperStyle: {
-                ...item.wrapperStyle,
-                layout: selectedOptionValue.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeColumn = (selectedOptionValue) => {
-    setSelectedColum(selectedOptionValue);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              wrapperStyle: {
-                ...item.wrapperStyle,
-                column: selectedOptionValue.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeShadow = (selectedOptionValue) => {
-    setSelectedShadow(selectedOptionValue);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              cardStyle: {
-                ...item.cardStyle,
-                shadowCard: selectedOptionValue.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeColorName = (color) => {
-    setSetselectedColorName(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              profileStyle: {
-                ...item.profileStyle,
-                colorName: color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeFontStyle = (selectedOptionValue) => {
-    setSelectedFontStyle(selectedOptionValue);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              profileStyle: {
-                ...item.profileStyle,
-                fontStyle: selectedOptionValue.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeColorBorderPictColor = (color) => {
-    setSetselectedBorderpict(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              profileStyle: {
-                ...item.profileStyle,
-                borderPictColor: color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeShadowPict = (selectedOptionValue) => {
-    setSelectedShadowPict(selectedOptionValue);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              profileStyle: {
-                ...item.profileStyle,
-                shadowImageName: selectedOptionValue.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeTextAlignContent = (selectedOptionValue) => {
-    setSelectedTextAlignContent(selectedOptionValue);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              contentStyle: {
-                ...item.contentStyle,
-                textAlign: selectedOptionValue.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeFontSizeContent = (selectedOptionValue) => {
-    setSelectedFontSizeContent(selectedOptionValue);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              contentStyle: {
-                ...item.contentStyle,
-                fontSize: selectedOptionValue.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeAmountStar = (selectedOptionValue) => {
-    setAmountStar(selectedOptionValue);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              starStyle: {
-                ...item.starStyle,
-                amount: selectedOptionValue.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangePositiontStar = (selectedOptionValue) => {
-    setPositionStar(selectedOptionValue);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              starStyle: {
-                ...item.starStyle,
-                position: selectedOptionValue.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
   return (
     <div>
       <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
         <ColorPicker
           initialColor={selectedBackgroundColor}
           label="Background"
-          onChange={handleChangeBackgroundColor}
+          onChange={(color) => {
+            setSelectedBackgroundColor(color);
+            handleUpdateSectionCardStyle("bgColor", color);
+          }}
           bottom={"10px"}
         />
 
         <ColorPicker
           initialColor={selectedBorderCardColor}
           label="Garis Luar"
-          onChange={handleChangeBorderCardColor}
+          onChange={(color) => {
+            setSelectedBorderCardColor(color);
+            handleUpdateSectionCardStyle("borderColor", color);
+          }}
           bottom={"10px"}
         />
       </div>
@@ -499,7 +370,10 @@ const DesignTab = ({
         <ColorPicker
           initialColor={selectedStarColor}
           label="Bintang"
-          onChange={handleChangeStarColor}
+          onChange={(color) => {
+            setSelectedStarColor(color);
+            handleUpdateSectionCardStyle("starColor", color);
+          }}
           bottom={"-40px"}
         />
       </div>
@@ -507,7 +381,13 @@ const DesignTab = ({
         <SelectOptions
           label="Align"
           options={alignOptions}
-          onChange={handleChangeAlign}
+          onChange={(selectedOption) => {
+            setSelectedAlign(selectedOption);
+            handleUpdateSectionWrapperStyle(
+              "jusctifyContent",
+              selectedOption.value
+            );
+          }}
           value={selectedAlign}
           width="50"
         />
@@ -515,7 +395,10 @@ const DesignTab = ({
         <SelectOptions
           label="Layout"
           options={layoutOptions}
-          onChange={handleChangeLayout}
+          onChange={(selectedOption) => {
+            setSelectedLayout(selectedOption);
+            handleUpdateSectionWrapperStyle("layout", selectedOption.value);
+          }}
           value={selectedLayout}
           width="50"
         />
@@ -524,7 +407,10 @@ const DesignTab = ({
         <SelectOptions
           label="Kolom"
           options={columnTestimonyOptions}
-          onChange={handleChangeColumn}
+          onChange={(selectedOption) => {
+            setSelectedColum(selectedOption);
+            handleUpdateSectionWrapperStyle("column", selectedOption.value);
+          }}
           value={selectedColum}
           width="50"
         />
@@ -532,7 +418,10 @@ const DesignTab = ({
         <SelectOptions
           label="Bayangan"
           options={shadowOptions}
-          onChange={handleChangeShadow}
+          onChange={(selectedOption) => {
+            setSelectedShadow(selectedOption);
+            handleUpdateSectionCardStyle("shadowCard", selectedOption.value);
+          }}
           value={selectedShadow}
           width="50"
         />
@@ -617,7 +506,10 @@ const DesignTab = ({
         <ColorPicker
           initialColor={selectedColorName}
           label="Nama"
-          onChange={handleChangeColorName}
+          onChange={(color) => {
+            setSelectedColorName(color);
+            handleUpdateSectionProfileStyle("colorName", color);
+          }}
           bottom={"-30px"}
           right={"130px"}
         />
@@ -626,7 +518,10 @@ const DesignTab = ({
       <SelectOptions
         label="Font Style"
         options={fontStyleOptions}
-        onChange={handleChangeFontStyle}
+        onChange={(selectedOption) => {
+          setSelectedFontStyle(selectedOption);
+          handleUpdateSectionProfileStyle("fontStyle", selectedOption.value);
+        }}
         value={selectedFontStyle}
         width="50"
       />
@@ -635,7 +530,7 @@ const DesignTab = ({
         label="Ukuran Nama"
         value={fontSizeName}
         onChange={(newValue) => {
-          setfontSizeName(newValue);
+          setFontSizeName(newValue);
           handleUpdateSectionProfileStyle("fontSizeName", newValue);
         }}
         min={11}
@@ -653,7 +548,7 @@ const DesignTab = ({
         label="Jarak"
         value={distanceName}
         onChange={(newValue) => {
-          setSetdistanceName(newValue);
+          setDistanceName(newValue);
           handleUpdateSectionProfileStyle("distanceName", newValue);
         }}
         min={0}
@@ -672,7 +567,10 @@ const DesignTab = ({
         <ColorPicker
           initialColor={selectedColorBorderpict}
           label="Garis Luar"
-          onChange={handleChangeColorBorderPictColor}
+          onChange={(color) => {
+            setSelectedColorBorderpict(color);
+            handleUpdateSectionProfileStyle("borderPictColor", color);
+          }}
           bottom={"-30px"}
           right={"130px"}
         />
@@ -680,7 +578,13 @@ const DesignTab = ({
       <SelectOptions
         label="Bayangan"
         options={shadowOptions}
-        onChange={handleChangeShadowPict}
+        onChange={(selectedOption) => {
+          setSelectedShadowPict(selectedOption);
+          handleUpdateSectionProfileStyle(
+            "shadowImageName",
+            selectedOption.value
+          );
+        }}
         value={selectedShadowPict}
         width="50"
       />
@@ -688,7 +592,7 @@ const DesignTab = ({
         label="Ukuran Gambar"
         value={imageSize}
         onChange={(newValue) => {
-          seImageSize(newValue);
+          setImageSize(newValue);
           handleUpdateSectionProfileStyle("imageSize", newValue);
         }}
         min={40}
@@ -740,7 +644,10 @@ const DesignTab = ({
         <SelectOptions
           label="Align"
           options={textAlignOptions}
-          onChange={handleChangeTextAlignContent}
+          onChange={(selectedOption) => {
+            setSelectedTextAlignContent(selectedOption);
+            handleUpdateSectionContentStyle("textAlign", selectedOption.value);
+          }}
           value={selectedTextAlignContent}
           width="50"
         />
@@ -748,7 +655,10 @@ const DesignTab = ({
         <SelectOptions
           label="Ukuran Font"
           options={fontSizeOptions}
-          onChange={handleChangeFontSizeContent}
+          onChange={(selectedOption) => {
+            setSelectedFontSizeContent(selectedOption);
+            handleUpdateSectionContentStyle("fontSize", selectedOption.value);
+          }}
           value={selectedFontSizeContent}
           width="50"
         />
@@ -758,7 +668,7 @@ const DesignTab = ({
         label="Jarak"
         value={distanceContent}
         onChange={(newValue) => {
-          setdistanceContent(newValue);
+          setDistanceContent(newValue);
           handleUpdateSectionContentStyle("distanceContent", newValue);
         }}
         min={0}
@@ -783,7 +693,10 @@ const DesignTab = ({
         <ColorPicker
           initialColor={selectedStarColor}
           label=""
-          onChange={handleChangeStarColor}
+          onChange={(color) => {
+            setSelectedStarColor(color);
+            handleUpdateSectionCardStyle("starColor", color);
+          }}
           bottom={"10px"}
           left={"70px"}
         />
@@ -793,7 +706,10 @@ const DesignTab = ({
         <SelectOptions
           label="Jumlah"
           options={starAmountOptions}
-          onChange={handleChangeAmountStar}
+          onChange={(selectedOption) => {
+            setAmountStar(selectedOption);
+            handleUpdateSectionStarStyle("amount", selectedOption.value);
+          }}
           value={amountStar}
           width="50"
         />
@@ -801,7 +717,10 @@ const DesignTab = ({
         <SelectOptions
           label="Lokasi"
           options={starPositionOptions}
-          onChange={handleChangePositiontStar}
+          onChange={(selectedOption) => {
+            setPositionStar(selectedOption);
+            handleUpdateSectionStarStyle("position", selectedOption.value);
+          }}
           value={positionStar}
           width="50"
         />

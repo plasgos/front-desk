@@ -38,6 +38,7 @@ const ResizableView = forwardRef(
             maxWidth: pageSetting.maxWidth, //
             height: "100%",
             margin: "auto",
+            overflowY: "auto",
           }}
         >
           {children}

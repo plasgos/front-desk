@@ -42,7 +42,7 @@ const EmptySpace = ({
     handleUpdateHeight(key, newValue);
   };
 
-  const handelCancel = () => {
+  const handleCancel = () => {
     if (isEditingSection) {
       isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
@@ -54,7 +54,7 @@ const EmptySpace = ({
     }
   };
 
-  const handelConfirm = () => {
+  const handleConfirm = () => {
     handleSetHeightWhenBlur();
     isShowContent(false);
   };
@@ -86,7 +86,7 @@ const EmptySpace = ({
       <div className="d-flex justify-content-end align-items-center border-bottom p-2 mb-3">
         <div>
           <CButton
-            onClick={handelCancel}
+            onClick={handleCancel}
             color="primary"
             variant="outline"
             className="mx-2"
@@ -94,7 +94,7 @@ const EmptySpace = ({
             Batal
           </CButton>
 
-          <CButton onClick={handelConfirm} color="primary">
+          <CButton onClick={handleConfirm} color="primary">
             Selesai
           </CButton>
         </div>

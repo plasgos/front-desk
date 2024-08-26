@@ -23,78 +23,6 @@ const StripeLineControl = ({ setPreviewSection, currentSection }) => {
     currentSection?.content?.color2 || "#2196F3"
   );
 
-  const handleChangeColor1 = (color) => {
-    setColor1(color);
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                color1: color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeColor2 = (color) => {
-    setColor2(color);
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                color2: color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeFlip = (value) => {
-    setIsFlip(value);
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                isFlip: value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeFloating = (value) => {
-    setIsFloating(value);
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                isFloating: value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
   const handleUpdateValue = (key, value) => {
     setPreviewSection((arr) =>
       arr.map((item) =>
@@ -131,7 +59,10 @@ const StripeLineControl = ({ setPreviewSection, currentSection }) => {
         <ColorPicker
           initialColor={color1}
           label="Garis"
-          onChange={handleChangeColor1}
+          onChange={(color) => {
+            setColor1(color);
+            handleUpdateValue("color1", color);
+          }}
           bottom={"80px"}
           type="rgba"
         />
@@ -139,7 +70,10 @@ const StripeLineControl = ({ setPreviewSection, currentSection }) => {
         <ColorPicker
           initialColor={color2}
           label="Garis B"
-          onChange={handleChangeColor2}
+          onChange={(color) => {
+            setColor2(color);
+            handleUpdateValue("color2", color);
+          }}
           bottom={"80px"}
           type="rgba"
         />
@@ -198,14 +132,22 @@ const StripeLineControl = ({ setPreviewSection, currentSection }) => {
           label="Terbalik"
           id="isFlip"
           checked={isFlip}
-          onChange={(e) => handleChangeFlip(e.target.checked)}
+          onChange={(e) => {
+            const { checked } = e.target;
+            setIsFlip(checked);
+            handleUpdateValue("isFlip", checked);
+          }}
         />
 
         <Checkbox
           label="Floating"
           id="isFloating"
           checked={isFloating}
-          onChange={(e) => handleChangeFloating(e.target.checked)}
+          onChange={(e) => {
+            const { checked } = e.target;
+            setIsFloating(checked);
+            handleUpdateValue("isFloating", checked);
+          }}
         />
       </div>
     </div>

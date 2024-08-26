@@ -29,7 +29,7 @@ const Quote = ({
 }) => {
   const [setting, setSetting] = useState({});
 
-  const handelCancel = () => {
+  const handleCancel = () => {
     if (isEditing) {
       isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
@@ -41,7 +41,7 @@ const Quote = ({
     }
   };
 
-  const handelConfirm = () => {
+  const handleConfirm = () => {
     isShowContent(false);
   };
 
@@ -89,7 +89,7 @@ const Quote = ({
       <div className="d-flex justify-content-end align-items-center border-bottom p-2">
         <div>
           <CButton
-            onClick={handelCancel}
+            onClick={handleCancel}
             color="primary"
             variant="outline"
             className="mx-2"
@@ -97,7 +97,7 @@ const Quote = ({
             Batal
           </CButton>
 
-          <CButton onClick={handelConfirm} color="primary">
+          <CButton onClick={handleConfirm} color="primary">
             Selesai
           </CButton>
         </div>

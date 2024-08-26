@@ -20,7 +20,7 @@ const ListFeature = ({
   previewSection,
   setPreviewSection,
   isShowContent,
-  isEditing = false,
+  isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
 }) => {
@@ -78,17 +78,17 @@ const ListFeature = ({
   };
 
   useEffect(() => {
-    if (!isEditing) {
+    if (!isEditingSection) {
       handleAddContent();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEditing]);
+  }, [isEditingSection]);
 
-  const handelCancel = () => {
-    if (isEditing && !listIconVisible) {
+  const handleCancel = () => {
+    if (isEditingSection && !listIconVisible) {
       isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
-    } else if (isEditing && listIconVisible) {
+    } else if (isEditingSection && listIconVisible) {
       setListIconVisible(false);
       setPreviewSection([...iconBeforeEdit]);
     } else if (listIconVisible) {
@@ -106,7 +106,7 @@ const ListFeature = ({
     }
   };
 
-  const handelConfirm = () => {
+  const handleConfirm = () => {
     if (listIconVisible) {
       setListIconVisible(false);
       if (imageUrl && iconName) {
@@ -125,7 +125,7 @@ const ListFeature = ({
             <div className="d-flex justify-content-end align-items-center border-bottom p-2">
               <div>
                 <CButton
-                  onClick={handelCancel}
+                  onClick={handleCancel}
                   color="primary"
                   variant="outline"
                   className="mx-2"
@@ -133,7 +133,7 @@ const ListFeature = ({
                   Batal
                 </CButton>
 
-                <CButton onClick={handelConfirm} color="primary">
+                <CButton onClick={handleConfirm} color="primary">
                   Selesai
                 </CButton>
               </div>
@@ -163,7 +163,7 @@ const ListFeature = ({
                 <CTabPane className="p-1" data-tab="konten">
                   <ContentTab
                     setPreviewSection={setPreviewSection}
-                    currentSection={isEditing ? currentSection : setting}
+                    currentSection={isEditingSection ? currentSection : setting}
                   />
                 </CTabPane>
 
@@ -171,8 +171,8 @@ const ListFeature = ({
                   <IconTab
                     previewSection={previewSection}
                     setPreviewSection={setPreviewSection}
-                    currentSection={isEditing ? currentSection : setting}
-                    isEditing={isEditing}
+                    currentSection={isEditingSection ? currentSection : setting}
+                    isEditing={isEditingSection}
                     visible={listIconVisible}
                     setVisible={(value) => setListIconVisible(value)}
                     setIconBeforeEdit={(value) => setIconBeforeEdit(value)}
@@ -189,9 +189,9 @@ const ListFeature = ({
                   data-tab="wadah"
                 >
                   <BackgroundTab
-                    currentSection={isEditing ? currentSection : setting}
+                    currentSection={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
-                    type={isEditing ? "edit" : "add"}
+                    type={isEditingSection ? "edit" : "add"}
                   />
                 </CTabPane>
               </CTabContent>

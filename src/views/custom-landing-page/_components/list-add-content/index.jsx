@@ -12,18 +12,19 @@ import ScrollTarget from "./scroll-target/index";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 import { RxSwitch } from "react-icons/rx";
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
-import ListTestimonyControl from "./testimony/ListTestimonyControl";
-import Line from "./Line/index";
-import ListFeature from "./ListFeature/index";
+
+import Line from "./line/index";
 import Quote from "./quote";
 import FAQ from "./faq";
 import ColumnTextAndImages from "./colum-text-and-image";
 import Buttons from "./button";
+import Testimony from "./testimony";
+import ListFeature from "./list-feature";
 
 const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
   const [addContent, setAddContent] = useState("");
 
-  const handelCancelAddContent = () => {
+  const handleCancelAddContent = () => {
     isShowContent(false);
     setAddContent("");
   };
@@ -106,7 +107,7 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
           <div className="d-flex justify-content-end align-items-center border-bottom p-2 mb-2">
             <div>
               <CButton
-                onClick={handelCancelAddContent}
+                onClick={handleCancelAddContent}
                 color="primary"
                 variant="outline"
                 className="mx-2"
@@ -169,7 +170,7 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
       )}
 
       {addContent === "testimony" && (
-        <ListTestimonyControl
+        <Testimony
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}

@@ -11,24 +11,6 @@ const BasicLineControl = ({ setPreviewSection, currentSection }) => {
     currentSection?.content?.heightBasicLine || 20
   );
 
-  const handleChangeColor = (color) => {
-    setColorBasicLine(color);
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                colorBasicLine: color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
   const handleUpdateValue = (key, value) => {
     setPreviewSection((arr) =>
       arr.map((item) =>
@@ -59,7 +41,10 @@ const BasicLineControl = ({ setPreviewSection, currentSection }) => {
         <ColorPicker
           initialColor={colorBasicLine}
           label="Garis"
-          onChange={handleChangeColor}
+          onChange={(color) => {
+            setColorBasicLine(color);
+            handleUpdateValue("colorBasicLine", color);
+          }}
           bottom={"18px"}
           type="rgba"
         />

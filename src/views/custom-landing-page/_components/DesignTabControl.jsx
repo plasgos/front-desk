@@ -12,11 +12,8 @@ const DesignTabControl = ({
   previewSection,
   setPreviewSection,
 }) => {
-  console.log("🚀 ~ pageSetting:", pageSetting);
   const [widthPage, setWidthPage] = useState(undefined);
   const [bgColor, setBgColor] = useState(pageSetting.bgColor);
-  console.log("🚀 ~ bgColor:", bgColor);
-
   useEffect(() => {
     const currentWidthPageOption = widthPageOptions
       .flatMap((opts) => opts.options)
@@ -44,7 +41,7 @@ const DesignTabControl = ({
     };
   };
 
-  const handelChangeWidthPage = (selectedOption) => {
+  const handleChangeWidthPage = (selectedOption) => {
     setWidthPage(selectedOption);
     setPageSetting((pageSetting) => ({
       ...pageSetting,
@@ -115,7 +112,7 @@ const DesignTabControl = ({
         <SelectOptions
           label="Lebar Halaman"
           options={widthPageOptions}
-          onChange={handelChangeWidthPage}
+          onChange={handleChangeWidthPage}
           value={widthPage}
           width="50"
         />

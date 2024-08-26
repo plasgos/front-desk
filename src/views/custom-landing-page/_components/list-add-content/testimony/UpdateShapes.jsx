@@ -23,15 +23,49 @@ export const circleTypePosition = [
   { value: "bottom-right", label: "Bawah Kanan" },
 ];
 
-const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
+export const UpdateShapes = ({
+  idSection,
+  currentShape,
+  setPreviewSection,
+  isEditingShape,
+}) => {
+  console.log("🚀 ~ isEditingShape:", isEditingShape);
   const [selectedType, setSelectedType] = useState(typeOptions[0]);
   const [selectedPostion, setSelectedPostion] = useState(positionOptions[0]);
-  const [selectedShapeColor, setSelectedShapeColor] = useState("#FDC97D");
-  const [height1, setHeight1] = useState(10);
-  const [height2, setHeight2] = useState(80);
-  const [circle1, setCircle1] = useState(0);
+  const [selectedShapeColor, setSelectedShapeColor] = useState(
+    currentShape?.color || "#FDC97D"
+  );
+
+  const [height1, setHeight1] = useState(currentShape?.height1 || 10);
+
+  const [height2, setHeight2] = useState(currentShape?.height2 || 80);
+  const [circle1, setCircle1] = useState(currentShape?.circle1 || 0);
 
   const [setting, setSetting] = useState({});
+
+  useEffect(() => {
+    const currentTypeOption = typeOptions.find(
+      (opt) => opt.value === currentShape.type
+    );
+    if (currentTypeOption) {
+      setSelectedType(currentTypeOption);
+      if (currentTypeOption.value === "circle") {
+        const currentTypeCirclePositionOptions = circleTypePosition.find(
+          (opt) => opt.value === currentShape.position.value
+        );
+        if (currentTypeCirclePositionOptions) {
+          setSelectedPostion(currentTypeCirclePositionOptions);
+        }
+      } else {
+        const currentPositionOptions = positionOptions.find(
+          (opt) => opt.value === currentShape.position.value
+        );
+        if (currentPositionOptions) {
+          setSelectedPostion(currentPositionOptions);
+        }
+      }
+    }
+  }, [currentShape]);
 
   const handleUpdateSectionWrapperStyle = (key, value) => {
     setPreviewSection((arr) =>
@@ -39,14 +73,18 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
         String(item.id) === idSection
           ? {
               ...item,
-              shape: item.shape.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+              shape: item.shape.map((contentItem) => {
+                const contentIdToCheck = isEditingShape
+                  ? currentShape.id
+                  : setting.id;
+
+                return String(contentItem.id) === String(contentIdToCheck)
                   ? {
                       ...contentItem,
                       [key]: value,
                     }
-                  : contentItem
-              ),
+                  : contentItem;
+              }),
             }
           : item
       )
@@ -65,27 +103,6 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
     handleUpdateSectionWrapperStyle(key, newValue);
   };
 
-  // const handleChangeType = (selectedOptionValue) => {
-  //   setSelectedType(selectedOptionValue);
-  //   setPreviewSection((arr) =>
-  //     arr.map((item) =>
-  //       String(item.id) === idSection
-  //         ? {
-  //             ...item,
-  //             shape: item.shape.map((contentItem) =>
-  //               String(contentItem.id) === String(setting.id)
-  //                 ? {
-  //                     ...contentItem,
-  //                     type: selectedOptionValue.value,
-  //                   }
-  //                 : contentItem
-  //             ),
-  //           }
-  //         : item
-  //     )
-  //   );
-  // };
-
   const handleChangeType = (selectedOptionValue) => {
     setSelectedType(selectedOptionValue);
 
@@ -99,14 +116,18 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
           String(item.id) === idSection
             ? {
                 ...item,
-                shape: item.shape.map((contentItem) =>
-                  String(contentItem.id) === String(setting.id)
+                shape: item.shape.map((contentItem) => {
+                  const contentIdToCheck = isEditingShape
+                    ? currentShape.id
+                    : setting.id;
+
+                  return String(contentItem.id) === String(contentIdToCheck)
                     ? {
                         ...contentItem,
                         position: newPosition,
                       }
-                    : contentItem
-                ),
+                    : contentItem;
+                }),
               }
             : item
         )
@@ -122,14 +143,18 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
           String(item.id) === idSection
             ? {
                 ...item,
-                shape: item.shape.map((contentItem) =>
-                  String(contentItem.id) === String(setting.id)
+                shape: item.shape.map((contentItem) => {
+                  const contentIdToCheck = isEditingShape
+                    ? currentShape.id
+                    : setting.id;
+
+                  return String(contentItem.id) === String(contentIdToCheck)
                     ? {
                         ...contentItem,
                         position: circlePosition,
                       }
-                    : contentItem
-                ),
+                    : contentItem;
+                }),
               }
             : item
         )
@@ -141,14 +166,18 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
         String(item.id) === idSection
           ? {
               ...item,
-              shape: item.shape.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+              shape: item.shape.map((contentItem) => {
+                const contentIdToCheck = isEditingShape
+                  ? currentShape.id
+                  : setting.id;
+
+                return String(contentItem.id) === String(contentIdToCheck)
                   ? {
                       ...contentItem,
                       type: selectedOptionValue.value,
                     }
-                  : contentItem
-              ),
+                  : contentItem;
+              }),
             }
           : item
       )
@@ -162,14 +191,18 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
         String(item.id) === idSection
           ? {
               ...item,
-              shape: item.shape.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+              shape: item.shape.map((contentItem) => {
+                const contentIdToCheck = isEditingShape
+                  ? currentShape.id
+                  : setting.id;
+
+                return String(contentItem.id) === String(contentIdToCheck)
                   ? {
                       ...contentItem,
                       position: selectedOptionValue,
                     }
-                  : contentItem
-              ),
+                  : contentItem;
+              }),
             }
           : item
       )
@@ -183,14 +216,18 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
         String(item.id) === idSection
           ? {
               ...item,
-              shape: item.shape.map((contentItem) =>
-                String(contentItem.id) === String(setting.id)
+              shape: item.shape.map((contentItem) => {
+                const contentIdToCheck = isEditingShape
+                  ? currentShape.id
+                  : setting.id;
+
+                return String(contentItem.id) === String(contentIdToCheck)
                   ? {
                       ...contentItem,
                       color,
                     }
-                  : contentItem
-              ),
+                  : contentItem;
+              }),
             }
           : item
       )
@@ -198,7 +235,7 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
   };
 
   const handleAddShape = () => {
-    let uniqueId = createUniqueID(exitingShape);
+    let uniqueId = createUniqueID(currentShape);
     let payload = {
       id: uniqueId,
       type: selectedType.value,
@@ -221,12 +258,14 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
   };
 
   useEffect(() => {
-    handleAddShape();
+    if (!isEditingShape) {
+      handleAddShape();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isEditingShape]);
 
   useEffect(() => {
-    if (selectedType.value === "circle") {
+    if (!isEditingShape && selectedType.value === "circle") {
       setHeight1(40);
       setHeight2(40);
       setPreviewSection((arr) =>
@@ -234,15 +273,19 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
           String(item.id) === idSection
             ? {
                 ...item,
-                shape: item.shape.map((contentItem) =>
-                  String(contentItem.id) === String(setting.id)
+                shape: item.shape.map((contentItem) => {
+                  const contentIdToCheck = isEditingShape
+                    ? currentShape.id
+                    : setting.id;
+
+                  return String(contentItem.id) === String(contentIdToCheck)
                     ? {
                         ...contentItem,
                         height1: 40,
                         height2: 40,
                       }
-                    : contentItem
-                ),
+                    : contentItem;
+                }),
               }
             : item
         )
@@ -250,7 +293,7 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedType.value]);
+  }, [selectedType.value, isEditingShape]);
 
   return (
     <CCard
@@ -346,5 +389,3 @@ const AddShape = ({ idSection, exitingShape, setPreviewSection }) => {
     </CCard>
   );
 };
-
-export default AddShape;

@@ -76,7 +76,7 @@ const ColumnTextAndImages = ({
 
   const [setting, setSetting] = useState({});
 
-  const handelCancel = () => {
+  const handleCancel = () => {
     if (isAddContent) {
       setIsAddContent(false);
       setIsEditingContent(false);
@@ -111,7 +111,7 @@ const ColumnTextAndImages = ({
     }
   };
 
-  const handelConfirm = () => {
+  const handleConfirm = () => {
     if (isAddContent || isEditingContent) {
       setIsAddContent(false);
       setIsEditingContent(false);
@@ -203,7 +203,7 @@ const ColumnTextAndImages = ({
             <div className="d-flex justify-content-end align-items-center border-bottom p-2">
               <div>
                 <CButton
-                  onClick={handelCancel}
+                  onClick={handleCancel}
                   color="primary"
                   variant="outline"
                   className="mx-2"
@@ -211,7 +211,7 @@ const ColumnTextAndImages = ({
                   Batal
                 </CButton>
 
-                <CButton onClick={handelConfirm} color="primary">
+                <CButton onClick={handleConfirm} color="primary">
                   Selesai
                 </CButton>
               </div>

@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import ReactQuill from "react-quill";
 import Input from "../../common/Input";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import { FaAlignCenter, FaAlignLeft, FaAlignRight } from "react-icons/fa6";
 import { CFormGroup, CLabel } from "@coreui/react";
 import ColorPicker from "../../common/ColorPicker";
 import SelectOptions from "../../common/SelectOptions";
-import "react-quill/dist/quill.snow.css";
-import "react-slideshow-image/dist/styles.css";
+import { CustomReactQuill } from "../../common/ReactQuill";
 
 const convertArrayToHtml = (lines) => {
   if (!Array.isArray(lines)) return ""; // Pastikan lines adalah array
@@ -91,23 +89,6 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
     handleUpdateValue(key, newValue);
   };
 
-  const handleChangeTextColor = (color) => {
-    setSelectedTextColor(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                textColor: color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
   const onChangeAlign = (value) => {
     setSelectAlign(value);
     setPreviewSection((arr) =>
@@ -138,7 +119,10 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
 
         <ColorPicker
           initialColor={selectedTextColor}
-          onChange={handleChangeTextColor}
+          onChange={(color) => {
+            setSelectedTextColor(color);
+            handleUpdateValue("textColor", color);
+          }}
           width="w-0"
           bottom={"-10px"}
         />
@@ -215,33 +199,11 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
         readOnly={true}
       />
 
-      <ReactQuill
-        modules={{
-          toolbar: [
-            ["bold", "italic", "underline", "strike"],
-            [{ color: [] }],
-            ["link", "image"],
-            ["clean"],
-          ],
-          clipboard: {
-            // toggle to add extra line breaks when pasting HTML:
-            matchVisual: true,
-          },
-        }}
-        formats={[
-          "bold",
-          "italic",
-          "underline",
-          "strike",
-          "link",
-          "image",
-          "color",
-          "clean",
-        ]}
-        theme="snow"
+      <CustomReactQuill
         value={editorHtml}
         onChange={handleEditorChange}
-        className="custom-quill text-editor rounded"
+        version="basic"
+        customStyle={true}
       />
     </div>
   );

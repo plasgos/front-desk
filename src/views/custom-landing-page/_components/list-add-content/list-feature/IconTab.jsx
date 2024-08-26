@@ -73,40 +73,6 @@ const IconTab = ({
     }
   }, [currentSection, isEditing]);
 
-  const handleChangeColorIcon = (color) => {
-    setColorIcon(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              iconStyle: {
-                ...item.iconStyle,
-                color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleCangeShadow = (selectedOption) => {
-    setShadow(selectedOption);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              iconStyle: {
-                ...item.iconStyle,
-                shadow: selectedOption.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
   const handleChangeIcon = (value) => {
     setIconName(value);
     setPreviewSection((arr) =>
@@ -245,7 +211,10 @@ const IconTab = ({
               <div style={{ gap: 5 }} className="d-flex align-items-center">
                 <ColorPicker
                   initialColor={colorIcon}
-                  onChange={handleChangeColorIcon}
+                  onChange={(color) => {
+                    setColorIcon(color);
+                    handleUpdateValue("color", color);
+                  }}
                   width="w-0"
                   bottom={"-10px"}
                 />
@@ -272,7 +241,10 @@ const IconTab = ({
           <SelectOptions
             label="Bayangan"
             options={shadowOptions}
-            onChange={handleCangeShadow}
+            onChange={(selectedOption) => {
+              setShadow(selectedOption);
+              handleUpdateValue("shadow", selectedOption.value);
+            }}
             value={shadow}
             width="50"
           />

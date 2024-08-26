@@ -10,17 +10,15 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import ReactQuill from "react-quill";
 import {
   FaAlignCenter,
   FaAlignJustify,
   FaAlignLeft,
   FaAlignRight,
 } from "react-icons/fa6";
-import "react-quill/dist/quill.snow.css";
-import "react-slideshow-image/dist/styles.css";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import ColorPicker from "../../common/ColorPicker";
+import { CustomReactQuill } from "../../common/ReactQuill";
 
 const Text = ({
   previewSection,
@@ -113,7 +111,7 @@ const Text = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditingSection]);
 
-  const handelCancel = () => {
+  const handleCancel = () => {
     if (isEditingSection) {
       isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
@@ -125,7 +123,7 @@ const Text = ({
     }
   };
 
-  const handelConfirm = () => {
+  const handleConfirm = () => {
     isShowContent(false);
   };
 
@@ -134,7 +132,7 @@ const Text = ({
       <div className="d-flex justify-content-end align-items-center border-bottom p-2">
         <div>
           <CButton
-            onClick={handelCancel}
+            onClick={handleCancel}
             color="primary"
             variant="outline"
             className="mx-2"
@@ -142,7 +140,7 @@ const Text = ({
             Batal
           </CButton>
 
-          <CButton onClick={handelConfirm} color="primary">
+          <CButton onClick={handleConfirm} color="primary">
             Selesai
           </CButton>
         </div>
@@ -243,45 +241,10 @@ const Text = ({
                 />
               </div>
 
-              <ReactQuill
-                modules={{
-                  toolbar: [
-                    [{ header: "1" }, { header: "2" }],
-                    [{ size: [] }],
-                    ["bold", "italic", "underline", "strike", "blockquote"],
-                    [
-                      { list: "ordered" },
-                      { list: "bullet" },
-                      { indent: "-1" },
-                      { indent: "+1" },
-                    ],
-                    ["link", "image"],
-                    ["clean"],
-                  ],
-                  clipboard: {
-                    // toggle to add extra line breaks when pasting HTML:
-                    matchVisual: true,
-                  },
-                }}
-                formats={[
-                  "header",
-                  "size",
-                  "bold",
-                  "italic",
-                  "underline",
-                  "strike",
-                  "blockquote",
-                  "list",
-                  "bullet",
-                  "indent",
-                  "link",
-                  "image",
-                  "clean",
-                ]}
-                theme="snow"
+              <CustomReactQuill
                 value={editorHtml}
                 onChange={handleEditorChange}
-                className="text-editor rounded"
+                version="full"
               />
             </div>
           </CTabPane>

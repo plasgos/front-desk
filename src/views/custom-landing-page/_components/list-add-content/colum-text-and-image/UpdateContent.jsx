@@ -1,9 +1,6 @@
 import { CButton, CCard } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import image from "../../../../../assets/action-figure.jpg";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import "react-slideshow-image/dist/styles.css";
 import { createUniqueID } from "../../../../../lib/unique-id";
 
 import FacebookPixel from "../../FacebookPixel";
@@ -16,6 +13,7 @@ import UrlInput from "../../common/UrlInput";
 import WhatsAppInput from "../../common/WhatAppsInput";
 import ScrollTargetInput from "../../common/ScrollTargetSelect";
 import Input from "../../common/Input";
+import { CustomReactQuill } from "../../common/ReactQuill";
 
 export const UpdateContent = ({
   idSection,
@@ -407,38 +405,13 @@ export const UpdateContent = ({
 
         {selectedOption.value !== undefined && <FacebookPixel />}
 
-        <ReactQuill
-          modules={{
-            toolbar: [
-              ["bold", "italic", "underline", "strike"],
-              [{ color: [] }, { background: [] }],
-              ["image"],
-              ["link"],
-              ["clean"],
-            ],
-            clipboard: {
-              // toggle to add extra line breaks when pasting HTML:
-              matchVisual: true,
-            },
-          }}
-          formats={[
-            "bold",
-            "italic",
-            "underline",
-            "strike",
-            "color",
-            "background",
-            "image",
-            "link",
-            "clean",
-          ]}
-          theme="snow"
+        <CustomReactQuill
           value={description}
           onChange={(value) => {
             setDescription(value);
             handleChangeContent("description", value);
           }}
-          className="text-editor rounded"
+          version="basic"
         />
       </div>
     </CCard>

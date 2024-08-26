@@ -16,8 +16,6 @@ const ScrollTarget = ({
   sectionBeforeEdit,
   currentSection,
 }) => {
-  console.log("🚀 ~ currentSection:", currentSection);
-  console.log("🚀 ~ isEditingSection:", isEditingSection);
   const [name, setName] = useState(currentSection?.content?.name || "");
   const [isCopiedLink, setIsCopiedLink] = useState(false);
   const [isCopiedAnchor, setIsCopiedAnchor] = useState(false);
@@ -124,7 +122,7 @@ const ScrollTarget = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, hasAddedContent, dispatch, isEditingSection]);
 
-  const handelCancel = () => {
+  const handleCancel = () => {
     if (isEditingSection) {
       isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
@@ -137,7 +135,7 @@ const ScrollTarget = ({
     }
   };
 
-  const handelConfirm = async () => {
+  const handleConfirm = async () => {
     if (isEditingSection) {
       await dispatch(
         setOptionsScrollTarget({
@@ -157,7 +155,7 @@ const ScrollTarget = ({
       <div className="d-flex justify-content-end align-items-center border-bottom p-2 mb-3">
         <div>
           <CButton
-            onClick={handelCancel}
+            onClick={handleCancel}
             color="primary"
             variant="outline"
             className="mx-2"
@@ -165,7 +163,7 @@ const ScrollTarget = ({
             Batal
           </CButton>
 
-          <CButton onClick={handelConfirm} color="primary">
+          <CButton onClick={handleConfirm} color="primary">
             Selesai
           </CButton>
         </div>
