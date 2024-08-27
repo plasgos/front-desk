@@ -1,6 +1,7 @@
 export const shadowOptions = [
   { value: undefined, label: "Tidak Ada" },
-  { value: "tw-shadow", label: "Kecil" },
+  { value: "tw-shadow-sm", label: "Lebih Tipis" },
+  { value: "tw-shadow", label: "Tipis" },
   { value: "tw-shadow-md", label: "Sedang" },
   { value: "tw-shadow-lg", label: "Besar" },
   { value: "tw-shadow-xl", label: "Extra Besar" },
@@ -118,6 +119,20 @@ export const maxColumnOptions = [
   { value: "tw-w-1/4", label: "4" },
   { value: "tw-w-1/5", label: "5" },
   { value: "tw-w-1/6", label: "6" },
+];
+
+export const maxColumnFAQOptions = [
+  {
+    value: "tw-w-full",
+    label: "1",
+  },
+  {
+    value: "tw-w-1/2",
+    label: "2",
+  },
+  { value: "tw-w-1/3", label: "3" },
+  { value: "tw-w-1/4", label: "4" },
+  { value: "tw-w-1/5", label: "5" },
 ];
 
 export const aspectRatioOptions = [

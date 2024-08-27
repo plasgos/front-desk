@@ -27,6 +27,7 @@ const ListFeature = ({
   const [setting, setSetting] = useState({});
   const [listIconVisible, setListIconVisible] = useState(false);
   const [iconBeforeEdit, setIconBeforeEdit] = useState([]);
+  const [previousIcon, setPreviousIcon] = useState("");
   const [iconName, setIconName] = useState(null);
   const [imageUrl, setImageUrl] = useState(
     currentSection?.iconStyle?.image || ""
@@ -94,8 +95,9 @@ const ListFeature = ({
     } else if (listIconVisible) {
       setListIconVisible(false);
       if (imageUrl) {
-        console.log("first");
         setIconName(null);
+      } else {
+        setIconName(previousIcon);
       }
       setPreviewSection([...iconBeforeEdit]);
     } else {
@@ -180,6 +182,7 @@ const ListFeature = ({
                     setIconName={(value) => setIconName(value)}
                     imageUrl={imageUrl}
                     setImageUrl={(value) => setImageUrl(value)}
+                    setPreviousIcon={setPreviousIcon}
                   />
                 </CTabPane>
 

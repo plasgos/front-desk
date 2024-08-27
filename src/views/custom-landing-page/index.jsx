@@ -49,6 +49,8 @@ import ScrollTarget from "./_components/list-add-content/scroll-target";
 import EmptySpace from "./_components/list-add-content/empty-space";
 import Buttons from "./_components/list-add-content/button";
 import Testimony from "./_components/list-add-content/testimony";
+import FAQ from "./_components/list-add-content/faq";
+import ViewFAQ from "./_components/view-content/ViewFAQ";
 
 const landingPage = {
   detail: {
@@ -82,7 +84,7 @@ const CustomLandingPage = () => {
     previewRefs.current[index] = el;
   };
   const containerRef = useRef(null);
-  console.log("🚀 ~ CustomLandingPage ~ containerRef:", containerRef);
+
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
   console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection[0]);
@@ -281,6 +283,18 @@ const CustomLandingPage = () => {
         );
       }
 
+      if (section.name === "faq") {
+        return (
+          <ViewFAQ
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
+
       return null;
     },
     [dimensions.width, focusedIndex, id, isDragging, isPreview, isResizing]
@@ -451,6 +465,23 @@ const CustomLandingPage = () => {
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
             isEditing={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "faq" &&
+        section.name === "faq" &&
+        editing.id === section.id
+      ) {
+        return (
+          <FAQ
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }

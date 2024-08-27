@@ -20,6 +20,8 @@ import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import SelectVariant from "../../common/SelectVariant";
 import UpdateContent from "./UpdateContent";
+import DesignTab from "./DesignTab";
+import DesignTabTry from "./DesignTabTry";
 
 const initialContents = [
   {
@@ -45,13 +47,13 @@ const initialContents = [
 ];
 
 const optionVariant = [
-  { group: "Plain", options: [{ value: "simple", label: "Simple" }] },
-  { group: "Kapsul", options: [{ value: "simple", label: "Simple" }] },
+  { group: "Plain", options: [{ id: "1", value: "simple", label: "Simple" }] },
+  { group: "Kapsul", options: [{ id: "2", value: "simple", label: "Simple" }] },
   {
     group: "Buka / Tutup",
     options: [
-      { value: "thick", label: "Thick" },
-      { value: "clean", label: "Clean" },
+      { id: "3", value: "thick", label: "Thick" },
+      { id: "4", value: "clean", label: "Clean" },
     ],
   },
 ];
@@ -62,7 +64,59 @@ const flattenedOptions = optionVariant.flatMap((group) =>
     group: group.group,
   }))
 );
-console.log("🚀 ~ flattenedOptions:", flattenedOptions);
+
+//styles template
+const plainSimple = {
+  colorTitle: "#424242",
+  colorContent: "#757575",
+  maxColumn: "tw-w-1/2",
+  fontSize: 21,
+};
+
+const capsuleSimple = {
+  colorTitle: "#424242",
+  colorContent: "#757575",
+  bgColor: "#ffffff",
+  borderColor: "rgba(255,255,255,0)",
+  maxColumn: "tw-w-1/2",
+  shadow: "tw-shadow",
+  fontSize: 21,
+  rounded: 12,
+};
+
+const accordionThick = {
+  colorTitle: "#424242",
+  colorContent: "#424242",
+  bgColor: "#F5F5F5",
+  borderColor: "#757575",
+  iconColor: "#424242",
+  dividerColor: "#9E9E9E",
+  bgContent: "#F5F5F5",
+  shadow: "tw-shadow",
+  fontSize: 18,
+  distance: 18,
+  borderWidth: 2,
+  icon: "plus",
+  isIconOnRight: true,
+  iconSize: 18,
+};
+
+const accordionClean = {
+  colorTitle: "#424242",
+  colorContent: "#424242",
+  bgColor: "#F5F5F5",
+  borderColor: "#757575",
+  iconColor: "#424242",
+  dividerColor: "#9E9E9E",
+  bgContent: "#F5F5F5",
+  shadow: "tw-shadow-sm",
+  fontSize: 18,
+  distance: 18,
+  borderWidth: 1,
+  icon: "plus",
+  isIconOnRight: true,
+  iconSize: 16,
+};
 
 const FAQ = ({
   previewSection,
@@ -72,18 +126,28 @@ const FAQ = ({
   sectionBeforeEdit,
   currentSection,
 }) => {
+  const [activeTab, setActiveTab] = useState("faqs");
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
   const [isSelectVariant, setIsSelectVariant] = useState(false);
-  // const [selectedVariant, setSelectedVariant] = useState(optionVariant[2]);
   const [selectedVariant, setSelectedVariant] = useState(
-    flattenedOptions.find((option) => option.value === "thick")
+    flattenedOptions.find(
+      (option) => option.value === currentSection?.variant?.name
+    ) || flattenedOptions[2]
   );
-  console.log("🚀 ~ selectedVariant:", selectedVariant);
   const [selectedContent, setSelectedContent] = useState({});
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
   const [setting, setSetting] = useState({});
+  const [iconBeforeEdit, setIconBeforeEdit] = useState([]);
+  const [previousIcon, setPreviousIcon] = useState("");
+  const [isListIconVisible, setIsListIconVisible] = useState(false);
 
+  const [imageUrl, setImageUrl] = useState(
+    currentSection?.variant?.style?.image || ""
+  );
+  const [icon, setIcon] = useState(
+    currentSection?.variant?.style?.icon || "plus"
+  );
   const editSection = useCallback(
     (section) => {
       setCurrentContentBeforeEdit([...previewSection]);
@@ -137,6 +201,18 @@ const FAQ = ({
             : section;
         })
       );
+    } else if (isSelectVariant) {
+      setIsSelectVariant(false);
+      setIsAddContent(false);
+      setIsEditingContent(false);
+    } else if (isListIconVisible) {
+      setIsListIconVisible(false);
+      if (imageUrl) {
+        setIcon(null);
+      } else {
+        setIcon(previousIcon);
+      }
+      setPreviewSection([...iconBeforeEdit]);
     } else if (isEditingContent) {
       setPreviewSection([...currentContentBeforeEdit]);
       setIsAddContent(false);
@@ -155,9 +231,10 @@ const FAQ = ({
   };
 
   const handleConfirm = () => {
-    if (isAddContent || isEditingContent) {
+    if (isAddContent || isEditingContent || isSelectVariant) {
       setIsAddContent(false);
       setIsEditingContent(false);
+      setIsSelectVariant(false);
     } else {
       isShowContent(false);
     }
@@ -189,15 +266,16 @@ const FAQ = ({
           colorContent: "#424242",
           bgColor: "#F5F5F5",
           borderColor: "#757575",
-          dividerColor: "#9E9E9E",
           iconColor: "#424242",
+          dividerColor: "#9E9E9E",
           bgContent: "#F5F5F5",
           shadow: "tw-shadow",
           fontSize: 18,
           distance: 18,
           borderWidth: 2,
           icon: "plus",
-          iconPosition: "left",
+          image: "",
+          isIconOnRight: true,
           iconSize: 18,
         },
       },
@@ -214,13 +292,39 @@ const FAQ = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditingSection]);
 
-  const handleVariantChange = (selectedVariant) => {
-    console.log(
-      "🚀 ~ handleselectedVariantChange ~ selectedVariant:",
-      selectedVariant
+  const handleVariantChange = (group, option) => {
+    setSelectedVariant({ ...option, group });
+    setPreviewSection((arr) =>
+      arr.map((item) => {
+        const contentIdToCheck = isEditingSection
+          ? currentSection.id
+          : setting.id;
+
+        const style =
+          option.id === "1"
+            ? plainSimple
+            : option.id === "2"
+            ? capsuleSimple
+            : option.id === "3"
+            ? accordionThick
+            : option.id === "4"
+            ? accordionClean
+            : {};
+
+        return String(item.id) === contentIdToCheck
+          ? {
+              ...item,
+              variant: {
+                ...item.variant,
+                group,
+                id: option.id,
+                name: option.value,
+                style,
+              },
+            }
+          : item;
+      })
     );
-    setSelectedVariant(selectedVariant);
-    // Lakukan sesuatu ketika varian berubah
   };
 
   return (
@@ -283,12 +387,12 @@ const FAQ = ({
                 onChangeVariant={handleVariantChange}
               />
             ) : (
-              <CTabs activeTab="faqs">
+              <CTabs activeTab={activeTab}>
                 <CNav variant="tabs">
-                  <CNavItem>
+                  <CNavItem onClick={() => setActiveTab("faqs")}>
                     <CNavLink data-tab="faqs">Konten</CNavLink>
                   </CNavItem>
-                  <CNavItem>
+                  <CNavItem onClick={() => setActiveTab("desain")}>
                     <CNavLink data-tab="desain">Desain</CNavLink>
                   </CNavItem>
                   <CNavItem>
@@ -321,6 +425,7 @@ const FAQ = ({
                             </CButton>
                           </div>
                         </div>
+
                         <div>
                           {previewSection
                             .filter((section) =>
@@ -356,22 +461,49 @@ const FAQ = ({
                     className="p-1"
                     data-tab="desain"
                   >
-                    {/* {Object.keys(setting).length > 0 ? (
-                      <DesignTab
-                        currentSection={setting}
-                        setPreviewSection={setPreviewSection}
-                        selectedColum={selectedColumnTestimony}
-                        setSelectedColum={(value) =>
-                          setSelectedColumnTestimony(value)
+                    {!isListIconVisible && (
+                      <div
+                        style={{
+                          boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
+                        }}
+                        className="mb-3 border-bottom pb-3"
+                      >
+                        <div style={{ fontSize: 12 }} className="mb-2">
+                          Desain
+                        </div>
+                        <div className="d-flex align-items-center">
+                          <div className="mr-3">{selectedVariant.group}</div>
+                          <CButton
+                            onClick={() => setIsSelectVariant(true)}
+                            color="primary"
+                          >
+                            Ubah
+                          </CButton>
+                        </div>
+                      </div>
+                    )}
+                    {Object.keys(isEditingSection ? currentSection : setting)
+                      .length > 0 ? (
+                      <DesignTabTry
+                        previewSection={previewSection}
+                        currentSection={
+                          isEditingSection ? currentSection : setting
                         }
-                        paddingTop={paddingTop}
-                        setPaddingTop={(value) => setPaddingTop(value)}
-                        paddingBottom={paddingBottom}
-                        setPaddingBottom={(value) => setPaddingBottom(value)}
+                        setPreviewSection={setPreviewSection}
+                        isEditingSection={isEditingSection}
+                        variant={selectedVariant.id}
+                        setIconBeforeEdit={(value) => setIconBeforeEdit(value)}
+                        isListIconVisible={isListIconVisible}
+                        setIsListIconVisible={setIsListIconVisible}
+                        imageUrl={imageUrl}
+                        setImageUrl={setImageUrl}
+                        icon={icon}
+                        setIcon={setIcon}
+                        setPreviousIcon={setPreviousIcon}
                       />
                     ) : (
                       <div>Loading...</div>
-                    )} */}
+                    )}
                   </CTabPane>
 
                   <CTabPane

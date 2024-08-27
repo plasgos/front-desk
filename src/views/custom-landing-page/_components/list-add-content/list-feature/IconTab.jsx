@@ -24,6 +24,7 @@ const IconTab = ({
   setIconName,
   imageUrl,
   setImageUrl,
+  setPreviousIcon,
 }) => {
   const [colorIcon, setColorIcon] = useState(
     currentSection.iconStyle?.color || "#424242"
@@ -159,8 +160,9 @@ const IconTab = ({
     };
   };
 
-  const handleSearchIcon = () => {
+  const handleSearchIcon = (prevIcon) => {
     setIconBeforeEdit([...previewSection]);
+    setPreviousIcon(prevIcon);
     setVisible(true);
   };
 
@@ -228,7 +230,7 @@ const IconTab = ({
                 </CButton>
 
                 <CButton
-                  onClick={handleSearchIcon}
+                  onClick={() => handleSearchIcon(iconName)}
                   color="primary"
                   variant="outline"
                 >
