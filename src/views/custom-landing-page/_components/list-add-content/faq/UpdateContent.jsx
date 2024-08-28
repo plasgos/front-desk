@@ -13,7 +13,7 @@ const UpdateContent = ({
     currentContent?.title || "How awesome are you?"
   );
   const [content, setContent] = useState(
-    currentContent?.content || "So awesome that you will not believe it"
+    currentContent?.desc || "So awesome that you will not believe it"
   );
 
   const [setting, setSetting] = useState({});
@@ -47,7 +47,7 @@ const UpdateContent = ({
     let payload = {
       id: uniqueId,
       title,
-      content,
+      desc: content,
     };
 
     setPreviewSection((prevSections) =>
@@ -85,7 +85,7 @@ const UpdateContent = ({
         value={content}
         onChange={(value) => {
           setContent(value);
-          handleChangeContent("content", value);
+          handleChangeContent("desc", value);
         }}
         version="basic"
       />

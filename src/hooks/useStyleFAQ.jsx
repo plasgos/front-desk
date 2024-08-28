@@ -5,6 +5,7 @@ import {
 } from "../views/custom-landing-page/_components/SelectOptions";
 
 const useSectionStyle = (currentSection) => {
+  console.log("🚀 ~ useSectionStyle ~ currentSection:", currentSection);
   // Define state using useState
   const [colorTitle, setColorTitle] = useState(
     currentSection?.variant?.style?.colorTitle || "#424242"
@@ -30,22 +31,22 @@ const useSectionStyle = (currentSection) => {
   const [shadow, setShadow] = useState(
     shadowOptions?.find(
       (opt) => opt.value === currentSection?.variant?.style?.shadow
-    ) || shadowOptions[2]
+    ) || shadowOptions[3]
   );
   const [fontSize, setFontSize] = useState(
-    currentSection?.variant?.style?.fontSize || 18
+    currentSection?.variant?.style?.fontSize ?? 18
   );
   const [distance, setDistance] = useState(
-    currentSection?.variant?.style?.distance || 18
+    currentSection?.variant?.style?.distance ?? 18
   );
   const [borderWidth, setBorderWidth] = useState(
-    currentSection?.variant?.style?.borderWidth || 2
+    currentSection?.variant?.style?.borderWidth ?? 2
   );
   const [isIconOnRight, setIsIconOnRight] = useState(
-    currentSection?.variant?.style?.isIconOnRight || true
+    currentSection?.variant?.style?.isIconOnRight ?? true
   );
   const [iconSize, setIconSize] = useState(
-    currentSection?.variant?.style?.iconSize || 18
+    currentSection?.variant?.style?.iconSize ?? 18
   );
   const [maxColumn, setMaxColumn] = useState(
     maxColumnFAQOptions?.find(
@@ -53,7 +54,7 @@ const useSectionStyle = (currentSection) => {
     ) || maxColumnFAQOptions[1]
   );
   const [rounded, setRounded] = useState(
-    currentSection?.variant?.style?.rounded || 12
+    currentSection?.variant?.style?.rounded ?? 12
   );
 
   // Update state when currentSection changes
@@ -71,16 +72,16 @@ const useSectionStyle = (currentSection) => {
         shadowOptions.find((opt) => opt.value === style.shadow) ||
           shadowOptions[2]
       );
-      setFontSize(style.fontSize || 18);
-      setDistance(style.distance || 18);
-      setBorderWidth(style.borderWidth || 2);
-      setIsIconOnRight(style.isIconOnRight || true);
-      setIconSize(style.iconSize || 18);
+      setFontSize(style.fontSize ?? 18);
+      setDistance(style.distance ?? 18);
+      setBorderWidth(style.borderWidth ?? 2);
+      setIsIconOnRight(style.isIconOnRight ?? true);
+      setIconSize(style.iconSize ?? 18);
       setMaxColumn(
         maxColumnFAQOptions.find((opt) => opt.value === style.maxColumn) ||
           maxColumnFAQOptions[1]
       );
-      setRounded(style.rounded || 12);
+      setRounded(style.rounded ?? 12);
     }
   }, [currentSection]);
 

@@ -8,7 +8,7 @@ import SelectOptions from "../../../common/SelectOptions";
 import useSectionStyle from "../../../../../../hooks/useStyleFAQ";
 import { shadowOptions } from "../../../SelectOptions";
 
-const AccordionClean = ({
+const Accordion = ({
   currentSection,
   handleChangeStyle,
   handleFileUpload,
@@ -62,8 +62,6 @@ const AccordionClean = ({
     }
     handleChangeStyle(key, newValue);
   };
-
-  console.log("RENDER V4");
 
   return (
     <div>
@@ -136,7 +134,7 @@ const AccordionClean = ({
       <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
         <ColorPicker
           initialColor={bgContent}
-          label="Background"
+          label="Konten Background"
           onChange={(color) => {
             setBgContent(color);
             handleChangeStyle("bgContent", color);
@@ -291,4 +289,4 @@ const AccordionClean = ({
   );
 };
 
-export default AccordionClean;
+export default Accordion;

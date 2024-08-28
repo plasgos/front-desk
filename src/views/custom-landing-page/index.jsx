@@ -50,7 +50,7 @@ import EmptySpace from "./_components/list-add-content/empty-space";
 import Buttons from "./_components/list-add-content/button";
 import Testimony from "./_components/list-add-content/testimony";
 import FAQ from "./_components/list-add-content/faq";
-import ViewFAQ from "./_components/view-content/ViewFAQ";
+import ViewFAQ from "./_components/view-content/ViewFAQ/index";
 
 const landingPage = {
   detail: {
@@ -291,6 +291,8 @@ const CustomLandingPage = () => {
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
+            isPreview={isPreview}
+            width={dimensions.width}
           />
         );
       }

@@ -12,7 +12,7 @@ import ScrollTarget from "./scroll-target/index";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 import { RxSwitch } from "react-icons/rx";
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
-
+import { FaClipboardList } from "react-icons/fa";
 import Line from "./line/index";
 import Quote from "./quote";
 import FAQ from "./faq";
@@ -20,15 +20,10 @@ import ColumnTextAndImages from "./colum-text-and-image";
 import Buttons from "./button";
 import Testimony from "./testimony";
 import ListFeature from "./list-feature";
+import { SearchForm } from "../common/SearchForm";
+import FormCheckout from "./form-checkout";
 
 const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
-  const [addContent, setAddContent] = useState("");
-
-  const handleCancelAddContent = () => {
-    isShowContent(false);
-    setAddContent("");
-  };
-
   const dataListContent = [
     {
       name: "text",
@@ -98,7 +93,29 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
       ),
       action: () => setAddContent("faq"),
     },
+    {
+      name: "form-checkout",
+      title: "Formulir Checkout",
+      icon: <FaClipboardList style={{ marginRight: 5 }} size={24} />,
+      action: () => setAddContent("form-checkout"),
+    },
   ];
+  const [addContent, setAddContent] = useState("");
+  const [searchContent, setSearchContent] = useState("");
+  const [filteredContents, setFilteredContents] = useState(dataListContent);
+  const handleChangeContent = (value) => {
+    setSearchContent(value);
+    const filteredContents = dataListContent.filter((content) =>
+      content.title.toLowerCase().includes(value.toLowerCase())
+    );
+
+    setFilteredContents(filteredContents);
+  };
+
+  const handleCancelAddContent = () => {
+    isShowContent(false);
+    setAddContent("");
+  };
 
   return (
     <div style={{ width: "100%", height: 400 }}>
@@ -110,13 +127,17 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
                 onClick={handleCancelAddContent}
                 color="primary"
                 variant="outline"
-                className="mx-2"
               >
                 Batal
               </CButton>
             </div>
           </div>
 
+          <SearchForm
+            placeholder="Cari"
+            value={searchContent}
+            onChange={(e) => handleChangeContent(e.target.value)}
+          />
           <div style={{ marginBottom: 10 }}>Konten</div>
         </>
       )}
@@ -209,15 +230,23 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
         />
       )}
 
+      {addContent === "form-checkout" && (
+        <FormCheckout
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
       <CTabContent
         style={{
-          height: addContent ? 0 : 340,
+          height: addContent ? 0 : 280,
           paddingRight: 5,
           overflowY: "auto",
         }}
       >
-        {!addContent &&
-          dataListContent.map((item, index) => (
+        {!addContent && filteredContents.length > 0 ? (
+          filteredContents.map((item, index) => (
             <CCard
               key={index}
               style={{ marginBottom: 10, cursor: "pointer" }}
@@ -228,7 +257,10 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
                 <div>{item.title}</div>
               </div>
             </CCard>
-          ))}
+          ))
+        ) : (
+          <div className="text-center my-3">Kontent tidak ada !</div>
+        )}
       </CTabContent>
     </div>
   );

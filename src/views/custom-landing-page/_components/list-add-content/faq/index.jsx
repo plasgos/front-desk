@@ -21,7 +21,6 @@ import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import SelectVariant from "../../common/SelectVariant";
 import UpdateContent from "./UpdateContent";
 import DesignTab from "./DesignTab";
-import DesignTabTry from "./DesignTabTry";
 
 const initialContents = [
   {
@@ -79,7 +78,7 @@ const capsuleSimple = {
   bgColor: "#ffffff",
   borderColor: "rgba(255,255,255,0)",
   maxColumn: "tw-w-1/2",
-  shadow: "tw-shadow",
+  shadow: "tw-shadow-md",
   fontSize: 21,
   rounded: 12,
 };
@@ -92,7 +91,7 @@ const accordionThick = {
   iconColor: "#424242",
   dividerColor: "#9E9E9E",
   bgContent: "#F5F5F5",
-  shadow: "tw-shadow",
+  shadow: "tw-shadow-md",
   fontSize: 18,
   distance: 18,
   borderWidth: 2,
@@ -109,7 +108,7 @@ const accordionClean = {
   iconColor: "#424242",
   dividerColor: "#9E9E9E",
   bgContent: "#F5F5F5",
-  shadow: "tw-shadow-sm",
+  shadow: "tw-shadow",
   fontSize: 18,
   distance: 18,
   borderWidth: 1,
@@ -132,9 +131,10 @@ const FAQ = ({
   const [isSelectVariant, setIsSelectVariant] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState(
     flattenedOptions.find(
-      (option) => option.value === currentSection?.variant?.name
+      (option) => option.id === currentSection?.variant?.id
     ) || flattenedOptions[2]
   );
+  console.log("🚀 ~ selectedVariant:", selectedVariant);
   const [selectedContent, setSelectedContent] = useState({});
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
   const [setting, setSetting] = useState({});
@@ -231,10 +231,16 @@ const FAQ = ({
   };
 
   const handleConfirm = () => {
-    if (isAddContent || isEditingContent || isSelectVariant) {
+    if (
+      isAddContent ||
+      isEditingContent ||
+      isSelectVariant ||
+      isListIconVisible
+    ) {
       setIsAddContent(false);
       setIsEditingContent(false);
       setIsSelectVariant(false);
+      setIsListIconVisible(false);
     } else {
       isShowContent(false);
     }
@@ -259,6 +265,7 @@ const FAQ = ({
         paddingType: "equal",
       },
       variant: {
+        id: "3",
         group: "Buka / Tutup",
         name: "thick",
         style: {
@@ -269,7 +276,7 @@ const FAQ = ({
           iconColor: "#424242",
           dividerColor: "#9E9E9E",
           bgContent: "#F5F5F5",
-          shadow: "tw-shadow",
+          shadow: "tw-shadow-md",
           fontSize: 18,
           distance: 18,
           borderWidth: 2,
@@ -293,23 +300,23 @@ const FAQ = ({
   }, [isEditingSection]);
 
   const handleVariantChange = (group, option) => {
+    const style =
+      option.id === "1"
+        ? plainSimple
+        : option.id === "2"
+        ? capsuleSimple
+        : option.id === "3"
+        ? accordionThick
+        : option.id === "4"
+        ? accordionClean
+        : {};
+
     setSelectedVariant({ ...option, group });
     setPreviewSection((arr) =>
       arr.map((item) => {
         const contentIdToCheck = isEditingSection
           ? currentSection.id
           : setting.id;
-
-        const style =
-          option.id === "1"
-            ? plainSimple
-            : option.id === "2"
-            ? capsuleSimple
-            : option.id === "3"
-            ? accordionThick
-            : option.id === "4"
-            ? accordionClean
-            : {};
 
         return String(item.id) === contentIdToCheck
           ? {
@@ -325,6 +332,19 @@ const FAQ = ({
           : item;
       })
     );
+
+    if (!isEditingSection) {
+      setSetting((prev) => ({
+        ...prev,
+        variant: {
+          ...prev.variant,
+          group,
+          id: option.id,
+          name: option.value,
+          style,
+        },
+      }));
+    }
   };
 
   return (
@@ -484,7 +504,7 @@ const FAQ = ({
                     )}
                     {Object.keys(isEditingSection ? currentSection : setting)
                       .length > 0 ? (
-                      <DesignTabTry
+                      <DesignTab
                         previewSection={previewSection}
                         currentSection={
                           isEditingSection ? currentSection : setting
@@ -512,7 +532,9 @@ const FAQ = ({
                     data-tab="background"
                   >
                     <BackgroundTab
-                      currentSection={setting}
+                      currentSection={
+                        isEditingSection ? currentSection : setting
+                      }
                       setPreviewSection={setPreviewSection}
                       type={isEditingSection ? "edit" : "add"}
                     />
