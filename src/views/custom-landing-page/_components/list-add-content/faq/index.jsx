@@ -134,7 +134,6 @@ const FAQ = ({
       (option) => option.id === currentSection?.variant?.id
     ) || flattenedOptions[2]
   );
-  console.log("🚀 ~ selectedVariant:", selectedVariant);
   const [selectedContent, setSelectedContent] = useState({});
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
   const [setting, setSetting] = useState({});

@@ -51,6 +51,7 @@ import Buttons from "./_components/list-add-content/button";
 import Testimony from "./_components/list-add-content/testimony";
 import FAQ from "./_components/list-add-content/faq";
 import ViewFAQ from "./_components/view-content/ViewFAQ/index";
+import ViewFormCheckout from "./_components/view-content/ViewFormCheckout";
 
 const landingPage = {
   detail: {
@@ -293,6 +294,19 @@ const CustomLandingPage = () => {
             isFocused={focusedIndex === index}
             isPreview={isPreview}
             width={dimensions.width}
+          />
+        );
+      }
+
+      if (section.name === "form-checkout") {
+        return (
+          <ViewFormCheckout
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+            setPreviewSection={setPreviewSection}
           />
         );
       }

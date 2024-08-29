@@ -1,7 +1,5 @@
 import {
   CButton,
-  CCard,
-  CCardBody,
   CCol,
   CNav,
   CNavItem,
@@ -12,11 +10,12 @@ import {
   CTabs,
 } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
-import { IoAdd } from "react-icons/io5";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { DraggableList } from "../../common/DraggableList";
 import { createUniqueID } from "../../../../../lib/unique-id";
+import FormSection from "./form-section";
+import DesignSection from "./design-section";
 
 const FormCheckout = ({
   previewSection,
@@ -35,43 +34,10 @@ const FormCheckout = ({
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
   const [setting, setSetting] = useState({});
   const [iconBeforeEdit, setIconBeforeEdit] = useState([]);
-  const [previousIcon, setPreviousIcon] = useState("");
   const [isListIconVisible, setIsListIconVisible] = useState(false);
-
-  const editSection = useCallback(
-    (section) => {
-      setCurrentContentBeforeEdit([...previewSection]);
-      setSelectedContent(section);
-      setIsEditingContent(true);
-    },
-    [previewSection]
-  );
-
-  const removeSection = useRemoveSection(setPreviewSection);
-  const moveSection = useMoveSection(setPreviewSection);
-
-  const renderSection = useCallback(
-    (section) => {
-      return (
-        <div key={section.id}>
-          {section?.content?.map((contentItem, contentIndex) => (
-            <DraggableList
-              key={contentItem.id || contentIndex}
-              index={contentIndex}
-              id={contentItem.id}
-              showInfoText={contentItem.title}
-              moveSection={(dragIndex, hoverIndex) =>
-                moveSection(section.name, dragIndex, hoverIndex)
-              }
-              editSection={() => editSection(contentItem)}
-              removeSection={() => removeSection(section.id, contentIndex)}
-            />
-          ))}
-        </div>
-      );
-    },
-    [moveSection, editSection, removeSection]
-  );
+  const [previousIcon, setPreviousIcon] = useState("");
+  const [icon, setIcon] = useState(currentSection?.style?.icon || "");
+  const [imageUrl, setImageUrl] = useState(currentSection?.style?.image || "");
 
   const handleCancel = () => {
     if (isAddContent) {
@@ -138,18 +104,57 @@ const FormCheckout = ({
       id: uniqueId,
       name: "form-checkout",
       title: "Formulir Checkout",
+      content: [
+        {
+          id: "custom-01",
+          type: "Teks",
+          label: "Nama",
+          placeholder: "",
+        },
+      ],
       form: {
         information: {
-          visitior: "",
-          subcribe: false,
-          address: {
-            firstName: "",
-            lastName: "",
-            country: "",
-            postcalCode: "",
-            subdictrict: "",
+          visitor: {
+            email: "",
             phoneNumber: "",
+            subcribe: false,
           },
+          firstName: "",
+          lastName: "",
+          country: "",
+          postcalCode: "",
+          subdictrict: "",
+          phoneNumber: "",
+        },
+        formSetting: {
+          visitor: "",
+          isShowAddress: true,
+          lastName: false,
+          country: false,
+          postcalCode: false,
+          subdistrictType: "search",
+          amountLengthAddress: "1",
+          isShowPhoneNumber: false,
+          isDropshipping: false,
+          phoneNumberDropshipper: "",
+        },
+        style: {
+          labelColor: "",
+          textInputColor: "",
+          bgInputColor: "",
+          outlineInputColor: "",
+          widthForm: 450,
+          fontSizeLabel: 14,
+          fontStyle: "tw-font-normal",
+          fontSizeTextInputColor: 16,
+          outlineInputColorSize: 2,
+          borderRadius: 4,
+          distance: 6,
+          btnSubmitText: "Selesaikan Order",
+          btnSubmitColor: "#fa541c",
+          icon: "",
+          iconColor: "",
+          image: "",
         },
       },
     };
@@ -203,8 +208,7 @@ const FormCheckout = ({
                 </CNavItem>
               </CNav>
               <CTabContent
-                style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
-                className="pt-3"
+                style={{ height: 300, paddingRight: 5, overflowY: "auto" }}
               >
                 <CTabPane
                   style={{ overflowX: "hidden" }}
@@ -214,44 +218,30 @@ const FormCheckout = ({
                   Layout
                 </CTabPane>
                 <CTabPane className="p-1" data-tab="form">
-                  {!isAddContent && !isEditingContent && (
-                    <>
-                      <div>
-                        {previewSection
-                          .filter((section) =>
-                            isEditingSection
-                              ? section.id === currentSection.id
-                              : section.id === setting.id
-                          )
-                          .map((section, i) => renderSection(section, i))}
-                      </div>
-                      <CCard
-                        style={{ cursor: "pointer" }}
-                        onClick={() => setIsAddContent(true)}
-                      >
-                        <CCardBody className="p-1">
-                          <div className="d-flex align-items-center ">
-                            <IoAdd
-                              style={{
-                                cursor: "pointer",
-                                margin: "0px 10px 0px 6px",
-                              }}
-                              size={18}
-                            />
-
-                            <div>Tambah Konten</div>
-                          </div>
-                        </CCardBody>
-                      </CCard>
-                    </>
-                  )}
+                  <FormSection
+                    previewSection={previewSection}
+                    setPreviewSection={setPreviewSection}
+                    currentSection={isEditingSection ? currentSection : setting}
+                  />
                 </CTabPane>
                 <CTabPane
                   style={{ overflowX: "hidden" }}
                   className="p-1"
                   data-tab="desain"
                 >
-                  DESAIN
+                  <DesignSection
+                    previewSection={previewSection}
+                    setPreviewSection={setPreviewSection}
+                    currentSection={isEditingSection ? currentSection : setting}
+                    imageUrl={imageUrl}
+                    setImageUrl={setImageUrl}
+                    icon={icon}
+                    setPreviousIcon={setPreviousIcon}
+                    setIcon={setIcon}
+                    setIconBeforeEdit={setIconBeforeEdit}
+                    isListIconVisible={isListIconVisible}
+                    setIsListIconVisible={setIsListIconVisible}
+                  />
                 </CTabPane>
 
                 <CTabPane
