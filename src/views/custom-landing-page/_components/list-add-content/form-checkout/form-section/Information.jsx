@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import SelectOptions from "../../../common/SelectOptions";
-import Input from "../../../common/Input";
 
-const visitorOption = [
-  { value: "phone", label: "Telepon" },
+const visitorOptions = [
+  { value: "phoneNumber", label: "Telepon" },
   { value: "email", label: "Email" },
   { value: undefined, label: "Tidak Ada" },
+];
+
+const subcribeNewLetterOptions = [
+  { value: undefined, label: "Non Aktif" },
+  { value: false, label: "Default Tidak" },
+  { value: true, label: "Default Ya" },
 ];
 
 const formAddressOption = [
@@ -36,10 +41,10 @@ const subdistrictOption = [
 
 const amountLengthAddressOption = [
   { value: "1", label: "1" },
-  { value: "2", label: "2" },
-  { value: "3", label: "3" },
-  { value: "4", label: "4" },
-  { value: "5", label: "5" },
+  { value: 60, label: "2" },
+  { value: 80, label: "3" },
+  { value: 100, label: "4" },
+  { value: 120, label: "5" },
 ];
 
 const phoneNumberOptions = [
@@ -60,7 +65,10 @@ const phoneNumberDropshipperOptions = [
 ];
 
 const Information = ({ setPreviewSection, currentSection }) => {
-  const [visitor, setVisitor] = useState(visitorOption[0]);
+  const [visitor, setVisitor] = useState(visitorOptions[0]);
+  const [subcribeNewsletter, setSetsubcribeNewsletter] = useState(
+    subcribeNewLetterOptions[2]
+  );
   const [isAddressShow, setIsAddressShow] = useState(formAddressOption[0]);
   const [lastNameOption, setlastNameOption] = useState(lastNameOptions[0]);
   const [isCountryActive, setIsCountryActive] = useState(countryOption[0]);
@@ -108,16 +116,34 @@ const Information = ({ setPreviewSection, currentSection }) => {
           borderBottom: "0.5px solid #F5F5F5 ",
         }}
       >
-        <SelectOptions
-          label="Tamu checkout menggunakan"
-          options={visitorOption}
-          onChange={(selectedOption) => {
-            setVisitor(selectedOption);
-            handleChangeFormValue("visitor", selectedOption.value);
-          }}
-          value={visitor}
-          width="50"
-        />
+        <div style={{ gap: 10 }} className="d-flex align-items-center">
+          <SelectOptions
+            label="Tamu checkout menggunakan"
+            options={visitorOptions}
+            onChange={(selectedOption) => {
+              setVisitor(selectedOption);
+              handleChangeFormValue("visitor", selectedOption.value);
+            }}
+            value={visitor}
+            width="50"
+          />
+
+          {visitor.value === "email" && (
+            <SelectOptions
+              label="Berlangganan ke newsletter"
+              options={subcribeNewLetterOptions}
+              onChange={(selectedOption) => {
+                setSetsubcribeNewsletter(selectedOption);
+                handleChangeFormValue(
+                  "isSubcribeNewsletter",
+                  selectedOption.value
+                );
+              }}
+              value={subcribeNewsletter}
+              width="50"
+            />
+          )}
+        </div>
 
         <h5>Alamat</h5>
 
@@ -140,7 +166,7 @@ const Information = ({ setPreviewSection, currentSection }) => {
                 options={lastNameOptions}
                 onChange={(selectedOption) => {
                   setlastNameOption(selectedOption);
-                  handleChangeFormValue("lastName", selectedOption.value);
+                  handleChangeFormValue("isLastName", selectedOption.value);
                 }}
                 value={lastNameOption}
                 width="50"
@@ -151,7 +177,7 @@ const Information = ({ setPreviewSection, currentSection }) => {
                 options={countryOption}
                 onChange={(selectedOption) => {
                   setIsCountryActive(selectedOption);
-                  handleChangeFormValue("country", selectedOption.value);
+                  handleChangeFormValue("isCountry", selectedOption.value);
                 }}
                 value={isCountryActive}
                 width="50"
@@ -164,7 +190,7 @@ const Information = ({ setPreviewSection, currentSection }) => {
                 options={postalOption}
                 onChange={(selectedOption) => {
                   setPostcalCode(selectedOption);
-                  handleChangeFormValue("postcalCode", selectedOption.value);
+                  handleChangeFormValue("isPostcalCode", selectedOption.value);
                 }}
                 value={postcalCode}
                 width="50"

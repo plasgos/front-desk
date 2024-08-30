@@ -63,7 +63,11 @@ const FormCheckout = ({
       setIsEditingContent(false);
     } else if (isListIconVisible) {
       setIsListIconVisible(false);
-
+      if (imageUrl) {
+        setIcon(null);
+      } else {
+        setIcon(previousIcon);
+      }
       setPreviewSection([...iconBeforeEdit]);
     } else if (isEditingContent) {
       setPreviewSection([...currentContentBeforeEdit]);
@@ -105,51 +109,54 @@ const FormCheckout = ({
       name: "form-checkout",
       title: "Formulir Checkout",
       content: [
-        {
-          id: "custom-01",
-          type: "Teks",
-          label: "Nama",
-          placeholder: "",
-        },
+        // {
+        //   id: "custom-01",
+        //   type: "Teks",
+        //   label: "Nama",
+        //   placeholder: "",
+        // },
       ],
       form: {
         information: {
-          visitor: {
-            email: "",
-            phoneNumber: "",
-            subcribe: false,
-          },
+          emailVisitor: "",
+          subcribeNewsletter: true,
+          phoneNumberVisitor: "",
           firstName: "",
           lastName: "",
+          address: "",
           country: "",
           postcalCode: "",
           subdictrict: "",
           phoneNumber: "",
+          dropshipping: false,
+          dropshipperName: "",
+          dropshipperPhoneNumber: "",
         },
         formSetting: {
-          visitor: "",
+          visitor: "phoneNumber",
+          isSubcribeNewsletter: true,
           isShowAddress: true,
-          lastName: false,
-          country: false,
-          postcalCode: false,
+          isLastName: false,
+          isCountry: false,
+          isPostcalCode: false,
           subdistrictType: "search",
           amountLengthAddress: "1",
           isShowPhoneNumber: false,
           isDropshipping: false,
-          phoneNumberDropshipper: "",
+          phoneNumberDropshipper: false,
         },
         style: {
           labelColor: "",
           textInputColor: "",
           bgInputColor: "",
-          outlineInputColor: "",
+          outlineInputColor: "#D8DBE0",
           widthForm: 450,
-          fontSizeLabel: 14,
+          fontSizeLabel: 12,
           fontStyle: "tw-font-normal",
           fontSizeTextInputColor: 16,
-          outlineInputColorSize: 2,
+          outlineInputColorSize: 1,
           borderRadius: 4,
-          distance: 6,
+          distance: 0,
           btnSubmitText: "Selesaikan Order",
           btnSubmitColor: "#fa541c",
           icon: "",

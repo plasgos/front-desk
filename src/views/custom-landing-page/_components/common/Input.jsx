@@ -34,14 +34,14 @@ const Input = ({
           </div>
 
           <div className="input-group mb-3">
-            <div className="input-group-prepend">
+            <div className="input-group-prepend w-100">
               <span className="input-group-text" id="basic-addon1">
                 +62
               </span>
               <input
                 style={{ borderRadius: "0px 0.5rem 0.5rem 0px", height: 38 }}
                 aria-describedby="basic-addon1"
-                placeholder="8114002323"
+                placeholder="895787878"
                 value={value}
                 onChange={onChange}
                 type="number"

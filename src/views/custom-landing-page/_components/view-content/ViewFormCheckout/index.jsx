@@ -1,28 +1,118 @@
 import React, { forwardRef, useEffect, useState } from "react";
 import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack";
-import Input from "../../common/Input";
+import Checkbox from "../../common/Checkbox";
+import { Controller, useForm } from "react-hook-form";
+import InputFormCheckout from "../../common/InputFormCheckout";
+import { CButton } from "@coreui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { resetCheckCosts } from "../../../../../redux/modules/shipping/reducer";
+import { setReceiver } from "../../../../../redux/modules/package/reducer";
+import TextArea from "../../common/TextArea";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { SelectDistrict } from "../../common/SelectDistrict";
 
 const ViewFormCheckout = forwardRef(
   ({ isDragging, content, isResizing, isFocused, setPreviewSection }, ref) => {
+    const {
+      emailVisitor,
+      subcribeNewsletter,
+      phoneNumberVisitor,
+      firstName,
+      lastName,
+      address,
+      country,
+      postcalCode,
+      subdictrict,
+      phoneNumber,
+      dropshipping,
+      dropshipperName,
+      dropshipperPhoneNumber,
+    } = content.form.information || {};
+
+    const {
+      control,
+      handleSubmit,
+      formState: { isValid },
+    } = useForm({
+      defaultValues: {
+        emailVisitor: emailVisitor || "",
+        subcribeNewsletter: subcribeNewsletter || true,
+        phoneNumberVisitor: phoneNumberVisitor || "",
+        firstName: firstName || "",
+        lastName: lastName || "",
+        address: address || "",
+        country: country || "",
+        postcalCode: postcalCode || "",
+        subdictrict: subdictrict || "",
+        phoneNumber: phoneNumber || "",
+        isDropshipping: dropshipping || false,
+        dropshipperName: dropshipperName || "",
+        dropshipperPhoneNumber: dropshipperPhoneNumber || "",
+      },
+    });
+
+    const {
+      visitor,
+      isSubcribeNewsletter,
+      isShowAddress,
+      isLastName,
+      amountLengthAddress,
+      isPostcalCode,
+      isShowPhoneNumber,
+      subdistrictType,
+      isCountry,
+      isDropshipping,
+      phoneNumberDropshipper,
+    } = content?.form?.formSetting || {};
+
+    const {
+      labelColor,
+      textInputColor,
+      bgInputColor,
+      outlineInputColor,
+      widthForm,
+      fontSizeLabel,
+      fontStyle,
+      fontSizeTextInputColor,
+      outlineInputColorSize,
+      borderRadius,
+      distance,
+      btnSubmitText,
+      btnSubmitColor,
+      icon,
+      iconColor,
+      image,
+    } = content?.form?.style || {};
+
+    const dispatch = useDispatch();
+    const { receiver } = useSelector((state) => state.package);
+
+    const onSetSubdistrict = async (obj) => {
+      await dispatch(resetCheckCosts());
+      await dispatch(
+        setReceiver({
+          ...receiver,
+          subdistrict_id: obj.id,
+          district_id: obj.id,
+          Subdistrict: obj,
+        })
+      );
+    };
+
     const iconPack = useFontAwesomeIconPack();
     const [iconName, setIconName] = useState(null);
 
-    const [visitorEmail, setVisitorEmail] = useState(
-      content.form?.information?.email || ""
-    );
-
     useEffect(() => {
-      if (iconPack && content.form?.style?.icon) {
-        const iconToSet = content.form?.style?.icon || "";
+      if (iconPack) {
+        const iconToSet = icon || "";
         const iconExists = iconPack.some((icon) => icon.iconName === iconToSet);
-
         if (iconExists) {
           setIconName(iconToSet);
         } else {
-          setIconName(""); // Set default icon
+          setIconName(null); // Set default icon
         }
       }
-    }, [content.form.style.icon, iconPack]);
+    }, [icon, iconPack]);
 
     useEffect(() => {
       if (content.form?.style?.image) {
@@ -30,7 +120,8 @@ const ViewFormCheckout = forwardRef(
       }
     }, [content.form.style.image]);
 
-    const handleChangeFormValue = (key, value) => {
+    const onSubmit = (data) => {
+      console.log(data);
       setPreviewSection((arr) =>
         arr.map((item) =>
           String(item.id) === content.id
@@ -39,10 +130,7 @@ const ViewFormCheckout = forwardRef(
                 form: {
                   ...item.form,
                   information: {
-                    ...item.form.information,
-                    visitor: {
-                      [key]: value,
-                    },
+                    ...data,
                   },
                 },
               }
@@ -51,6 +139,19 @@ const ViewFormCheckout = forwardRef(
       );
     };
 
+    const inputStyle = {
+      labelColor,
+      textInputColor,
+      bgInputColor,
+      outlineInputColor,
+      widthForm,
+      fontSizeLabel,
+      fontStyle,
+      fontSizeTextInputColor,
+      outlineInputColorSize,
+      borderRadius,
+      distance,
+    };
     return (
       <div
         ref={ref}
@@ -61,20 +162,249 @@ const ViewFormCheckout = forwardRef(
           position: "relative",
           zIndex: 1,
         }}
-        className={`tw-w-full  tw-p-4 `}
+        className={`tw-w-full tw-flex tw-justify-center  tw-p-4 `}
       >
-        {content.form?.formSetting?.visitor === "email" && (
-          <Input
-            type="email"
-            label="Email"
-            value={visitorEmail}
-            onChange={(e) => {
-              const { value } = e.target;
-              setVisitorEmail(value);
-              handleChangeFormValue("email", value);
+        <form style={{ width: widthForm }} onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            {visitor === "email" && (
+              <div>
+                <InputFormCheckout
+                  style={inputStyle}
+                  type="email"
+                  label="Email"
+                  name="emailVisitor"
+                  control={control}
+                  placeholder="Doe"
+                  rules={{
+                    required: visitor ? "Email Harus Di isi" : false,
+                  }}
+                />
+
+                {isSubcribeNewsletter !== undefined && (
+                  <div style={{ marginTop: -8, marginBottom: 10 }}>
+                    <Controller
+                      name="subscribeNewsletter"
+                      control={control}
+                      render={({ field }) => (
+                        <Checkbox
+                          id="subscribeNewsletter"
+                          label="Berlangganan Ke Newsletter"
+                          checked={field.value}
+                          onChange={(e) => field.onChange(e.target.checked)}
+                        />
+                      )}
+                    />
+                  </div>
+                )}
+              </div>
+            )}
+
+            {visitor === "phoneNumber" && (
+              <div className="tw-w-full">
+                <InputFormCheckout
+                  style={inputStyle}
+                  type="number"
+                  label="No Telepon"
+                  name="phoneNumberVisitor"
+                  control={control}
+                  placeholder="895787784"
+                  rules={{
+                    required: visitor ? "No Telepon Harus Di isi" : false,
+                  }}
+                  isPhoneNumber
+                />
+              </div>
+            )}
+          </div>
+
+          {isShowAddress && (
+            <div>
+              <InputFormCheckout
+                style={inputStyle}
+                type="text"
+                label="Nama"
+                name="firstName"
+                control={control}
+                placeholder="John"
+                rules={{ required: "Nama Harus Di isi" }}
+              />
+              {isShowAddress && isLastName && (
+                <InputFormCheckout
+                  style={inputStyle}
+                  type="text"
+                  label="Nama Belakang"
+                  name="lastName"
+                  control={control}
+                  placeholder="Doe"
+                  rules={{
+                    required:
+                      isLastName === "required"
+                        ? "Nama Belakang Harus Di isi"
+                        : false,
+                  }}
+                />
+              )}
+
+              <div className="tw-mb-4">
+                <SelectDistrict
+                  label="Kota / Kabupaten"
+                  style={inputStyle}
+                  onSelectDistrict={onSetSubdistrict}
+                />
+              </div>
+
+              {isShowAddress && amountLengthAddress === "1" ? (
+                <InputFormCheckout
+                  style={inputStyle}
+                  type="text"
+                  label="Alamat"
+                  name="address"
+                  control={control}
+                  placeholder="Jl Layur 14"
+                  rules={{
+                    required: "Alamat  Harus Di isi",
+                  }}
+                />
+              ) : (
+                <TextArea
+                  type="text"
+                  label="Alamat"
+                  name="address"
+                  control={control}
+                  placeholder="Jl Layur 14"
+                  rules={{
+                    required: "Alamat  Harus Di isi",
+                  }}
+                  height={amountLengthAddress}
+                />
+              )}
+
+              {isShowAddress && isPostcalCode && (
+                <InputFormCheckout
+                  style={inputStyle}
+                  type="number"
+                  label="Kode Pos"
+                  name="postcalCode"
+                  control={control}
+                  placeholder="17530"
+                  rules={{
+                    required:
+                      isPostcalCode === "required"
+                        ? "Alamat  Harus Di isi"
+                        : false,
+                  }}
+                />
+              )}
+
+              {isShowAddress && isShowPhoneNumber && (
+                <InputFormCheckout
+                  style={inputStyle}
+                  type="number"
+                  label="No Telepon"
+                  name="phoneNumber"
+                  control={control}
+                  placeholder="Doe"
+                  rules={{
+                    required:
+                      isShowPhoneNumber === "required"
+                        ? "No Telepon Harus Di isi"
+                        : false,
+                  }}
+                  isPhoneNumber
+                />
+              )}
+
+              {isShowAddress && isDropshipping && (
+                <div style={{ marginTop: -8 }}>
+                  <Controller
+                    name="isDropshipping"
+                    control={control}
+                    render={({ field }) => (
+                      <Checkbox
+                        id="isDropshipping"
+                        label="Kirim sebagai dropshipper"
+                        checked={field.value}
+                        onChange={(e) => field.onChange(e.target.checked)}
+                      />
+                    )}
+                  />
+
+                  <div className="tw-mt-3">
+                    <InputFormCheckout
+                      style={inputStyle}
+                      type="text"
+                      label="Nama Dropshipper"
+                      name="dropshipperName"
+                      control={control}
+                      placeholder="Smith"
+                      rules={{
+                        required: isDropshipping ? "Nama Harus Di isi" : false,
+                      }}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {isShowAddress && phoneNumberDropshipper && (
+                <InputFormCheckout
+                  style={inputStyle}
+                  type="number"
+                  label="No Telepon Dropshipper"
+                  name="dropshipperPhoneNumber"
+                  control={control}
+                  placeholder="Doe"
+                  rules={{
+                    required:
+                      phoneNumberDropshipper === "required"
+                        ? "No Telepon Harus Di isi"
+                        : false,
+                  }}
+                  isPhoneNumber
+                />
+              )}
+            </div>
+          )}
+
+          <CButton
+            disabled={!isValid}
+            className="w-100"
+            style={{
+              backgroundColor: btnSubmitColor,
+              color: "white",
             }}
-          />
-        )}
+            type="submit"
+          >
+            <div className="tw-flex tw-justify-center tw-items-center tw-gap-x-3">
+              <div>
+                {iconName && (
+                  <div
+                    style={{
+                      color: iconColor,
+                    }}
+                  >
+                    <FontAwesomeIcon size="sm" icon={["fas", iconName]} />
+                  </div>
+                )}
+
+                {image && (
+                  <div
+                    style={{
+                      width: 50,
+                    }}
+                  >
+                    <img
+                      src={image}
+                      alt="icon"
+                      style={{ width: "100%", objectFit: "contain" }}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {btnSubmitText}
+            </div>
+          </CButton>
+        </form>
       </div>
     );
   }

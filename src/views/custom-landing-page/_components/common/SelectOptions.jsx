@@ -4,7 +4,9 @@ import Select from "react-select";
 const basicStyles = {
   groupHeading: (provided) => ({
     ...provided,
-    fontWeight: "bold",
+    color: "#000000", // Warna hitam
+    fontWeight: "bold", // Font tebal
+    fontSize: "14px", // Ukuran font lebih besar dari opsi
   }),
   control: (baseStyles, state) => ({
     ...baseStyles,

@@ -33,7 +33,7 @@ const DesignSection = ({
     currentSection?.form?.style?.bgInputColor || ""
   );
   const [outlineInputColor, setOutlineInputColor] = useState(
-    currentSection?.form?.style?.outlineInputColor || ""
+    currentSection?.form?.style?.outlineInputColor || "#D8DBE0"
   );
   const [widthForm, setWidthForm] = useState(
     currentSection?.form?.style?.widthForm || 450
@@ -49,13 +49,13 @@ const DesignSection = ({
     currentSection?.form?.style?.fontSizeTextInputColor || 16
   );
   const [outlineInputColorSize, setOutlineInputColorSize] = useState(
-    currentSection?.form?.style?.outlineInputColorSize || 2
+    currentSection?.form?.style?.outlineInputColorSize || 1
   );
   const [borderRadius, setBorderRadius] = useState(
     currentSection?.form?.style?.borderRadius || 4
   );
   const [distance, setDistance] = useState(
-    currentSection?.form?.style?.distance || 6
+    currentSection?.form?.style?.distance || 0
   );
   const [btnSubmitText, setBtnSubmitText] = useState(
     currentSection?.form?.style?.btnSubmitText || "Selesaikan Order"
@@ -235,10 +235,10 @@ const DesignSection = ({
               setWidthForm(newValue);
               handleChangeFormValue("widthForm", newValue);
             }}
-            min={0}
+            min={200}
             max={1240}
             onBlur={() =>
-              handleSetValueWhenBlur(widthForm, 0, 1240, "widthForm")
+              handleSetValueWhenBlur(widthForm, 200, 1240, "widthForm")
             }
           />
           <InputRangeWithNumber
