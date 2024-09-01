@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectOptions from "../../../common/SelectOptions";
+import { createUniqueID } from "../../../../../../lib/unique-id";
+import CustomFieldControl from "../common/CustomFieldControl";
+import Checkbox from "../../../common/Checkbox";
 
 const typeOptions = [
   {
     label: "Checkout",
     options: [
       {
-        value: "phoneNumber",
+        value: "phoneNumberC",
         label: "Telepon (C)",
       },
       {
@@ -14,15 +17,15 @@ const typeOptions = [
         label: "Nama Depan (C)",
       },
       {
-        value: "email",
+        value: "emailC",
         label: "Email (C)",
       },
       {
-        value: "district",
+        value: "subdistrict",
         label: "Kecamatan (C)",
       },
       {
-        value: "address",
+        value: "addressC",
         label: "Alamat (C)",
       },
       {
@@ -43,7 +46,7 @@ const typeOptions = [
         label: "Garis",
       },
       {
-        value: "space",
+        value: "emptySpace",
         label: "Ruang Kosong",
       },
     ],
@@ -128,22 +131,131 @@ const UpdateContent = ({
   setPreviewSection,
   isEditingContent,
 }) => {
-  const [typeOption, setTypeOption] = useState(typeOptions[0]);
+  const [typeOption, setTypeOption] = useState(
+    typeOptions
+      ?.flatMap((group) => group.options)
+      .find((opt) => opt.value === currentContent?.type) ||
+      typeOptions[2].options[0]
+  );
+  const [isRequired, setIsRequired] = useState(
+    currentContent?.isRequired || true
+  );
 
-  const handleChangeContent = (key, value) => {
+  const [setting, setSetting] = useState({});
+  const commonConfig = {
+    isRequired,
+    label: "Nama",
+    placeholder: "",
+    defaultValue: "",
+  };
+
+  const payloadConfig = {
+    phoneNumber: {
+      ...commonConfig,
+      placeholder: "895070089",
+    },
+    phoneNumberC: {
+      ...commonConfig,
+      placeholder: "895070089",
+    },
+    firstName: {
+      ...commonConfig,
+      placeholder: "John",
+    },
+    email: {
+      ...commonConfig,
+      placeholder: "user@email.com",
+    },
+    emailC: {
+      ...commonConfig,
+      placeholder: "user@email.com",
+    },
+    subdistrict: {
+      label: "Kota / Kabupaten",
+      placeholder: "Masukan Kecamatan / Kota",
+      design: "search",
+    },
+    addressC: {
+      ...commonConfig,
+      placeholder: "Jl Layur 1",
+      minLength: "",
+    },
+    postalCode: {
+      ...commonConfig,
+      placeholder: "14400",
+    },
+    divider: {
+      label: "Nama",
+      fontSize: 12,
+    },
+    line: {
+      label: "Nama",
+      height: 2,
+      emptySpace: 8,
+      width: 4,
+    },
+    emptySpace: {
+      label: "Nama",
+      height: 24,
+    },
+    text: {
+      ...commonConfig,
+    },
+    longText: {
+      ...commonConfig,
+      minLength: "",
+    },
+  };
+
+  const handleChangeType = (selectedOptionValue) => {
+    const specificPayload = payloadConfig[selectedOptionValue] || {};
+
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === idSection
           ? {
               ...item,
               content: item.content.map((contentItem) => {
-                return String(contentItem.id) === String(currentContent.id)
+                const contentIdToCheck = isEditingContent
+                  ? currentContent.id
+                  : setting.id;
+                return String(contentItem.id) === String(contentIdToCheck)
+                  ? {
+                      id: contentIdToCheck,
+                      type: selectedOptionValue,
+                      ...specificPayload,
+                    }
+                  : contentItem;
+              }),
+            }
+          : item
+      )
+    );
+
+    if (!isEditingContent) {
+      setSetting(() => ({
+        id: setting.id,
+        type: selectedOptionValue,
+        ...specificPayload,
+      }));
+    }
+  };
+
+  const handleChangeValueContent = (key, value) => {
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === idSection
+          ? {
+              ...item,
+              content: item.content.map((contentItem) => {
+                const contentIdToCheck = isEditingContent
+                  ? currentContent.id
+                  : setting.id;
+
+                return String(contentItem.id) === String(contentIdToCheck)
                   ? {
                       ...contentItem,
-                      content: {
-                        ...contentItem.content,
-                        [key]: value,
-                      },
+                      [key]: value,
                     }
                   : contentItem;
               }),
@@ -153,6 +265,35 @@ const UpdateContent = ({
     );
   };
 
+  const handleAddContent = () => {
+    let uniqueId = createUniqueID(currentContent);
+    let payload = {
+      id: uniqueId,
+      type: typeOption.value,
+      isRequired: false,
+      label: "Nama",
+      placeholder: "Smith Grind",
+      defaultValue: "",
+    };
+
+    setPreviewSection((prevSections) =>
+      prevSections.map((section) =>
+        section.id === idSection
+          ? { ...section, content: [...section.content, payload] }
+          : section
+      )
+    );
+
+    setSetting(payload);
+  };
+
+  useEffect(() => {
+    if (!isEditingContent) {
+      handleAddContent();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isEditingContent]);
+
   return (
     <div>
       <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
@@ -161,12 +302,39 @@ const UpdateContent = ({
           options={typeOptions}
           onChange={(selectedOption) => {
             setTypeOption(selectedOption);
-            handleChangeContent("type", selectedOption.value);
+            handleChangeType(selectedOption.value);
           }}
           value={typeOption}
           width="50"
         />
+
+        <Checkbox
+          disabled={typeOption.value === "subdistrict"}
+          checked={isRequired}
+          id={"isReuired"}
+          label="Diharuskan"
+          onChange={(e) => {
+            const { checked } = e.target;
+            setIsRequired(checked);
+            handleChangeValueContent("isRequired", checked);
+          }}
+        />
       </div>
+
+      {(typeOption.value === "text" ||
+        typeOption.value === "postalCode" ||
+        typeOption.value === "addressC" ||
+        typeOption.value === "subdistrict" ||
+        typeOption.value === "longText" ||
+        typeOption.value === "firstName" ||
+        typeOption.value.includes("email") ||
+        typeOption.value.includes("phoneNumber")) && (
+        <CustomFieldControl
+          currentContent={isEditingContent ? currentContent : setting}
+          handleChangeValueContent={handleChangeValueContent}
+          typeOptionValue={typeOption.value}
+        />
+      )}
     </div>
   );
 };

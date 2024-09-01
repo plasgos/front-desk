@@ -4,7 +4,12 @@ import { useSelector, useDispatch } from "react-redux";
 import AsyncSelect from "react-select/async";
 import { getSubdistrict } from "../../../../redux/modules/addresses/actions/actions";
 
-export const SelectDistrict = ({ onSelectDistrict, label, style }) => {
+export const SelectDistrict = ({
+  onSelectDistrict,
+  label,
+  placeholder,
+  style,
+}) => {
   const {
     labelColor,
     textInputColor,
@@ -68,7 +73,7 @@ export const SelectDistrict = ({ onSelectDistrict, label, style }) => {
         loadOptions={loadOptions}
         defaultOptions
         onChange={handleSelectChange}
-        placeholder="Masukan Kecamatan / Kota"
+        placeholder={placeholder}
         theme={(theme) => ({
           ...theme,
           colors: {

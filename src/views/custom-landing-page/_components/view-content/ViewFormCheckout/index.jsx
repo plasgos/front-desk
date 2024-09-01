@@ -10,6 +10,7 @@ import { setReceiver } from "../../../../../redux/modules/package/reducer";
 import TextArea from "../../common/TextArea";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SelectDistrict } from "../../common/SelectDistrict";
+import ViewCustomField from "../../list-add-content/form-checkout/common/ViewCustomField";
 
 const ViewFormCheckout = forwardRef(
   ({ isDragging, content, isResizing, isFocused, setPreviewSection }, ref) => {
@@ -217,6 +218,17 @@ const ViewFormCheckout = forwardRef(
             )}
           </div>
 
+          {content?.content?.map((section) => (
+            <div key={section.id}>
+              <ViewCustomField
+                section={section}
+                inputStyle={inputStyle}
+                control={control}
+                onSetSubdistrict={onSetSubdistrict}
+              />
+            </div>
+          ))}
+
           {isShowAddress && (
             <div>
               <InputFormCheckout
@@ -248,6 +260,7 @@ const ViewFormCheckout = forwardRef(
               <div className="tw-mb-4">
                 <SelectDistrict
                   label="Kota / Kabupaten"
+                  placeholder="Masukan Kecamatan / Kota"
                   style={inputStyle}
                   onSelectDistrict={onSetSubdistrict}
                 />
@@ -267,6 +280,7 @@ const ViewFormCheckout = forwardRef(
                 />
               ) : (
                 <TextArea
+                  style={inputStyle}
                   type="text"
                   label="Alamat"
                   name="address"
@@ -366,7 +380,7 @@ const ViewFormCheckout = forwardRef(
           )}
 
           <CButton
-            disabled={!isValid}
+            // disabled={!isValid}
             className="w-100"
             style={{
               backgroundColor: btnSubmitColor,

@@ -9,10 +9,8 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import React, { useCallback, useEffect, useState } from "react";
-import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
-import { useMoveSection } from "../../../../../hooks/useMoveSection";
-import { DraggableList } from "../../common/DraggableList";
+import React, { useEffect, useState } from "react";
+
 import { createUniqueID } from "../../../../../lib/unique-id";
 import FormSection from "./form-section";
 import DesignSection from "./design-section";
@@ -29,8 +27,8 @@ const FormCheckout = ({
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
   const [isSelectVariant, setIsSelectVariant] = useState(false);
-  const [selectedVariant, setSelectedVariant] = useState([]);
-  const [selectedContent, setSelectedContent] = useState({});
+  // const [selectedVariant, setSelectedVariant] = useState([]);
+  // const [selectedContent, setSelectedContent] = useState({});
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
   const [setting, setSetting] = useState({});
   const [iconBeforeEdit, setIconBeforeEdit] = useState([]);
@@ -108,14 +106,7 @@ const FormCheckout = ({
       id: uniqueId,
       name: "form-checkout",
       title: "Formulir Checkout",
-      content: [
-        // {
-        //   id: "custom-01",
-        //   type: "Teks",
-        //   label: "Nama",
-        //   placeholder: "",
-        // },
-      ],
+      content: [],
       form: {
         information: {
           emailVisitor: "",
@@ -229,6 +220,11 @@ const FormCheckout = ({
                     previewSection={previewSection}
                     setPreviewSection={setPreviewSection}
                     currentSection={isEditingSection ? currentSection : setting}
+                    setCurrentContentBeforeEdit={setCurrentContentBeforeEdit}
+                    isAddContent={isAddContent}
+                    setIsAddContent={setIsAddContent}
+                    isEditingContent={isEditingContent}
+                    setIsEditingContent={setIsEditingContent}
                   />
                 </CTabPane>
                 <CTabPane

@@ -13,7 +13,6 @@ const InputFormCheckout = ({
   readOnly,
   isPhoneNumber,
 }) => {
-  console.log("🚀 ~ style:", style);
   const {
     labelColor,
     textInputColor,
@@ -83,7 +82,7 @@ const InputFormCheckout = ({
                       borderStyle: "solid",
                     }}
                     aria-describedby="basic-addon1"
-                    placeholder="895787878"
+                    placeholder={placeholder}
                     type="number"
                     className="form-control"
                     onKeyDown={handleKeyDown}

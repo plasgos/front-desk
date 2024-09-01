@@ -52,6 +52,7 @@ import Testimony from "./_components/list-add-content/testimony";
 import FAQ from "./_components/list-add-content/faq";
 import ViewFAQ from "./_components/view-content/ViewFAQ/index";
 import ViewFormCheckout from "./_components/view-content/ViewFormCheckout";
+import FormCheckout from "./_components/list-add-content/form-checkout";
 
 const landingPage = {
   detail: {
@@ -492,6 +493,23 @@ const CustomLandingPage = () => {
       ) {
         return (
           <FAQ
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "form-checkout" &&
+        section.name === "form-checkout" &&
+        editing.id === section.id
+      ) {
+        return (
+          <FormCheckout
             currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}

@@ -35,8 +35,8 @@ const postalOption = [
 ];
 
 const subdistrictOption = [
-  { value: "menu", label: "Menu" },
   { value: "search", label: "Pencarian" },
+  { value: "menu", label: "Menu" },
 ];
 
 const amountLengthAddressOption = [
@@ -73,9 +73,7 @@ const Information = ({ setPreviewSection, currentSection }) => {
   const [lastNameOption, setlastNameOption] = useState(lastNameOptions[0]);
   const [isCountryActive, setIsCountryActive] = useState(countryOption[0]);
   const [postcalCode, setPostcalCode] = useState(postalOption[0]);
-  const [subdictrictType, setSetsubdictrictType] = useState(
-    subdistrictOption[0]
-  );
+  const [subdictrictType, setSubdictrictType] = useState(subdistrictOption[0]);
   const [lengthAddress, setLengthAddress] = useState(
     amountLengthAddressOption[0]
   );
@@ -200,7 +198,7 @@ const Information = ({ setPreviewSection, currentSection }) => {
                 label="Tipe Input Kecamatan"
                 options={subdistrictOption}
                 onChange={(selectedOption) => {
-                  setSetsubdictrictType(selectedOption);
+                  setSubdictrictType(selectedOption);
                   handleChangeFormValue(
                     "subdistrictType",
                     selectedOption.value

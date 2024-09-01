@@ -19,21 +19,22 @@ import UpdateContent from "./UpdateContent";
 const FormSection = ({
   previewSection,
   setPreviewSection,
-  isEditingSection,
   currentSection,
+  setCurrentContentBeforeEdit,
+  isAddContent,
+  setIsAddContent,
+  isEditingContent,
+  setIsEditingContent,
 }) => {
   const [activeTab, setActiveTab] = useState("information");
-  const [isAddContent, setIsAddContent] = useState(false);
-  const [isEditingContent, setIsEditingContent] = useState(false);
   const [selectedContent, setSelectedContent] = useState({});
-  const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
-
   const editSection = useCallback(
     (section) => {
       setCurrentContentBeforeEdit([...previewSection]);
       setSelectedContent(section);
+      setIsEditingContent(true);
     },
-    [previewSection]
+    [previewSection, setCurrentContentBeforeEdit, setIsEditingContent]
   );
 
   const removeSection = useRemoveSection(setPreviewSection);
