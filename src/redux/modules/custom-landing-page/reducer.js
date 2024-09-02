@@ -72,6 +72,8 @@ const initialState = {
       ],
     },
   ],
+  isSelectVariantMultiSelect: false,
+  isSelectVariantSelectOption: false,
 };
 
 export default (state = initialState, action) => {
@@ -103,6 +105,16 @@ export default (state = initialState, action) => {
           (option) => option.id !== action.payload
         ),
       };
+    case types.IS_SELECT_VARIANT_MULTISELECT:
+      return {
+        ...state,
+        isSelectVariantMultiSelect: action.payload,
+      };
+    case types.IS_SELECT_VARIANT_SELECT_OPTION:
+      return {
+        ...state,
+        isSelectVariantSelectOption: action.payload,
+      };
 
     default:
       return state;
@@ -120,4 +132,14 @@ export const setOptionsScrollTarget = (payload) => ({
 export const removeOptionScrollTarget = (id) => ({
   type: types.REMOVE_OPTIONS_SCROLL_TARGET,
   payload: id,
+});
+
+export const setIsSelectVariantMultiSelect = (isMultiSelect) => ({
+  type: types.IS_SELECT_VARIANT_MULTISELECT,
+  payload: isMultiSelect,
+});
+
+export const setIsSelectVariantSelectOption = (isSelectOption) => ({
+  type: types.IS_SELECT_VARIANT_SELECT_OPTION,
+  payload: isSelectOption,
 });

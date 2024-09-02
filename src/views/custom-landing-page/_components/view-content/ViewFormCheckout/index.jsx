@@ -16,7 +16,7 @@ const ViewFormCheckout = forwardRef(
   ({ isDragging, content, isResizing, isFocused, setPreviewSection }, ref) => {
     const {
       emailVisitor,
-      subcribeNewsletter,
+      subscribeNewsletter,
       phoneNumberVisitor,
       firstName,
       lastName,
@@ -37,7 +37,7 @@ const ViewFormCheckout = forwardRef(
     } = useForm({
       defaultValues: {
         emailVisitor: emailVisitor || "",
-        subcribeNewsletter: subcribeNewsletter || true,
+        subscribeNewsletter: subscribeNewsletter || false,
         phoneNumberVisitor: phoneNumberVisitor || "",
         firstName: firstName || "",
         lastName: lastName || "",
@@ -54,7 +54,7 @@ const ViewFormCheckout = forwardRef(
 
     const {
       visitor,
-      isSubcribeNewsletter,
+      isSubscribeNewsletter,
       isShowAddress,
       isLastName,
       amountLengthAddress,
@@ -121,8 +121,26 @@ const ViewFormCheckout = forwardRef(
       }
     }, [content.form.style.image]);
 
+    const removeEmptyValues = (obj) => {
+      return Object.fromEntries(
+        Object.entries(obj)
+          .map(([key, value]) =>
+            value && typeof value === "object"
+              ? [key, removeEmptyValues(value)] // Rekursif untuk nested object
+              : [key, value]
+          )
+          .filter(
+            ([_, value]) =>
+              value !== "" && value !== null && value !== undefined
+          )
+      );
+    };
+
     const onSubmit = (data) => {
-      console.log(data);
+      const filteredData = removeEmptyValues(data);
+
+      console.log("🚀 ~ onSubmit ~ filteredData:", filteredData);
+
       setPreviewSection((arr) =>
         arr.map((item) =>
           String(item.id) === content.id
@@ -131,7 +149,7 @@ const ViewFormCheckout = forwardRef(
                 form: {
                   ...item.form,
                   information: {
-                    ...data,
+                    ...filteredData,
                   },
                 },
               }
@@ -181,7 +199,7 @@ const ViewFormCheckout = forwardRef(
                   }}
                 />
 
-                {isSubcribeNewsletter !== undefined && (
+                {isSubscribeNewsletter !== undefined && (
                   <div style={{ marginTop: -8, marginBottom: 10 }}>
                     <Controller
                       name="subscribeNewsletter"

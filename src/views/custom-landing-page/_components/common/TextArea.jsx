@@ -11,6 +11,7 @@ const TextArea = ({
   type = "text",
   placeholder,
   height,
+  minLength,
 }) => {
   const {
     labelColor,
@@ -43,6 +44,7 @@ const TextArea = ({
         render={({ field, fieldState: { error } }) => (
           <>
             <textarea
+              minLength={+minLength}
               style={{
                 height: height,
                 borderRadius,

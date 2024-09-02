@@ -4,6 +4,12 @@ import { createUniqueID } from "../../../../../../lib/unique-id";
 import CustomFieldControl from "../common/CustomFieldControl";
 import Checkbox from "../../../common/Checkbox";
 
+import DividerControl from "../common/DividerControl";
+import LineControl from "../common/LineControl";
+import EmptySpaceControl from "../common/EmptySpaceControl";
+import Input from "../../../common/Input";
+import MultiSelectControl from "../common/MultiSelectControl";
+
 const typeOptions = [
   {
     label: "Checkout",
@@ -141,11 +147,15 @@ const UpdateContent = ({
     currentContent?.isRequired || true
   );
 
+  const [checkboxLabel, setCheckboxLabel] = useState(
+    currentContent?.label || "Nama"
+  );
+
   const [setting, setSetting] = useState({});
   const commonConfig = {
     isRequired,
     label: "Nama",
-    placeholder: "",
+    placeholder: "John",
     defaultValue: "",
   };
 
@@ -204,6 +214,15 @@ const UpdateContent = ({
     longText: {
       ...commonConfig,
       minLength: "",
+    },
+    checkbox: {
+      label: "Nama",
+      isRequired: true,
+    },
+    multiSelect: {
+      designId: "1",
+      label: "Nama",
+      options: [],
     },
   };
 
@@ -311,7 +330,7 @@ const UpdateContent = ({
         <Checkbox
           disabled={typeOption.value === "subdistrict"}
           checked={isRequired}
-          id={"isReuired"}
+          id={"isRequired"}
           label="Diharuskan"
           onChange={(e) => {
             const { checked } = e.target;
@@ -333,6 +352,47 @@ const UpdateContent = ({
           currentContent={isEditingContent ? currentContent : setting}
           handleChangeValueContent={handleChangeValueContent}
           typeOptionValue={typeOption.value}
+        />
+      )}
+
+      {typeOption.value === "divider" && (
+        <DividerControl
+          currentContent={isEditingContent ? currentContent : setting}
+          handleChangeValueContent={handleChangeValueContent}
+        />
+      )}
+
+      {typeOption.value === "line" && (
+        <LineControl
+          currentContent={isEditingContent ? currentContent : setting}
+          handleChangeValueContent={handleChangeValueContent}
+        />
+      )}
+
+      {typeOption.value === "emptySpace" && (
+        <EmptySpaceControl
+          currentContent={isEditingContent ? currentContent : setting}
+          handleChangeValueContent={handleChangeValueContent}
+        />
+      )}
+
+      {typeOption.value === "checkbox" && (
+        <Input
+          type="text"
+          value={checkboxLabel}
+          label="Nama"
+          onChange={(e) => {
+            const { value } = e.target;
+            setCheckboxLabel(value);
+            handleChangeValueContent("label", value);
+          }}
+        />
+      )}
+
+      {typeOption.value === "multiSelect" && (
+        <MultiSelectControl
+          currentContent={isEditingContent ? currentContent : setting}
+          handleChangeValueContent={handleChangeValueContent}
         />
       )}
     </div>

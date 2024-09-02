@@ -12,7 +12,6 @@ const CustomFieldControl = ({
   handleChangeValueContent,
   typeOptionValue,
 }) => {
-  console.log("🚀 ~ currentContent:", currentContent);
   const [subdictrictType, setSubdictrictType] = useState(
     subdistrictOption?.find((opt) => opt.value === currentContent.design) ||
       subdistrictOption[0]
@@ -27,13 +26,15 @@ const CustomFieldControl = ({
     currentContent?.defaultValue || ""
   );
 
+  const [minLength, setMinLength] = useState(currentContent?.minLength || "");
+
   useEffect(() => {
     setPlaceholder(currentContent?.placeholder || "");
     setLabel(currentContent?.label || "");
     setDefaultValue(currentContent?.defaultValue || "");
+    setMinLength(currentContent?.minLength || "");
   }, [currentContent]);
 
-  const [minLength, setMinLength] = useState(currentContent?.minLength || "");
   return (
     <div>
       {typeOptionValue === "subdistrict" && (

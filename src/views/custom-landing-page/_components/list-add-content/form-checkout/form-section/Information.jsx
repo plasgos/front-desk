@@ -67,7 +67,7 @@ const phoneNumberDropshipperOptions = [
 const Information = ({ setPreviewSection, currentSection }) => {
   const [visitor, setVisitor] = useState(visitorOptions[0]);
   const [subcribeNewsletter, setSetsubcribeNewsletter] = useState(
-    subcribeNewLetterOptions[2]
+    subcribeNewLetterOptions[1]
   );
   const [isAddressShow, setIsAddressShow] = useState(formAddressOption[0]);
   const [lastNameOption, setlastNameOption] = useState(lastNameOptions[0]);
@@ -133,7 +133,7 @@ const Information = ({ setPreviewSection, currentSection }) => {
               onChange={(selectedOption) => {
                 setSetsubcribeNewsletter(selectedOption);
                 handleChangeFormValue(
-                  "isSubcribeNewsletter",
+                  "isSubscribeNewsletter",
                   selectedOption.value
                 );
               }}

@@ -8,6 +8,7 @@ const Input = ({
   placeholder,
   readOnly,
   isPhoneNumber,
+  onBlur,
 }) => {
   const handleKeyDown = (e) => {
     // Cegah input jika bukan angka, backspace, atau tombol navigasi
@@ -61,6 +62,7 @@ const Input = ({
             className="form-control"
             placeholder={placeholder}
             readOnly={readOnly}
+            onBlur={onBlur}
           />
         </div>
       )}

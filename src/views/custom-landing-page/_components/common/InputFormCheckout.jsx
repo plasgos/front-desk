@@ -43,7 +43,7 @@ const InputFormCheckout = ({
     <>
       {isPhoneNumber ? (
         <div style={{ marginBottom: 16 + distance }} className="form-group ">
-          <div className="d-flex align-items-center mb-2">
+          <div className="d-flex align-items-center">
             <label
               className={`${fontStyle}`}
               style={{ fontSize: fontSizeLabel, color: labelColor }}

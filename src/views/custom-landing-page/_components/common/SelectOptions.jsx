@@ -22,11 +22,13 @@ const SelectOptions = ({
   width = "50",
   customStyles,
   positionShown,
+  menuIsOpen,
 }) => {
   return (
     <div className={`form-group w-${width} `}>
       <label style={{ fontSize: 12 }}>{label}</label>
       <Select
+        menuIsOpen={menuIsOpen}
         theme={(theme) => ({
           ...theme,
           colors: {

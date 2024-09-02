@@ -14,6 +14,11 @@ import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import FormSection from "./form-section";
 import DesignSection from "./design-section";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsSelectVariantMultiSelect,
+  setIsSelectVariantSelectOption,
+} from "../../../../../redux/modules/custom-landing-page/reducer";
 
 const FormCheckout = ({
   previewSection,
@@ -26,9 +31,12 @@ const FormCheckout = ({
   const [activeTab, setActiveTab] = useState("form");
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
-  const [isSelectVariant, setIsSelectVariant] = useState(false);
-  // const [selectedVariant, setSelectedVariant] = useState([]);
-  // const [selectedContent, setSelectedContent] = useState({});
+  // const [isSelectVariant, setIsSelectVariant] = useState(false);
+
+  const { isSelectVariantMultiSelect, isSelectVariantSelectOption } =
+    useSelector((state) => state.customLandingPage);
+  const dispatch = useDispatch();
+
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
   const [setting, setSetting] = useState({});
   const [iconBeforeEdit, setIconBeforeEdit] = useState([]);
@@ -38,7 +46,7 @@ const FormCheckout = ({
   const [imageUrl, setImageUrl] = useState(currentSection?.style?.image || "");
 
   const handleCancel = () => {
-    if (isAddContent) {
+    if (isAddContent && !isSelectVariantMultiSelect) {
       setIsAddContent(false);
       setIsEditingContent(false);
       setPreviewSection((prevSections) =>
@@ -55,10 +63,9 @@ const FormCheckout = ({
             : section;
         })
       );
-    } else if (isSelectVariant) {
-      setIsSelectVariant(false);
-      setIsAddContent(false);
-      setIsEditingContent(false);
+    } else if (isSelectVariantMultiSelect || isSelectVariantSelectOption) {
+      dispatch(setIsSelectVariantMultiSelect(false));
+      dispatch(setIsSelectVariantSelectOption(false));
     } else if (isListIconVisible) {
       setIsListIconVisible(false);
       if (imageUrl) {
@@ -88,13 +95,15 @@ const FormCheckout = ({
     if (
       isAddContent ||
       isEditingContent ||
-      isSelectVariant ||
+      isSelectVariantMultiSelect ||
       isListIconVisible
     ) {
+      dispatch(setIsSelectVariantMultiSelect(false));
+      dispatch(setIsSelectVariantSelectOption(false));
+      setIsListIconVisible(false);
+    } else if (isAddContent && !isSelectVariantMultiSelect) {
       setIsAddContent(false);
       setIsEditingContent(false);
-      setIsSelectVariant(false);
-      setIsListIconVisible(false);
     } else {
       isShowContent(false);
     }
@@ -110,7 +119,7 @@ const FormCheckout = ({
       form: {
         information: {
           emailVisitor: "",
-          subcribeNewsletter: true,
+          subscribeNewsletter: false,
           phoneNumberVisitor: "",
           firstName: "",
           lastName: "",
@@ -125,7 +134,7 @@ const FormCheckout = ({
         },
         formSetting: {
           visitor: "phoneNumber",
-          isSubcribeNewsletter: true,
+          isSubscribeNewsletter: false,
           isShowAddress: true,
           isLastName: false,
           isCountry: false,
@@ -137,8 +146,8 @@ const FormCheckout = ({
           phoneNumberDropshipper: false,
         },
         style: {
-          labelColor: "",
-          textInputColor: "",
+          labelColor: "#000000",
+          textInputColor: "#000000",
           bgInputColor: "",
           outlineInputColor: "#D8DBE0",
           widthForm: 450,

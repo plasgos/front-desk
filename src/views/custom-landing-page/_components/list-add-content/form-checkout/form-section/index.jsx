@@ -6,6 +6,7 @@ import {
   CNav,
   CNavItem,
   CNavLink,
+  CTabContent,
   CTabPane,
   CTabs,
 } from "@coreui/react";
@@ -66,18 +67,40 @@ const FormSection = ({
   return (
     <div>
       {isAddContent ? (
-        <UpdateContent
-          idSection={currentSection.id}
-          currentContent={[]}
-          setPreviewSection={setPreviewSection}
-        />
+        <CTabs>
+          <CTabContent
+            style={{
+              height: 340,
+              overflowY: "auto",
+              overflowX: "hidden",
+            }}
+            className="mt-2"
+          >
+            <UpdateContent
+              idSection={currentSection.id}
+              currentContent={[]}
+              setPreviewSection={setPreviewSection}
+            />
+          </CTabContent>
+        </CTabs>
       ) : isEditingContent ? (
-        <UpdateContent
-          idSection={currentSection.id}
-          currentContent={selectedContent}
-          setPreviewSection={setPreviewSection}
-          isEditingContent={true}
-        />
+        <CTabs>
+          <CTabContent
+            style={{
+              height: 340,
+              overflowY: "auto",
+              overflowX: "hidden",
+            }}
+            className="mt-2"
+          >
+            <UpdateContent
+              idSection={currentSection.id}
+              currentContent={selectedContent}
+              setPreviewSection={setPreviewSection}
+              isEditingContent={true}
+            />
+          </CTabContent>
+        </CTabs>
       ) : (
         <CTabs activeTab={activeTab}>
           <CNav variant="tabs">

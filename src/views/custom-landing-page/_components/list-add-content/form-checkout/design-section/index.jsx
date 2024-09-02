@@ -24,10 +24,10 @@ const DesignSection = ({
   setPreviousIcon,
 }) => {
   const [labelColor, setLabelColor] = useState(
-    currentSection?.form?.style?.labelColor || ""
+    currentSection?.form?.style?.labelColor || "#000000"
   );
   const [textInputColor, setTextInputColor] = useState(
-    currentSection?.form?.style?.textInputColor || ""
+    currentSection?.form?.style?.textInputColor || "#000000"
   );
   const [bgInputColor, setBgInputColor] = useState(
     currentSection?.form?.style?.bgInputColor || ""
