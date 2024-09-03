@@ -1,9 +1,15 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Input from "../../../common/Input";
 import SelectOptions from "../../../common/SelectOptions";
 import SelectVariant from "../../../common/SelectVariant";
 import { useDispatch, useSelector } from "react-redux";
 import { setIsSelectVariantMultiSelect } from "../../../../../../redux/modules/custom-landing-page/reducer";
+import { useRemoveOption } from "../hooks/removeOption";
+import { useMoveOption } from "../hooks/moveOption";
+import { CButton } from "@coreui/react";
+import { IoAdd } from "react-icons/io5";
+import { DraggableListOption } from "./DraggableListOption";
+import { createUniqueID } from "../../../../../../lib/unique-id";
 
 const optionVariant = [
   {
@@ -31,63 +37,129 @@ const flattenedOptions = optionVariant.flatMap((group) =>
 );
 
 const MultiSelectControl = ({
+  idSection,
   currentContent,
   handleChangeValueContent,
+  previewSection,
   setPreviewSection,
 }) => {
   const [label, setLabel] = useState(currentContent?.label || "Nama");
+
+  const [optionCounter, setOptionCounter] = useState(1);
 
   const [selectedVariant, setSelectedVariant] = useState(
     flattenedOptions.find(
       (option) => option.id === currentContent.designId || flattenedOptions[0]
     )
   );
-  console.log("🚀 ~ selectedVariant:", selectedVariant);
-
   const { isSelectVariantMultiSelect } = useSelector(
     (state) => state.customLandingPage
   );
-  console.log("🚀 ~ isSelectVariantMultiSelect:", isSelectVariantMultiSelect);
 
   const dispacth = useDispatch();
 
   const handleVariantChange = (group, option) => {
     setSelectedVariant({ ...option, group });
-    // setPreviewSection((arr) =>
+    setPreviewSection((prevSections) =>
+      prevSections.map((section) => {
+        if (section.id === idSection) {
+          return {
+            ...section,
+            content: section.content.map((contentItem) => {
+              if (contentItem.type === "multiSelect") {
+                return {
+                  ...contentItem,
+                  designId: option.id,
+                };
+              }
 
-    //   arr.map((item) => {
-    //     const contentIdToCheck = isEditingSection
-    //       ? currentSection.id
-    //       : setting.id;
-
-    //     return String(item.id) === contentIdToCheck
-    //       ? {
-    //           ...item,
-    //           variant: {
-    //             ...item.variant,
-    //             group,
-    //             id: option.id,
-    //             name: option.value,
-    //             style,
-    //           },
-    //         }
-    //       : item;
-    //   })
-    // );
-
-    // if (!isEditingSection) {
-    //   setSetting((prev) => ({
-    //     ...prev,
-    //     variant: {
-    //       ...prev.variant,
-    //       group,
-    //       id: option.id,
-    //       name: option.value,
-    //       style,
-    //     },
-    //   }));
-    // }
+              return contentItem;
+            }),
+          };
+        }
+        return section;
+      })
+    );
   };
+
+  const handleAddOption = () => {
+    let uniqueId = createUniqueID([]);
+
+    let newOption = {
+      id: uniqueId,
+      label: `Opsi ${optionCounter}`,
+      value: false,
+    };
+
+    setPreviewSection((prevSections) =>
+      prevSections.map((section) => {
+        if (section.id === idSection) {
+          return {
+            ...section,
+            content: section.content.map((contentItem) => {
+              if (contentItem.type === "multiSelect") {
+                return {
+                  ...contentItem,
+                  options: [...contentItem.options, newOption],
+                };
+              }
+
+              return contentItem;
+            }),
+          };
+        }
+        return section;
+      })
+    );
+  };
+
+  const removeSection = useRemoveOption(setPreviewSection);
+  const moveSection = useMoveOption(setPreviewSection);
+
+  const renderSection = useCallback(
+    (section) => {
+      return (
+        <div key={section.id}>
+          {section?.content?.map((contentItem, contentIndex) => {
+            // Filter atau cari contentItem berdasarkan kondisi tertentu
+            if (contentItem?.type === "multiSelect") {
+              return (
+                <div key={contentItem.id || contentIndex}>
+                  {contentItem?.options?.map((option, optionIndex) => (
+                    <DraggableListOption
+                      key={option.id || optionIndex}
+                      index={optionIndex}
+                      id={option.id}
+                      showInfoText={option.label}
+                      moveSection={(dragIndex, hoverIndex) =>
+                        moveSection(
+                          section.name,
+                          dragIndex,
+                          hoverIndex,
+                          true,
+                          contentIndex
+                        )
+                      }
+                      removeSection={() =>
+                        removeSection(section.id, contentIndex, optionIndex)
+                      }
+                      setPreviewSection={setPreviewSection}
+                      idSection={idSection}
+                      idOption={option.id}
+                    />
+                  ))}
+                </div>
+              );
+            }
+
+            // Jika tidak memenuhi kondisi, Anda bisa mengembalikan null atau komponen lainnya
+            return null;
+          })}
+        </div>
+      );
+    },
+    [idSection, moveSection, removeSection, setPreviewSection]
+  );
 
   return (
     <>
@@ -125,6 +197,30 @@ const MultiSelectControl = ({
               handleChangeValueContent("label", value);
             }}
           />
+
+          <h5>Opsi</h5>
+
+          <div>
+            {previewSection
+              .filter((section) => section.id === idSection)
+              .map((section, i) => renderSection(section, i))}
+          </div>
+
+          <CButton
+            onClick={() => {
+              setOptionCounter((prevCounter) => prevCounter + 1);
+              handleAddOption();
+            }}
+            className="my-3"
+            variant="outline"
+            color="primary"
+          >
+            <div style={{ gap: 10 }} className="d-flex align-items-center">
+              <IoAdd size={24} />
+
+              <div>Tambah Opsi</div>
+            </div>
+          </CButton>
         </div>
       )}
     </>

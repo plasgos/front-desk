@@ -78,6 +78,7 @@ const FormSection = ({
           >
             <UpdateContent
               idSection={currentSection.id}
+              previewSection={previewSection}
               currentContent={[]}
               setPreviewSection={setPreviewSection}
             />
@@ -95,6 +96,7 @@ const FormSection = ({
           >
             <UpdateContent
               idSection={currentSection.id}
+              previewSection={previewSection}
               currentContent={selectedContent}
               setPreviewSection={setPreviewSection}
               isEditingContent={true}

@@ -92,18 +92,30 @@ const FormCheckout = ({
   };
 
   const handleConfirm = () => {
-    if (
-      isAddContent ||
-      isEditingContent ||
-      isSelectVariantMultiSelect ||
-      isListIconVisible
-    ) {
-      dispatch(setIsSelectVariantMultiSelect(false));
-      dispatch(setIsSelectVariantSelectOption(false));
-      setIsListIconVisible(false);
-    } else if (isAddContent && !isSelectVariantMultiSelect) {
+    // if (
+    //   isAddContent ||
+    //   isEditingContent ||
+    //   isSelectVariantMultiSelect ||
+    //   isListIconVisible
+    // ) {
+    //   dispatch(setIsSelectVariantMultiSelect(false));
+    //   dispatch(setIsSelectVariantSelectOption(false));
+    //   setIsListIconVisible(false);
+    // } else if (isAddContent && !isSelectVariantMultiSelect) {
+    //   setIsAddContent(false);
+    //   setIsEditingContent(false);
+    // } else {
+    //   isShowContent(false);
+    // }
+
+    if ((isAddContent || isEditingContent) && !isSelectVariantMultiSelect) {
       setIsAddContent(false);
       setIsEditingContent(false);
+    } else if (
+      (isAddContent || isEditingContent) &&
+      isSelectVariantMultiSelect
+    ) {
+      dispatch(setIsSelectVariantMultiSelect(false));
     } else {
       isShowContent(false);
     }

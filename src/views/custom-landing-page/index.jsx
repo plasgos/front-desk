@@ -70,7 +70,7 @@ const CustomLandingPage = () => {
   const [pageSetting, setPageSetting] = useState({
     title: "",
     maxWidth: "1440px",
-    bgColor: "white",
+    bgColor: "#F5F5F5",
   });
   const [isResizing, setIsResizing] = useState(false);
   const [isPreview, setIsPreview] = useState(true);

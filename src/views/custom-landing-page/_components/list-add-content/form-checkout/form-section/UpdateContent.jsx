@@ -9,6 +9,7 @@ import LineControl from "../common/LineControl";
 import EmptySpaceControl from "../common/EmptySpaceControl";
 import Input from "../../../common/Input";
 import MultiSelectControl from "../common/MultiSelectControl";
+import { useSelector } from "react-redux";
 
 const typeOptions = [
   {
@@ -134,6 +135,7 @@ const typeOptions = [
 const UpdateContent = ({
   idSection,
   currentContent,
+  previewSection,
   setPreviewSection,
   isEditingContent,
 }) => {
@@ -149,6 +151,10 @@ const UpdateContent = ({
 
   const [checkboxLabel, setCheckboxLabel] = useState(
     currentContent?.label || "Nama"
+  );
+
+  const { isSelectVariantMultiSelect } = useSelector(
+    (state) => state.customLandingPage
   );
 
   const [setting, setSetting] = useState({});
@@ -217,7 +223,7 @@ const UpdateContent = ({
     },
     checkbox: {
       label: "Nama",
-      isRequired: true,
+      isRequired,
     },
     multiSelect: {
       designId: "1",
@@ -289,7 +295,7 @@ const UpdateContent = ({
     let payload = {
       id: uniqueId,
       type: typeOption.value,
-      isRequired: false,
+      isRequired: true,
       label: "Nama",
       placeholder: "Smith Grind",
       defaultValue: "",
@@ -315,7 +321,13 @@ const UpdateContent = ({
 
   return (
     <div>
-      <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
+      <div
+        style={{
+          gap: 10,
+          display: isSelectVariantMultiSelect ? "none" : "flex",
+        }}
+        className=" align-items-center mb-3"
+      >
         <SelectOptions
           label="Tipe"
           options={typeOptions}
@@ -327,17 +339,19 @@ const UpdateContent = ({
           width="50"
         />
 
-        <Checkbox
-          disabled={typeOption.value === "subdistrict"}
-          checked={isRequired}
-          id={"isRequired"}
-          label="Diharuskan"
-          onChange={(e) => {
-            const { checked } = e.target;
-            setIsRequired(checked);
-            handleChangeValueContent("isRequired", checked);
-          }}
-        />
+        {typeOption.value !== "multiSelect" && (
+          <Checkbox
+            disabled={typeOption.value === "subdistrict"}
+            checked={isRequired}
+            id={"isRequired"}
+            label="Diharuskan"
+            onChange={(e) => {
+              const { checked } = e.target;
+              setIsRequired(checked);
+              handleChangeValueContent("isRequired", checked);
+            }}
+          />
+        )}
       </div>
 
       {(typeOption.value === "text" ||
@@ -393,6 +407,9 @@ const UpdateContent = ({
         <MultiSelectControl
           currentContent={isEditingContent ? currentContent : setting}
           handleChangeValueContent={handleChangeValueContent}
+          idSection={idSection}
+          setPreviewSection={setPreviewSection}
+          previewSection={previewSection}
         />
       )}
     </div>

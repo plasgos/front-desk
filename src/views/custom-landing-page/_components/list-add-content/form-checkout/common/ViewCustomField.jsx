@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import InputFormCheckout from "../../../common/InputFormCheckout";
 import { SelectDistrict } from "../../../common/SelectDistrict";
 import TextArea from "../../../common/TextArea";
 import CheckboxFormCheckout from "../../../common/CheckboxFormCheckout";
+import Vertical from "../../../view-content/ViewFormCheckout/multi-select/Vertical";
+import Horizontal from "../../../view-content/ViewFormCheckout/multi-select/Horizontal";
+import VerticalPanel from "../../../view-content/ViewFormCheckout/multi-select/VerticalPanel";
+import DoublePanel from "../../../view-content/ViewFormCheckout/multi-select/DoublePanel";
+import TriplePanel from "../../../view-content/ViewFormCheckout/multi-select/TriplePanel";
+import { useFormContext } from "react-hook-form";
 
 const ViewCustomField = ({
   section,
@@ -10,6 +16,20 @@ const ViewCustomField = ({
   control,
   onSetSubdistrict,
 }) => {
+  const { setValue } = useFormContext();
+
+  useEffect(() => {
+    if (section.type === "multiSelect") {
+      section.options.forEach((opt) => {
+        setValue(`custom-${section.type}.${opt.id}.label`, opt.label);
+      });
+    }
+  }, [section.options, section.type, setValue]);
+
+  // useEffect(() => {
+  //   setValue(`custom-${section.type}.${section.id}.label`, section.label);
+  // }, [section.id, section.label, section.options, section.type, setValue]);
+
   return (
     <div>
       {(section.type === "text" ||
@@ -29,7 +49,7 @@ const ViewCustomField = ({
               : "text"
           }
           label={section.label}
-          name={`custom-${section.type}[${section.id}]`}
+          name={`custom-${section.type}.${section.id}.value`}
           control={control}
           placeholder={section.placeholder}
           rules={{
@@ -55,7 +75,7 @@ const ViewCustomField = ({
           style={inputStyle}
           type="text"
           label={section.label}
-          name={`custom-${section.type}`}
+          name={`custom-${section.type}.${section.id}.value`}
           control={control}
           placeholder={section.placeholder}
           rules={{
@@ -113,12 +133,57 @@ const ViewCustomField = ({
           <CheckboxFormCheckout
             style={inputStyle}
             label={section.label}
-            name={`custom-${section.type}[${section.id}]`}
+            // name={`custom-${section.type}[${section.id}]`}
+            name={`custom-${section.type}.${section.id}.value`}
             control={control}
             rules={{
               required: section.isRequired ? "Harus Di isi" : false,
             }}
           />
+        </div>
+      )}
+
+      {section.type === "multiSelect" && (
+        <div className="tw-my-3">
+          {section?.designId === "1" && (
+            <Vertical
+              section={section}
+              inputStyle={inputStyle}
+              control={control}
+            />
+          )}
+
+          {section?.designId === "2" && (
+            <Horizontal
+              section={section}
+              inputStyle={inputStyle}
+              control={control}
+            />
+          )}
+
+          {section?.designId === "3" && (
+            <VerticalPanel
+              section={section}
+              inputStyle={inputStyle}
+              control={control}
+            />
+          )}
+
+          {section?.designId === "4" && (
+            <DoublePanel
+              section={section}
+              inputStyle={inputStyle}
+              control={control}
+            />
+          )}
+
+          {section?.designId === "5" && (
+            <TriplePanel
+              section={section}
+              inputStyle={inputStyle}
+              control={control}
+            />
+          )}
         </div>
       )}
     </div>
