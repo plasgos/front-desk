@@ -43,6 +43,7 @@ const MultiSelectControl = ({
   previewSection,
   setPreviewSection,
 }) => {
+  console.log("🚀 ~ idSection:", idSection);
   const [label, setLabel] = useState(currentContent?.label || "Nama");
 
   const [optionCounter, setOptionCounter] = useState(1);
@@ -56,6 +57,9 @@ const MultiSelectControl = ({
     (state) => state.customLandingPage
   );
 
+  // const [setting, setSetting] = useState({});
+  // console.log("🚀 ~ setting:", setting);
+
   const dispacth = useDispatch();
 
   const handleVariantChange = (group, option) => {
@@ -66,7 +70,10 @@ const MultiSelectControl = ({
           return {
             ...section,
             content: section.content.map((contentItem) => {
-              if (contentItem.type === "multiSelect") {
+              if (
+                contentItem.type === "multiSelect" &&
+                contentItem.id === currentContent.id
+              ) {
                 return {
                   ...contentItem,
                   designId: option.id,
@@ -97,7 +104,10 @@ const MultiSelectControl = ({
           return {
             ...section,
             content: section.content.map((contentItem) => {
-              if (contentItem.type === "multiSelect") {
+              if (
+                contentItem.type === "multiSelect" &&
+                contentItem.id === currentContent.id
+              ) {
                 return {
                   ...contentItem,
                   options: [...contentItem.options, newOption],
@@ -111,6 +121,8 @@ const MultiSelectControl = ({
         return section;
       })
     );
+
+    // setSetting(newOption);
   };
 
   const removeSection = useRemoveOption(setPreviewSection);
@@ -122,7 +134,10 @@ const MultiSelectControl = ({
         <div key={section.id}>
           {section?.content?.map((contentItem, contentIndex) => {
             // Filter atau cari contentItem berdasarkan kondisi tertentu
-            if (contentItem?.type === "multiSelect") {
+            if (
+              contentItem?.type === "multiSelect" &&
+              contentItem.id === currentContent.id
+            ) {
               return (
                 <div key={contentItem.id || contentIndex}>
                   {contentItem?.options?.map((option, optionIndex) => (
