@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import InputFormCheckout from "../../../common/InputFormCheckout";
 import { SelectDistrict } from "../../../common/SelectDistrict";
 import TextArea from "../../../common/TextArea";
@@ -9,6 +9,10 @@ import VerticalPanel from "../../../view-content/ViewFormCheckout/multi-select/V
 import DoublePanel from "../../../view-content/ViewFormCheckout/multi-select/DoublePanel";
 import TriplePanel from "../../../view-content/ViewFormCheckout/multi-select/TriplePanel";
 import { useFormContext } from "react-hook-form";
+import InputPrice from "../../../common/InputPrice";
+import InputNumber from "../../../common/InputNumber";
+import ViewCounter from "../../../view-content/ViewFormCheckout/ViewCounter";
+import ViewImage from "../../../view-content/ViewFormCheckout/ViewImage";
 
 const ViewCustomField = ({
   section,
@@ -18,13 +22,13 @@ const ViewCustomField = ({
 }) => {
   const { setValue } = useFormContext();
 
-  useEffect(() => {
-    if (section.type === "multiSelect") {
-      section.options.forEach((opt) => {
-        setValue(`custom-${section.type}.${opt.id}.label`, opt.label);
-      });
-    }
-  }, [section.options, section.type, setValue]);
+  // useEffect(() => {
+  //   if (section.type === "multiSelect") {
+  //     section.options.forEach((opt) => {
+  //       setValue(`custom-${section.type}.${opt.id}.label`, opt.label);
+  //     });
+  //   }
+  // }, [section.options, section.type, setValue]);
 
   // useEffect(() => {
   //   setValue(`custom-${section.type}.${section.id}.label`, section.label);
@@ -145,6 +149,16 @@ const ViewCustomField = ({
 
       {section.type === "multiSelect" && (
         <div className="tw-my-3">
+          <label
+            className={`${inputStyle.fontStyle}`}
+            style={{
+              fontSize: inputStyle.fontSizeLabel,
+              color: inputStyle.labelColor,
+            }}
+          >
+            {section.label}
+          </label>
+
           {section?.designId === "1" && (
             <Vertical
               section={section}
@@ -185,6 +199,56 @@ const ViewCustomField = ({
             />
           )}
         </div>
+      )}
+
+      {section.type === "number" && (
+        <InputNumber
+          style={inputStyle}
+          label={section.label}
+          name={`custom-${section.type}.${section.id}.value`}
+          control={control}
+          placeholder={section.placeholder}
+          rules={{
+            required: section.isRequired ? "Harus Di isi" : false,
+          }}
+          minValue={section.minValue}
+          maxValue={section.maxValue}
+        />
+      )}
+
+      {section.type === "price" && (
+        <InputPrice
+          style={inputStyle}
+          label={section.label}
+          name={`custom-${section.type}.${section.id}.value`}
+          control={control}
+          placeholder={section.placeholder}
+          rules={{
+            required: section.isRequired ? "Harus Di isi" : false,
+          }}
+          minValue={section.minValue}
+          maxValue={section.maxValue}
+        />
+      )}
+
+      {section.type === "counter" && (
+        <ViewCounter
+          style={inputStyle}
+          label={section.label}
+          name={`custom-${section.type}.${section.id}.value`}
+          control={control}
+          minValue={section.minValue}
+          maxValue={section.maxValue}
+        />
+      )}
+
+      {section.type === "image" && (
+        <ViewImage
+          style={inputStyle}
+          label={section.label}
+          name={`custom-${section.type}.${section.id}.value`}
+          control={control}
+        />
       )}
     </div>
   );

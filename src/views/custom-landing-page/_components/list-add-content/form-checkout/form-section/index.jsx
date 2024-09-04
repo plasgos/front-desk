@@ -50,7 +50,7 @@ const FormSection = ({
               key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              showInfoText={`${contentItem.label} - ${contentItem.type}`}
+              showInfoText={`${contentItem.label} - ${contentItem.labelType}`}
               moveSection={(dragIndex, hoverIndex) =>
                 moveSection(section.name, dragIndex, hoverIndex)
               }

@@ -22,16 +22,16 @@ const CustomFieldControl = ({
   const [placeholder, setPlaceholder] = useState(
     currentContent?.placeholder || ""
   );
-  const [defaultValue, setDefaultValue] = useState(
-    currentContent?.defaultValue || ""
-  );
 
   const [minLength, setMinLength] = useState(currentContent?.minLength || "");
+
+  const [minValue, setMinValue] = useState(currentContent?.minValue || "");
+
+  const [maxValue, setMaxValue] = useState(currentContent?.maxValue || "");
 
   useEffect(() => {
     setPlaceholder(currentContent?.placeholder || "");
     setLabel(currentContent?.label || "");
-    setDefaultValue(currentContent?.defaultValue || "");
     setMinLength(currentContent?.minLength || "");
   }, [currentContent]);
 
@@ -61,26 +61,15 @@ const CustomFieldControl = ({
         }}
       />
 
-      <Input
-        type="text"
-        value={placeholder}
-        label="Placeholder"
-        onChange={(e) => {
-          const { value } = e.target;
-          setPlaceholder(value);
-          handleChangeValueContent("placeholder", value);
-        }}
-      />
-
-      {typeOptionValue !== "subdistrict" && (
+      {typeOptionValue !== "counter" && (
         <Input
           type="text"
-          value={defaultValue}
-          label="Default"
+          value={placeholder}
+          label="Placeholder"
           onChange={(e) => {
             const { value } = e.target;
-            setDefaultValue(value);
-            handleChangeValueContent("defaultValue", value);
+            setPlaceholder(value);
+            handleChangeValueContent("placeholder", value);
           }}
         />
       )}
@@ -96,6 +85,34 @@ const CustomFieldControl = ({
             handleChangeValueContent("minLength", value);
           }}
         />
+      ) : null}
+
+      {typeOptionValue === "number" ||
+      typeOptionValue === "price" ||
+      typeOptionValue === "counter" ? (
+        <div style={{ gap: 10 }} className="d-flex align-items-center ">
+          <Input
+            type="number"
+            value={minValue}
+            label="Minimum Nilai"
+            onChange={(e) => {
+              const { value } = e.target;
+              setMinValue(value);
+              handleChangeValueContent("minValue", value);
+            }}
+          />
+
+          <Input
+            type="number"
+            value={maxValue}
+            label="Maximum Nilai"
+            onChange={(e) => {
+              const { value } = e.target;
+              setMaxValue(value);
+              handleChangeValueContent("maxValue", value);
+            }}
+          />
+        </div>
       ) : null}
     </div>
   );

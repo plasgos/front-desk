@@ -117,6 +117,7 @@ const typeOptions = [
       },
     ],
   },
+  { label: "Media", options: [{ value: "image", label: "Gambar" }] },
   {
     label: "Waktu",
     options: [
@@ -153,6 +154,8 @@ const UpdateContent = ({
     currentContent?.label || "Nama"
   );
 
+  const [imageLabel, setImageLabel] = useState(currentContent?.label || "Nama");
+
   const { isSelectVariantMultiSelect } = useSelector(
     (state) => state.customLandingPage
   );
@@ -162,7 +165,6 @@ const UpdateContent = ({
     isRequired,
     label: "Nama",
     placeholder: "John",
-    defaultValue: "",
   };
 
   const payloadConfig = {
@@ -230,10 +232,31 @@ const UpdateContent = ({
       label: "Nama",
       options: [],
     },
+    number: {
+      ...commonConfig,
+      minValue: undefined,
+      maxValue: undefined,
+    },
+    price: {
+      ...commonConfig,
+      placeholder: "10.000",
+      minValue: undefined,
+      maxValue: undefined,
+    },
+    counter: {
+      label: "Nama",
+      defaultValue: undefined,
+      minValue: undefined,
+      maxValue: undefined,
+    },
+    image: {
+      label: "Nama",
+      isRequired,
+    },
   };
 
-  const handleChangeType = (selectedOptionValue) => {
-    const specificPayload = payloadConfig[selectedOptionValue] || {};
+  const handleChangeType = (selectedOption) => {
+    const specificPayload = payloadConfig[selectedOption.value] || {};
 
     setPreviewSection((arr) =>
       arr.map((item) =>
@@ -247,7 +270,8 @@ const UpdateContent = ({
                 return String(contentItem.id) === String(contentIdToCheck)
                   ? {
                       id: contentIdToCheck,
-                      type: selectedOptionValue,
+                      type: selectedOption.value,
+                      labelType: selectedOption.label,
                       ...specificPayload,
                     }
                   : contentItem;
@@ -260,7 +284,8 @@ const UpdateContent = ({
     if (!isEditingContent) {
       setSetting(() => ({
         id: setting.id,
-        type: selectedOptionValue,
+        type: selectedOption.value,
+        labelType: selectedOption.label,
         ...specificPayload,
       }));
     }
@@ -297,6 +322,7 @@ const UpdateContent = ({
       type: typeOption.value,
       isRequired: true,
       label: "Nama",
+      labelType: "Teks",
       placeholder: "Smith Grind",
       defaultValue: "",
     };
@@ -333,7 +359,7 @@ const UpdateContent = ({
           options={typeOptions}
           onChange={(selectedOption) => {
             setTypeOption(selectedOption);
-            handleChangeType(selectedOption.value);
+            handleChangeType(selectedOption);
           }}
           value={typeOption}
           width="50"
@@ -360,6 +386,9 @@ const UpdateContent = ({
         typeOption.value === "subdistrict" ||
         typeOption.value === "longText" ||
         typeOption.value === "firstName" ||
+        typeOption.value === "number" ||
+        typeOption.value === "price" ||
+        typeOption.value === "counter" ||
         typeOption.value.includes("email") ||
         typeOption.value.includes("phoneNumber")) && (
         <CustomFieldControl
@@ -410,6 +439,19 @@ const UpdateContent = ({
           idSection={idSection}
           setPreviewSection={setPreviewSection}
           previewSection={previewSection}
+        />
+      )}
+
+      {typeOption.value === "image" && (
+        <Input
+          type="text"
+          value={imageLabel}
+          label="Nama"
+          onChange={(e) => {
+            const { value } = e.target;
+            setImageLabel(value);
+            handleChangeValueContent("label", value);
+          }}
         />
       )}
     </div>

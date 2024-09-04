@@ -1,12 +1,7 @@
 import React, { forwardRef, useEffect, useState } from "react";
 import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack";
 import Checkbox from "../../common/Checkbox";
-import {
-  Controller,
-  useForm,
-  FormProvider,
-  useFormContext,
-} from "react-hook-form";
+import { Controller, useForm, FormProvider } from "react-hook-form";
 import InputFormCheckout from "../../common/InputFormCheckout";
 import { CButton } from "@coreui/react";
 import { useDispatch, useSelector } from "react-redux";
@@ -446,13 +441,9 @@ const ViewFormCheckout = forwardRef(
               </div>
             )}
 
-            <CButton
-              // disabled={!isValid}
-              className="w-100"
-              style={{
-                backgroundColor: btnSubmitColor,
-                color: "white",
-              }}
+            <button
+              style={{ backgroundColor: "#fa541c" }}
+              className=" tw-hover:bg-blue-600 tw-text-white   tw-py-2.5 tw-px-4 tw-rounded focus:tw-outline-none focus:tw-ring-0 tw-border-none tw-w-full"
               type="submit"
             >
               <div className="tw-flex tw-justify-center tw-items-center tw-gap-x-3">
@@ -484,7 +475,7 @@ const ViewFormCheckout = forwardRef(
 
                 {btnSubmitText}
               </div>
-            </CButton>
+            </button>
           </form>
         </FormProvider>
       </div>

@@ -5,7 +5,6 @@ const TextArea = ({
   style,
   label,
   name,
-  defaultValue = "",
   rules,
   control,
   type = "text",
@@ -27,7 +26,7 @@ const TextArea = ({
   } = style || {};
 
   return (
-    <div style={{ marginBottom: 16 + distance }} className="form-group">
+    <div style={{ marginBottom: 16 + distance }}>
       {label && (
         <label
           className={`${fontStyle}`}
@@ -39,7 +38,6 @@ const TextArea = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue}
         rules={rules}
         render={({ field, fieldState: { error } }) => (
           <>
@@ -57,7 +55,7 @@ const TextArea = ({
               }}
               {...field}
               type={type}
-              className={`form-control`}
+              className={`tw-w-full tw-border tw-border-gray-300 tw-rounded-lg tw-p-2 tw-text-sm tw-placeholder-slate-300`}
               placeholder={placeholder}
             />
             {error && (

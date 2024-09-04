@@ -74,6 +74,8 @@ const initialState = {
   ],
   isSelectVariantMultiSelect: false,
   isSelectVariantSelectOption: false,
+  selectedVariant: null,
+  currentVariantMultiSelect: {},
 };
 
 export default (state = initialState, action) => {
@@ -115,6 +117,16 @@ export default (state = initialState, action) => {
         ...state,
         isSelectVariantSelectOption: action.payload,
       };
+    case types.CURRRENT_VARIANT_MULTISELECT:
+      return {
+        ...state,
+        currentVariantMultiSelect: action.payload,
+      };
+    case types.SET_SELECTED_VARIANT:
+      return {
+        ...state,
+        selectedVariant: action.payload,
+      };
 
     default:
       return state;
@@ -142,4 +154,13 @@ export const setIsSelectVariantMultiSelect = (isMultiSelect) => ({
 export const setIsSelectVariantSelectOption = (isSelectOption) => ({
   type: types.IS_SELECT_VARIANT_SELECT_OPTION,
   payload: isSelectOption,
+});
+
+export const setCurrentVariantMultiSelect = (option) => ({
+  type: types.CURRRENT_VARIANT_MULTISELECT,
+  payload: option,
+});
+export const setSelectedVariant = (variant) => ({
+  type: types.SET_SELECTED_VARIANT,
+  payload: variant,
 });

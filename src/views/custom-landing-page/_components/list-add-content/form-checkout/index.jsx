@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setIsSelectVariantMultiSelect,
   setIsSelectVariantSelectOption,
+  setSelectedVariant,
 } from "../../../../../redux/modules/custom-landing-page/reducer";
 
 const FormCheckout = ({
@@ -31,10 +32,12 @@ const FormCheckout = ({
   const [activeTab, setActiveTab] = useState("form");
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
-  // const [isSelectVariant, setIsSelectVariant] = useState(false);
 
-  const { isSelectVariantMultiSelect, isSelectVariantSelectOption } =
-    useSelector((state) => state.customLandingPage);
+  const {
+    isSelectVariantMultiSelect,
+    isSelectVariantSelectOption,
+    currentVariantMultiSelect,
+  } = useSelector((state) => state.customLandingPage);
   const dispatch = useDispatch();
 
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
@@ -64,6 +67,38 @@ const FormCheckout = ({
         })
       );
     } else if (isSelectVariantMultiSelect || isSelectVariantSelectOption) {
+      const { contentId, ...restOfVariant } = currentVariantMultiSelect;
+
+      dispatch(setSelectedVariant(restOfVariant));
+
+      setPreviewSection((prevSections) =>
+        prevSections.map((section) => {
+          const contentIdToCheck = isEditingSection
+            ? currentSection.id
+            : setting.id;
+
+          if (section.id === contentIdToCheck) {
+            return {
+              ...section,
+              content: section.content.map((contentItem) => {
+                if (
+                  contentItem.type === "multiSelect" &&
+                  contentItem.id === currentVariantMultiSelect.contentId
+                ) {
+                  return {
+                    ...contentItem,
+                    designId: currentVariantMultiSelect.id,
+                  };
+                }
+
+                return contentItem;
+              }),
+            };
+          }
+          return section;
+        })
+      );
+
       dispatch(setIsSelectVariantMultiSelect(false));
       dispatch(setIsSelectVariantSelectOption(false));
     } else if (isListIconVisible) {

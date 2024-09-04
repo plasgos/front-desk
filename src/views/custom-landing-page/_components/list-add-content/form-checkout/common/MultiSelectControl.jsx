@@ -1,9 +1,13 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Input from "../../../common/Input";
 import SelectOptions from "../../../common/SelectOptions";
 import SelectVariant from "../../../common/SelectVariant";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsSelectVariantMultiSelect } from "../../../../../../redux/modules/custom-landing-page/reducer";
+import {
+  setCurrentVariantMultiSelect,
+  setIsSelectVariantMultiSelect,
+  setSelectedVariant,
+} from "../../../../../../redux/modules/custom-landing-page/reducer";
 import { useRemoveOption } from "../hooks/removeOption";
 import { useMoveOption } from "../hooks/moveOption";
 import { CButton } from "@coreui/react";
@@ -43,27 +47,36 @@ const MultiSelectControl = ({
   previewSection,
   setPreviewSection,
 }) => {
-  console.log("🚀 ~ idSection:", idSection);
   const [label, setLabel] = useState(currentContent?.label || "Nama");
 
   const [optionCounter, setOptionCounter] = useState(1);
 
-  const [selectedVariant, setSelectedVariant] = useState(
-    flattenedOptions.find(
-      (option) => option.id === currentContent.designId || flattenedOptions[0]
-    )
-  );
-  const { isSelectVariantMultiSelect } = useSelector(
+  const { isSelectVariantMultiSelect, selectedVariant } = useSelector(
     (state) => state.customLandingPage
   );
 
-  // const [setting, setSetting] = useState({});
-  // console.log("🚀 ~ setting:", setting);
+  const dispatch = useDispatch();
 
-  const dispacth = useDispatch();
+  useEffect(() => {
+    const initialVariant =
+      flattenedOptions.find(
+        (option) => option.id === currentContent.designId
+      ) || flattenedOptions[0];
+    dispatch(
+      setSelectedVariant({
+        ...initialVariant,
+      })
+    );
+  }, [dispatch, currentContent]);
 
   const handleVariantChange = (group, option) => {
-    setSelectedVariant({ ...option, group });
+    dispatch(
+      setSelectedVariant({
+        ...option,
+        group,
+      })
+    );
+
     setPreviewSection((prevSections) =>
       prevSections.map((section) => {
         if (section.id === idSection) {
@@ -173,8 +186,24 @@ const MultiSelectControl = ({
         </div>
       );
     },
-    [idSection, moveSection, removeSection, setPreviewSection]
+    [
+      currentContent.id,
+      idSection,
+      moveSection,
+      removeSection,
+      setPreviewSection,
+    ]
   );
+
+  const openVariantMultiSelect = () => {
+    dispatch(
+      setCurrentVariantMultiSelect({
+        ...selectedVariant,
+        contentId: currentContent.id,
+      })
+    );
+    dispatch(setIsSelectVariantMultiSelect(true));
+  };
 
   return (
     <>
@@ -187,12 +216,7 @@ const MultiSelectControl = ({
       ) : (
         <div>
           <div style={{ gap: 10 }} className="d-flex align-items-center ">
-            <div
-              onClick={() => {
-                dispacth(setIsSelectVariantMultiSelect(true));
-              }}
-              className="w-50"
-            >
+            <div onClick={openVariantMultiSelect} className="w-50">
               <SelectOptions
                 label="Desain"
                 value={selectedVariant}

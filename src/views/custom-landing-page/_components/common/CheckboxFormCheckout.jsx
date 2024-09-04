@@ -17,7 +17,6 @@ const CheckboxFormCheckout = ({
       <Controller
         name={name}
         control={control}
-        defaultValue={defaultValue}
         rules={rules}
         render={({ field, fieldState: { error } }) => (
           <>

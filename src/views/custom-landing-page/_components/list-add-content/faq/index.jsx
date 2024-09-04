@@ -141,6 +141,9 @@ const FAQ = ({
   const [previousIcon, setPreviousIcon] = useState("");
   const [isListIconVisible, setIsListIconVisible] = useState(false);
 
+  const [currentVariant, setCurrentVariant] = useState({});
+  console.log("🚀 ~ currentVariant:", currentVariant);
+
   const [imageUrl, setImageUrl] = useState(
     currentSection?.variant?.style?.image || ""
   );
@@ -201,6 +204,36 @@ const FAQ = ({
         })
       );
     } else if (isSelectVariant) {
+      setSelectedVariant(currentVariant);
+
+      const style =
+        currentVariant.id === "1"
+          ? plainSimple
+          : currentVariant.id === "2"
+          ? capsuleSimple
+          : currentVariant.id === "3"
+          ? accordionThick
+          : currentVariant.id === "4"
+          ? accordionClean
+          : {};
+
+      setPreviewSection((arr) =>
+        arr.map((item) => {
+          const contentIdToCheck = isEditingSection
+            ? currentSection.id
+            : setting.id;
+
+          return String(item.id) === contentIdToCheck
+            ? {
+                ...item,
+                variant: {
+                  ...currentVariant,
+                  style,
+                },
+              }
+            : item;
+        })
+      );
       setIsSelectVariant(false);
       setIsAddContent(false);
       setIsEditingContent(false);
@@ -297,6 +330,11 @@ const FAQ = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditingSection]);
+
+  const openVariants = () => {
+    setIsSelectVariant(true);
+    setCurrentVariant(selectedVariant);
+  };
 
   const handleVariantChange = (group, option) => {
     const style =
@@ -436,10 +474,7 @@ const FAQ = ({
                           </div>
                           <div className="d-flex align-items-center">
                             <div className="mr-3">{selectedVariant.group}</div>
-                            <CButton
-                              onClick={() => setIsSelectVariant(true)}
-                              color="primary"
-                            >
+                            <CButton onClick={openVariants} color="primary">
                               Ubah
                             </CButton>
                           </div>
