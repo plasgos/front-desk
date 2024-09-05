@@ -33,6 +33,11 @@ const optionVariant = [
   },
 ];
 
+const typeInputOptions = [
+  { value: "checkbox", label: "Checkbox" },
+  { value: "radio", label: "Radio" },
+];
+
 const flattenedOptions = optionVariant.flatMap((group) =>
   group.options.map((option) => ({
     ...option,
@@ -50,6 +55,11 @@ const MultiSelectControl = ({
   const [label, setLabel] = useState(currentContent?.label || "Nama");
 
   const [optionCounter, setOptionCounter] = useState(1);
+
+  const [typeInput, setTypeInput] = useState(
+    typeInputOptions.find((opt) => opt.value === currentContent?.typeInput) ||
+      optionVariant[0]
+  );
 
   const { isSelectVariantMultiSelect, selectedVariant } = useSelector(
     (state) => state.customLandingPage
@@ -139,7 +149,7 @@ const MultiSelectControl = ({
   };
 
   const removeSection = useRemoveOption(setPreviewSection);
-  const moveSection = useMoveOption(setPreviewSection);
+  const moveSection = useMoveOption(setPreviewSection, "multiSelect");
 
   const renderSection = useCallback(
     (section) => {
@@ -174,6 +184,7 @@ const MultiSelectControl = ({
                       setPreviewSection={setPreviewSection}
                       idSection={idSection}
                       idOption={option.id}
+                      type="multiSelect"
                     />
                   ))}
                 </div>
@@ -224,6 +235,17 @@ const MultiSelectControl = ({
                 menuIsOpen={false}
               />
             </div>
+
+            <SelectOptions
+              label="Tipe Input"
+              options={typeInputOptions}
+              value={typeInput}
+              width="50"
+              onChange={(selectedOption) => {
+                setTypeInput(selectedOption);
+                handleChangeValueContent("typeInput", selectedOption.value);
+              }}
+            />
           </div>
 
           <Input

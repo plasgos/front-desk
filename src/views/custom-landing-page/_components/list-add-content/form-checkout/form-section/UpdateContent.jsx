@@ -10,6 +10,7 @@ import EmptySpaceControl from "../common/EmptySpaceControl";
 import Input from "../../../common/Input";
 import MultiSelectControl from "../common/MultiSelectControl";
 import { useSelector } from "react-redux";
+import SelectOptionsControl from "../common/SelectOptionsControl";
 
 const typeOptions = [
   {
@@ -133,6 +134,16 @@ const typeOptions = [
   },
 ];
 
+const defaultValueDateOptions = [
+  { value: false, label: "Kosong" },
+  { value: true, label: "Hari Ini" },
+];
+
+const designRatingOptions = [
+  { value: "star", label: "Bintang" },
+  { value: "love", label: "Hati" },
+];
+
 const UpdateContent = ({
   idSection,
   currentContent,
@@ -155,6 +166,25 @@ const UpdateContent = ({
   );
 
   const [imageLabel, setImageLabel] = useState(currentContent?.label || "Nama");
+
+  const [dateLabel, setDateLabel] = useState(currentContent?.label || "Nama");
+
+  const [timeLabel, setTimeLabel] = useState(currentContent?.label || "Nama");
+
+  const [ratingLabel, setRatingLabel] = useState(
+    currentContent?.label || "Nama"
+  );
+
+  const [isTodayDate, setIsTodayDate] = useState(
+    defaultValueDateOptions.find(
+      (opt) => opt.value === currentContent?.isToday
+    ) || defaultValueDateOptions[0]
+  );
+
+  const [designRating, setDesignRating] = useState(
+    designRatingOptions.find((opt) => opt.value === currentContent?.design) ||
+      designRatingOptions[0]
+  );
 
   const { isSelectVariantMultiSelect } = useSelector(
     (state) => state.customLandingPage
@@ -231,6 +261,7 @@ const UpdateContent = ({
       designId: "1",
       label: "Nama",
       options: [],
+      typeInput: "checkbox",
     },
     number: {
       ...commonConfig,
@@ -249,9 +280,30 @@ const UpdateContent = ({
       minValue: undefined,
       maxValue: undefined,
     },
+    rating: {
+      label: "Nama",
+      design: "star",
+      isRequired,
+    },
     image: {
       label: "Nama",
       isRequired,
+    },
+    date: {
+      label: "Nama",
+      isToday: false,
+      isRequired,
+    },
+    time: {
+      label: "Nama",
+    },
+    selectOption: {
+      label: "Nama",
+      placeholder: "Pilih Opsi",
+      defaultValue: undefined,
+      options: [],
+      isRequired,
+      typeOption: "single",
     },
   };
 
@@ -365,7 +417,7 @@ const UpdateContent = ({
           width="50"
         />
 
-        {typeOption.value !== "multiSelect" && (
+        {typeOption.value !== "multiSelect" && typeOption.value !== "time" && (
           <Checkbox
             disabled={typeOption.value === "subdistrict"}
             checked={isRequired}
@@ -432,6 +484,16 @@ const UpdateContent = ({
         />
       )}
 
+      {typeOption.value === "selectOption" && (
+        <SelectOptionsControl
+          currentContent={isEditingContent ? currentContent : setting}
+          handleChangeValueContent={handleChangeValueContent}
+          idSection={idSection}
+          setPreviewSection={setPreviewSection}
+          previewSection={previewSection}
+        />
+      )}
+
       {typeOption.value === "multiSelect" && (
         <MultiSelectControl
           currentContent={isEditingContent ? currentContent : setting}
@@ -440,6 +502,32 @@ const UpdateContent = ({
           setPreviewSection={setPreviewSection}
           previewSection={previewSection}
         />
+      )}
+
+      {typeOption.value === "rating" && (
+        <div>
+          <SelectOptions
+            label="Desain"
+            options={designRatingOptions}
+            onChange={(selectedOption) => {
+              setDesignRating(selectedOption);
+              handleChangeValueContent("design", selectedOption.value);
+            }}
+            value={designRating}
+            width="50"
+          />
+
+          <Input
+            type="text"
+            value={ratingLabel}
+            label="Nama"
+            onChange={(e) => {
+              const { value } = e.target;
+              setRatingLabel(value);
+              handleChangeValueContent("label", value);
+            }}
+          />
+        </div>
       )}
 
       {typeOption.value === "image" && (
@@ -453,6 +541,45 @@ const UpdateContent = ({
             handleChangeValueContent("label", value);
           }}
         />
+      )}
+
+      {typeOption.value === "time" && (
+        <Input
+          type="text"
+          value={timeLabel}
+          label="Nama"
+          onChange={(e) => {
+            const { value } = e.target;
+            setTimeLabel(value);
+            handleChangeValueContent("label", value);
+          }}
+        />
+      )}
+
+      {typeOption.value === "date" && (
+        <div>
+          <Input
+            type="text"
+            value={dateLabel}
+            label="Nama"
+            onChange={(e) => {
+              const { value } = e.target;
+              setDateLabel(value);
+              handleChangeValueContent("label", value);
+            }}
+          />
+
+          <SelectOptions
+            label="Default"
+            options={defaultValueDateOptions}
+            onChange={(selectedOption) => {
+              setIsTodayDate(selectedOption);
+              handleChangeValueContent("isToday", selectedOption.value);
+            }}
+            value={isTodayDate}
+            width="50"
+          />
+        </div>
       )}
     </div>
   );

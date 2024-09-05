@@ -23,10 +23,12 @@ const SelectOptions = ({
   customStyles,
   positionShown,
   menuIsOpen,
+  getOptionLabel,
+  getOptionValue,
 }) => {
   return (
-    <div className={`form-group w-${width} `}>
-      <label style={{ fontSize: 12 }}>{label}</label>
+    <div style={{ marginBottom: 16 }} className={`w-${width} `}>
+      {label && <label style={{ fontSize: 12 }}>{label}</label>}
       <Select
         menuIsOpen={menuIsOpen}
         theme={(theme) => ({
@@ -47,6 +49,8 @@ const SelectOptions = ({
         isSearchable={false}
         value={value}
         menuPlacement={positionShown ? positionShown : "auto"}
+        getOptionLabel={getOptionLabel}
+        getOptionValue={getOptionValue}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-export const useMoveOption = (setPreviewSection) => {
+export const useMoveOption = (setPreviewSection, key) => {
   const moveOption = useCallback(
     (name, dragIndex, hoverIndex, isOption = false, contentIndex = null) => {
       setPreviewSection((prevSections) => {
@@ -12,7 +12,7 @@ export const useMoveOption = (setPreviewSection) => {
               // Cari contentItem dengan index contentIndex
               const contentItem = updatedContent[contentIndex];
 
-              if (contentItem?.type === "multiSelect") {
+              if (contentItem?.type === key) {
                 const updatedOptions = [...contentItem.options];
                 const draggedOption = updatedOptions[dragIndex];
                 updatedOptions.splice(dragIndex, 1);
@@ -37,7 +37,7 @@ export const useMoveOption = (setPreviewSection) => {
         });
       });
     },
-    [setPreviewSection]
+    [key, setPreviewSection]
   );
 
   return moveOption;

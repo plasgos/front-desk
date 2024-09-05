@@ -20,6 +20,7 @@ const DoublePanel = ({ section, inputStyle, control }) => {
             }}
           >
             <CheckboxFormCheckout
+              typeInput={section.typeInput}
               style={inputStyle}
               label={opt.label}
               name={`custom-${section.type}.${opt.id}.value`}

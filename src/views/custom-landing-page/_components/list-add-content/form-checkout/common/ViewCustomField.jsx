@@ -13,6 +13,10 @@ import InputPrice from "../../../common/InputPrice";
 import InputNumber from "../../../common/InputNumber";
 import ViewCounter from "../../../view-content/ViewFormCheckout/ViewCounter";
 import ViewImage from "../../../view-content/ViewFormCheckout/ViewImage";
+import ViewTime from "../../../view-content/ViewFormCheckout/ViewTime";
+import ViewDate from "../../../view-content/ViewFormCheckout/ViewDate";
+import ViewRating from "../../../view-content/ViewFormCheckout/ViewRating";
+import ViewSelectOption from "../../../view-content/ViewFormCheckout/ViewSelectOption";
 
 const ViewCustomField = ({
   section,
@@ -248,6 +252,51 @@ const ViewCustomField = ({
           label={section.label}
           name={`custom-${section.type}.${section.id}.value`}
           control={control}
+          required={section.isRequired}
+        />
+      )}
+
+      {section.type === "time" && (
+        <ViewTime
+          style={inputStyle}
+          label={section.label}
+          name={`custom-${section.type}.${section.id}.value`}
+          control={control}
+        />
+      )}
+
+      {section.type === "date" && (
+        <ViewDate
+          style={inputStyle}
+          label={section.label}
+          name={`custom-${section.type}.${section.id}.value`}
+          control={control}
+          isToday={section.isToday}
+          required={section.isRequired}
+        />
+      )}
+
+      {section.type === "rating" && (
+        <ViewRating
+          style={inputStyle}
+          label={section.label}
+          name={`custom-${section.type}.${section.id}.value`}
+          control={control}
+          design={section.design}
+          required={section.isRequired}
+        />
+      )}
+
+      {section.type === "selectOption" && (
+        <ViewSelectOption
+          style={inputStyle}
+          label={section.label}
+          name={`custom-${section.type}.${section.id}.value`}
+          control={control}
+          options={section.options}
+          placeholder={section.placeholder}
+          defaultValue={section.defaultValue}
+          required={section.isRequired}
         />
       )}
     </div>

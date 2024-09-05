@@ -6,9 +6,9 @@ const CheckboxFormCheckout = ({
   label,
   name,
   control,
-  defaultValue = false,
   rules,
   disabled,
+  typeInput = "checkbox",
 }) => {
   const { labelColor, fontStyle, fontSizeTextInputColor } = style || {};
 
@@ -26,7 +26,7 @@ const CheckboxFormCheckout = ({
                 disabled={disabled}
                 id={name}
                 style={{ cursor: "pointer" }}
-                type="checkbox"
+                type={typeInput}
               />
               <label
                 style={{

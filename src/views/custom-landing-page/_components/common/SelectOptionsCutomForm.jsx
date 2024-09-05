@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
-//
-import { useSelector, useDispatch } from "react-redux";
-import AsyncSelect from "react-select/async";
-import { getSubdistrict } from "../../../../redux/modules/addresses/actions/actions";
+import React from "react";
+import Select from "react-select";
 
-export const SelectDistrict = ({
-  onSelectDistrict,
-  label,
-  placeholder,
+const SelectOptionsCutomForm = ({
   style,
+  placeholder,
+  options,
+  onChange,
+  value,
+  label,
+  positionShown,
+  menuIsOpen,
+  getOptionLabel,
+  getOptionValue,
 }) => {
   const {
     labelColor,
@@ -23,57 +26,19 @@ export const SelectDistrict = ({
     distance,
   } = style || {};
 
-  const dispatch = useDispatch();
-  const { subdistricts } = useSelector((state) => state.addresses);
-  const getData = () => {
-    dispatch(getSubdistrict());
-  };
-
-  useEffect(() => {
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const filteredSubdistricts = (inputValue) => {
-    return (
-      subdistricts?.filter(
-        (data) =>
-          data.name.toLowerCase().includes(inputValue.toLowerCase()) ||
-          data.City.name.toLowerCase().includes(inputValue.toLowerCase())
-      ) || []
-    ).map((data) => ({
-      value: data, // or any unique identifier from your data
-      label: `${data.name}, ${data.City.type} ${data.City.name}, ${data.City.Province.name}`,
-    }));
-  };
-
-  const loadOptions = (inputValue, callback) => {
-    setTimeout(() => {
-      callback(filteredSubdistricts(inputValue));
-    }, 1000);
-  };
-
-  const handleSelectChange = (selectedOption) => {
-    const selectedValue = selectedOption ? selectedOption.value : null;
-
-    onSelectDistrict(selectedValue);
-  };
-
   return (
     <div style={{ marginBottom: 16 + distance }} className="tw-w-full">
-      <label
-        className={`${fontStyle}`}
-        style={{ fontSize: fontSizeLabel, color: labelColor }}
-      >
-        {label}
-      </label>
-
-      <AsyncSelect
-        cacheOptions
-        loadOptions={loadOptions}
-        defaultOptions
-        onChange={handleSelectChange}
+      {label && (
+        <label
+          className={`${fontStyle}`}
+          style={{ fontSize: fontSizeLabel, color: labelColor }}
+        >
+          {label}
+        </label>
+      )}
+      <Select
         placeholder={placeholder}
+        menuIsOpen={menuIsOpen}
         theme={(theme) => ({
           ...theme,
           colors: {
@@ -83,13 +48,14 @@ export const SelectDistrict = ({
             // Warna background saat terfokus
           },
         })}
+        options={options}
         styles={{
           control: (baseStyles, state) => ({
             ...baseStyles,
             borderRadius: `${borderRadius}px`, // Mengatur border-radius
             borderColor: outlineInputColor, // Warna border default
             borderWidth: `${outlineInputColorSize}px`, // Ketebalan border
-            backgroundColor: bgInputColor,
+            backgroundColor: state.isFocused ? "tw-bg-sky-500" : bgInputColor,
             boxShadow: state.isFocused
               ? `0 0 0 ${outlineInputColorSize}px ${outlineInputColor}`
               : baseStyles.boxShadow,
@@ -111,7 +77,15 @@ export const SelectDistrict = ({
             color: textInputColor, // Warna teks terpilih
           }),
         }}
+        onChange={onChange}
+        isSearchable={false}
+        value={value}
+        menuPlacement={positionShown ? positionShown : "auto"}
+        getOptionLabel={getOptionLabel}
+        getOptionValue={getOptionValue}
       />
     </div>
   );
 };
+
+export default SelectOptionsCutomForm;

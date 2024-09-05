@@ -16,6 +16,7 @@ export const DraggableListOption = ({
   setPreviewSection,
   idSection,
   idOption,
+  type,
 }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
@@ -86,7 +87,7 @@ export const DraggableListOption = ({
           return {
             ...section,
             content: section.content.map((contentItem) => {
-              if (contentItem.type === "multiSelect") {
+              if (contentItem.type === type) {
                 return {
                   ...contentItem,
                   options: contentItem.options.map((opt) =>

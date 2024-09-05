@@ -45,8 +45,10 @@ const FormCheckout = ({
   const [iconBeforeEdit, setIconBeforeEdit] = useState([]);
   const [isListIconVisible, setIsListIconVisible] = useState(false);
   const [previousIcon, setPreviousIcon] = useState("");
-  const [icon, setIcon] = useState(currentSection?.style?.icon || "");
-  const [imageUrl, setImageUrl] = useState(currentSection?.style?.image || "");
+  const [icon, setIcon] = useState(currentSection?.form?.style?.icon || "");
+  const [imageUrl, setImageUrl] = useState(
+    currentSection?.form?.style?.image || ""
+  );
 
   const handleCancel = () => {
     if (isAddContent && !isSelectVariantMultiSelect) {
@@ -151,6 +153,8 @@ const FormCheckout = ({
       isSelectVariantMultiSelect
     ) {
       dispatch(setIsSelectVariantMultiSelect(false));
+    } else if (isListIconVisible) {
+      setIsListIconVisible(false);
     } else {
       isShowContent(false);
     }
@@ -257,12 +261,9 @@ const FormCheckout = ({
                 <CNavItem onClick={() => setActiveTab("desain")}>
                   <CNavLink data-tab="desain">Desain</CNavLink>
                 </CNavItem>
-                <CNavItem onClick={() => setActiveTab("text")}>
-                  <CNavLink data-tab="text">Teks</CNavLink>
-                </CNavItem>
               </CNav>
               <CTabContent
-                style={{ height: 300, paddingRight: 5, overflowY: "auto" }}
+                style={{ height: 350, paddingRight: 5, overflowY: "auto" }}
               >
                 <CTabPane
                   style={{ overflowX: "hidden" }}
@@ -301,14 +302,6 @@ const FormCheckout = ({
                     isListIconVisible={isListIconVisible}
                     setIsListIconVisible={setIsListIconVisible}
                   />
-                </CTabPane>
-
-                <CTabPane
-                  style={{ overflowX: "hidden", height: "100%" }}
-                  className="p-1"
-                  data-tab="text"
-                >
-                  TEKS
                 </CTabPane>
               </CTabContent>
             </CTabs>

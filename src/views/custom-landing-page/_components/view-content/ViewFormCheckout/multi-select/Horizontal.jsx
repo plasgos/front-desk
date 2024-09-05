@@ -7,6 +7,7 @@ const Horizontal = ({ section, inputStyle, control }) => {
       {section?.options.map((opt) => (
         <div key={opt.id}>
           <CheckboxFormCheckout
+            typeInput={section.typeInput}
             style={inputStyle}
             label={opt.label}
             name={`custom-${section.type}.${opt.id}.value`}

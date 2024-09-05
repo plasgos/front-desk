@@ -796,7 +796,14 @@ const CustomLandingPage = () => {
                 />
               )}
             </div>
-            <div className="d-flex justify-content-between align-items-center border rounded-sm p-2 mb-2 shadow-sm">
+            <div
+              style={{
+                position: "relative",
+                zIndex: 10,
+                backgroundColor: "white",
+              }}
+              className="d-flex justify-content-between align-items-center border rounded-sm p-2 mb-2 shadow-sm"
+            >
               <div
                 className="d-flex align-items-center"
                 style={{ cursor: "pointer" }}
