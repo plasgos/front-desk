@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import SelectOptionsCutomForm from "../../common/SelectOptionsCutomForm";
 
@@ -10,6 +10,7 @@ const ViewSelectOption = ({
   options,
   placeholder,
   defaultValue,
+  typeOption,
   required,
 }) => {
   const { setValue } = useFormContext();
@@ -17,12 +18,17 @@ const ViewSelectOption = ({
   const { labelColor, fontSizeLabel, fontStyle, distance } = style || {};
 
   useEffect(() => {
-    if (defaultValue === "firstOption") {
-      setValue(name, options[0]);
-    } else if (defaultValue === undefined) {
-      setValue(name, undefined);
+    if (options && options.length > 0) {
+      if (defaultValue === "firstOption" && typeOption === "single") {
+        setValue(name, options[0]);
+      } else if (defaultValue === "firstOption" && typeOption === "group") {
+        setValue(name, options[0].options[0]);
+      } else {
+        const value = options.find((opt) => opt.value === defaultValue);
+        setValue(name, value);
+      }
     }
-  }, [defaultValue, name, options, setValue]);
+  }, [defaultValue, name, options, setValue, typeOption]);
 
   useEffect(() => {
     if (label !== undefined) {

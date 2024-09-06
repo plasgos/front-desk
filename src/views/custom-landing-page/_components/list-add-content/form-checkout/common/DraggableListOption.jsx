@@ -80,7 +80,6 @@ export const DraggableListOption = ({
   const [labelOption, setLabelOption] = useState(showInfoText);
 
   const handleChangeLabelOption = (value, id) => {
-    setLabelOption(value);
     setPreviewSection((prevSections) =>
       prevSections.map((section) => {
         if (section.id === idSection) {
@@ -95,6 +94,7 @@ export const DraggableListOption = ({
                       ? {
                           ...opt,
                           label: value,
+                          value: `${id}-${value}`,
                         }
                       : opt
                   ),
@@ -124,11 +124,12 @@ export const DraggableListOption = ({
                 value={labelOption || ""}
                 type="text"
                 style={{ border: "none", outline: "none" }}
-                onChange={(e) => {
+                onBlur={(e) => {
                   const { value } = e.target;
                   const { id } = e.target;
                   handleChangeLabelOption(value, id);
                 }}
+                onChange={(e) => setLabelOption(e.target.value)}
               />
             </div>
 

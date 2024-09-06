@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-export const useMoveOption = (setPreviewSection, key) => {
+export const useMoveOption = (setPreviewSection, key, optionTomaping) => {
   const moveOption = useCallback(
     (name, dragIndex, hoverIndex, isOption = false, contentIndex = null) => {
       setPreviewSection((prevSections) => {
@@ -13,7 +13,7 @@ export const useMoveOption = (setPreviewSection, key) => {
               const contentItem = updatedContent[contentIndex];
 
               if (contentItem?.type === key) {
-                const updatedOptions = [...contentItem.options];
+                const updatedOptions = [...contentItem[optionTomaping]];
                 const draggedOption = updatedOptions[dragIndex];
                 updatedOptions.splice(dragIndex, 1);
                 updatedOptions.splice(hoverIndex, 0, draggedOption);
@@ -21,7 +21,7 @@ export const useMoveOption = (setPreviewSection, key) => {
                 // Update contentItem dengan opsi yang diubah urutannya
                 updatedContent[contentIndex] = {
                   ...contentItem,
-                  options: updatedOptions,
+                  [optionTomaping]: updatedOptions,
                 };
               }
             } else {
@@ -37,7 +37,7 @@ export const useMoveOption = (setPreviewSection, key) => {
         });
       });
     },
-    [key, setPreviewSection]
+    [key, optionTomaping, setPreviewSection]
   );
 
   return moveOption;

@@ -293,9 +293,14 @@ const ViewCustomField = ({
           label={section.label}
           name={`custom-${section.type}.${section.id}.value`}
           control={control}
-          options={section.options}
+          options={
+            section.typeOption === "single"
+              ? section.options
+              : section.optionsGroup
+          }
           placeholder={section.placeholder}
           defaultValue={section.defaultValue}
+          typeOption={section.typeOption}
           required={section.isRequired}
         />
       )}

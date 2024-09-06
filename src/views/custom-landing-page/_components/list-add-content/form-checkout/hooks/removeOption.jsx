@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 
-export const useRemoveOption = (setPreviewSection) => {
+export const useRemoveOption = (setPreviewSection, optionTomaping) => {
   const removeOption = useCallback(
     (sectionId, contentIndex, optionIndex) => {
       setPreviewSection((prevSections) =>
@@ -13,7 +13,7 @@ export const useRemoveOption = (setPreviewSection) => {
                   if (optionIndex !== undefined) {
                     return {
                       ...contentItem,
-                      options: contentItem.options.filter(
+                      [optionTomaping]: contentItem[optionTomaping].filter(
                         (_, oIndex) => oIndex !== optionIndex
                       ),
                     };
@@ -31,7 +31,7 @@ export const useRemoveOption = (setPreviewSection) => {
         })
       );
     },
-    [setPreviewSection]
+    [optionTomaping, setPreviewSection]
   );
 
   return removeOption;

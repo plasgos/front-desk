@@ -302,6 +302,7 @@ const UpdateContent = ({
       placeholder: "Pilih Opsi",
       defaultValue: undefined,
       options: [],
+      optionsGroup: [],
       isRequired,
       typeOption: "single",
     },

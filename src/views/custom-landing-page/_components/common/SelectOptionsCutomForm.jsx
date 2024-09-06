@@ -76,6 +76,12 @@ const SelectOptionsCutomForm = ({
             ...baseStyles,
             color: textInputColor, // Warna teks terpilih
           }),
+          groupHeading: (provided) => ({
+            ...provided,
+            color: "#000000", // Warna hitam
+            fontWeight: "bold", // Font tebal
+            fontSize: "14px", // Ukuran font lebih besar dari opsi
+          }),
         }}
         onChange={onChange}
         isSearchable={false}
