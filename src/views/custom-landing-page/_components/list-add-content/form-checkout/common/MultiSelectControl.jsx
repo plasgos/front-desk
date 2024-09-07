@@ -148,8 +148,12 @@ const MultiSelectControl = ({
     // setSetting(newOption);
   };
 
-  const removeSection = useRemoveOption(setPreviewSection);
-  const moveSection = useMoveOption(setPreviewSection, "multiSelect");
+  const removeSection = useRemoveOption(setPreviewSection, "options");
+  const moveSection = useMoveOption(
+    setPreviewSection,
+    "multiSelect",
+    "options"
+  );
 
   const renderSection = useCallback(
     (section) => {

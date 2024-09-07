@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Input from "../../../common/Input";
 import { DraggableListOption } from "./DraggableListOption";
 import { useRemoveOption } from "../hooks/removeOption";
@@ -8,11 +8,22 @@ import { createUniqueID } from "../../../../../../lib/unique-id";
 import { IoAdd } from "react-icons/io5";
 import SelectOptions from "../../../common/SelectOptions";
 import { DraggableListGroupOption } from "./DraggableGroupOption";
+import { useDispatch, useSelector } from "react-redux";
+import { addOptionsGroup } from "../../../../../../redux/modules/custom-landing-page/reducer";
 
-const defaultValueOption = [
-  { value: undefined, label: "Tidak Ada" },
-  { value: "firstOption", label: "Opsi Pertama" },
-];
+// const defaultValueOption = [
+//   {
+//     label: "Basic Opsi",
+//     options: [
+//       { value: undefined, label: "Tidak Ada" },
+//       { value: "firstOption", label: "Opsi Pertama" },
+//     ],
+//   },
+//   {
+//     label: "Opsi",
+//     options: [],
+//   },
+// ];
 
 const typeOptions = [
   { value: "single", label: "Single" },
@@ -26,6 +37,9 @@ const SelectOptionsControl = ({
   previewSection,
   setPreviewSection,
 }) => {
+  const { optionsGroups } = useSelector((state) => state.customLandingPage);
+  console.log("🚀 ~ optionsGroups:", optionsGroups);
+
   const [label, setLabel] = useState(currentContent?.label || "Nama");
   const [placeholder, setPlaceholder] = useState(
     currentContent?.placeholder || "Pilih Opsi"
@@ -33,18 +47,101 @@ const SelectOptionsControl = ({
   const [optionCounter, setOptionCounter] = useState(1);
   const [optionGroupCounter, setOptionGroupCounter] = useState(1);
 
+  const [defaultValueOption, setDefaultValueOption] = useState([
+    {
+      label: "Basic Opsi",
+      options: [
+        { value: undefined, label: "Tidak Ada" },
+        { value: "firstOption", label: "Opsi Pertama" },
+      ],
+    },
+    {
+      label: "Opsi",
+      options: [], // Ini akan diisi dengan data dari optionsGroups
+    },
+  ]);
+
   const [defaultValue, setDefaultValue] = useState(
-    defaultValueOption.find(
-      (opt) =>
-        opt.value === currentContent?.defaultValue || defaultValueOption[0]
-    )
+    defaultValueOption
+      .flatMap((group) => group.options)
+      .find((opt) => opt.value === currentContent.defaultValue) ||
+      defaultValueOption[0].options[0]
   );
 
+  console.log("🚀 ~ defaultValue:", defaultValue);
   const [typeOption, setTypeOption] = useState(
     typeOptions.find(
       (opt) => opt.value === currentContent?.typeOption || typeOptions[0]
     )
   );
+
+  useEffect(() => {
+    // Ambil opsi dari optionsGroups tanpa reduce
+    const newOptions = [];
+    optionsGroups.forEach((group) => {
+      group.options.forEach((option) => {
+        newOptions.push({
+          value: option.value,
+          label: option.label,
+        });
+      });
+    });
+
+    // Cek apakah data baru berbeda sebelum update state
+    const currentOptions = defaultValueOption.find(
+      (group) => group.label === "Opsi"
+    )?.options;
+
+    const isOptionsChanged =
+      currentOptions?.length !== newOptions.length ||
+      newOptions.some((newOpt, index) => {
+        const currentOpt = currentOptions[index];
+        return (
+          currentOpt?.value !== newOpt.value ||
+          currentOpt?.label !== newOpt.label
+        );
+      });
+
+    if (isOptionsChanged) {
+      setDefaultValueOption((prevOptions) =>
+        prevOptions.map((optionGroup) => {
+          if (optionGroup.label === "Opsi") {
+            return {
+              ...optionGroup,
+              options: newOptions, // Masukkan opsi baru dari Redux
+            };
+          }
+          return optionGroup;
+        })
+      );
+    }
+  }, [defaultValueOption, optionsGroups]);
+
+  useEffect(() => {
+    if (currentContent.typeOption) {
+      const currentTypeOption = typeOptions.find(
+        (opt) => opt.value === currentContent.typeOption
+      );
+
+      if (currentTypeOption) {
+        setTypeOption(currentTypeOption);
+      }
+    }
+  }, [currentContent.typeOption]);
+
+  useEffect(() => {
+    if (currentContent.defaultValue) {
+      const currentDefaultValue = defaultValueOption
+        .flatMap((group) => group.options)
+        .find((opt) => opt.value === currentContent.defaultValue);
+
+      if (currentDefaultValue) {
+        setDefaultValue(currentDefaultValue);
+      }
+    }
+  }, [currentContent.defaultValue, defaultValueOption]);
+
+  const dispatch = useDispatch();
 
   const removeSection = useRemoveOption(setPreviewSection, "options");
   const moveSection = useMoveOption(
@@ -193,6 +290,8 @@ const SelectOptionsControl = ({
     );
 
     // setSetting(newOption);
+
+    dispatch(addOptionsGroup(newOptionGroup));
   };
 
   const renderSectionGroup = useCallback(
@@ -219,14 +318,17 @@ const SelectOptionsControl = ({
                           dragIndex,
                           hoverIndex,
                           true,
-                          contentIndex
+                          contentIndex,
+                          option.groupId
                         )
                       }
                       removeSection={() =>
                         removeSectionGroup(
                           section.id,
                           contentIndex,
-                          optionIndex
+                          optionIndex,
+                          option.groupId,
+                          setDefaultValue
                         )
                       }
                       setPreviewSection={setPreviewSection}
@@ -234,6 +336,8 @@ const SelectOptionsControl = ({
                       idOption={option.groupId}
                       type="selectOption"
                       options={option.options}
+                      setDefaultValue={setDefaultValue}
+                      defaultValue={defaultValue}
                     />
                   ))}
                 </div>
@@ -282,16 +386,18 @@ const SelectOptionsControl = ({
           }}
         />
 
-        <Input
-          type="text"
-          value={placeholder}
-          label="Placeholder"
-          onChange={(e) => {
-            const { value } = e.target;
-            setPlaceholder(value);
-            handleChangeValueContent("placeholder", value);
-          }}
-        />
+        {!defaultValue.value && (
+          <Input
+            type="text"
+            value={placeholder}
+            label="Placeholder"
+            onChange={(e) => {
+              const { value } = e.target;
+              setPlaceholder(value);
+              handleChangeValueContent("placeholder", value);
+            }}
+          />
+        )}
       </div>
 
       <SelectOptions

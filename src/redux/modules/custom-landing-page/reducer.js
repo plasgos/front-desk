@@ -76,6 +76,7 @@ const initialState = {
   isSelectVariantSelectOption: false,
   selectedVariant: null,
   currentVariantMultiSelect: {},
+  optionsGroups: [],
 };
 
 export default (state = initialState, action) => {
@@ -128,6 +129,104 @@ export default (state = initialState, action) => {
         selectedVariant: action.payload,
       };
 
+    case types.ADD_OPTIONS_GROUPS:
+      return {
+        ...state,
+        optionsGroups: [...state.optionsGroups, action.payload],
+      };
+
+    case types.UPDATE_OPTIONS_GROUPS:
+      return {
+        ...state,
+        optionsGroups: state.optionsGroups.map((group) =>
+          group.groupId === action.payload.groupId
+            ? {
+                ...group,
+                label: action.payload.value,
+              }
+            : group
+        ),
+      };
+
+    case types.DELETE_OPTIONS_GROUPS:
+      console.log(action.payload);
+      return {
+        ...state,
+        optionsGroups: state.optionsGroups.filter(
+          (option) => option.groupId !== action.payload.groupId
+        ),
+      };
+
+    case types.SORT_GROUPS: {
+      const { dragIndex, hoverIndex } = action.payload;
+
+      // Copy dari optionsGroups agar tidak mutasi langsung
+      const updatedGroups = [...state.optionsGroups];
+
+      // Ambil item yang sedang di-drag
+      const draggedGroup = updatedGroups[dragIndex];
+
+      // Hapus item yang sedang di-drag dari array
+      updatedGroups.splice(dragIndex, 1);
+
+      // Sisipkan item di posisi baru (hoverIndex)
+      updatedGroups.splice(hoverIndex, 0, draggedGroup);
+
+      return {
+        ...state,
+        optionsGroups: updatedGroups,
+      };
+    }
+
+    case types.ADD_OPTIONS_OPSI_GROUPS:
+      return {
+        ...state,
+        optionsGroups: state.optionsGroups.map((group) =>
+          group.groupId === action.payload.groupId
+            ? {
+                ...group,
+                options: [...group.options, action.payload.newOption],
+              }
+            : group
+        ),
+      };
+
+    case types.UPDATE_OPTIONS_OPSI_GROUPS:
+      return {
+        ...state,
+        optionsGroups: state.optionsGroups.map((group) =>
+          group.groupId === action.payload.groupId
+            ? {
+                ...group,
+                options: group.options.map((opt) =>
+                  opt.id === action.payload.optionId
+                    ? {
+                        ...opt,
+                        label: action.payload.value,
+                        value: `${action.payload.groupId}-${action.payload.value}`,
+                      }
+                    : opt
+                ),
+              }
+            : group
+        ),
+      };
+
+    case types.DELETE_OPTIONS_OPSI_GROUPS:
+      return {
+        ...state,
+        optionsGroups: state.optionsGroups.map((group) =>
+          group.groupId === action.payload.groupId
+            ? {
+                ...group,
+                options: group.options.filter(
+                  (opt) => opt.id !== action.payload.optionId
+                ),
+              }
+            : group
+        ),
+      };
+
     default:
       return state;
   }
@@ -164,3 +263,70 @@ export const setSelectedVariant = (variant) => ({
   type: types.SET_SELECTED_VARIANT,
   payload: variant,
 });
+
+export const addOptionsGroup = (newOptionGroup) => {
+  return {
+    type: types.ADD_OPTIONS_GROUPS,
+    payload: newOptionGroup,
+  };
+};
+
+export const updateOptionsGroup = (groupId, value) => {
+  return {
+    type: types.UPDATE_OPTIONS_GROUPS,
+    payload: {
+      groupId,
+      value,
+    },
+  };
+};
+
+export const deleteOptionsGroup = (groupId) => {
+  return {
+    type: types.DELETE_OPTIONS_GROUPS,
+    payload: {
+      groupId,
+    },
+  };
+};
+
+export const sortOptionsGroups = (dragIndex, hoverIndex) => {
+  return {
+    type: types.SORT_GROUPS,
+    payload: {
+      dragIndex,
+      hoverIndex,
+    },
+  };
+};
+
+export const addOptionOpsiGroup = (groupId, newOption) => {
+  return {
+    type: types.ADD_OPTIONS_OPSI_GROUPS,
+    payload: {
+      groupId,
+      newOption,
+    },
+  };
+};
+
+export const updateOptionsOpsiGroup = (groupId, optionId, value) => {
+  return {
+    type: types.UPDATE_OPTIONS_OPSI_GROUPS,
+    payload: {
+      groupId,
+      optionId,
+      value,
+    },
+  };
+};
+
+export const deleteOptionsOpsiGroup = (groupId, optionId) => {
+  return {
+    type: types.DELETE_OPTIONS_OPSI_GROUPS,
+    payload: {
+      groupId,
+      optionId,
+    },
+  };
+};

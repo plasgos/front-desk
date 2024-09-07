@@ -7,4 +7,11 @@ export default {
   IS_SELECT_VARIANT_SELECT_OPTION: "is-select-variant-select-option",
   CURRRENT_VARIANT_MULTISELECT: "current-variant-multiselect",
   SET_SELECTED_VARIANT: "selected-variant",
+  ADD_OPTIONS_GROUPS: "add-options-group",
+  UPDATE_OPTIONS_GROUPS: "update-options-group",
+  DELETE_OPTIONS_GROUPS: "delete-options-group",
+  SORT_GROUPS: "sort-group",
+  ADD_OPTIONS_OPSI_GROUPS: "add-options-opsi-group",
+  UPDATE_OPTIONS_OPSI_GROUPS: "update-options-opsi-group",
+  DELETE_OPTIONS_OPSI_GROUPS: "delete-options-opsi-group",
 };

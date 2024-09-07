@@ -3,6 +3,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { IoAdd, IoCloseOutline, IoMenu } from "react-icons/io5";
 import { useDrag, useDrop } from "react-dnd";
 import { createUniqueID } from "../../../../../../lib/unique-id";
+import { useDispatch } from "react-redux";
+import {
+  addOptionOpsiGroup,
+  deleteOptionsOpsiGroup,
+  updateOptionsGroup,
+  updateOptionsOpsiGroup,
+} from "../../../../../../redux/modules/custom-landing-page/reducer";
 
 export const ItemTypes = {
   CARD: "card",
@@ -19,6 +26,8 @@ export const DraggableListGroupOption = ({
   idOption,
   type,
   options,
+  setDefaultValue,
+  defaultValue,
 }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
@@ -79,6 +88,8 @@ export const DraggableListGroupOption = ({
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
 
+  const dispatch = useDispatch();
+
   const [labelGroup, setLabelGroup] = useState(showInfoText);
   const [optionValue, setOptionValue] = useState([]);
 
@@ -95,8 +106,7 @@ export const DraggableListGroupOption = ({
     }
   }, [options]);
 
-  const handleChangeLabelGroup = (value, id) => {
-    setLabelGroup(value);
+  const handleBlurLabelGroup = (value, id) => {
     setPreviewSection((prevSections) =>
       prevSections.map((section) => {
         if (section.id === idSection) {
@@ -110,7 +120,7 @@ export const DraggableListGroupOption = ({
                     opt.groupId === id
                       ? {
                           ...opt,
-                          group: value,
+                          label: value,
                         }
                       : opt
                   ),
@@ -123,15 +133,19 @@ export const DraggableListGroupOption = ({
         return section;
       })
     );
+
+    dispatch(updateOptionsGroup(id, value));
   };
 
-  const handleChangeLabelOption = (value, optionid) => {
+  const handleChangeOptionLabel = (value, optionid) => {
     setOptionValue((prevOptionValue) =>
       prevOptionValue.map((opt) =>
-        opt.id === optionid ? { ...opt, value: value } : opt
+        opt.id === optionid ? { ...opt, label: value } : opt
       )
     );
+  };
 
+  const handleBlurLabelOption = (value, optionid) => {
     setPreviewSection((prevSections) =>
       prevSections.map((section) => {
         if (section.id === idSection) {
@@ -158,47 +172,11 @@ export const DraggableListGroupOption = ({
         return section;
       })
     );
+
+    dispatch(updateOptionsOpsiGroup(id, optionid, value));
   };
 
-  //   const handleAddOption = () => {
-  //     let uniqueId = createUniqueID(options);
-
-  //     let newOption = {
-  //       id: uniqueId,
-  //       label: `Opsi ${optionCounter}`,
-  //       value: `Opsi ${optionCounter}`,
-  //     };
-
-  //     setPreviewSection((prevSections) =>
-  //       prevSections.map((section) => {
-  //         if (section.id === idSection) {
-  //           return {
-  //             ...section,
-  //             content: section.content.map((contentItem) => {
-  //               if (contentItem.type === type) {
-  //                 return {
-  //                   ...contentItem,
-  //                   optionsGroup: contentItem.optionsGroup.map((optGroup) => {
-  //                     if (optGroup.groupId === id) {
-  //                       return {
-  //                         ...optGroup,
-  //                         options: [...optGroup.options, newOption],
-  //                       };
-  //                     }
-  //                     return optGroup;
-  //                   }),
-  //                 };
-  //               }
-  //               return contentItem;
-  //             }),
-  //           };
-  //         }
-  //         return section;
-  //       })
-  //     );
-  //   };
-
-  const handleAddOption = (groupId) => {
+  const handleAddOption = () => {
     setPreviewSection((prevSections) => {
       const updatedSections = prevSections.map((section) => {
         if (section.id === idSection) {
@@ -216,7 +194,7 @@ export const DraggableListGroupOption = ({
 
                       setOptionCounters((prevCounters) => ({
                         ...prevCounters,
-                        [groupId]: newCounter,
+                        [id]: newCounter,
                       }));
 
                       let uniqueId = createUniqueID(options);
@@ -226,6 +204,8 @@ export const DraggableListGroupOption = ({
                         label: `Opsi ${newCounter}`,
                         value: `${id}-Opsi ${newCounter}`,
                       };
+
+                      dispatch(addOptionOpsiGroup(id, newOption));
 
                       return {
                         ...optGroup,
@@ -247,7 +227,22 @@ export const DraggableListGroupOption = ({
     });
   };
 
-  const handleRemoveOption = (optionId) => {
+  const handleRemoveOption = (optionId, optionValue, optionLabel) => {
+    setDefaultValue((prevValue) => {
+      const isOptionUndefined =
+        prevValue.value === optionValue ? undefined : prevValue.value;
+      return {
+        ...prevValue,
+        value: isOptionUndefined,
+        label:
+          isOptionUndefined === undefined
+            ? "Tidak Ada"
+            : prevValue.label !== optionLabel
+            ? prevValue.label
+            : optionLabel,
+      };
+    });
+
     setPreviewSection((prevSections) =>
       prevSections.map((section) => {
         if (section.id === idSection) {
@@ -255,8 +250,14 @@ export const DraggableListGroupOption = ({
             ...section,
             content: section.content.map((contentItem) => {
               if (contentItem.type === type) {
+                const currentDefaultValue = contentItem.defaultValue;
+
                 return {
                   ...contentItem,
+                  defaultValue:
+                    currentDefaultValue === optionValue
+                      ? undefined
+                      : currentDefaultValue,
                   optionsGroup: contentItem.optionsGroup.map((optGroup) => {
                     // Hapus opsi dari grup yang sesuai
                     if (optGroup.groupId === id) {
@@ -278,6 +279,7 @@ export const DraggableListGroupOption = ({
         return section;
       })
     );
+    dispatch(deleteOptionsOpsiGroup(id, optionId));
   };
 
   return (
@@ -302,10 +304,11 @@ export const DraggableListGroupOption = ({
                       value={labelGroup || ""}
                       type="text"
                       style={{ border: "none", outline: "none" }}
-                      onChange={(e) => {
+                      onChange={(e) => setLabelGroup(e.target.value)}
+                      onBlur={(e) => {
                         const { value } = e.target;
                         const { id } = e.target;
-                        handleChangeLabelGroup(value, id);
+                        handleBlurLabelGroup(value, id);
                       }}
                     />
                   </div>
@@ -317,16 +320,6 @@ export const DraggableListGroupOption = ({
           <div className="mb-2">
             <div className="d-flex align-items-center justify-content-between">
               <div style={{ fontSize: 12, marginBottom: 8 }}>Opsi</div>
-
-              {options.length === 0 && (
-                <IoAdd
-                  onClick={() => {
-                    handleAddOption();
-                  }}
-                  style={{ cursor: "pointer" }}
-                  size={18}
-                />
-              )}
             </div>
 
             {options?.map((opt) => (
@@ -336,7 +329,9 @@ export const DraggableListGroupOption = ({
                 className="d-flex align-items-center "
               >
                 <IoCloseOutline
-                  onClick={() => handleRemoveOption(opt.id)}
+                  onClick={() =>
+                    handleRemoveOption(opt.id, opt.value, opt.label)
+                  }
                   style={{ cursor: "pointer" }}
                   size={18}
                 />
@@ -354,21 +349,31 @@ export const DraggableListGroupOption = ({
                       onChange={(e) => {
                         const { value } = e.target;
                         const { id } = e.target;
-                        handleChangeLabelOption(value, id);
+                        handleChangeOptionLabel(value, id);
+                      }}
+                      onBlur={(e) => {
+                        const { value } = e.target;
+                        const { id } = e.target;
+                        handleBlurLabelOption(value, id);
                       }}
                     />
                   </CCardBody>
                 </CCard>
-
-                <IoAdd
-                  onClick={() => {
-                    handleAddOption();
-                  }}
-                  style={{ cursor: "pointer" }}
-                  size={18}
-                />
               </div>
             ))}
+
+            {}
+
+            <div className="d-flex justify-content-end">
+              {" "}
+              <IoAdd
+                onClick={() => {
+                  handleAddOption();
+                }}
+                style={{ cursor: "pointer" }}
+                size={18}
+              />
+            </div>
           </div>
         </div>
 

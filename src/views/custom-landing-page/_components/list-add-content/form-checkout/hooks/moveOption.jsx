@@ -1,6 +1,10 @@
 import { useCallback } from "react";
+import { sortOptionsGroups } from "../../../../../../redux/modules/custom-landing-page/reducer";
+import { useDispatch } from "react-redux";
 
 export const useMoveOption = (setPreviewSection, key, optionTomaping) => {
+  const dispatch = useDispatch();
+
   const moveOption = useCallback(
     (name, dragIndex, hoverIndex, isOption = false, contentIndex = null) => {
       setPreviewSection((prevSections) => {
@@ -36,8 +40,12 @@ export const useMoveOption = (setPreviewSection, key, optionTomaping) => {
           return section;
         });
       });
+
+      if (optionTomaping === "optionsGroup") {
+        dispatch(sortOptionsGroups(dragIndex, hoverIndex));
+      }
     },
-    [key, optionTomaping, setPreviewSection]
+    [dispatch, key, optionTomaping, setPreviewSection]
   );
 
   return moveOption;

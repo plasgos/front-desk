@@ -1,8 +1,16 @@
 import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { deleteOptionsGroup } from "../../../../../../redux/modules/custom-landing-page/reducer";
 
 export const useRemoveOption = (setPreviewSection, optionTomaping) => {
+  const dispacth = useDispatch();
   const removeOption = useCallback(
-    (sectionId, contentIndex, optionIndex) => {
+    (sectionId, contentIndex, optionIndex, groupId, setDefaultValue) => {
+      setDefaultValue({
+        value: undefined,
+        label: "Tidak Ada",
+      });
+
       setPreviewSection((prevSections) =>
         prevSections.map((section) => {
           if (section.id === sectionId) {
@@ -16,6 +24,7 @@ export const useRemoveOption = (setPreviewSection, optionTomaping) => {
                       [optionTomaping]: contentItem[optionTomaping].filter(
                         (_, oIndex) => oIndex !== optionIndex
                       ),
+                      defaultValue: undefined,
                     };
                   }
                   // Jika tidak ada optionIndex, hapus contentItem itu sendiri
@@ -24,6 +33,9 @@ export const useRemoveOption = (setPreviewSection, optionTomaping) => {
                 return contentItem;
               })
               .filter(Boolean); // Filter out null values
+            if (optionTomaping === "optionsGroup") {
+              dispacth(deleteOptionsGroup(groupId));
+            }
 
             return { ...section, content: updatedContent };
           }
@@ -31,7 +43,7 @@ export const useRemoveOption = (setPreviewSection, optionTomaping) => {
         })
       );
     },
-    [optionTomaping, setPreviewSection]
+    [dispacth, optionTomaping, setPreviewSection]
   );
 
   return removeOption;

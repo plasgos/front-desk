@@ -13,19 +13,28 @@ const ViewSelectOption = ({
   typeOption,
   required,
 }) => {
+  console.log("🚀 ~ defaultValue:", defaultValue);
   const { setValue } = useFormContext();
 
   const { labelColor, fontSizeLabel, fontStyle, distance } = style || {};
 
   useEffect(() => {
-    if (options && options.length > 0) {
+    if (options) {
       if (defaultValue === "firstOption" && typeOption === "single") {
         setValue(name, options[0]);
       } else if (defaultValue === "firstOption" && typeOption === "group") {
         setValue(name, options[0].options[0]);
-      } else {
-        const value = options.find((opt) => opt.value === defaultValue);
+      } else if (
+        defaultValue !== undefined &&
+        defaultValue !== "firstOption" &&
+        typeOption === "group"
+      ) {
+        const value = options
+          .flatMap((opt) => opt.options)
+          .find((opsi) => opsi.value === defaultValue);
         setValue(name, value);
+      } else {
+        setValue(name, undefined);
       }
     }
   }, [defaultValue, name, options, setValue, typeOption]);
