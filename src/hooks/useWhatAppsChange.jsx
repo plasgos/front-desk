@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 
 export const useWhatAppsChange = (
   setPreviewSection,
@@ -9,12 +10,28 @@ export const useWhatAppsChange = (
     selectedSectionToEdit?.target?.whatApps || {}
   );
 
-  const handlePhoneNumberChange = (value) => {
-    setWhatApps((prevValue) => ({
-      ...prevValue,
-      phoneNumber: value,
-    }));
+  const [whatAppsPhoneNumberValue] = useDebounce(whatApps.phoneNumber, 1000);
 
+  const [whatAppsMessageValue] = useDebounce(whatApps.message, 1000);
+
+  useEffect(() => {
+    if (
+      whatAppsPhoneNumberValue !==
+      selectedSectionToEdit?.target?.whatApps?.phoneNumber
+    ) {
+      handlePhoneNumberChange(whatAppsPhoneNumberValue);
+    }
+
+    if (
+      whatAppsMessageValue !== selectedSectionToEdit?.target?.whatApps?.message
+    ) {
+      handleMessageChange(whatAppsMessageValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [whatAppsPhoneNumberValue, whatAppsMessageValue]);
+
+  const handlePhoneNumberChange = (value) => {
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === idSection
@@ -40,11 +57,6 @@ export const useWhatAppsChange = (
   };
 
   const handleMessageChange = (value) => {
-    setWhatApps((prevValue) => ({
-      ...prevValue,
-      message: value,
-    }));
-
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === idSection

@@ -1,7 +1,6 @@
 import { CButton, CCard } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import image from "../../../../../assets/action-figure.jpg";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "react-slideshow-image/dist/styles.css";
 import { createUniqueID } from "../../../../../lib/unique-id";
@@ -16,6 +15,7 @@ import UrlInput from "../../common/UrlInput";
 import WhatsAppInput from "../../common/WhatAppsInput";
 import ScrollTargetInput from "../../common/ScrollTargetSelect";
 import Input from "../../common/Input";
+import { useDebounce } from "use-debounce";
 
 export const UpdateContent = ({
   idSection,
@@ -33,29 +33,33 @@ export const UpdateContent = ({
 
   const [alt, setAlt] = useState(currentContent?.content?.alt || "");
 
+  const [altValue] = useDebounce(alt, 1000);
+
   const [setting, setSetting] = useState({});
   const [selectedOption, setSelectedOption] = useState(
     optionsTarget[0].options[0]
   );
 
-  const { url, setUrl, handleUrlChange, handleUrlOpenNewTabChange } =
-    useUrlChange(
-      setPreviewSection,
-      idSection,
-      isEditingContent ? currentContent : setting
-    );
+  useEffect(() => {
+    if (altValue !== currentContent?.content?.alt) {
+      handleChangeContent("alt", altValue);
+    }
 
-  const {
-    whatApps,
-    setWhatApps,
-    handlePhoneNumberChange,
-    handleMessageChange,
-    handleUrlOpenNewTabWaChange,
-  } = useWhatAppsChange(
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [altValue]);
+
+  const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChange(
     setPreviewSection,
     idSection,
     isEditingContent ? currentContent : setting
   );
+
+  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
+    useWhatAppsChange(
+      setPreviewSection,
+      idSection,
+      isEditingContent ? currentContent : setting
+    );
 
   const {
     selectedOptionScrollTarget,
@@ -357,7 +361,6 @@ export const UpdateContent = ({
           onChange={(event) => {
             const { value } = event.target;
             setAlt(value);
-            handleChangeContent("alt", value);
           }}
           type="text"
         />
@@ -374,7 +377,12 @@ export const UpdateContent = ({
             <UrlInput
               id="urlOpenNewTabListImg"
               url={url}
-              handleUrlChange={handleUrlChange}
+              handleUrlChange={(newValue) => {
+                setUrl((prevValue) => ({
+                  ...prevValue,
+                  url: newValue,
+                }));
+              }}
               handleUrlOpenNewTabChange={handleUrlOpenNewTabChange}
             />
           )}
@@ -383,8 +391,18 @@ export const UpdateContent = ({
             <WhatsAppInput
               id="waOpenNewTabListImg"
               whatApps={whatApps}
-              handlePhoneNumberChange={handlePhoneNumberChange}
-              handleMessageChange={handleMessageChange}
+              handlePhoneNumberChange={(newValue) => {
+                setWhatApps((prevValue) => ({
+                  ...prevValue,
+                  phoneNumber: newValue,
+                }));
+              }}
+              handleMessageChange={(newValue) => {
+                setWhatApps((prevValue) => ({
+                  ...prevValue,
+                  message: newValue,
+                }));
+              }}
               handleUrlOpenNewTabWaChange={handleUrlOpenNewTabWaChange}
             />
           )}

@@ -33,6 +33,13 @@ const ViewSelectOption = ({
           .flatMap((opt) => opt.options)
           .find((opsi) => opsi.value === defaultValue);
         setValue(name, value);
+      } else if (
+        defaultValue !== undefined &&
+        defaultValue !== "firstOption" &&
+        typeOption === "single"
+      ) {
+        const value = options.find((opt) => opt.value === defaultValue);
+        setValue(name, value);
       } else {
         setValue(name, undefined);
       }

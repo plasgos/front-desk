@@ -7,6 +7,7 @@ import {
   removeOptionScrollTarget,
   setOptionsScrollTarget,
 } from "../../../../../redux/modules/custom-landing-page/reducer";
+import { useDebounce } from "use-debounce";
 
 const ScrollTarget = ({
   previewSection,
@@ -21,6 +22,8 @@ const ScrollTarget = ({
   const [isCopiedAnchor, setIsCopiedAnchor] = useState(false);
   const [setting, setSetting] = useState({});
   const [hasAddedContent, setHasAddedContent] = useState(false);
+
+  const [nameValue] = useDebounce(name, 1000);
 
   const dispatch = useDispatch();
 
@@ -70,7 +73,6 @@ const ScrollTarget = ({
   };
 
   const handleNameChange = (value) => {
-    setName(value);
     setPreviewSection((arr) =>
       arr.map((item) => {
         const contentIdToCheck = isEditingSection
@@ -91,6 +93,13 @@ const ScrollTarget = ({
       })
     );
   };
+
+  useEffect(() => {
+    if (nameValue !== currentSection?.content?.name) {
+      handleNameChange(nameValue);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameValue]);
 
   useEffect(() => {
     if (!isEditingSection) {
@@ -179,7 +188,7 @@ const ScrollTarget = ({
           <label>Nama</label>
           <input
             value={name}
-            onChange={(event) => handleNameChange(event.target.value)}
+            onChange={(event) => setName(event.target.value)}
             type="text"
             className="form-control"
           />

@@ -19,6 +19,7 @@ import {
 import { createUniqueID } from "../../../../../lib/unique-id";
 import ColorPicker from "../../common/ColorPicker";
 import { CustomReactQuill } from "../../common/ReactQuill";
+import { useDebounce } from "use-debounce";
 
 const Text = ({
   previewSection,
@@ -31,15 +32,30 @@ const Text = ({
   const [editorHtml, setEditorHtml] = useState(
     currentSection?.content?.editorHtml || "Type your text here"
   );
-
-  const [selectAlign, setSelectAlign] = useState(
-    currentSection?.content?.style?.textAlign || "tw-text-center"
-  );
   const [selectedColor, setSelectedColor] = useState(
     currentSection?.content?.style?.color || "#000000"
   );
 
+  const [editorHtmlValue] = useDebounce(editorHtml, 1000);
+  const [selectedColorValue] = useDebounce(selectedColor, 500);
+
+  const [selectAlign, setSelectAlign] = useState(
+    currentSection?.content?.style?.textAlign || "tw-text-center"
+  );
+
   const [settingText, setSettingText] = useState({});
+
+  useEffect(() => {
+    if (editorHtmlValue) {
+      handleEditorChange(editorHtmlValue);
+    }
+
+    if (selectedColorValue) {
+      handleChangeContentStyle("color", selectedColorValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editorHtmlValue, selectedColorValue]);
 
   const handleChangeContentStyle = (key, value) => {
     setPreviewSection((arr) =>
@@ -65,7 +81,6 @@ const Text = ({
   };
 
   const handleEditorChange = (html) => {
-    setEditorHtml(html);
     setPreviewSection((arr) =>
       arr.map((item) => {
         const contentIdToCheck = isEditingSection
@@ -233,7 +248,6 @@ const Text = ({
                   label="Warna Teks"
                   onChange={(color) => {
                     setSelectedColor(color);
-                    handleChangeContentStyle("color", color);
                   }}
                   flexEnd="justify-content-end"
                   bottom={"77px"}
@@ -243,7 +257,7 @@ const Text = ({
 
               <CustomReactQuill
                 value={editorHtml}
-                onChange={handleEditorChange}
+                onChange={(html) => setEditorHtml(html)}
                 version="full"
               />
             </div>

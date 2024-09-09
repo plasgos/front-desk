@@ -3,6 +3,7 @@ import Input from "../../common/Input";
 import SelectOptions from "../../common/SelectOptions";
 import ColorPicker from "../../common/ColorPicker";
 import { CustomReactQuill } from "../../common/ReactQuill";
+import { useDebounce } from "use-debounce";
 
 const fontSizeQuoteOptions = [
   { value: "tw-text-base", label: "Normal" },
@@ -30,6 +31,42 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
   );
 
   const [fontSize, setFontSize] = useState(fontSizeQuoteOptions[0]);
+
+  const [quoteTextValue] = useDebounce(quoteText, 1000);
+  const [quoteTextColorValue] = useDebounce(quoteTextColor, 300);
+  const [writerValue] = useDebounce(writer, 1000);
+  const [writerColorValue] = useDebounce(writerColor, 300);
+  const [quoteTagColorValue] = useDebounce(quoteTagColor, 300);
+
+  useEffect(() => {
+    if (quoteTextValue !== currentSection?.content?.quoteText) {
+      handleChangeContent("quoteText", quoteTextValue);
+    }
+
+    if (quoteTextColorValue !== currentSection?.content?.quoteTextColor) {
+      handleChangeContent("quoteTextColor", quoteTextColorValue);
+    }
+
+    if (writerValue !== currentSection?.content?.writer) {
+      handleChangeContent("writer", writerValue);
+    }
+
+    if (writerColorValue !== currentSection?.content?.writerColor) {
+      handleChangeContent("writerColor", writerColorValue);
+    }
+
+    if (quoteTagColorValue !== currentSection?.content?.quoteTagColor) {
+      handleChangeContent("quoteTagColor", quoteTagColorValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    quoteTextValue,
+    quoteTextColorValue,
+    writerValue,
+    writerColorValue,
+    quoteTagColorValue,
+  ]);
 
   useEffect(() => {
     if (isEditing) {
@@ -67,7 +104,6 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
           label="Quote Teks"
           onChange={(color) => {
             setQuoteTextColor(color);
-            handleChangeContent("quoteTextColor", color);
           }}
           bottom={"100px"}
         />
@@ -77,7 +113,6 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
           label="Quote"
           onChange={(color) => {
             setQuoteTagColor(color);
-            handleChangeContent("quoteTagColor", color);
           }}
           bottom={"100px"}
         />
@@ -89,7 +124,6 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
           label="Teks Penulis"
           onChange={(color) => {
             setWriterColor(color);
-            handleChangeContent("writerColor", color);
           }}
           bottom={"100px"}
         />
@@ -112,7 +146,6 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
         onChange={(e) => {
           const { value } = e.target;
           setWriter(value);
-          handleChangeContent("writer", value);
         }}
         type="text"
       />
@@ -121,7 +154,6 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
         value={quoteText}
         onChange={(value) => {
           setQuoteText(value);
-          handleChangeContent("quoteText", value);
         }}
         version="basic"
       />

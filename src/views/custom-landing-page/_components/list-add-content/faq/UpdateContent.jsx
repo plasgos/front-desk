@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Input from "../../common/Input";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import { CustomReactQuill } from "../../common/ReactQuill";
+import { useDebounce } from "use-debounce";
 
 const UpdateContent = ({
   idSection,
@@ -15,6 +16,21 @@ const UpdateContent = ({
   const [content, setContent] = useState(
     currentContent?.desc || "So awesome that you will not believe it"
   );
+
+  const [titleValue] = useDebounce(title, 1000);
+  const [contentValue] = useDebounce(content, 1000);
+
+  useEffect(() => {
+    if (titleValue !== currentContent?.title) {
+      handleChangeContent("title", titleValue);
+    }
+
+    if (contentValue !== currentContent?.desc) {
+      handleChangeContent("desc", contentValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [titleValue, contentValue]);
 
   const [setting, setSetting] = useState({});
 
@@ -76,7 +92,6 @@ const UpdateContent = ({
         onChange={(e) => {
           const { value } = e.target;
           setTitle(value);
-          handleChangeContent("title", value);
         }}
         type="text"
       />
@@ -85,7 +100,6 @@ const UpdateContent = ({
         value={content}
         onChange={(value) => {
           setContent(value);
-          handleChangeContent("desc", value);
         }}
         version="basic"
       />

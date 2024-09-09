@@ -14,6 +14,7 @@ import { CButton } from "@coreui/react";
 import { IoAdd } from "react-icons/io5";
 import { DraggableListOption } from "./DraggableListOption";
 import { createUniqueID } from "../../../../../../lib/unique-id";
+import { useDebounce } from "use-debounce";
 
 const optionVariant = [
   {
@@ -66,6 +67,16 @@ const MultiSelectControl = ({
   );
 
   const dispatch = useDispatch();
+
+  const [labelValue] = useDebounce(label, 1000);
+
+  useEffect(() => {
+    if (labelValue) {
+      handleChangeValueContent("label", labelValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [labelValue]);
 
   useEffect(() => {
     const initialVariant =
@@ -148,7 +159,8 @@ const MultiSelectControl = ({
     // setSetting(newOption);
   };
 
-  const removeSection = useRemoveOption(setPreviewSection, "options");
+  const removeSection = useRemoveOption(setPreviewSection, "multiSelect");
+
   const moveSection = useMoveOption(
     setPreviewSection,
     "multiSelect",
@@ -259,7 +271,6 @@ const MultiSelectControl = ({
             onChange={(e) => {
               const { value } = e.target;
               setLabel(value);
-              handleChangeValueContent("label", value);
             }}
           />
 

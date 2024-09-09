@@ -4,6 +4,7 @@ import defaultImage from "../../../../../assets/profile.jpg";
 import Input from "../../common/Input";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import { CustomReactQuill } from "../../common/ReactQuill";
+import { useDebounce } from "use-debounce";
 
 export const UpdateContents = ({
   idSection,
@@ -20,6 +21,21 @@ export const UpdateContents = ({
   );
 
   const [name, setName] = useState(currentContent?.name || "John Doe");
+
+  const [nameValue] = useDebounce(name, 1000);
+  const [contentValue] = useDebounce(content, 1000);
+
+  useEffect(() => {
+    if (nameValue !== currentContent?.name) {
+      handleChangeContent("name", nameValue);
+    }
+
+    if (contentValue !== currentContent?.content) {
+      handleChangeContent("content", contentValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nameValue, contentValue]);
 
   const [setting, setSetting] = useState({});
 
@@ -133,7 +149,6 @@ export const UpdateContents = ({
           onChange={(e) => {
             const { value } = e.target;
             setName(value);
-            handleChangeContent("name", value);
           }}
         />
 
@@ -167,7 +182,6 @@ export const UpdateContents = ({
           value={content}
           onChange={(value) => {
             setContent(value);
-            handleChangeContent("content", value);
           }}
           version="basic"
         />

@@ -14,4 +14,9 @@ export default {
   ADD_OPTIONS_OPSI_GROUPS: "add-options-opsi-group",
   UPDATE_OPTIONS_OPSI_GROUPS: "update-options-opsi-group",
   DELETE_OPTIONS_OPSI_GROUPS: "delete-options-opsi-group",
+
+  ADD_OPTION: "add-option",
+  UPDATE_OPTION: "update-option",
+  DELETE_OPTION: "delete-option",
+  SORT_OPTION: "sort-option",
 };

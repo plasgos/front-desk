@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../../common/Input";
 import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
+import { useDebounce } from "use-debounce";
 
 const LineControl = ({ currentContent, handleChangeValueContent }) => {
   const [labelLine, setLabelLine] = useState(currentContent?.label || "Nama");
@@ -10,6 +11,11 @@ const LineControl = ({ currentContent, handleChangeValueContent }) => {
   const [emptySpace, setEmptySpace] = useState(currentContent?.emptySpace || 8);
 
   const [width, setWidth] = useState(currentContent?.width || 4);
+
+  const [labelLineValue] = useDebounce(labelLine, 1000);
+  const [heightValue] = useDebounce(height, 500);
+  const [emptySpaceValue] = useDebounce(emptySpace, 500);
+  const [widthValue] = useDebounce(width, 500);
 
   const handleSetValueWhenBlur = (value, min, max, key) => {
     const newValue = Math.min(Math.max(value, min), max);
@@ -23,8 +29,28 @@ const LineControl = ({ currentContent, handleChangeValueContent }) => {
     handleChangeValueContent(key, newValue);
   };
 
+  useEffect(() => {
+    if (labelLineValue) {
+      handleChangeValueContent("label", labelLineValue);
+    }
+
+    if (heightValue && heightValue <= 100) {
+      handleChangeValueContent("height", heightValue);
+    }
+
+    if (emptySpaceValue && emptySpaceValue <= 100) {
+      handleChangeValueContent("emptySpace", emptySpaceValue);
+    }
+
+    if (widthValue && widthValue <= 100) {
+      handleChangeValueContent("width", widthValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [labelLineValue, widthValue, emptySpaceValue, heightValue]);
+
   return (
-    <div>
+    <div style={{ overflowX: "hidden" }}>
       <Input
         type="text"
         value={labelLine}
@@ -32,7 +58,6 @@ const LineControl = ({ currentContent, handleChangeValueContent }) => {
         onChange={(e) => {
           const { value } = e.target;
           setLabelLine(value);
-          handleChangeValueContent("label", value);
         }}
       />
 
@@ -41,7 +66,6 @@ const LineControl = ({ currentContent, handleChangeValueContent }) => {
         value={height}
         onChange={(newValue) => {
           setHeight(newValue);
-          handleChangeValueContent("height", newValue);
         }}
         min={1}
         max={100}
@@ -53,7 +77,6 @@ const LineControl = ({ currentContent, handleChangeValueContent }) => {
         value={emptySpace}
         onChange={(newValue) => {
           setEmptySpace(newValue);
-          handleChangeValueContent("emptySpace", newValue);
         }}
         min={1}
         max={100}
@@ -65,7 +88,6 @@ const LineControl = ({ currentContent, handleChangeValueContent }) => {
         value={width}
         onChange={(newValue) => {
           setWidth(newValue);
-          handleChangeValueContent("width", newValue);
         }}
         min={1}
         max={100}

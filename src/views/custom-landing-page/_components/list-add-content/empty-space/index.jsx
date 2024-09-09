@@ -2,6 +2,7 @@ import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import { createUniqueID } from "../../../../../lib/unique-id";
+import { useDebounce } from "use-debounce";
 
 const EmptySpace = ({
   previewSection,
@@ -12,7 +13,20 @@ const EmptySpace = ({
   currentSection,
 }) => {
   const [height, setHeight] = useState(currentSection?.content?.height || 120);
+
+  const [heightValue] = useDebounce(height, 500);
   const [setting, setSetting] = useState({});
+
+  useEffect(() => {
+    if (
+      heightValue !== currentSection?.content?.height &&
+      heightValue <= 1200
+    ) {
+      handleUpdateHeight("height", heightValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [heightValue]);
 
   const handleUpdateHeight = (key, value) => {
     setPreviewSection((arr) =>
@@ -105,7 +119,6 @@ const EmptySpace = ({
         value={height}
         onChange={(newValue) => {
           setHeight(newValue);
-          handleUpdateHeight("height", newValue);
         }}
         min={10}
         max={1200}

@@ -12,6 +12,7 @@ import UrlInput from "../../common/UrlInput";
 import WhatsAppInput from "../../common/WhatAppsInput";
 import ScrollTargetInput from "../../common/ScrollTargetSelect";
 import FacebookPixel from "../../FacebookPixel";
+import { useDebounce } from "use-debounce";
 
 export const variantButton = [
   { value: "fill", label: "Fill" },
@@ -46,12 +47,19 @@ const UpdateContent = ({
   const [title, setTitle] = useState(
     currentContent?.content?.title || "Click Me"
   );
+
+  const [titleValue] = useDebounce(title, 1000);
+
   const [selectedColorButton, setSelectedColorButton] = useState(
     currentContent?.content?.style?.btnColor || "#2196F3"
   );
   const [selectedColorText, setSelectedColorText] = useState(
     currentContent?.content?.style?.textColor || "#FFFFFF"
   );
+
+  const [colorButtonValue] = useDebounce(selectedColorButton, 300);
+  const [textColorValue] = useDebounce(selectedColorText, 300);
+
   const [selectedOption, setSelectedOption] = useState(
     optionsTarget[0].options[0]
   );
@@ -68,24 +76,18 @@ const UpdateContent = ({
     shadowOptions[0]
   );
 
-  const { url, setUrl, handleUrlChange, handleUrlOpenNewTabChange } =
-    useUrlChange(
-      setPreviewSection,
-      idSection,
-      isEditingContent ? currentContent : setting
-    );
-
-  const {
-    whatApps,
-    setWhatApps,
-    handlePhoneNumberChange,
-    handleMessageChange,
-    handleUrlOpenNewTabWaChange,
-  } = useWhatAppsChange(
+  const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChange(
     setPreviewSection,
     idSection,
     isEditingContent ? currentContent : setting
   );
+
+  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
+    useWhatAppsChange(
+      setPreviewSection,
+      idSection,
+      isEditingContent ? currentContent : setting
+    );
 
   const {
     selectedOptionScrollTarget,
@@ -96,6 +98,22 @@ const UpdateContent = ({
     idSection,
     isEditingContent ? currentContent : setting
   );
+
+  useEffect(() => {
+    if (titleValue !== currentContent?.content?.title) {
+      handleTextChange(titleValue);
+    }
+
+    if (colorButtonValue !== currentContent?.content?.btnColor) {
+      handleChangeButtonStyle("btnColor", colorButtonValue);
+    }
+
+    if (textColorValue !== currentContent?.content?.textColor) {
+      handleChangeButtonStyle("textColor", textColorValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [titleValue, colorButtonValue, textColorValue]);
 
   useEffect(() => {
     if (isEditingContent) {
@@ -311,7 +329,6 @@ const UpdateContent = ({
   };
 
   const handleTextChange = (value) => {
-    setTitle(value);
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === idSection
@@ -381,7 +398,6 @@ const UpdateContent = ({
           label="Tombol"
           onChange={(color) => {
             setSelectedColorButton(color);
-            handleChangeButtonStyle("btnColor", color);
           }}
           bottom={"10px"}
         />
@@ -391,7 +407,6 @@ const UpdateContent = ({
           label="Teks"
           onChange={(color) => {
             setSelectedColorText(color);
-            handleChangeButtonStyle("textColor", color);
           }}
           bottom={"10px"}
         />
@@ -448,7 +463,7 @@ const UpdateContent = ({
       <Input
         label="Teks"
         value={title}
-        onChange={(event) => handleTextChange(event.target.value)}
+        onChange={(event) => setTitle(event.target.value)}
         type="text"
       />
 
@@ -467,7 +482,12 @@ const UpdateContent = ({
           <UrlInput
             id="urlOpenNewTabBtn"
             url={url}
-            handleUrlChange={handleUrlChange}
+            handleUrlChange={(newValue) => {
+              setUrl((prevValue) => ({
+                ...prevValue,
+                url: newValue,
+              }));
+            }}
             handleUrlOpenNewTabChange={handleUrlOpenNewTabChange}
           />
         )}
@@ -476,8 +496,18 @@ const UpdateContent = ({
           <WhatsAppInput
             id="waOpenNewTabBtn"
             whatApps={whatApps}
-            handlePhoneNumberChange={handlePhoneNumberChange}
-            handleMessageChange={handleMessageChange}
+            handlePhoneNumberChange={(newValue) => {
+              setWhatApps((prevValue) => ({
+                ...prevValue,
+                phoneNumber: newValue,
+              }));
+            }}
+            handleMessageChange={(newValue) => {
+              setWhatApps((prevValue) => ({
+                ...prevValue,
+                message: newValue,
+              }));
+            }}
             handleUrlOpenNewTabWaChange={handleUrlOpenNewTabWaChange}
           />
         )}

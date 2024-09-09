@@ -11,6 +11,7 @@ import Input from "../../../common/Input";
 import MultiSelectControl from "../common/MultiSelectControl";
 import { useSelector } from "react-redux";
 import SelectOptionsControl from "../common/SelectOptionsControl";
+import { useDebounce } from "use-debounce";
 
 const typeOptions = [
   {
@@ -161,17 +162,18 @@ const UpdateContent = ({
     currentContent?.isRequired || true
   );
 
+  const [label, setLabel] = useState(currentContent?.label || "Nama");
+  const [labelValue] = useDebounce(label, 1000);
+
+  useEffect(() => {
+    if (labelValue) {
+      handleChangeValueContent("label", labelValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [labelValue]);
+
   const [checkboxLabel, setCheckboxLabel] = useState(
-    currentContent?.label || "Nama"
-  );
-
-  const [imageLabel, setImageLabel] = useState(currentContent?.label || "Nama");
-
-  const [dateLabel, setDateLabel] = useState(currentContent?.label || "Nama");
-
-  const [timeLabel, setTimeLabel] = useState(currentContent?.label || "Nama");
-
-  const [ratingLabel, setRatingLabel] = useState(
     currentContent?.label || "Nama"
   );
 
@@ -372,12 +374,9 @@ const UpdateContent = ({
     let uniqueId = createUniqueID(currentContent);
     let payload = {
       id: uniqueId,
+      ...commonConfig,
       type: typeOption.value,
-      isRequired: true,
-      label: "Nama",
       labelType: "Teks",
-      placeholder: "Smith Grind",
-      defaultValue: "",
     };
 
     setPreviewSection((prevSections) =>
@@ -520,12 +519,11 @@ const UpdateContent = ({
 
           <Input
             type="text"
-            value={ratingLabel}
+            value={label}
             label="Nama"
             onChange={(e) => {
               const { value } = e.target;
-              setRatingLabel(value);
-              handleChangeValueContent("label", value);
+              setLabel(value);
             }}
           />
         </div>
@@ -534,12 +532,11 @@ const UpdateContent = ({
       {typeOption.value === "image" && (
         <Input
           type="text"
-          value={imageLabel}
+          value={label}
           label="Nama"
           onChange={(e) => {
             const { value } = e.target;
-            setImageLabel(value);
-            handleChangeValueContent("label", value);
+            setLabel(value);
           }}
         />
       )}
@@ -547,12 +544,11 @@ const UpdateContent = ({
       {typeOption.value === "time" && (
         <Input
           type="text"
-          value={timeLabel}
+          value={label}
           label="Nama"
           onChange={(e) => {
             const { value } = e.target;
-            setTimeLabel(value);
-            handleChangeValueContent("label", value);
+            setLabel(value);
           }}
         />
       )}
@@ -561,12 +557,11 @@ const UpdateContent = ({
         <div>
           <Input
             type="text"
-            value={dateLabel}
+            value={label}
             label="Nama"
             onChange={(e) => {
               const { value } = e.target;
-              setDateLabel(value);
-              handleChangeValueContent("label", value);
+              setLabel(value);
             }}
           />
 

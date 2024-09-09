@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../common/Input";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import { FaAlignCenter, FaAlignLeft, FaAlignRight } from "react-icons/fa6";
@@ -6,6 +6,7 @@ import { CFormGroup, CLabel } from "@coreui/react";
 import ColorPicker from "../../common/ColorPicker";
 import SelectOptions from "../../common/SelectOptions";
 import { CustomReactQuill } from "../../common/ReactQuill";
+import { useDebounce } from "use-debounce";
 
 const convertArrayToHtml = (lines) => {
   if (!Array.isArray(lines)) return ""; // Pastikan lines adalah array
@@ -36,6 +37,16 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
         "Waterproof (Tahan Air)",
       ])
   );
+
+  const [editorHtmlValue] = useDebounce(editorHtml, 1000);
+
+  useEffect(() => {
+    if (editorHtmlValue !== convertArrayToHtml(currentSection.content?.text)) {
+      handleEditorChange(editorHtmlValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editorHtmlValue]);
 
   const handleEditorChange = (html) => {
     // Buat elemen DOM sementara untuk mengonversi HTML menjadi teks tanpa tag
@@ -201,7 +212,7 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
 
       <CustomReactQuill
         value={editorHtml}
-        onChange={handleEditorChange}
+        onChange={(html) => setEditorHtml(html)}
         version="basic"
         customStyle={true}
       />

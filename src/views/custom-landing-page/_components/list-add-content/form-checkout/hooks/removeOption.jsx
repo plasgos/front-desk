@@ -1,40 +1,76 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { deleteOptionsGroup } from "../../../../../../redux/modules/custom-landing-page/reducer";
+import { deleteOption } from "../../../../../../redux/modules/custom-landing-page/reducer";
 
-export const useRemoveOption = (setPreviewSection, optionTomaping) => {
+export const useRemoveOption = (setPreviewSection, type) => {
   const dispacth = useDispatch();
   const removeOption = useCallback(
-    (sectionId, contentIndex, optionIndex, groupId, setDefaultValue) => {
-      setDefaultValue({
-        value: undefined,
-        label: "Tidak Ada",
-      });
+    (sectionId, contentIndex, optionIndex, option, setDefaultValue) => {
+      if (type !== "multiSelect") {
+        setDefaultValue((prevValue) => {
+          const currentDefaultValue = prevValue.value;
+
+          const isOptionUndefined =
+            currentDefaultValue === option.value
+              ? undefined
+              : currentDefaultValue;
+
+          return {
+            ...prevValue,
+            value: isOptionUndefined,
+            label:
+              isOptionUndefined === undefined ? "Tidak Ada" : prevValue.label,
+          };
+        });
+      }
 
       setPreviewSection((prevSections) =>
         prevSections.map((section) => {
           if (section.id === sectionId) {
             const updatedContent = section.content
               .map((contentItem, i) => {
-                if (i === contentIndex) {
-                  // Jika terdapat optionIndex, hapus item di dalam options
-                  if (optionIndex !== undefined) {
-                    return {
-                      ...contentItem,
-                      [optionTomaping]: contentItem[optionTomaping].filter(
-                        (_, oIndex) => oIndex !== optionIndex
-                      ),
-                      defaultValue: undefined,
-                    };
+                if (type !== "multiSelect") {
+                  const currentDefaultValue = contentItem.defaultValue;
+
+                  if (i === contentIndex) {
+                    // Jika terdapat optionIndex, hapus item di dalam options
+                    if (optionIndex !== undefined) {
+                      return {
+                        ...contentItem,
+                        options: contentItem.options.filter(
+                          (_, oIndex) => oIndex !== optionIndex
+                        ),
+                        defaultValue:
+                          currentDefaultValue === option.value
+                            ? undefined
+                            : currentDefaultValue,
+                      };
+                    }
+                    // Jika tidak ada optionIndex, hapus contentItem itu sendiri
+                    return null;
                   }
-                  // Jika tidak ada optionIndex, hapus contentItem itu sendiri
-                  return null;
+                } else {
+                  if (i === contentIndex) {
+                    // Jika terdapat optionIndex, hapus item di dalam options
+                    if (optionIndex !== undefined) {
+                      return {
+                        ...contentItem,
+                        options: contentItem.options.filter(
+                          (_, oIndex) => oIndex !== optionIndex
+                        ),
+                      };
+                    }
+                    // Jika tidak ada optionIndex, hapus contentItem itu sendiri
+                    return null;
+                  }
                 }
+
                 return contentItem;
               })
               .filter(Boolean); // Filter out null values
-            if (optionTomaping === "optionsGroup") {
-              dispacth(deleteOptionsGroup(groupId));
+
+            if (type !== "multiSelect") {
+              dispacth(deleteOption(option.id));
             }
 
             return { ...section, content: updatedContent };
@@ -43,7 +79,7 @@ export const useRemoveOption = (setPreviewSection, optionTomaping) => {
         })
       );
     },
-    [dispacth, optionTomaping, setPreviewSection]
+    [dispacth, setPreviewSection, type]
   );
 
   return removeOption;

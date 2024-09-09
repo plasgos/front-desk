@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../../common/Input";
 import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
+import { useDebounce } from "use-debounce";
 
 const EmptySpaceControl = ({ currentContent, handleChangeValueContent }) => {
   const [height, setHeight] = useState(currentContent?.height || 24);
 
   const [label, setLabel] = useState(currentContent?.label || "Nama");
+  const [labelValue] = useDebounce(label, 1000);
+  const [heightValue] = useDebounce(height, 500);
 
   const handleSetValueWhenBlur = (value, min, max, key) => {
     const newValue = Math.min(Math.max(value, min), max);
@@ -14,6 +17,18 @@ const EmptySpaceControl = ({ currentContent, handleChangeValueContent }) => {
     }
     handleChangeValueContent(key, newValue);
   };
+
+  useEffect(() => {
+    if (labelValue) {
+      handleChangeValueContent("label", labelValue);
+    }
+
+    if (heightValue && heightValue <= 100) {
+      handleChangeValueContent("height", heightValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [labelValue, heightValue]);
 
   return (
     <div>
@@ -24,7 +39,6 @@ const EmptySpaceControl = ({ currentContent, handleChangeValueContent }) => {
         onChange={(e) => {
           const { value } = e.target;
           setLabel(value);
-          handleChangeValueContent("label", value);
         }}
       />
 
@@ -33,7 +47,6 @@ const EmptySpaceControl = ({ currentContent, handleChangeValueContent }) => {
         value={height}
         onChange={(newValue) => {
           setHeight(newValue);
-          handleChangeValueContent("height", newValue);
         }}
         min={1}
         max={100}

@@ -44,7 +44,7 @@ const WhatsAppInput = ({
               style={{ borderRadius: "0px 0.5rem 0.5rem 0px" }}
               aria-describedby="basic-addon1"
               placeholder="8114002323"
-              value={whatApps.phoneNumber}
+              value={whatApps.phoneNumber || ""}
               onChange={(e) => handlePhoneNumberChange(e.target.value)}
               type="number"
               className="form-control"
@@ -54,7 +54,7 @@ const WhatsAppInput = ({
         </div>
         <Input
           label="Pesan (Opsional)"
-          value={whatApps.message}
+          value={whatApps.message || ""}
           onChange={(e) => handleMessageChange(e.target.value)}
           type="text"
           placeholder="Tuliskan pesan kamu di sini"

@@ -1,5 +1,8 @@
 import { useCallback } from "react";
-import { sortOptionsGroups } from "../../../../../../redux/modules/custom-landing-page/reducer";
+import {
+  sortOption,
+  sortOptionsGroups,
+} from "../../../../../../redux/modules/custom-landing-page/reducer";
 import { useDispatch } from "react-redux";
 
 export const useMoveOption = (setPreviewSection, key, optionTomaping) => {
@@ -43,6 +46,8 @@ export const useMoveOption = (setPreviewSection, key, optionTomaping) => {
 
       if (optionTomaping === "optionsGroup") {
         dispatch(sortOptionsGroups(dragIndex, hoverIndex));
+      } else {
+        dispatch(sortOption(dragIndex, hoverIndex));
       }
     },
     [dispatch, key, optionTomaping, setPreviewSection]

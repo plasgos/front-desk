@@ -14,6 +14,7 @@ import WhatsAppInput from "../../common/WhatAppsInput";
 import ScrollTargetInput from "../../common/ScrollTargetSelect";
 import Input from "../../common/Input";
 import { CustomReactQuill } from "../../common/ReactQuill";
+import { useDebounce } from "use-debounce";
 
 export const UpdateContent = ({
   idSection,
@@ -36,29 +37,38 @@ export const UpdateContent = ({
       "So awesome that you will not believe it"
   );
 
+  const [titleValue] = useDebounce(title, 1000);
+  const [descriptionValue] = useDebounce(description, 1000);
+
   const [setting, setSetting] = useState({});
   const [selectedOption, setSelectedOption] = useState(
     optionsTarget[0].options[0]
   );
 
-  const { url, setUrl, handleUrlChange, handleUrlOpenNewTabChange } =
-    useUrlChange(
-      setPreviewSection,
-      idSection,
-      isEditingContent ? currentContent : setting
-    );
+  useEffect(() => {
+    if (titleValue !== currentContent?.content?.title) {
+      handleChangeContent("title", titleValue);
+    }
 
-  const {
-    whatApps,
-    setWhatApps,
-    handlePhoneNumberChange,
-    handleMessageChange,
-    handleUrlOpenNewTabWaChange,
-  } = useWhatAppsChange(
+    if (descriptionValue !== currentContent?.content?.description) {
+      handleChangeContent("description", descriptionValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [titleValue, descriptionValue]);
+
+  const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChange(
     setPreviewSection,
     idSection,
     isEditingContent ? currentContent : setting
   );
+
+  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
+    useWhatAppsChange(
+      setPreviewSection,
+      idSection,
+      isEditingContent ? currentContent : setting
+    );
 
   const {
     selectedOptionScrollTarget,
@@ -364,11 +374,17 @@ export const UpdateContent = ({
             value={selectedOption}
             width="100"
           />
+
           {selectedOption?.value === "url" && (
             <UrlInput
               id="urlOpenNewTabText&Img"
               url={url}
-              handleUrlChange={handleUrlChange}
+              handleUrlChange={(newValue) => {
+                setUrl((prevValue) => ({
+                  ...prevValue,
+                  url: newValue,
+                }));
+              }}
               handleUrlOpenNewTabChange={handleUrlOpenNewTabChange}
             />
           )}
@@ -377,8 +393,18 @@ export const UpdateContent = ({
             <WhatsAppInput
               id="waOpenNewTabText&Img"
               whatApps={whatApps}
-              handlePhoneNumberChange={handlePhoneNumberChange}
-              handleMessageChange={handleMessageChange}
+              handlePhoneNumberChange={(newValue) => {
+                setWhatApps((prevValue) => ({
+                  ...prevValue,
+                  phoneNumber: newValue,
+                }));
+              }}
+              handleMessageChange={(newValue) => {
+                setWhatApps((prevValue) => ({
+                  ...prevValue,
+                  message: newValue,
+                }));
+              }}
               handleUrlOpenNewTabWaChange={handleUrlOpenNewTabWaChange}
             />
           )}
@@ -397,7 +423,6 @@ export const UpdateContent = ({
             onChange={(e) => {
               const { value } = e.target;
               setTitle(value);
-              handleChangeContent("title", value);
             }}
             type="text"
           />
@@ -409,7 +434,6 @@ export const UpdateContent = ({
           value={description}
           onChange={(value) => {
             setDescription(value);
-            handleChangeContent("description", value);
           }}
           version="basic"
         />

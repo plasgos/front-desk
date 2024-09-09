@@ -2,6 +2,8 @@ import { CCard, CCardBody } from "@coreui/react";
 import React, { useRef, useState } from "react";
 import { IoCloseOutline, IoMenu } from "react-icons/io5";
 import { useDrag, useDrop } from "react-dnd";
+import { useDispatch } from "react-redux";
+import { updateOption } from "../../../../../../redux/modules/custom-landing-page/reducer";
 
 export const ItemTypes = {
   CARD: "card",
@@ -17,6 +19,7 @@ export const DraggableListOption = ({
   idSection,
   idOption,
   type,
+  setDefaultValue,
 }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
@@ -77,6 +80,8 @@ export const DraggableListOption = ({
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
 
+  const dispatch = useDispatch();
+
   const [labelOption, setLabelOption] = useState(showInfoText);
 
   const handleChangeLabelOption = (value, id) => {
@@ -107,6 +112,8 @@ export const DraggableListOption = ({
         return section;
       })
     );
+
+    dispatch(updateOption(id, value));
   };
 
   return (

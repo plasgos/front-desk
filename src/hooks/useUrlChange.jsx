@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 
 export const useUrlChange = (
   setPreviewSection,
@@ -6,12 +7,18 @@ export const useUrlChange = (
   selectedSectionToEdit
 ) => {
   const [url, setUrl] = useState(selectedSectionToEdit?.target?.url || {});
-  const handleUrlChange = (value) => {
-    setUrl((prevValue) => ({
-      ...prevValue,
-      url: value,
-    }));
 
+  const [urlValue] = useDebounce(url.url, 1000);
+
+  useEffect(() => {
+    if (urlValue !== selectedSectionToEdit?.target?.url) {
+      handleUrlChange(urlValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlValue]);
+
+  const handleUrlChange = (value) => {
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === idSection

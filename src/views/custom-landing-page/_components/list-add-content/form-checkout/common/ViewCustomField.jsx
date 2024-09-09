@@ -23,6 +23,7 @@ const ViewCustomField = ({
   inputStyle,
   control,
   onSetSubdistrict,
+  index,
 }) => {
   const { setValue } = useFormContext();
 
@@ -253,6 +254,7 @@ const ViewCustomField = ({
           name={`custom-${section.type}.${section.id}.value`}
           control={control}
           required={section.isRequired}
+          index={index}
         />
       )}
 

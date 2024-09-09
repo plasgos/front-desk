@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-const ViewImage = ({ style, label, name, control, required }) => {
+const ViewImage = ({ style, label, name, control, required, index }) => {
   const { setValue } = useFormContext();
 
   const { labelColor, outlineInputColor, fontSizeLabel, fontStyle, distance } =
@@ -9,9 +9,9 @@ const ViewImage = ({ style, label, name, control, required }) => {
 
   useEffect(() => {
     if (label !== undefined) {
-      setValue(`${name}-label`, label);
+      setValue(`customField[${index}].label`, label);
     }
-  }, [label, name, setValue]);
+  }, [index, label, name, setValue]);
 
   const handleUpload = (onChange) => {
     const input = document.createElement("input");
@@ -34,7 +34,8 @@ const ViewImage = ({ style, label, name, control, required }) => {
 
   return (
     <Controller
-      name={name}
+      // name={name}
+      name={`customField[${index}].image`}
       control={control}
       rules={{ required: required ? "Harus Di Isi" : false }}
       render={({
@@ -45,7 +46,8 @@ const ViewImage = ({ style, label, name, control, required }) => {
           <div style={{ marginBottom: 16 + distance }}>
             <div className="tw-flex tw-flex-col">
               <Controller
-                name={`${name}-label`}
+                // name={`${name}-label`}
+                name={`customField[${index}].label`}
                 control={control}
                 defaultValue={label}
                 render={({

@@ -3,7 +3,6 @@ import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack"
 import Checkbox from "../../common/Checkbox";
 import { Controller, useForm, FormProvider } from "react-hook-form";
 import InputFormCheckout from "../../common/InputFormCheckout";
-import { CButton } from "@coreui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetCheckCosts } from "../../../../../redux/modules/shipping/reducer";
 import { setReceiver } from "../../../../../redux/modules/package/reducer";
@@ -45,6 +44,7 @@ const ViewFormCheckout = forwardRef(
         isDropshipping: dropshipping || false,
         dropshipperName: dropshipperName || "",
         dropshipperPhoneNumber: dropshipperPhoneNumber || "",
+        customField: [],
       },
     });
 
@@ -137,21 +137,6 @@ const ViewFormCheckout = forwardRef(
         setIconName(null);
       }
     }, [content.form.style.image]);
-
-    // const removeEmptyValues = (obj) => {
-    //   return Object.fromEntries(
-    //     Object.entries(obj)
-    //       .map(([key, value]) =>
-    //         value && typeof value === "object"
-    //           ? [key, removeEmptyValues(value)] // Rekursif untuk nested object
-    //           : [key, value]
-    //       )
-    //       .filter(
-    //         ([_, value]) =>
-    //           value !== "" && value !== null && value !== undefined
-    //       )
-    //   );
-    // };
 
     const removeEmptyValues = (obj) => {
       const cleanedObj = Object.fromEntries(
@@ -278,13 +263,14 @@ const ViewFormCheckout = forwardRef(
               )}
             </div>
 
-            {content?.content?.map((section) => (
+            {content?.content?.map((section, index) => (
               <div key={section.id}>
                 <ViewCustomField
                   section={section}
                   inputStyle={inputStyle}
                   control={control}
                   onSetSubdistrict={onSetSubdistrict}
+                  index={index}
                 />
               </div>
             ))}

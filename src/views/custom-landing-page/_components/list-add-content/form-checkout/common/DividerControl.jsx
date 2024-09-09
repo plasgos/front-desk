@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../../common/Input";
 import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
+import { useDebounce } from "use-debounce";
 
 const DividerControl = ({ currentContent, handleChangeValueContent }) => {
   const [fontSizeDivider, setFontSizeDivider] = useState(
@@ -11,6 +12,9 @@ const DividerControl = ({ currentContent, handleChangeValueContent }) => {
     currentContent?.label || "Nama"
   );
 
+  const [labelDividerValue] = useDebounce(labelDivider, 1000);
+  const [fontSizeDividerValue] = useDebounce(fontSizeDivider, 500);
+
   const handleSetValueWhenBlur = (value, min, max, key) => {
     const newValue = Math.min(Math.max(value, min), max);
     if (key === "fontSize") {
@@ -18,6 +22,18 @@ const DividerControl = ({ currentContent, handleChangeValueContent }) => {
     }
     handleChangeValueContent(key, newValue);
   };
+
+  useEffect(() => {
+    if (labelDividerValue) {
+      handleChangeValueContent("label", labelDividerValue);
+    }
+
+    if (fontSizeDividerValue && fontSizeDividerValue <= 100) {
+      handleChangeValueContent("fontSize", fontSizeDividerValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [labelDividerValue, fontSizeDividerValue]);
 
   return (
     <div>
@@ -28,7 +44,6 @@ const DividerControl = ({ currentContent, handleChangeValueContent }) => {
         onChange={(e) => {
           const { value } = e.target;
           setLabelDivider(value);
-          handleChangeValueContent("label", value);
         }}
       />
       <h5>Desain</h5>
@@ -38,7 +53,6 @@ const DividerControl = ({ currentContent, handleChangeValueContent }) => {
         value={fontSizeDivider}
         onChange={(newValue) => {
           setFontSizeDivider(newValue);
-          handleChangeValueContent("fontSize", newValue);
         }}
         min={12}
         max={100}

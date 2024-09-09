@@ -77,6 +77,7 @@ const initialState = {
   selectedVariant: null,
   currentVariantMultiSelect: {},
   optionsGroups: [],
+  options: [],
 };
 
 export default (state = initialState, action) => {
@@ -135,6 +136,12 @@ export default (state = initialState, action) => {
         optionsGroups: [...state.optionsGroups, action.payload],
       };
 
+    case types.ADD_OPTION:
+      return {
+        ...state,
+        options: [...state.options, action.payload],
+      };
+
     case types.UPDATE_OPTIONS_GROUPS:
       return {
         ...state,
@@ -148,12 +155,33 @@ export default (state = initialState, action) => {
         ),
       };
 
+    case types.UPDATE_OPTION:
+      return {
+        ...state,
+        options: state.options.map((opt) =>
+          opt.id === action.payload.optionId
+            ? {
+                ...opt,
+                label: action.payload.value,
+                value: `${action.payload.optionId}-${action.payload.value}`,
+              }
+            : opt
+        ),
+      };
+
     case types.DELETE_OPTIONS_GROUPS:
-      console.log(action.payload);
       return {
         ...state,
         optionsGroups: state.optionsGroups.filter(
           (option) => option.groupId !== action.payload.groupId
+        ),
+      };
+
+    case types.DELETE_OPTION:
+      return {
+        ...state,
+        options: state.options.filter(
+          (option) => option.id !== action.payload.optionId
         ),
       };
 
@@ -175,6 +203,27 @@ export default (state = initialState, action) => {
       return {
         ...state,
         optionsGroups: updatedGroups,
+      };
+    }
+
+    case types.SORT_OPTION: {
+      const { dragIndex, hoverIndex } = action.payload;
+
+      // Copy dari optionsGroups agar tidak mutasi langsung
+      const updatedGroups = [...state.options];
+
+      // Ambil item yang sedang di-drag
+      const draggedGroup = updatedGroups[dragIndex];
+
+      // Hapus item yang sedang di-drag dari array
+      updatedGroups.splice(dragIndex, 1);
+
+      // Sisipkan item di posisi baru (hoverIndex)
+      updatedGroups.splice(hoverIndex, 0, draggedGroup);
+
+      return {
+        ...state,
+        options: updatedGroups,
       };
     }
 
@@ -327,6 +376,42 @@ export const deleteOptionsOpsiGroup = (groupId, optionId) => {
     payload: {
       groupId,
       optionId,
+    },
+  };
+};
+
+export const addOption = (option) => {
+  return {
+    type: types.ADD_OPTION,
+    payload: option,
+  };
+};
+
+export const updateOption = (optionId, value) => {
+  return {
+    type: types.UPDATE_OPTION,
+    payload: {
+      optionId,
+      value,
+    },
+  };
+};
+
+export const deleteOption = (optionId) => {
+  return {
+    type: types.DELETE_OPTION,
+    payload: {
+      optionId,
+    },
+  };
+};
+
+export const sortOption = (dragIndex, hoverIndex) => {
+  return {
+    type: types.SORT_OPTION,
+    payload: {
+      dragIndex,
+      hoverIndex,
     },
   };
 };
