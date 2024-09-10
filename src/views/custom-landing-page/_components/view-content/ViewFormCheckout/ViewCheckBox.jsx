@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-const CheckboxFormCheckout = ({
+const ViewCheckBox = ({
   style,
   label,
   control,
@@ -72,4 +72,4 @@ const CheckboxFormCheckout = ({
   );
 };
 
-export default CheckboxFormCheckout;
+export default ViewCheckBox;

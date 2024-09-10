@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { FaStar } from "react-icons/fa";
 import { IoMdHeart } from "react-icons/io";
-const ViewRating = ({ style, label, name, control, design, required }) => {
+const ViewRating = ({
+  style,
+  label,
+  name,
+  control,
+  design,
+  required,
+  type,
+  index,
+}) => {
   const {
     labelColor,
     fontSizeLabel,
@@ -15,9 +24,10 @@ const ViewRating = ({ style, label, name, control, design, required }) => {
 
   useEffect(() => {
     if (label !== undefined) {
-      setValue(`${name}-label`, label);
+      setValue(`customField[${index}].label`, label);
+      setValue(`customField[${index}].type`, type);
     }
-  }, [label, name, setValue]);
+  }, [index, label, setValue, type]);
 
   const [hoverIndex, setHoverIndex] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(null);
@@ -45,11 +55,11 @@ const ViewRating = ({ style, label, name, control, design, required }) => {
   return (
     <div style={{ marginBottom: 16 + distance }}>
       <Controller
-        name={`${name}-label`}
+        name={`customField[${index}].label`}
         control={control}
         defaultValue={label}
         rules={{ required: required ? "Harus Di Isi" : false }}
-        render={({ field: { value: labelValue, onChange: onLabelChange } }) => (
+        render={({ field: { value: labelValue, onChange } }) => (
           <label
             className={`${fontStyle}`}
             style={{ fontSize: fontSizeLabel, color: labelColor }}
@@ -60,7 +70,7 @@ const ViewRating = ({ style, label, name, control, design, required }) => {
       />
 
       <Controller
-        name={name}
+        name={`customField[${index}].value`}
         control={control}
         rules={{ required: required ? "Harus Di Isi" : false }}
         render={({ field: { onChange }, fieldState: { error } }) => (

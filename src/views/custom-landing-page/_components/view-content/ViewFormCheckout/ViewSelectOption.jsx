@@ -5,18 +5,20 @@ import SelectOptionsCutomForm from "../../common/SelectOptionsCutomForm";
 const ViewSelectOption = ({
   style,
   label,
-  name,
   control,
   options,
   placeholder,
   defaultValue,
   typeOption,
   required,
+  type,
+  index,
 }) => {
-  console.log("🚀 ~ defaultValue:", defaultValue);
   const { setValue } = useFormContext();
 
   const { labelColor, fontSizeLabel, fontStyle, distance } = style || {};
+
+  const name = `customField[${index}].value`;
 
   useEffect(() => {
     if (options) {
@@ -48,17 +50,18 @@ const ViewSelectOption = ({
 
   useEffect(() => {
     if (label !== undefined) {
-      setValue(`${name}-label`, label);
+      setValue(`customField[${index}].label`, label);
+      setValue(`customField[${index}].type`, type);
     }
-  }, [label, name, setValue]);
+  }, [index, label, setValue, type]);
 
   return (
     <div style={{ marginBottom: 16 + distance }}>
       <Controller
-        name={`${name}-label`}
+        name={`customField[${index}].label`}
         control={control}
         defaultValue={label}
-        render={({ field: { value: labelValue, onChange: onLabelChange } }) => (
+        render={({ field: { value: labelValue, onChange } }) => (
           <label
             className={`${fontStyle}`}
             style={{ fontSize: fontSizeLabel, color: labelColor }}

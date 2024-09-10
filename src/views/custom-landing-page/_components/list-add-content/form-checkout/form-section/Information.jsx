@@ -75,7 +75,7 @@ const Information = ({ setPreviewSection, currentSection }) => {
   const [postcalCode, setPostcalCode] = useState(postalOption[0]);
   const [subdictrictType, setSubdictrictType] = useState(subdistrictOption[0]);
   const [lengthAddress, setLengthAddress] = useState(
-    amountLengthAddressOption[0]
+    amountLengthAddressOption[2]
   );
   const [phoneNumberOption, setPhoneNumberOption] = useState(
     phoneNumberOptions[0]

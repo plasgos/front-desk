@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import { Controller } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
-const InputPrice = ({
+const ViewPrice = ({
   style,
   label,
-  name,
   control,
   rules,
   placeholder,
   minValue,
   maxValue,
+  type,
+  index,
 }) => {
   const {
     labelColor,
@@ -23,6 +24,8 @@ const InputPrice = ({
     borderRadius,
     distance,
   } = style || {};
+
+  const { setValue } = useFormContext();
 
   const [formattedValue, setFormattedValue] = useState("");
 
@@ -59,21 +62,37 @@ const InputPrice = ({
     setFormattedValue(formatNumber(rawValue));
   };
 
+  useEffect(() => {
+    if (label !== undefined) {
+      setValue(`customField[${index}].label`, label);
+      setValue(`customField[${index}].type`, type);
+    }
+  }, [index, label, setValue, type]);
+
+  useEffect(() => {
+    setValue(`customField[${index}].value`, formattedValue);
+  }, [formattedValue, index, setValue]);
+
   return (
     <>
       <div style={{ marginBottom: 16 + distance }}>
-        {label && (
-          <label
-            className={`${fontStyle}`}
-            style={{ fontSize: fontSizeLabel, color: labelColor }}
-          >
-            {label}
-          </label>
-        )}
+        <Controller
+          name={`customField[${index}].label`}
+          control={control}
+          defaultValue={label}
+          render={({ field: { value: labelValue, onChange } }) => (
+            <label
+              className={`${fontStyle}`}
+              style={{ fontSize: fontSizeLabel, color: labelColor }}
+            >
+              {labelValue}
+            </label>
+          )}
+        />
 
         <div className="tw-flex tw-flex-col tw-w-full">
           <Controller
-            name={name}
+            name={`customField[${index}].value`}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <>
@@ -121,4 +140,4 @@ const InputPrice = ({
   );
 };
 
-export default InputPrice;
+export default ViewPrice;

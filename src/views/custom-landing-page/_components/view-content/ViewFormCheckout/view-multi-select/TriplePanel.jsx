@@ -1,7 +1,7 @@
 import React from "react";
-import CheckboxFormCheckout from "../../../common/CheckboxFormCheckout";
+import CheckBoxMultiSelect from "./CheckBoxMultiSelect";
 
-const TriplePanel = ({ section, inputStyle, control }) => {
+const TriplePanel = ({ name, section, inputStyle, control }) => {
   return (
     <div className="tw-flex tw-flex-wrap">
       {section?.options.map((opt, index) => {
@@ -21,15 +21,14 @@ const TriplePanel = ({ section, inputStyle, control }) => {
               borderBottom: !isLastRow ? "0.5px solid #E0E0E0" : "none", // Border bawah kecuali tiga item terakhir
             }}
           >
-            <CheckboxFormCheckout
+            <CheckBoxMultiSelect
               typeInput={section.typeInput}
               style={inputStyle}
               label={opt.label}
-              name={`custom-${section.type}.${opt.id}.value`}
+              name={name}
               control={control}
-              rules={{
-                required: section.isRequired ? "Harus Diisi" : false,
-              }}
+              required={section.isRequired}
+              indexMultiSelect={index}
             />
           </div>
         );

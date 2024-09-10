@@ -19,4 +19,7 @@ export default {
   UPDATE_OPTION: "update-option",
   DELETE_OPTION: "delete-option",
   SORT_OPTION: "sort-option",
+
+  SET_ADD_COURIERS: "set-add-couriers",
+  SET_EDIT_COURIERS: "set-edit-couriers",
 };

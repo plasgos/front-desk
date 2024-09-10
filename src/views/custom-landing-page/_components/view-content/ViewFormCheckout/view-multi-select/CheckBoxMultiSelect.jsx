@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-const CheckboxFormCheckout = ({
+const CheckBoxMultiSelect = ({
   style,
   label,
+  name,
   control,
   disabled,
   typeInput = "checkbox",
   required,
-  type,
-  index,
+  indexMultiSelect,
 }) => {
   const { labelColor, fontStyle, fontSizeTextInputColor } = style || {};
 
@@ -17,15 +17,15 @@ const CheckboxFormCheckout = ({
 
   useEffect(() => {
     if (label !== undefined) {
-      setValue(`customField[${index}].label`, label);
-      setValue(`customField[${index}].type`, type);
+      setValue(`${name}.options[${indexMultiSelect}].label`, label);
     }
-  }, [index, label, setValue, type]);
+  }, [indexMultiSelect, label, name, setValue]);
 
   return (
     <div className="tw-my-3">
       <Controller
-        name={`customField[${index}].value`}
+        name={`${name}.options[${indexMultiSelect}].value`}
+        defaultValue={false}
         control={control}
         rules={{ required: required ? "Harus Di Isi" : false }}
         render={({ field, fieldState: { error } }) => (
@@ -34,18 +34,18 @@ const CheckboxFormCheckout = ({
               <input
                 {...field}
                 disabled={disabled}
-                id={`customField[${index}].value`}
+                id={`${name}.options[${indexMultiSelect}].value`}
                 style={{ cursor: "pointer" }}
                 type={typeInput}
               />
 
               <Controller
-                name={`customField[${index}].label`}
+                name={`${name}.options[${indexMultiSelect}].label`}
                 control={control}
                 defaultValue={label}
                 render={({ field: { value: labelValue, onChange } }) => (
                   <label
-                    htmlFor={`customField[${index}].value`}
+                    htmlFor={`${name}.options[${indexMultiSelect}].value`}
                     className={`ml-1 mb-0 ${
                       disabled && "tw-text-slate-400"
                     } ${fontStyle}`}
@@ -72,4 +72,4 @@ const CheckboxFormCheckout = ({
   );
 };
 
-export default CheckboxFormCheckout;
+export default CheckBoxMultiSelect;

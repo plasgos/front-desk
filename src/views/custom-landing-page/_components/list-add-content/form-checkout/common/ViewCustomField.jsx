@@ -1,22 +1,17 @@
-import React, { useCallback, useEffect } from "react";
-import InputFormCheckout from "../../../common/InputFormCheckout";
+import React from "react";
 import { SelectDistrict } from "../../../common/SelectDistrict";
 import TextArea from "../../../common/TextArea";
-import CheckboxFormCheckout from "../../../common/CheckboxFormCheckout";
-import Vertical from "../../../view-content/ViewFormCheckout/multi-select/Vertical";
-import Horizontal from "../../../view-content/ViewFormCheckout/multi-select/Horizontal";
-import VerticalPanel from "../../../view-content/ViewFormCheckout/multi-select/VerticalPanel";
-import DoublePanel from "../../../view-content/ViewFormCheckout/multi-select/DoublePanel";
-import TriplePanel from "../../../view-content/ViewFormCheckout/multi-select/TriplePanel";
-import { useFormContext } from "react-hook-form";
-import InputPrice from "../../../common/InputPrice";
-import InputNumber from "../../../common/InputNumber";
+import ViewMultiSelect from "../../../view-content/ViewFormCheckout/view-multi-select";
+import ViewCheckBox from "../../../view-content/ViewFormCheckout/ViewCheckBox";
 import ViewCounter from "../../../view-content/ViewFormCheckout/ViewCounter";
-import ViewImage from "../../../view-content/ViewFormCheckout/ViewImage";
-import ViewTime from "../../../view-content/ViewFormCheckout/ViewTime";
 import ViewDate from "../../../view-content/ViewFormCheckout/ViewDate";
+import ViewImage from "../../../view-content/ViewFormCheckout/ViewImage";
+import ViewInputForm from "../../../view-content/ViewFormCheckout/ViewInputForm";
+import ViewNumber from "../../../view-content/ViewFormCheckout/ViewNumber";
+import ViewPrice from "../../../view-content/ViewFormCheckout/ViewPrice";
 import ViewRating from "../../../view-content/ViewFormCheckout/ViewRating";
 import ViewSelectOption from "../../../view-content/ViewFormCheckout/ViewSelectOption";
+import ViewTime from "../../../view-content/ViewFormCheckout/ViewTime";
 
 const ViewCustomField = ({
   section,
@@ -25,20 +20,6 @@ const ViewCustomField = ({
   onSetSubdistrict,
   index,
 }) => {
-  const { setValue } = useFormContext();
-
-  // useEffect(() => {
-  //   if (section.type === "multiSelect") {
-  //     section.options.forEach((opt) => {
-  //       setValue(`custom-${section.type}.${opt.id}.label`, opt.label);
-  //     });
-  //   }
-  // }, [section.options, section.type, setValue]);
-
-  // useEffect(() => {
-  //   setValue(`custom-${section.type}.${section.id}.label`, section.label);
-  // }, [section.id, section.label, section.options, section.type, setValue]);
-
   return (
     <div>
       {(section.type === "text" ||
@@ -46,7 +27,7 @@ const ViewCustomField = ({
         section.type === "firstName" ||
         section.type.includes("email") ||
         section.type.includes("phoneNumber")) && (
-        <InputFormCheckout
+        <ViewInputForm
           style={inputStyle}
           type={
             section.type.includes("email")
@@ -65,6 +46,8 @@ const ViewCustomField = ({
             required: section.isRequired ? "Harus Di isi" : false,
           }}
           isPhoneNumber={section.type.includes("phoneNumber") ? true : false}
+          sectionType={section.type}
+          index={index}
         />
       )}
 
@@ -82,7 +65,6 @@ const ViewCustomField = ({
       {(section.type === "addressC" || section.type === "longText") && (
         <TextArea
           style={inputStyle}
-          type="text"
           label={section.label}
           name={`custom-${section.type}.${section.id}.value`}
           control={control}
@@ -92,6 +74,8 @@ const ViewCustomField = ({
           }}
           height={100}
           minLength={section.minLength}
+          type={section.type}
+          index={index}
         />
       )}
 
@@ -138,76 +122,31 @@ const ViewCustomField = ({
       )}
 
       {section.type === "checkbox" && (
-        <div className="tw-my-3">
-          <CheckboxFormCheckout
-            style={inputStyle}
-            label={section.label}
-            // name={`custom-${section.type}[${section.id}]`}
-            name={`custom-${section.type}.${section.id}.value`}
-            control={control}
-            rules={{
-              required: section.isRequired ? "Harus Di isi" : false,
-            }}
-          />
-        </div>
+        <ViewCheckBox
+          style={inputStyle}
+          label={section.label}
+          name={`customField[${index}].value`}
+          control={control}
+          required={section.isRequired}
+          type={section.type}
+          index={index}
+        />
       )}
 
       {section.type === "multiSelect" && (
-        <div className="tw-my-3">
-          <label
-            className={`${inputStyle.fontStyle}`}
-            style={{
-              fontSize: inputStyle.fontSizeLabel,
-              color: inputStyle.labelColor,
-            }}
-          >
-            {section.label}
-          </label>
-
-          {section?.designId === "1" && (
-            <Vertical
-              section={section}
-              inputStyle={inputStyle}
-              control={control}
-            />
-          )}
-
-          {section?.designId === "2" && (
-            <Horizontal
-              section={section}
-              inputStyle={inputStyle}
-              control={control}
-            />
-          )}
-
-          {section?.designId === "3" && (
-            <VerticalPanel
-              section={section}
-              inputStyle={inputStyle}
-              control={control}
-            />
-          )}
-
-          {section?.designId === "4" && (
-            <DoublePanel
-              section={section}
-              inputStyle={inputStyle}
-              control={control}
-            />
-          )}
-
-          {section?.designId === "5" && (
-            <TriplePanel
-              section={section}
-              inputStyle={inputStyle}
-              control={control}
-            />
-          )}
-        </div>
+        <ViewMultiSelect
+          style={inputStyle}
+          section={section}
+          label={section.label}
+          name={`customField[${index}]`}
+          control={control}
+          type={section.type}
+          index={index}
+        />
       )}
 
       {section.type === "number" && (
-        <InputNumber
+        <ViewNumber
           style={inputStyle}
           label={section.label}
           name={`custom-${section.type}.${section.id}.value`}
@@ -218,11 +157,13 @@ const ViewCustomField = ({
           }}
           minValue={section.minValue}
           maxValue={section.maxValue}
+          type={section.type}
+          index={index}
         />
       )}
 
       {section.type === "price" && (
-        <InputPrice
+        <ViewPrice
           style={inputStyle}
           label={section.label}
           name={`custom-${section.type}.${section.id}.value`}
@@ -233,6 +174,8 @@ const ViewCustomField = ({
           }}
           minValue={section.minValue}
           maxValue={section.maxValue}
+          type={section.type}
+          index={index}
         />
       )}
 
@@ -240,10 +183,11 @@ const ViewCustomField = ({
         <ViewCounter
           style={inputStyle}
           label={section.label}
-          name={`custom-${section.type}.${section.id}.value`}
           control={control}
           minValue={section.minValue}
           maxValue={section.maxValue}
+          type={section.type}
+          index={index}
         />
       )}
 
@@ -251,9 +195,9 @@ const ViewCustomField = ({
         <ViewImage
           style={inputStyle}
           label={section.label}
-          name={`custom-${section.type}.${section.id}.value`}
           control={control}
           required={section.isRequired}
+          type={section.type}
           index={index}
         />
       )}
@@ -262,8 +206,9 @@ const ViewCustomField = ({
         <ViewTime
           style={inputStyle}
           label={section.label}
-          name={`custom-${section.type}.${section.id}.value`}
           control={control}
+          type={section.type}
+          index={index}
         />
       )}
 
@@ -271,10 +216,11 @@ const ViewCustomField = ({
         <ViewDate
           style={inputStyle}
           label={section.label}
-          name={`custom-${section.type}.${section.id}.value`}
           control={control}
           isToday={section.isToday}
           required={section.isRequired}
+          type={section.type}
+          index={index}
         />
       )}
 
@@ -282,10 +228,11 @@ const ViewCustomField = ({
         <ViewRating
           style={inputStyle}
           label={section.label}
-          name={`custom-${section.type}.${section.id}.value`}
           control={control}
           design={section.design}
           required={section.isRequired}
+          type={section.type}
+          index={index}
         />
       )}
 
@@ -293,7 +240,6 @@ const ViewCustomField = ({
         <ViewSelectOption
           style={inputStyle}
           label={section.label}
-          name={`custom-${section.type}.${section.id}.value`}
           control={control}
           options={
             section.typeOption === "single"
@@ -304,6 +250,8 @@ const ViewCustomField = ({
           defaultValue={section.defaultValue}
           typeOption={section.typeOption}
           required={section.isRequired}
+          type={section.type}
+          index={index}
         />
       )}
     </div>

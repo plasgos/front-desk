@@ -6,6 +6,7 @@ import {
   CNav,
   CNavItem,
   CNavLink,
+  CTabContent,
   CTabPane,
   CTabs,
 } from "@coreui/react";
@@ -15,6 +16,7 @@ import { useMoveSection } from "../../../../../../hooks/useMoveSection";
 import { DraggableList } from "../../../common/DraggableList";
 import Information from "./Information";
 import UpdateContent from "./UpdateContent";
+import Shipping from "../shipping";
 
 const FormSection = ({
   previewSection,
@@ -25,6 +27,7 @@ const FormSection = ({
   setIsAddContent,
   isEditingContent,
   setIsEditingContent,
+  isEditingSection,
 }) => {
   const [activeTab, setActiveTab] = useState("information");
   const [selectedContent, setSelectedContent] = useState({});
@@ -94,40 +97,51 @@ const FormSection = ({
             </CNavItem>
           </CNav>
 
-          <CTabPane className="p-1" data-tab="information">
-            <Information
-              setPreviewSection={setPreviewSection}
-              currentSection={currentSection}
-            />
+          <CTabContent>
+            <CTabPane className="p-1" data-tab="information">
+              <Information
+                setPreviewSection={setPreviewSection}
+                currentSection={currentSection}
+              />
 
-            {!isAddContent && !isEditingContent && (
-              <>
-                <div>
-                  {previewSection
-                    .filter((section) => section.id === currentSection.id)
-                    .map((section, i) => renderSection(section, i))}
-                </div>
-                <CCard
-                  style={{ cursor: "pointer" }}
-                  onClick={() => setIsAddContent(true)}
-                >
-                  <CCardBody className="p-1">
-                    <div className="d-flex align-items-center ">
-                      <IoAdd
-                        style={{
-                          cursor: "pointer",
-                          margin: "0px 10px 0px 6px",
-                        }}
-                        size={18}
-                      />
+              {!isAddContent && !isEditingContent && (
+                <>
+                  <div>
+                    {previewSection
+                      .filter((section) => section.id === currentSection.id)
+                      .map((section, i) => renderSection(section, i))}
+                  </div>
+                  <CCard
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setIsAddContent(true)}
+                  >
+                    <CCardBody className="p-1">
+                      <div className="d-flex align-items-center ">
+                        <IoAdd
+                          style={{
+                            cursor: "pointer",
+                            margin: "0px 10px 0px 6px",
+                          }}
+                          size={18}
+                        />
 
-                      <div>Tambah Konten</div>
-                    </div>
-                  </CCardBody>
-                </CCard>
-              </>
-            )}
-          </CTabPane>
+                        <div>Tambah Konten</div>
+                      </div>
+                    </CCardBody>
+                  </CCard>
+                </>
+              )}
+            </CTabPane>
+
+            <CTabPane className="p-1" data-tab="shipping">
+              <Shipping
+                previewSection={previewSection}
+                setPreviewSection={setPreviewSection}
+                currentSection={currentSection}
+                isEditingSection={isEditingSection}
+              />
+            </CTabPane>
+          </CTabContent>
         </CTabs>
       )}
     </div>

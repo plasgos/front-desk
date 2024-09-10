@@ -78,6 +78,8 @@ const initialState = {
   currentVariantMultiSelect: {},
   optionsGroups: [],
   options: [],
+  isAddCouriers: false,
+  isEditingCouriers: false,
 };
 
 export default (state = initialState, action) => {
@@ -276,6 +278,18 @@ export default (state = initialState, action) => {
         ),
       };
 
+    case types.SET_ADD_COURIERS:
+      return {
+        ...state,
+        isAddCouriers: action.payload,
+      };
+
+    case types.SET_EDIT_COURIERS:
+      return {
+        ...state,
+        isEditingCouriers: action.payload,
+      };
+
     default:
       return state;
   }
@@ -413,5 +427,19 @@ export const sortOption = (dragIndex, hoverIndex) => {
       dragIndex,
       hoverIndex,
     },
+  };
+};
+
+export const setIsAddCouriers = (value) => {
+  return {
+    type: types.SET_ADD_COURIERS,
+    payload: value,
+  };
+};
+
+export const setIsEditCouriers = (value) => {
+  return {
+    type: types.SET_EDIT_COURIERS,
+    payload: value,
   };
 };

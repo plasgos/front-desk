@@ -27,19 +27,27 @@ const yearOptions = Array.from({ length: 100 }, (v, k) => ({
   label: String(2024 - k),
 }));
 
-const ViewDate = ({ style, label, name, control, isToday, required }) => {
+const ViewDate = ({
+  style,
+  label,
+  type,
+  control,
+  isToday,
+  required,
+  index,
+}) => {
   const { setValue } = useFormContext();
 
   const { labelColor, fontSizeLabel, fontStyle, distance } = style || {};
-
   useEffect(() => {
     if (label !== undefined) {
-      setValue(`${name}-label`, label);
+      setValue(`customField[${index}].label`, label);
+      setValue(`customField[${index}].type`, type);
     }
-  }, [label, name, setValue]);
+  }, [index, label, setValue, type]);
 
   const setDefaultDate = (defaultDate) => {
-    setValue(name, defaultDate); // Mengatur nilai default pada form
+    setValue(`customField[${index}].value`, defaultDate); // Mengatur nilai default pada form
   };
 
   useEffect(() => {
@@ -60,10 +68,10 @@ const ViewDate = ({ style, label, name, control, isToday, required }) => {
   return (
     <div style={{ marginBottom: 16 + distance }}>
       <Controller
-        name={`${name}-label`}
+        name={`customField[${index}].label`}
         control={control}
         defaultValue={label}
-        render={({ field: { value: labelValue, onChange: onLabelChange } }) => (
+        render={({ field: { value: labelValue, onChange } }) => (
           <label
             className={`${fontStyle}`}
             style={{ fontSize: fontSizeLabel, color: labelColor }}
@@ -74,7 +82,7 @@ const ViewDate = ({ style, label, name, control, isToday, required }) => {
       />
 
       <Controller
-        name={name}
+        name={`customField[${index}].value`}
         control={control}
         rules={{ required: required ? "Harus Di Isi" : false }}
         render={({

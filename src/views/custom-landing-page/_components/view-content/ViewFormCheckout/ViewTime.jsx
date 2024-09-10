@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import SelectOptionsCutomForm from "../../common/SelectOptionsCutomForm";
 
@@ -47,24 +47,25 @@ const minuteOptions = [
   { value: "59", label: "59" },
 ];
 
-const ViewTime = ({ style, label, name, control }) => {
+const ViewTime = ({ style, type, label, control, index }) => {
   const { setValue } = useFormContext();
 
   useEffect(() => {
     if (label !== undefined) {
-      setValue(`${name}-label`, label);
+      setValue(`customField[${index}].label`, label);
+      setValue(`customField[${index}].type`, type);
     }
-  }, [label, name, setValue]);
+  }, [index, label, setValue, type]);
 
   const { labelColor, fontSizeLabel, fontStyle, distance } = style || {};
 
   return (
     <div style={{ marginBottom: 16 + distance }}>
       <Controller
-        name={`${name}-label`}
+        name={`customField[${index}].label`}
         control={control}
         defaultValue={label}
-        render={({ field: { value: labelValue, onChange: onLabelChange } }) => (
+        render={({ field: { value: labelValue, onChange } }) => (
           <label
             className={`${fontStyle}`}
             style={{ fontSize: fontSizeLabel, color: labelColor }}
@@ -74,7 +75,7 @@ const ViewTime = ({ style, label, name, control }) => {
         )}
       />
       <Controller
-        name={name}
+        name={`customField[${index}].value`}
         control={control}
         render={({ field: { value, onChange, onBlur } }) => (
           <div className="tw-flex tw-items-center tw-gap-x-3">

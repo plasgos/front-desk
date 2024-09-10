@@ -56,19 +56,6 @@ const ViewFormCheckout = forwardRef(
       formState: { isValid },
     } = methods;
 
-    // useEffect(() => {
-    //   if (content?.content) {
-    //     content.content.forEach((section) => {
-    //       // Set both label and value if needed
-    //       setValue(`custom-${section.type}.${section.id}.label`, section.label);
-    //       setValue(
-    //         `custom-${section.type}.${section.id}.value`,
-    //         section.value || false
-    //       );
-    //     });
-    //   }
-    // }, [content.content, setValue]);
-
     const {
       visitor,
       isSubscribeNewsletter,

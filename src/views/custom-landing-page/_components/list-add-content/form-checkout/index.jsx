@@ -16,6 +16,8 @@ import FormSection from "./form-section";
 import DesignSection from "./design-section";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setIsAddCouriers,
+  setIsEditCouriers,
   setIsSelectVariantMultiSelect,
   setIsSelectVariantSelectOption,
   setSelectedVariant,
@@ -37,6 +39,8 @@ const FormCheckout = ({
     isSelectVariantMultiSelect,
     isSelectVariantSelectOption,
     currentVariantMultiSelect,
+    isAddCouriers,
+    isEditingCouriers,
   } = useSelector((state) => state.customLandingPage);
   const dispatch = useDispatch();
 
@@ -129,17 +133,29 @@ const FormCheckout = ({
   };
 
   const handleConfirm = () => {
-    if ((isAddContent || isEditingContent) && !isSelectVariantMultiSelect) {
+    // Prioritaskan kondisi untuk couriers terlebih dahulu
+    if (isAddCouriers || isEditingCouriers) {
+      dispatch(setIsEditCouriers(false));
+      dispatch(setIsAddCouriers(false));
+
       setIsAddContent(false);
       setIsEditingContent(false);
-    } else if (
-      (isAddContent || isEditingContent) &&
-      isSelectVariantMultiSelect
-    ) {
-      dispatch(setIsSelectVariantMultiSelect(false));
-    } else if (isListIconVisible) {
+    }
+    // Prioritaskan kondisi yang berkaitan dengan add/edit content
+    else if (isAddContent || isEditingContent) {
+      if (isSelectVariantMultiSelect) {
+        dispatch(setIsSelectVariantMultiSelect(false));
+      } else {
+        setIsAddContent(false);
+        setIsEditingContent(false);
+      }
+    }
+    // Kondisi untuk menampilkan/menghilangkan ikon list
+    else if (isListIconVisible) {
       setIsListIconVisible(false);
-    } else {
+    }
+    // Kondisi default jika tidak ada kondisi lain yang terpenuhi
+    else {
       isShowContent(false);
     }
   };
@@ -151,6 +167,7 @@ const FormCheckout = ({
       name: "form-checkout",
       title: "Formulir Checkout",
       content: [],
+      couriers: [],
       form: {
         information: {
           emailVisitor: "",
@@ -175,10 +192,17 @@ const FormCheckout = ({
           isCountry: false,
           isPostcalCode: false,
           subdistrictType: "search",
-          amountLengthAddress: "1",
+          amountLengthAddress: 80,
           isShowPhoneNumber: false,
           isDropshipping: false,
           phoneNumberDropshipper: false,
+        },
+        shippingMethod: {
+          shippingMethodOption: "required",
+          design: "open",
+          isCustom: false,
+          selectedCourier: "jne",
+          isShowEstimate: true,
         },
         style: {
           labelColor: "#000000",
@@ -266,6 +290,7 @@ const FormCheckout = ({
                     setIsAddContent={setIsAddContent}
                     isEditingContent={isEditingContent}
                     setIsEditingContent={setIsEditingContent}
+                    isEditingSection={isEditingSection}
                   />
                 </CTabPane>
                 <CTabPane

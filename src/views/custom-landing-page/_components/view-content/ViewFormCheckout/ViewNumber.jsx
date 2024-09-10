@@ -1,15 +1,16 @@
-import React, { useState } from "react";
-import { Controller } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
-const InputNumber = ({
+const ViewNumber = ({
   style,
   label,
-  name,
   control,
   rules,
   placeholder,
   minValue,
   maxValue,
+  type,
+  index,
 }) => {
   const {
     labelColor,
@@ -23,6 +24,8 @@ const InputNumber = ({
     borderRadius,
     distance,
   } = style || {};
+
+  const { setValue } = useFormContext();
 
   const [formattedValue, setFormattedValue] = useState("");
 
@@ -51,20 +54,36 @@ const InputNumber = ({
     setFormattedValue(rawValue);
   };
 
+  useEffect(() => {
+    if (label !== undefined) {
+      setValue(`customField[${index}].label`, label);
+      setValue(`customField[${index}].type`, type);
+    }
+  }, [index, label, setValue, type]);
+
+  useEffect(() => {
+    setValue(`customField[${index}].value`, formattedValue);
+  }, [formattedValue, index, setValue]);
+
   return (
     <>
       <div style={{ marginBottom: 16 + distance }}>
-        {label && (
-          <label
-            className={`${fontStyle}`}
-            style={{ fontSize: fontSizeLabel, color: labelColor }}
-          >
-            {label}
-          </label>
-        )}
+        <Controller
+          name={`customField[${index}].label`}
+          control={control}
+          defaultValue={label}
+          render={({ field: { value: labelValue, onChange } }) => (
+            <label
+              className={`${fontStyle}`}
+              style={{ fontSize: fontSizeLabel, color: labelColor }}
+            >
+              {labelValue}
+            </label>
+          )}
+        />
 
         <Controller
-          name={name}
+          name={`customField[${index}].value`}
           control={control}
           rules={rules}
           render={({ field, fieldState: { error } }) => (
@@ -104,4 +123,4 @@ const InputNumber = ({
   );
 };
 
-export default InputNumber;
+export default ViewNumber;

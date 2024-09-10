@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-const ViewImage = ({ style, label, name, control, required, index }) => {
+const ViewImage = ({ style, label, control, type, required, index }) => {
   const { setValue } = useFormContext();
 
   const { labelColor, outlineInputColor, fontSizeLabel, fontStyle, distance } =
@@ -10,8 +10,9 @@ const ViewImage = ({ style, label, name, control, required, index }) => {
   useEffect(() => {
     if (label !== undefined) {
       setValue(`customField[${index}].label`, label);
+      setValue(`customField[${index}].type`, type);
     }
-  }, [index, label, name, setValue]);
+  }, [index, label, setValue, type]);
 
   const handleUpload = (onChange) => {
     const input = document.createElement("input");
@@ -34,8 +35,7 @@ const ViewImage = ({ style, label, name, control, required, index }) => {
 
   return (
     <Controller
-      // name={name}
-      name={`customField[${index}].image`}
+      name={`customField[${index}].value`}
       control={control}
       rules={{ required: required ? "Harus Di Isi" : false }}
       render={({
@@ -46,13 +46,10 @@ const ViewImage = ({ style, label, name, control, required, index }) => {
           <div style={{ marginBottom: 16 + distance }}>
             <div className="tw-flex tw-flex-col">
               <Controller
-                // name={`${name}-label`}
                 name={`customField[${index}].label`}
                 control={control}
                 defaultValue={label}
-                render={({
-                  field: { value: labelValue, onChange: onLabelChange },
-                }) => (
+                render={({ field: { value: labelValue, onChange } }) => (
                   <label
                     className={`${fontStyle}`}
                     style={{ fontSize: fontSizeLabel, color: labelColor }}

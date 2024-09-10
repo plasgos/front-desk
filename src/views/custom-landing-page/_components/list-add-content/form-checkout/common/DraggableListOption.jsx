@@ -1,9 +1,11 @@
 import { CCard, CCardBody } from "@coreui/react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoCloseOutline, IoMenu } from "react-icons/io5";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
 import { updateOption } from "../../../../../../redux/modules/custom-landing-page/reducer";
+
+import { useDebounce } from "use-debounce";
 
 export const ItemTypes = {
   CARD: "card",
@@ -19,7 +21,6 @@ export const DraggableListOption = ({
   idSection,
   idOption,
   type,
-  setDefaultValue,
 }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
@@ -82,9 +83,22 @@ export const DraggableListOption = ({
 
   const dispatch = useDispatch();
 
-  const [labelOption, setLabelOption] = useState(showInfoText);
+  const [labelOption, setLabelOption] = useState({
+    id: idOption,
+    value: showInfoText,
+  });
 
-  const handleChangeLabelOption = (value, id) => {
+  const [labelOptionValue] = useDebounce(labelOption.value, 1000);
+
+  useEffect(() => {
+    if (labelOptionValue !== showInfoText) {
+      handleChangeLabelOption(labelOptionValue, labelOption.id);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [labelOption, labelOptionValue]);
+
+  const handleChangeLabelOption = (value, optionId) => {
     setPreviewSection((prevSections) =>
       prevSections.map((section) => {
         if (section.id === idSection) {
@@ -95,7 +109,7 @@ export const DraggableListOption = ({
                 return {
                   ...contentItem,
                   options: contentItem.options.map((opt) =>
-                    opt.id === id
+                    opt.id === optionId
                       ? {
                           ...opt,
                           label: value,
@@ -128,15 +142,18 @@ export const DraggableListOption = ({
             <div style={{ flexGrow: 1 }}>
               <input
                 id={idOption}
-                value={labelOption || ""}
+                value={labelOption.value || ""}
                 type="text"
                 style={{ border: "none", outline: "none" }}
-                onBlur={(e) => {
+                onChange={(e) => {
                   const { value } = e.target;
                   const { id } = e.target;
-                  handleChangeLabelOption(value, id);
+                  setLabelOption((prev) => ({
+                    ...prev,
+                    id,
+                    value,
+                  }));
                 }}
-                onChange={(e) => setLabelOption(e.target.value)}
               />
             </div>
 

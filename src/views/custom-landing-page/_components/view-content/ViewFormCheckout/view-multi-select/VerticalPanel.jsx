@@ -1,7 +1,8 @@
 import React from "react";
-import CheckboxFormCheckout from "../../../common/CheckboxFormCheckout";
 
-const VerticalPanel = ({ section, inputStyle, control }) => {
+import CheckBoxMultiSelect from "./CheckBoxMultiSelect";
+
+const VerticalPanel = ({ name, section, inputStyle, control }) => {
   return (
     <div className="tw-flex tw-flex-col">
       {section?.options.map((opt, index) => (
@@ -13,16 +14,14 @@ const VerticalPanel = ({ section, inputStyle, control }) => {
             borderTop: index !== 0 && "0.5px solid #E0E0E0",
           }}
         >
-          <CheckboxFormCheckout
+          <CheckBoxMultiSelect
             typeInput={section.typeInput}
             style={inputStyle}
             label={opt.label}
-            name={`custom-${section.type}.${opt.id}.value`}
-            // name={`custom-${section.type}[${opt.id}]`}
+            name={name}
             control={control}
-            rules={{
-              required: section.isRequired ? "Harus Di isi" : false,
-            }}
+            required={section.isRequired}
+            indexMultiSelect={index}
           />
         </div>
       ))}

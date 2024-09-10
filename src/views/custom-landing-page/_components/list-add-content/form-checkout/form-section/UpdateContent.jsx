@@ -173,10 +173,6 @@ const UpdateContent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [labelValue]);
 
-  const [checkboxLabel, setCheckboxLabel] = useState(
-    currentContent?.label || "Nama"
-  );
-
   const [isTodayDate, setIsTodayDate] = useState(
     defaultValueDateOptions.find(
       (opt) => opt.value === currentContent?.isToday
@@ -404,7 +400,7 @@ const UpdateContent = ({
           gap: 10,
           display: isSelectVariantMultiSelect ? "none" : "flex",
         }}
-        className=" align-items-center mb-3"
+        className=" align-items-center my-3"
       >
         <SelectOptions
           label="Tipe"
@@ -474,12 +470,11 @@ const UpdateContent = ({
       {typeOption.value === "checkbox" && (
         <Input
           type="text"
-          value={checkboxLabel}
+          value={label}
           label="Nama"
           onChange={(e) => {
             const { value } = e.target;
-            setCheckboxLabel(value);
-            handleChangeValueContent("label", value);
+            setLabel(value);
           }}
         />
       )}

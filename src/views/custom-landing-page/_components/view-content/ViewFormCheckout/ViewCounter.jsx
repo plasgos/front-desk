@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-const ViewCounter = ({ style, label, name, control, minValue, maxValue }) => {
+const ViewCounter = ({
+  style,
+  label,
+  control,
+  minValue,
+  maxValue,
+  type,
+  index,
+}) => {
   const {
     labelColor,
     textInputColor,
@@ -15,12 +23,15 @@ const ViewCounter = ({ style, label, name, control, minValue, maxValue }) => {
     distance,
   } = style || {};
 
+  const name = `customField[${index}].value`;
+
   const parseNumberMinValue = Number(minValue);
   const parseNumberMaxValue = Number(maxValue);
 
   const { setValue } = useFormContext();
 
-  const [formattedValue, setFormattedValue] = useState(null);
+  const [formattedValue, setFormattedValue] = useState("");
+
   const incrementValue = () => {
     setFormattedValue((prev) => {
       if (prev >= parseNumberMaxValue) {
@@ -29,11 +40,7 @@ const ViewCounter = ({ style, label, name, control, minValue, maxValue }) => {
 
       const newValue = prev + 1;
 
-      const finalValue =
-        newValue > parseNumberMaxValue ? parseNumberMaxValue : newValue;
-
-      setValue(name, finalValue);
-      return finalValue;
+      return newValue > parseNumberMaxValue ? parseNumberMaxValue : newValue;
     });
   };
 
@@ -41,7 +48,7 @@ const ViewCounter = ({ style, label, name, control, minValue, maxValue }) => {
     if (minValue) {
       setFormattedValue(parseNumberMinValue);
     }
-  }, [minValue, parseNumberMinValue]);
+  }, [minValue, name, parseNumberMinValue, setValue]);
 
   const decrementValue = () => {
     setFormattedValue((prev) => {
@@ -51,10 +58,7 @@ const ViewCounter = ({ style, label, name, control, minValue, maxValue }) => {
 
       const newValue = prev - 1;
 
-      const finalValue =
-        newValue < parseNumberMinValue ? parseNumberMinValue : newValue;
-      setValue(name, finalValue);
-      return finalValue;
+      return newValue < parseNumberMinValue ? parseNumberMinValue : newValue;
     });
   };
 
@@ -84,16 +88,32 @@ const ViewCounter = ({ style, label, name, control, minValue, maxValue }) => {
     setFormattedValue(rawValue);
   };
 
+  useEffect(() => {
+    setValue(name, formattedValue);
+  }, [formattedValue, setValue, name]);
+
+  useEffect(() => {
+    if (label !== undefined) {
+      setValue(`customField[${index}].label`, label);
+      setValue(`customField[${index}].type`, type);
+    }
+  }, [index, label, setValue, type]);
+
   return (
     <div style={{ marginBottom: 16 + distance }}>
-      {label && (
-        <label
-          className={`${fontStyle}`}
-          style={{ fontSize: fontSizeLabel, color: labelColor }}
-        >
-          {label}
-        </label>
-      )}
+      <Controller
+        name={`customField[${index}].label`}
+        control={control}
+        defaultValue={label}
+        render={({ field: { value: labelValue, onChange } }) => (
+          <label
+            className={`${fontStyle}`}
+            style={{ fontSize: fontSizeLabel, color: labelColor }}
+          >
+            {labelValue}
+          </label>
+        )}
+      />
 
       <div className="tw-flex tw-items-center">
         <div
