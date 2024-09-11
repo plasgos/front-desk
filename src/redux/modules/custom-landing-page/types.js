@@ -22,4 +22,7 @@ export default {
 
   SET_ADD_COURIERS: "set-add-couriers",
   SET_EDIT_COURIERS: "set-edit-couriers",
+
+  SET_SELECT_COURIER: "set-selct-courier",
+  SET_CURRENT_COURIER_BEFORE_EDIT: "set-current-courier-before-edit",
 };

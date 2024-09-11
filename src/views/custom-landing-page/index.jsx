@@ -12,47 +12,47 @@ import {
   CTabs,
 } from "@coreui/react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import ResizableView from "./_components/ResizebleView";
-import { ListSectionContent } from "./_components/ListSectionContent";
-import { MdLaptopMac } from "react-icons/md";
+import { useDragLayer } from "react-dnd";
 import { IoIosPhonePortrait, IoIosTabletPortrait } from "react-icons/io";
 import { IoAdd } from "react-icons/io5";
+import { MdLaptopMac } from "react-icons/md";
+import { ListSectionContent } from "./_components/ListSectionContent";
+import ResizableView from "./_components/ResizebleView";
 import ListContent from "./_components/list-add-content/";
 import ViewText from "./_components/view-content/ViewText";
-import { useDragLayer } from "react-dnd";
 
 import { renderToString } from "react-dom/server";
-import ViewColumnTextAndImage from "./_components/view-content/ViewColumnTextAndImage";
-import ViewEmptySpace from "./_components/view-content/ViewEmptySpace";
-import ViewListImages from "./_components/view-content/ViewListImages";
-import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   removeOptionScrollTarget,
   setLandingPageSection,
 } from "../../redux/modules/custom-landing-page/reducer";
-import ModalConfirmation from "./_components/ModalConfirmation";
-import ViewTestimony from "./_components/view-content/ViewTestimony/index";
-import Line from "./_components/list-add-content/line/index";
-import ViewLine from "./_components/view-content/ViewLine";
-import ListFeature from "./_components/list-add-content/list-feature";
-import ViewListFeature from "./_components/view-content/ViewListFeature";
-import ViewButtonUpdate from "./_components/view-content/ViewButtonUpdate";
 import DesignTabControl from "./_components/DesignTabControl";
+import ModalConfirmation from "./_components/ModalConfirmation";
 import Input from "./_components/common/Input";
-import Quote from "./_components/list-add-content/quote";
-import ViewQuote from "./_components/view-content/ViewQuote";
-import ColumnTextAndImages from "./_components/list-add-content/colum-text-and-image";
-import ListImages from "./_components/list-add-content/list-images";
-import Text from "./_components/list-add-content/text/index";
-import ScrollTarget from "./_components/list-add-content/scroll-target";
-import EmptySpace from "./_components/list-add-content/empty-space";
 import Buttons from "./_components/list-add-content/button";
-import Testimony from "./_components/list-add-content/testimony";
+import ColumnTextAndImages from "./_components/list-add-content/colum-text-and-image";
+import EmptySpace from "./_components/list-add-content/empty-space";
 import FAQ from "./_components/list-add-content/faq";
+import FormCheckout from "./_components/list-add-content/form-checkout";
+import Line from "./_components/list-add-content/line/index";
+import ListFeature from "./_components/list-add-content/list-feature";
+import ListImages from "./_components/list-add-content/list-images";
+import Quote from "./_components/list-add-content/quote";
+import ScrollTarget from "./_components/list-add-content/scroll-target";
+import Testimony from "./_components/list-add-content/testimony";
+import Text from "./_components/list-add-content/text/index";
+import ViewButtonUpdate from "./_components/view-content/ViewButtonUpdate";
+import ViewColumnTextAndImage from "./_components/view-content/ViewColumnTextAndImage";
+import ViewEmptySpace from "./_components/view-content/ViewEmptySpace";
 import ViewFAQ from "./_components/view-content/ViewFAQ/index";
 import ViewFormCheckout from "./_components/view-content/ViewFormCheckout";
-import FormCheckout from "./_components/list-add-content/form-checkout";
+import ViewLine from "./_components/view-content/ViewLine";
+import ViewListFeature from "./_components/view-content/ViewListFeature";
+import ViewListImages from "./_components/view-content/ViewListImages";
+import ViewQuote from "./_components/view-content/ViewQuote";
+import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
+import ViewTestimony from "./_components/view-content/ViewTestimony/index";
 
 const landingPage = {
   detail: {

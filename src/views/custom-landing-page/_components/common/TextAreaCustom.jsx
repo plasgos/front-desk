@@ -1,15 +1,16 @@
-import React from "react";
-import { Controller } from "react-hook-form";
+import React, { useEffect } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
-const TextArea = ({
+const TextAreaCustom = ({
   style,
   label,
-  name,
   rules,
   control,
   placeholder,
   height,
   minLength,
+  type,
+  index,
 }) => {
   const {
     labelColor,
@@ -24,16 +25,32 @@ const TextArea = ({
     distance,
   } = style || {};
 
+  const { setValue } = useFormContext();
+
+  useEffect(() => {
+    if (label !== undefined) {
+      setValue(`customField[${index}].label`, label);
+      setValue(`customField[${index}].type`, type);
+    }
+  }, [index, label, setValue, type]);
+
   return (
     <div style={{ marginBottom: 16 + distance }}>
-      <label
-        className={`${fontStyle}`}
-        style={{ fontSize: fontSizeLabel, color: labelColor }}
-      >
-        {label}
-      </label>
       <Controller
-        name={name}
+        name={`customField[${index}].label`}
+        control={control}
+        defaultValue={label}
+        render={({ field: { value: labelValue, onChange } }) => (
+          <label
+            className={`${fontStyle}`}
+            style={{ fontSize: fontSizeLabel, color: labelColor }}
+          >
+            {labelValue}
+          </label>
+        )}
+      />
+      <Controller
+        name={`customField[${index}].value`}
         control={control}
         rules={rules}
         render={({ field, fieldState: { error } }) => (
@@ -67,4 +84,4 @@ const TextArea = ({
   );
 };
 
-export default TextArea;
+export default TextAreaCustom;

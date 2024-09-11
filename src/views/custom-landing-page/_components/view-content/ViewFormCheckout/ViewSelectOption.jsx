@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import SelectOptionsCutomForm from "../../common/SelectOptionsCutomForm";
+import SelectOptionsCustomForm from "../../common/SelectOptionsCustomForm";
 
 const ViewSelectOption = ({
   style,
@@ -82,7 +82,7 @@ const ViewSelectOption = ({
           <>
             <div className="tw-flex tw-items-center tw-gap-x-3">
               <div className="tw-w-full">
-                <SelectOptionsCutomForm
+                <SelectOptionsCustomForm
                   style={style}
                   placeholder={placeholder}
                   options={options}

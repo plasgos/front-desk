@@ -80,6 +80,8 @@ const initialState = {
   options: [],
   isAddCouriers: false,
   isEditingCouriers: false,
+  selectedCourier: {},
+  currentCourierBeforeEdit: [],
 };
 
 export default (state = initialState, action) => {
@@ -290,6 +292,18 @@ export default (state = initialState, action) => {
         isEditingCouriers: action.payload,
       };
 
+    case types.SET_SELECT_COURIER:
+      return {
+        ...state,
+        selectedCourier: action.payload,
+      };
+
+    case types.SET_CURRENT_COURIER_BEFORE_EDIT:
+      return {
+        ...state,
+        currentCourierBeforeEdit: action.payload,
+      };
+
     default:
       return state;
   }
@@ -440,6 +454,20 @@ export const setIsAddCouriers = (value) => {
 export const setIsEditCouriers = (value) => {
   return {
     type: types.SET_EDIT_COURIERS,
+    payload: value,
+  };
+};
+
+export const setSelectCourier = (value) => {
+  return {
+    type: types.SET_SELECT_COURIER,
+    payload: value,
+  };
+};
+
+export const setCurrentCourierBeforeEdit = (value) => {
+  return {
+    type: types.SET_CURRENT_COURIER_BEFORE_EDIT,
     payload: value,
   };
 };

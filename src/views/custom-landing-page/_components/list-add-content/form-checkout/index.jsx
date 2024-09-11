@@ -41,7 +41,10 @@ const FormCheckout = ({
     currentVariantMultiSelect,
     isAddCouriers,
     isEditingCouriers,
+    selectedCourier,
+    currentCourierBeforeEdit,
   } = useSelector((state) => state.customLandingPage);
+
   const dispatch = useDispatch();
 
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
@@ -55,7 +58,26 @@ const FormCheckout = ({
   );
 
   const handleCancel = () => {
-    if (isAddContent && !isSelectVariantMultiSelect) {
+    if (isAddCouriers) {
+      dispatch(setIsAddCouriers(false));
+      setPreviewSection((prevSections) =>
+        prevSections.map((section) => {
+          const contentIdToCheck = isEditingSection
+            ? currentSection.id
+            : setting.id;
+
+          return section.id === contentIdToCheck
+            ? {
+                ...section,
+                couriers: section.couriers.slice(0, -1),
+              }
+            : section;
+        })
+      );
+    } else if (isEditingCouriers) {
+      setPreviewSection([...currentCourierBeforeEdit]);
+      dispatch(setIsEditCouriers(false));
+    } else if (isAddContent && !isSelectVariantMultiSelect) {
       setIsAddContent(false);
       setIsEditingContent(false);
       setPreviewSection((prevSections) =>
@@ -134,12 +156,71 @@ const FormCheckout = ({
 
   const handleConfirm = () => {
     // Prioritaskan kondisi untuk couriers terlebih dahulu
-    if (isAddCouriers || isEditingCouriers) {
+    if (isAddCouriers) {
       dispatch(setIsEditCouriers(false));
       dispatch(setIsAddCouriers(false));
-
       setIsAddContent(false);
       setIsEditingContent(false);
+
+      setPreviewSection((arr) =>
+        arr.map((item) => {
+          const contentIdToCheck = isEditingSection
+            ? currentSection.id
+            : setting.id;
+
+          if (item.id === contentIdToCheck) {
+            // const selectedCourier = !isAddCouriers ? selectedOption : null;
+
+            const isExistingCourier = item.couriers.some(
+              (courier) => courier.id === selectedCourier.id
+            );
+
+            if (!isExistingCourier) {
+              return {
+                ...item,
+                couriers: [...item.couriers, selectedCourier],
+                form: {
+                  ...item.form,
+                  shippingMethod: {
+                    ...item.form.shippingMethod,
+                    selectedCourier: selectedCourier.value,
+                  },
+                },
+              };
+            }
+          }
+
+          return item;
+        })
+      );
+    } else if (isEditingCouriers) {
+      dispatch(setIsEditCouriers(false));
+
+      // setPreviewSection((arr) =>
+      //   arr.map((item) => {
+
+      //     const contentIdToCheck = isEditingSection
+      //     ? currentSection.id
+      //     : setting.id;
+
+      //     if (item.id === contentIdToCheck) {
+      //       const updatedCourier = item.couriers.find(
+      //         (courier) => courier.id === currentCourier.id
+      //       );
+
+      //       if (updatedCourier) {
+      //         return {
+      //           ...item,
+      //           couriers: item.couriers.map((courier) =>
+      //             courier.id === currentCourier.id ? selectedOption : courier
+      //           ),
+      //         };
+      //       }
+      //     }
+
+      //     return item;
+      //   })
+      // );
     }
     // Prioritaskan kondisi yang berkaitan dengan add/edit content
     else if (isAddContent || isEditingContent) {

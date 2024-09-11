@@ -5,10 +5,13 @@ import { CCard, CCardBody } from "@coreui/react";
 import { IoAdd } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  setCurrentCourierBeforeEdit,
   setIsAddCouriers,
   setIsEditCouriers,
 } from "../../../../../../redux/modules/custom-landing-page/reducer";
 import { DraggableList } from "../../../common/DraggableList";
+import UpdateCourier from "./UpdateCourier";
+import jne from "../../../../../../assets/jne-logo.png";
 
 const shippingMethodOptions = [
   { value: "required", label: "Harus Di Isi" },
@@ -20,25 +23,10 @@ const designOptions = [
   { value: "close", label: "Tertutup" },
 ];
 
-const couriersOptions = [
-  {
-    label: "Kurir Indonesia",
-    options: [
-      { id: "1", value: "jne", label: "JNE" },
-      { id: "2", value: "sicepat", label: "Sicepat" },
-      { id: "3", value: "ninja", label: "Ninja" },
-      { id: "4", value: "j&t", label: "J&T" },
-      { id: "5", value: "sap", label: "SAP" },
-      { id: "6", value: "anteraja", label: "Anteraja" },
-      { id: "7", value: "idexpress", label: "ID Express" },
-    ],
-  },
-];
-
 const Shipping = ({
-  currentSection,
-  setPreviewSection,
   previewSection,
+  setPreviewSection,
+  currentSection,
   isEditingSection,
 }) => {
   const { isAddCouriers, isEditingCouriers } = useSelector(
@@ -64,34 +52,9 @@ const Shipping = ({
     currentSection?.form?.shippingMethod?.isCustom || false
   );
 
-  const [selectedCourier, setSelectedCourier] = useState(
-    couriersOptions
-      .flatMap((group) => group.options)
-      .find(
-        (opt) =>
-          opt.value === currentSection?.form?.shippingMethod?.selectedCourier
-      ) || couriersOptions[0].options[0]
-  );
-
-  const [isShowEstimate, setIsShowEstimate] = useState(true);
-
   const [currentCourier, setCurrentCourier] = useState({});
-  const [currentCourierBeforeEdit, setCurrentCourierBeforeEdit] = useState([]);
 
-  const handleSelectCourier = (selectedOption) => {
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              couriers: [...item.couriers, selectedOption],
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeFormValue = (key, selectedOption) => {
+  const handleChangeFormValue = (key, value) => {
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === currentSection.id
@@ -101,6 +64,7 @@ const Shipping = ({
                 ...item.form,
                 shippingMethod: {
                   ...item.form.shippingMethod,
+                  [key]: value,
                 },
               },
             }
@@ -147,44 +111,53 @@ const Shipping = ({
 
   const editSection = useCallback(
     (section) => {
-      setCurrentCourierBeforeEdit([...previewSection]);
+      dispatch(setCurrentCourierBeforeEdit([...previewSection]));
       setCurrentCourier(section);
-      setIsEditCouriers(true);
+      dispatch(setIsEditCouriers(true));
     },
-    [previewSection]
+    [dispatch, previewSection]
   );
 
-  console.log(currentSection.id);
+  // const handleAddCourier = () => {
+  //   let payload = {
+  //     id: "1",
+  //     value: "jne",
+  //     label: "JNE",
+  //     image: jne,
+  //     service: "Reg",
+  //     price: "8000",
+  //     estimate: "1-2 Hari",
+  //   };
 
-  const handleAddCourier = () => {
-    let payload = {
-      id: "1",
-      value: "jne",
-      label: "JNE",
-    };
+  //   setPreviewSection((prevSections) =>
+  //     prevSections.map((section) => {
+  //       if (section.id === currentSection.id) {
+  //         const isCourierExist = section.couriers.some(
+  //           (courier) => courier.id === payload.id
+  //         );
 
-    console.log("first", currentSection.id);
+  //         if (!isCourierExist) {
+  //           return { ...section, couriers: [...section.couriers, payload] };
+  //         }
+  //       }
 
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) =>
-        section.id === currentSection.id
-          ? { ...section, couriers: [...section.couriers, payload] }
-          : section
-      )
-    );
-  };
+  //       return section;
+  //     })
+  //   );
+  // };
 
-  useEffect(() => {
-    // if (!isEditingSection && isAddCouriers) {
-    //   console.log("RUNNNN");
-    // }
+  // useEffect(() => {
+  //   if (
+  //     currentSection &&
+  //     currentSection.id &&
+  //     isAddCouriers &&
+  //     !isEditingSection
+  //   ) {
+  //     handleAddCourier();
+  //   }
 
-    console.log("RUNNNN");
-
-    handleAddCourier();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isEditingSection, currentSection, isAddCouriers]);
 
   const renderSection = useCallback(
     (section) => {
@@ -212,30 +185,21 @@ const Shipping = ({
   return (
     <>
       {isAddCouriers ? (
-        <div>
-          <SelectOptions
-            label="Metode Pengiriman"
-            options={couriersOptions}
-            onChange={(selectedOption) => {
-              setSelectedCourier(selectedOption);
-              handleSelectCourier(selectedOption);
-            }}
-            value={selectedCourier}
-            width="100"
-          />
-
-          <Checkbox
-            checked={isShowEstimate}
-            id={"isShowEstimate"}
-            label="Perlihatkan Estimasi"
-            onChange={(e) => {
-              const { checked } = e.target;
-              setIsShowEstimate(checked);
-              handleChangeFormValue("isShowEstimate", checked);
-            }}
-          />
-        </div>
-      ) : isEditingCouriers ? null : (
+        <UpdateCourier
+          previewSection={previewSection}
+          currentSection={currentSection}
+          setPreviewSection={setPreviewSection}
+        />
+      ) : isEditingCouriers ? (
+        <UpdateCourier
+          previewSection={previewSection}
+          currentSection={currentSection}
+          currentCourier={currentCourier}
+          setCurrentCourier={setCurrentCourier}
+          setPreviewSection={setPreviewSection}
+          isEditingCourier={true}
+        />
+      ) : (
         <div className="my-3">
           <SelectOptions
             label="Metode Pengiriman"

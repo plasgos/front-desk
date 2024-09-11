@@ -29,7 +29,7 @@ const FormSection = ({
   setIsEditingContent,
   isEditingSection,
 }) => {
-  const [activeTab, setActiveTab] = useState("information");
+  const [activeTab, setActiveTab] = useState("shipping");
   const [selectedContent, setSelectedContent] = useState({});
   const editSection = useCallback(
     (section) => {

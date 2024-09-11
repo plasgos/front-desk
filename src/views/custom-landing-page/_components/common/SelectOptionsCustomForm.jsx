@@ -1,7 +1,7 @@
 import React from "react";
 import Select from "react-select";
 
-const SelectOptionsCutomForm = ({
+const SelectOptionsCustomForm = ({
   style,
   placeholder,
   options,
@@ -94,4 +94,4 @@ const SelectOptionsCutomForm = ({
   );
 };
 
-export default SelectOptionsCutomForm;
+export default SelectOptionsCustomForm;

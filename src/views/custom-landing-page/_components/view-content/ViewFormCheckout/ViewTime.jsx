@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import SelectOptionsCutomForm from "../../common/SelectOptionsCutomForm";
+import SelectOptionsCutomForm from "../../common/SelectOptionsCustomForm";
 
 const hoursOptions = [
   { value: "00", label: "00" },

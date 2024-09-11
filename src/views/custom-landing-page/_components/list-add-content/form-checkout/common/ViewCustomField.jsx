@@ -1,6 +1,6 @@
 import React from "react";
 import { SelectDistrict } from "../../../common/SelectDistrict";
-import TextArea from "../../../common/TextArea";
+import TextAreaCustom from "../../../common/TextAreaCustom";
 import ViewMultiSelect from "../../../view-content/ViewFormCheckout/view-multi-select";
 import ViewCheckBox from "../../../view-content/ViewFormCheckout/ViewCheckBox";
 import ViewCounter from "../../../view-content/ViewFormCheckout/ViewCounter";
@@ -39,7 +39,6 @@ const ViewCustomField = ({
               : "text"
           }
           label={section.label}
-          name={`custom-${section.type}.${section.id}.value`}
           control={control}
           placeholder={section.placeholder}
           rules={{
@@ -63,10 +62,9 @@ const ViewCustomField = ({
       )}
 
       {(section.type === "addressC" || section.type === "longText") && (
-        <TextArea
+        <TextAreaCustom
           style={inputStyle}
           label={section.label}
-          name={`custom-${section.type}.${section.id}.value`}
           control={control}
           placeholder={section.placeholder}
           rules={{

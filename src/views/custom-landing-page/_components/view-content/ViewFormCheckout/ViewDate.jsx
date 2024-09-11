@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import SelectOptionsCutomForm from "../../common/SelectOptionsCutomForm";
+import SelectOptionsCutomForm from "../../common/SelectOptionsCustomForm";
 
 const dateOptions = Array.from({ length: 31 }, (v, k) => ({
   value: String(k + 1).padStart(2, "0"),

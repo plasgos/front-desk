@@ -6,10 +6,12 @@ import InputFormCheckout from "../../common/InputFormCheckout";
 import { useDispatch, useSelector } from "react-redux";
 import { resetCheckCosts } from "../../../../../redux/modules/shipping/reducer";
 import { setReceiver } from "../../../../../redux/modules/package/reducer";
-import TextArea from "../../common/TextArea";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SelectDistrict } from "../../common/SelectDistrict";
 import ViewCustomField from "../../list-add-content/form-checkout/common/ViewCustomField";
+import SelectOptionsCustomForm from "../../common/SelectOptionsCustomForm";
+import { formatPrice } from "../../../../../lib/format-price";
+import TextArea from "../../common/TextArea";
 
 const ViewFormCheckout = forwardRef(
   ({ isDragging, content, isResizing, isFocused, setPreviewSection }, ref) => {
@@ -412,6 +414,116 @@ const ViewFormCheckout = forwardRef(
                   />
                 )}
               </div>
+            )}
+
+            <h5>Metode Pengiriman</h5>
+
+            {content?.form?.shippingMethod.design === "close" ? (
+              <Controller
+                name="paymentMethod"
+                control={control}
+                rules={{
+                  required:
+                    content?.form?.shippingMethod?.shippingMethodOption ===
+                    "required"
+                      ? "Harus Di Isi"
+                      : false,
+                }}
+                render={({
+                  field: { value, onChange, onBlur },
+                  fieldState: { error },
+                }) => (
+                  <>
+                    <div className="tw-flex tw-items-center tw-gap-x-3">
+                      <div className="tw-w-full">
+                        <SelectOptionsCustomForm
+                          style={inputStyle}
+                          options={content?.couriers}
+                          onChange={(selectedOption) => {
+                            onChange(selectedOption);
+                          }}
+                          value={value}
+                          getOptionLabel={(option) => option.label}
+                          getOptionValue={(option) => option.value}
+                        />
+                      </div>
+                    </div>
+
+                    {error && (
+                      <span className="tw-text-red-500 tw-text-sm">
+                        {error.message}
+                      </span>
+                    )}
+                  </>
+                )}
+              />
+            ) : (
+              content?.couriers.map((courier) => (
+                <Controller
+                  key={courier.id}
+                  name="paymentMethod"
+                  control={control}
+                  rules={{
+                    required:
+                      content?.form?.shippingMethod?.shippingMethodOption ===
+                      "required"
+                        ? "Harus Di Isi"
+                        : false,
+                  }}
+                  render={({
+                    field: { value, onChange, onBlur },
+                    fieldState: { error },
+                  }) => (
+                    <div
+                      style={{
+                        borderWidth: outlineInputColorSize,
+                        borderStyle: "solid",
+                        borderColor: outlineInputColor,
+                      }}
+                      className="tw-w-full tw-rounded tw-py-2 tw-px-4 tw-my-3"
+                    >
+                      <div className="tw-flex tw-items-center tw-mb-2">
+                        <input
+                          value={courier.id} // Set value to courier ID or any unique value
+                          checked={value?.id === courier.id} // Check if the current value matches
+                          onChange={() => onChange(courier)} // Update form state on change
+                          onBlur={onBlur}
+                          style={{ cursor: "pointer" }}
+                          type="radio"
+                        />
+
+                        <div className="tw-ml-3 tw-w-16 tw-h-8 tw-flex tw-justify-center tw-items-center">
+                          <img
+                            src={courier.image}
+                            alt="logo"
+                            style={{ width: "100%", objectFit: "contain" }}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="tw-flex tw-items-center tw-gap-x-2 tw-ml-3">
+                        <input
+                          value={courier.id} // Set value to courier ID or any unique value
+                          checked={value?.id === courier.id} // Check if the current value matches
+                          onChange={() => onChange(courier)} // Update form state on change
+                          onBlur={onBlur}
+                          style={{ cursor: "pointer" }}
+                          type="radio"
+                        />
+
+                        <div className="tw-italic tw-font-semibold">
+                          {courier.service}
+                        </div>
+                        <div className="">{formatPrice(courier.price)}</div>
+
+                        {content?.form?.shippingMethod?.isShowEstimate && (
+                          <div>{courier.estimate}</div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                />
+              ))
             )}
 
             <button

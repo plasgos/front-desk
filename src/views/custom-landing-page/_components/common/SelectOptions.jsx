@@ -25,11 +25,14 @@ const SelectOptions = ({
   menuIsOpen,
   getOptionLabel,
   getOptionValue,
+  placeholder,
+  isOptionDisabled,
 }) => {
   return (
     <div style={{ marginBottom: 16 }} className={`w-${width} `}>
       {label && <label style={{ fontSize: 12 }}>{label}</label>}
       <Select
+        placeholder={placeholder}
         menuIsOpen={menuIsOpen}
         theme={(theme) => ({
           ...theme,
@@ -44,6 +47,7 @@ const SelectOptions = ({
             state.isFocused ? "rounded  border-primary" : "rounded",
         }}
         options={options}
+        isOptionDisabled={isOptionDisabled}
         styles={customStyles ? customStyles : basicStyles}
         onChange={onChange}
         isSearchable={false}
