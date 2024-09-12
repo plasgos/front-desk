@@ -53,6 +53,7 @@ import ViewListImages from "./_components/view-content/ViewListImages";
 import ViewQuote from "./_components/view-content/ViewQuote";
 import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
 import ViewTestimony from "./_components/view-content/ViewTestimony/index";
+import ViewFloatingButton from "./_components/view-content/ViewFloatingButton";
 
 const landingPage = {
   detail: {
@@ -89,7 +90,7 @@ const CustomLandingPage = () => {
 
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
-  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection[0]);
+  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
   const [modal, setModal] = useState(false);
 
   const toggleModal = () => {
@@ -308,6 +309,19 @@ const CustomLandingPage = () => {
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
             setPreviewSection={setPreviewSection}
+          />
+        );
+      }
+
+      if (section.name === "floating-button") {
+        return (
+          <ViewFloatingButton
+            containerRef={containerRef}
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
           />
         );
       }
@@ -718,9 +732,6 @@ const CustomLandingPage = () => {
                     <CNavItem>
                       <CNavLink data-tab="desain">Desain</CNavLink>
                     </CNavItem>
-                    <CNavItem>
-                      <CNavLink data-tab="test2">test2</CNavLink>
-                    </CNavItem>
                   </CNav>
                   <CTabContent
                     style={{
@@ -746,11 +757,14 @@ const CustomLandingPage = () => {
                         />
                       </div>
 
-                      {previewSection.map((section, index) =>
-                        renderListContent(section, index)
-                      )}
+                      {previewSection
+                        .filter((section) => section.name !== "floating-button")
+                        .map((section, index) =>
+                          renderListContent(section, index)
+                        )}
+
                       <CCard
-                        style={{ cursor: "pointer" }}
+                        style={{ cursor: "pointer", marginBottom: 8 }}
                         onClick={handleAddContent}
                       >
                         <CCardBody className="p-1">
@@ -767,6 +781,12 @@ const CustomLandingPage = () => {
                           </div>
                         </CCardBody>
                       </CCard>
+
+                      {previewSection
+                        .filter((section) => section.name === "floating-button")
+                        .map((section, index) =>
+                          renderListContent(section, index)
+                        )}
                     </CTabPane>
                     <CTabPane data-tab="desain">
                       <DesignTabControl

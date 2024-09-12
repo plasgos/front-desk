@@ -145,10 +145,22 @@ export const ListSectionContent = ({
 
   return (
     <div style={{ opacity }} ref={ref} data-handler-id={handlerId}>
-      <CCard style={{ cursor: "move" }} className="mb-2">
+      <CCard
+        style={{
+          cursor: section.name !== "floating-button" ? "move" : "not-allowed",
+        }}
+        className="mb-2"
+      >
         <CCardBody style={{ padding: "5px 10px 5px 10px" }}>
           <div style={{ gap: 10 }} className="d-flex align-items-center">
-            <IoMenu style={{ cursor: "move" }} size={18} />
+            <IoMenu
+              style={{
+                cursor:
+                  section.name !== "floating-button" ? "move" : "not-allowed",
+                color: section.name !== "floating-button" ? "" : "#cccccc",
+              }}
+              size={18}
+            />
 
             {icon && (
               <>

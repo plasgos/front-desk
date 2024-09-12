@@ -12,6 +12,7 @@ const SelectOptionsCustomForm = ({
   menuIsOpen,
   getOptionLabel,
   getOptionValue,
+  components,
 }) => {
   const {
     labelColor,
@@ -74,7 +75,12 @@ const SelectOptionsCustomForm = ({
           }),
           singleValue: (baseStyles) => ({
             ...baseStyles,
-            color: textInputColor, // Warna teks terpilih
+            color: textInputColor,
+            // Warna teks terpilih
+          }),
+          valueContainer: (baseStyles) => ({
+            ...baseStyles,
+            display: "flex",
           }),
           groupHeading: (provided) => ({
             ...provided,
@@ -89,6 +95,7 @@ const SelectOptionsCustomForm = ({
         menuPlacement={positionShown ? positionShown : "auto"}
         getOptionLabel={getOptionLabel}
         getOptionValue={getOptionValue}
+        components={components}
       />
     </div>
   );

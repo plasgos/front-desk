@@ -10,7 +10,7 @@ import { IoMdImages } from "react-icons/io";
 import ListImagesControl from "./list-images/index";
 import ScrollTarget from "./scroll-target/index";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
-import { RxSwitch } from "react-icons/rx";
+import { RxButton, RxSwitch } from "react-icons/rx";
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
 import { FaClipboardList } from "react-icons/fa";
 import Line from "./line/index";
@@ -22,6 +22,7 @@ import Testimony from "./testimony";
 import ListFeature from "./list-feature";
 import { SearchForm } from "../common/SearchForm";
 import FormCheckout from "./form-checkout";
+import FloatingButton from "./floating-button";
 
 const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
   const dataListContent = [
@@ -98,6 +99,12 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
       title: "Formulir Checkout",
       icon: <FaClipboardList style={{ marginRight: 5 }} size={24} />,
       action: () => setAddContent("form-checkout"),
+    },
+    {
+      name: "floating-button",
+      title: "Floating Button",
+      icon: <RxButton style={{ marginRight: 5 }} size={24} />,
+      action: () => setAddContent("floating-button"),
     },
   ];
   const [addContent, setAddContent] = useState("");
@@ -232,6 +239,14 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
 
       {addContent === "form-checkout" && (
         <FormCheckout
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
+      {addContent === "floating-button" && (
+        <FloatingButton
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}

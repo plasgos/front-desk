@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import SelectOptions from "../../../common/SelectOptions";
-import Checkbox from "../../../common/Checkbox";
-import jne from "../../../../../../assets/jne-logo.png";
-import sicepat from "../../../../../../assets/logo-sicepat.png";
-import ninja from "../../../../../../assets/ninja-xpress.png";
-import jnt from "../../../../../../assets/jnt.png";
-import sap from "../../../../../../assets/sap xpress logo.png";
-import anteraja from "../../../../../../assets/anteraja logo.png";
-import idexpress from "../../../../../../assets/id-express logo.png";
-import { useDispatch, useSelector } from "react-redux";
-import { setSelectCourier } from "../../../../../../redux/modules/custom-landing-page/reducer";
+import jne from "../../../../../../../assets/jne-logo.png";
+import sicepat from "../../../../../../../assets/logo-sicepat.png";
+import ninja from "../../../../../../../assets/ninja-xpress.png";
+import jnt from "../../../../../../../assets/jnt.png";
+import sap from "../../../../../../../assets/sap xpress logo.png";
+import anteraja from "../../../../../../../assets/anteraja logo.png";
+import idexpress from "../../../../../../../assets/id-express logo.png";
+import { useDispatch } from "react-redux";
+import { setSelectCourier } from "../../../../../../../redux/modules/custom-landing-page/reducer";
+import SelectOptions from "../../../../common/SelectOptions";
+import Checkbox from "../../../../common/Checkbox";
 
 const couriersOptions = [
   {
@@ -90,13 +90,7 @@ const UpdateCourier = ({
   setCurrentCourier,
   isEditingCourier,
 }) => {
-  const { isAddCouriers, isEditingCouriers } = useSelector(
-    (state) => state.customLandingPage
-  );
-
   const [currentSectionCouriers, setCurrentSectionCouriers] = useState([]);
-  console.log("🚀 ~ currentSectionCouriers:", currentSectionCouriers);
-
   const [courier, setCourier] = useState(undefined);
 
   const [isShowEstimate, setIsShowEstimate] = useState(true);
@@ -124,7 +118,7 @@ const UpdateCourier = ({
   }, [currentCourier, isEditingCourier]);
 
   const handleUpdateCourier = (selectedOption) => {
-    if (!isEditingCourier) {
+    if (!isEditingCourier && Object.keys(selectedOption).length > 0) {
       dispatch(setSelectCourier(selectedOption));
     } else {
       setCurrentCourier(selectedOption);
@@ -185,17 +179,22 @@ const UpdateCourier = ({
     );
   };
 
+  const updatedCouriersOptions = couriersOptions.map((group) => ({
+    ...group,
+    options: group.options.map((option) => ({
+      ...option,
+      isDisabled: currentSectionCouriers.some(
+        (courier) => courier.id === option.id
+      ),
+    })),
+  }));
+
   return (
     <div>
       <SelectOptions
         label="Metode Pengiriman"
         placeholder="Pilih Kurir"
-        options={couriersOptions.map((option) => ({
-          ...option,
-          isDisabled: currentSectionCouriers.some(
-            (courier) => courier.id === option.id
-          ), // Disable jika sudah ada
-        }))}
+        options={updatedCouriersOptions}
         isOptionDisabled={(option) => option.isDisabled}
         onChange={(selectedOption) => {
           setCourier(selectedOption);

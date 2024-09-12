@@ -16,7 +16,8 @@ import { useMoveSection } from "../../../../../../hooks/useMoveSection";
 import { DraggableList } from "../../../common/DraggableList";
 import Information from "./Information";
 import UpdateContent from "./UpdateContent";
-import Shipping from "../shipping";
+import Shipping from "./shipping";
+import Payment from "./payment";
 
 const FormSection = ({
   previewSection,
@@ -29,7 +30,7 @@ const FormSection = ({
   setIsEditingContent,
   isEditingSection,
 }) => {
-  const [activeTab, setActiveTab] = useState("shipping");
+  const [activeTab, setActiveTab] = useState("information");
   const [selectedContent, setSelectedContent] = useState({});
   const editSection = useCallback(
     (section) => {
@@ -138,7 +139,13 @@ const FormSection = ({
                 previewSection={previewSection}
                 setPreviewSection={setPreviewSection}
                 currentSection={currentSection}
-                isEditingSection={isEditingSection}
+              />
+            </CTabPane>
+
+            <CTabPane className="p-1" data-tab="payment">
+              <Payment
+                setPreviewSection={setPreviewSection}
+                currentSection={currentSection}
               />
             </CTabPane>
           </CTabContent>

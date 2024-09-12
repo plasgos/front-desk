@@ -1,6 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
-import SelectOptions from "../../../common/SelectOptions";
-import Checkbox from "../../../common/Checkbox";
+import React, { useCallback, useState } from "react";
 import { CCard, CCardBody } from "@coreui/react";
 import { IoAdd } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,10 +6,11 @@ import {
   setCurrentCourierBeforeEdit,
   setIsAddCouriers,
   setIsEditCouriers,
-} from "../../../../../../redux/modules/custom-landing-page/reducer";
-import { DraggableList } from "../../../common/DraggableList";
+} from "../../../../../../../redux/modules/custom-landing-page/reducer";
+import { DraggableList } from "../../../../common/DraggableList";
+import SelectOptions from "../../../../common/SelectOptions";
+import Checkbox from "../../../../common/Checkbox";
 import UpdateCourier from "./UpdateCourier";
-import jne from "../../../../../../assets/jne-logo.png";
 
 const shippingMethodOptions = [
   { value: "required", label: "Harus Di Isi" },
@@ -23,12 +22,7 @@ const designOptions = [
   { value: "close", label: "Tertutup" },
 ];
 
-const Shipping = ({
-  previewSection,
-  setPreviewSection,
-  currentSection,
-  isEditingSection,
-}) => {
+const Shipping = ({ previewSection, setPreviewSection, currentSection }) => {
   const { isAddCouriers, isEditingCouriers } = useSelector(
     (state) => state.customLandingPage
   );
@@ -45,7 +39,7 @@ const Shipping = ({
   const [design, setDesign] = useState(
     designOptions.find(
       (opt) => opt.value === currentSection?.form?.shippingMethod?.design
-    ) || designOptions[0]
+    ) || designOptions[1]
   );
 
   const [isCustom, setIsCustom] = useState(
@@ -117,47 +111,6 @@ const Shipping = ({
     },
     [dispatch, previewSection]
   );
-
-  // const handleAddCourier = () => {
-  //   let payload = {
-  //     id: "1",
-  //     value: "jne",
-  //     label: "JNE",
-  //     image: jne,
-  //     service: "Reg",
-  //     price: "8000",
-  //     estimate: "1-2 Hari",
-  //   };
-
-  //   setPreviewSection((prevSections) =>
-  //     prevSections.map((section) => {
-  //       if (section.id === currentSection.id) {
-  //         const isCourierExist = section.couriers.some(
-  //           (courier) => courier.id === payload.id
-  //         );
-
-  //         if (!isCourierExist) {
-  //           return { ...section, couriers: [...section.couriers, payload] };
-  //         }
-  //       }
-
-  //       return section;
-  //     })
-  //   );
-  // };
-
-  // useEffect(() => {
-  //   if (
-  //     currentSection &&
-  //     currentSection.id &&
-  //     isAddCouriers &&
-  //     !isEditingSection
-  //   ) {
-  //     handleAddCourier();
-  //   }
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isEditingSection, currentSection, isAddCouriers]);
 
   const renderSection = useCallback(
     (section) => {
@@ -260,7 +213,7 @@ const Shipping = ({
                           size={18}
                         />
 
-                        <div>Tambah Konten</div>
+                        <div>Tambah Kurir</div>
                       </div>
                     </CCardBody>
                   </CCard>

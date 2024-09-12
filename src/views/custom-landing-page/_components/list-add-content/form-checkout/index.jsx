@@ -20,6 +20,7 @@ import {
   setIsEditCouriers,
   setIsSelectVariantMultiSelect,
   setIsSelectVariantSelectOption,
+  setSelectCourier,
   setSelectedVariant,
 } from "../../../../../redux/modules/custom-landing-page/reducer";
 
@@ -155,75 +156,50 @@ const FormCheckout = ({
   };
 
   const handleConfirm = () => {
-    // Prioritaskan kondisi untuk couriers terlebih dahulu
     if (isAddCouriers) {
       dispatch(setIsEditCouriers(false));
       dispatch(setIsAddCouriers(false));
       setIsAddContent(false);
       setIsEditingContent(false);
 
-      setPreviewSection((arr) =>
-        arr.map((item) => {
-          const contentIdToCheck = isEditingSection
-            ? currentSection.id
-            : setting.id;
+      if (Object.keys(selectedCourier).length > 0) {
+        setPreviewSection((arr) =>
+          arr.map((item) => {
+            const contentIdToCheck = isEditingSection
+              ? currentSection.id
+              : setting.id;
 
-          if (item.id === contentIdToCheck) {
-            // const selectedCourier = !isAddCouriers ? selectedOption : null;
+            if (item.id === contentIdToCheck) {
+              // const selectedCourier = !isAddCouriers ? selectedOption : null;
 
-            const isExistingCourier = item.couriers.some(
-              (courier) => courier.id === selectedCourier.id
-            );
+              const isExistingCourier = item.couriers.some(
+                (courier) => courier.id === selectedCourier.id
+              );
 
-            if (!isExistingCourier) {
-              return {
-                ...item,
-                couriers: [...item.couriers, selectedCourier],
-                form: {
-                  ...item.form,
-                  shippingMethod: {
-                    ...item.form.shippingMethod,
-                    selectedCourier: selectedCourier.value,
+              if (!isExistingCourier) {
+                return {
+                  ...item,
+                  couriers: [...item.couriers, selectedCourier],
+                  form: {
+                    ...item.form,
+                    shippingMethod: {
+                      ...item.form.shippingMethod,
+                      selectedCourier: selectedCourier.value,
+                    },
                   },
-                },
-              };
+                };
+              }
             }
-          }
 
-          return item;
-        })
-      );
+            return item;
+          })
+        );
+      }
+
+      dispatch(setSelectCourier({}));
     } else if (isEditingCouriers) {
       dispatch(setIsEditCouriers(false));
-
-      // setPreviewSection((arr) =>
-      //   arr.map((item) => {
-
-      //     const contentIdToCheck = isEditingSection
-      //     ? currentSection.id
-      //     : setting.id;
-
-      //     if (item.id === contentIdToCheck) {
-      //       const updatedCourier = item.couriers.find(
-      //         (courier) => courier.id === currentCourier.id
-      //       );
-
-      //       if (updatedCourier) {
-      //         return {
-      //           ...item,
-      //           couriers: item.couriers.map((courier) =>
-      //             courier.id === currentCourier.id ? selectedOption : courier
-      //           ),
-      //         };
-      //       }
-      //     }
-
-      //     return item;
-      //   })
-      // );
-    }
-    // Prioritaskan kondisi yang berkaitan dengan add/edit content
-    else if (isAddContent || isEditingContent) {
+    } else if (isAddContent || isEditingContent) {
       if (isSelectVariantMultiSelect) {
         dispatch(setIsSelectVariantMultiSelect(false));
       } else {
@@ -280,10 +256,14 @@ const FormCheckout = ({
         },
         shippingMethod: {
           shippingMethodOption: "required",
-          design: "open",
+          design: "close",
           isCustom: false,
           selectedCourier: "jne",
           isShowEstimate: true,
+        },
+        paymentMethod: {
+          paymentMethodOption: "required",
+          design: "open",
         },
         style: {
           labelColor: "#000000",
@@ -341,9 +321,6 @@ const FormCheckout = ({
 
             <CTabs activeTab={activeTab}>
               <CNav variant="tabs">
-                <CNavItem onClick={() => setActiveTab("layout")}>
-                  <CNavLink data-tab="layout">Layout</CNavLink>
-                </CNavItem>
                 <CNavItem onClick={() => setActiveTab("form")}>
                   <CNavLink data-tab="form">Formulir</CNavLink>
                 </CNavItem>
@@ -354,13 +331,6 @@ const FormCheckout = ({
               <CTabContent
                 style={{ height: 350, paddingRight: 5, overflowY: "auto" }}
               >
-                <CTabPane
-                  style={{ overflowX: "hidden" }}
-                  className="p-1"
-                  data-tab="layout"
-                >
-                  Layout
-                </CTabPane>
                 <CTabPane className="p-1" data-tab="form">
                   <FormSection
                     previewSection={previewSection}
