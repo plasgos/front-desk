@@ -5,7 +5,6 @@ import {
 } from "../views/custom-landing-page/_components/SelectOptions";
 
 const useSectionStyle = (currentSection) => {
-  console.log("🚀 ~ useSectionStyle ~ currentSection:", currentSection);
   // Define state using useState
   const [colorTitle, setColorTitle] = useState(
     currentSection?.variant?.style?.colorTitle || "#424242"

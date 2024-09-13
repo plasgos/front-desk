@@ -48,7 +48,7 @@ const Accordion = ({ content, contentVariant, icon }) => {
               >
                 <FontAwesomeIcon
                   onClick={() => setIsShowContent((prev) => !prev)}
-                  icon={["fas", icon]}
+                  icon={[`${icon.prefix}`, icon.iconName]}
                   style={{ fontSize: iconSize, cursor: "pointer" }}
                 />
               </div>
@@ -91,7 +91,7 @@ const Accordion = ({ content, contentVariant, icon }) => {
               >
                 <FontAwesomeIcon
                   onClick={() => setIsShowContent((prev) => !prev)}
-                  icon={["fas", icon]}
+                  icon={[`${icon.prefix}`, icon.iconName]}
                   style={{ fontSize: iconSize, cursor: "pointer" }}
                 />
               </div>

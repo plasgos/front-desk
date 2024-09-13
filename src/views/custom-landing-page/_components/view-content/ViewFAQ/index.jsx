@@ -12,17 +12,24 @@ const ViewFAQ = forwardRef(
     const iconPack = useFontAwesomeIconPack();
     const [iconName, setIconName] = useState(null);
 
+    const defaultIcon = {
+      prefix: "fas",
+      iconName: "plus",
+    };
+
     useEffect(() => {
       if (iconPack && content.variant?.style?.icon) {
-        const iconToSet = content.variant?.style?.icon || "plus";
-        const iconExists = iconPack.some((icon) => icon.iconName === iconToSet);
+        const iconToSet = content.variant?.style?.icon || defaultIcon;
+        const iconExists = iconPack.some(
+          (icon) => icon.iconName === iconToSet?.iconName
+        );
 
-        if (iconExists) {
-          setIconName(iconToSet);
-        } else {
-          setIconName("plus"); // Set default icon
-        }
+        setIconName(iconExists ? iconToSet : defaultIcon);
+      } else {
+        setIconName(defaultIcon);
       }
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [content.variant.style.icon, iconPack]);
 
     useEffect(() => {

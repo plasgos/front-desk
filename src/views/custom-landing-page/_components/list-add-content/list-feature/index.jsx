@@ -28,7 +28,10 @@ const ListFeature = ({
   const [listIconVisible, setListIconVisible] = useState(false);
   const [iconBeforeEdit, setIconBeforeEdit] = useState([]);
   const [previousIcon, setPreviousIcon] = useState("");
-  const [iconName, setIconName] = useState(null);
+  const [iconName, setIconName] = useState({
+    prefix: "fas",
+    iconName: "hand-point-right",
+  });
   const [imageUrl, setImageUrl] = useState(
     currentSection?.iconStyle?.image || ""
   );

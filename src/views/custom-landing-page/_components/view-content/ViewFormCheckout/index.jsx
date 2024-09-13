@@ -1,22 +1,16 @@
-import React, { forwardRef, useEffect, useState } from "react";
-import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack";
-import Checkbox from "../../common/Checkbox";
-import { Controller, useForm, FormProvider } from "react-hook-form";
-import InputFormCheckout from "../../common/InputFormCheckout";
-import { useDispatch, useSelector } from "react-redux";
-import { resetCheckCosts } from "../../../../../redux/modules/shipping/reducer";
-import { setReceiver } from "../../../../../redux/modules/package/reducer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { forwardRef, useEffect, useState } from "react";
+import { Controller, FormProvider, useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack";
+import { setReceiver } from "../../../../../redux/modules/package/reducer";
+import { resetCheckCosts } from "../../../../../redux/modules/shipping/reducer";
+import Checkbox from "../../common/Checkbox";
+import InputFormCheckout from "../../common/InputFormCheckout";
 import { SelectDistrict } from "../../common/SelectDistrict";
-import ViewCustomField from "../../list-add-content/form-checkout/common/ViewCustomField";
-import SelectOptionsCustomForm from "../../common/SelectOptionsCustomForm";
-import { formatPrice } from "../../../../../lib/format-price";
 import TextArea from "../../common/TextArea";
-import { FaHandHoldingDollar } from "react-icons/fa6";
+import ViewCustomField from "../../list-add-content/form-checkout/common/ViewCustomField";
 
-import bca from "../../../../../assets/bca.png";
-import mandiri from "../../../../../assets/mandiri.png";
-import bri from "../../../../../assets/bri.png";
 import ViewPaymentMethod from "./ViewPaymentMethod";
 import ViewShippingMethod from "./ViewShippingMethod";
 
@@ -61,7 +55,6 @@ const ViewFormCheckout = forwardRef(
     const {
       handleSubmit,
       control,
-      setValue,
       formState: { isValid },
     } = methods;
 
@@ -119,7 +112,9 @@ const ViewFormCheckout = forwardRef(
     useEffect(() => {
       if (iconPack) {
         const iconToSet = icon || "";
-        const iconExists = iconPack.some((icon) => icon.iconName === iconToSet);
+        const iconExists = iconPack.some(
+          (icon) => icon.iconName === iconToSet?.iconName
+        );
         if (iconExists) {
           setIconName(iconToSet);
         } else {
@@ -440,7 +435,13 @@ const ViewFormCheckout = forwardRef(
             />
 
             <button
-              style={{ backgroundColor: "#fa541c" }}
+              disabled={!isValid}
+              style={{
+                backgroundColor: !isValid ? "#d9d9d9" : "#fa541c",
+                color: !isValid ? "#a6a6a6" : "#ffffff",
+                cursor: !isValid ? "not-allowed" : "pointer",
+                opacity: !isValid ? 0.6 : 1,
+              }}
               className=" tw-hover:bg-blue-600 tw-text-white   tw-py-2.5 tw-px-4 tw-rounded focus:tw-outline-none focus:tw-ring-0 tw-border-none tw-w-full"
               type="submit"
             >
@@ -452,7 +453,10 @@ const ViewFormCheckout = forwardRef(
                         color: iconColor,
                       }}
                     >
-                      <FontAwesomeIcon size="sm" icon={["fas", iconName]} />
+                      <FontAwesomeIcon
+                        size="lg"
+                        icon={[`${iconName.prefix}`, iconName.iconName]}
+                      />
                     </div>
                   )}
 

@@ -42,101 +42,17 @@ const UpdateContent = ({
   currentContent,
   setPreviewSection,
   isEditingContent,
-  imageUrl,
-  setImageUrl,
-  icon,
-  setIcon,
   isListIconVisible,
   setIsListIconVisible,
-  setIconBeforeEdit,
-  setPreviousIcon,
-  previewSection,
 }) => {
   const iconPack = useFontAwesomeIconPack();
-  useEffect(() => {
-    if (imageUrl !== "") {
-      // Update tempSections hanya jika imageUrl bukan string kosong
-      setIcon(null);
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === idSection
-            ? {
-                ...item,
-                content: item.content.map((contentItem) => {
-                  const contentIdToCheck = isEditingContent
-                    ? currentContent.id
-                    : setting.id;
 
-                  return String(contentItem.id) === String(contentIdToCheck)
-                    ? {
-                        ...contentItem,
-                        content: {
-                          ...contentItem.content,
-                          image: imageUrl,
-                        },
-                      }
-                    : contentItem;
-                }),
-              }
-            : item
-        )
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imageUrl]);
+  const [previousIcon, setPreviousIcon] = useState("");
 
-  const handleFileUpload = () => {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.click();
-
-    input.onchange = (e) => {
-      const file = e.target.files[0];
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        const imageUrl = event.target.result;
-        setImageUrl(imageUrl);
-      };
-
-      reader.readAsDataURL(file);
-    };
-  };
-
-  const handleSearchIcon = (prevIcon) => {
-    setIconBeforeEdit([...previewSection]);
-    setPreviousIcon(prevIcon);
-    setIsListIconVisible(true);
-  };
-
-  const handleChangeIcon = (value) => {
-    setIcon(value);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === idSection
-          ? {
-              ...item,
-              content: item.content.map((contentItem) => {
-                const contentIdToCheck = isEditingContent
-                  ? currentContent.id
-                  : setting.id;
-
-                return String(contentItem.id) === String(contentIdToCheck)
-                  ? {
-                      ...contentItem,
-                      content: {
-                        ...contentItem.content,
-                        icon: value,
-                        image: "",
-                      },
-                    }
-                  : contentItem;
-              }),
-            }
-          : item
-      )
-    );
-  };
+  const [icon, setIcon] = useState(currentContent?.content?.icon || "");
+  const [imageUrl, setImageUrl] = useState(
+    currentContent?.content?.image || ""
+  );
 
   const { optionsScrollTarget, optionsTarget } = useSelector(
     (state) => state.customLandingPage
@@ -369,6 +285,95 @@ const UpdateContent = ({
     setSelectedOptionScrollTarget,
   ]);
 
+  const handleChangeImageUrl = (value) => {
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === idSection
+          ? {
+              ...item,
+              content: item.content.map((contentItem) => {
+                const contentIdToCheck = isEditingContent
+                  ? currentContent.id
+                  : setting.id;
+
+                return String(contentItem.id) === String(contentIdToCheck)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        image: value,
+                        icon: "",
+                      },
+                    }
+                  : contentItem;
+              }),
+            }
+          : item
+      )
+    );
+  };
+
+  useEffect(() => {
+    if (imageUrl !== "") {
+      setIcon("");
+      handleChangeImageUrl(imageUrl);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [imageUrl]);
+
+  const handleFileUpload = () => {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.click();
+
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const imageUrl = event.target.result;
+        setImageUrl(imageUrl);
+      };
+
+      reader.readAsDataURL(file);
+    };
+  };
+
+  const handleSearchIcon = (prevIcon) => {
+    setPreviousIcon(prevIcon);
+    setIsListIconVisible(true);
+  };
+
+  const handleChangeIcon = (value) => {
+    setIcon(value);
+    // setImageUrl("");
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === idSection
+          ? {
+              ...item,
+              content: item.content.map((contentItem) => {
+                const contentIdToCheck = isEditingContent
+                  ? currentContent.id
+                  : setting.id;
+
+                return String(contentItem.id) === String(contentIdToCheck)
+                  ? {
+                      ...contentItem,
+                      content: {
+                        ...contentItem.content,
+                        icon: value,
+                        image: "",
+                      },
+                    }
+                  : contentItem;
+              }),
+            }
+          : item
+      )
+    );
+  };
+
   const handleChangeOptions = (selectedOptionValue) => {
     setSelectedOption(selectedOptionValue);
     if (!selectedOptionValue.value) {
@@ -496,13 +501,51 @@ const UpdateContent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditingContent]);
 
+  const handleCancel = () => {
+    setIsListIconVisible(false);
+
+    if (imageUrl) {
+      setImageUrl(imageUrl);
+      setIcon(undefined);
+      handleChangeImageUrl(imageUrl);
+    } else {
+      handleChangeIcon(previousIcon);
+    }
+  };
+
+  const handleConfirm = () => {
+    setIsListIconVisible(false);
+    if (icon) {
+      setImageUrl("");
+    }
+  };
+
   return (
     <>
       {isListIconVisible ? (
-        <IconPicker
-          value={icon}
-          onChange={(value) => handleChangeIcon(value)}
-        />
+        <div>
+          <div className="d-flex justify-content-end align-items-center border-bottom p-2 mb-3">
+            <div>
+              <CButton
+                onClick={handleCancel}
+                color="primary"
+                variant="outline"
+                className="mx-2"
+              >
+                Batal
+              </CButton>
+
+              <CButton onClick={handleConfirm} color="primary">
+                Selesai
+              </CButton>
+            </div>
+          </div>
+
+          <IconPicker
+            value={icon}
+            onChange={(value) => handleChangeIcon(value)}
+          />
+        </div>
       ) : (
         <div>
           <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
@@ -617,7 +660,10 @@ const UpdateContent = ({
                     className="mx-auto mb-2 p-2"
                   >
                     <div>
-                      <FontAwesomeIcon icon={["fas", icon]} size="xl" />
+                      <FontAwesomeIcon
+                        icon={[`${icon.prefix}`, icon.iconName]}
+                        size="xl"
+                      />
                     </div>
                   </div>
                 )}

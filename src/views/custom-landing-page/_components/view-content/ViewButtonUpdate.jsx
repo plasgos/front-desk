@@ -1,9 +1,29 @@
 import React, { forwardRef } from "react";
 import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
+import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ViewButtonUpdate = forwardRef(
   ({ containerRef, isDragging, content, isResizing, isFocused }, ref) => {
+    const iconPack = useFontAwesomeIconPack();
+
+    const getIconForSection = (icon) => {
+      if (iconPack) {
+        // Pastikan 'icon' bukan undefined atau null
+        const iconToSet = icon || "";
+
+        // Pastikan iconToSet memiliki properti iconName
+        if (iconToSet.iconName) {
+          const iconExists = iconPack.some(
+            (iconItem) => iconItem.iconName === iconToSet?.iconName
+          );
+          return iconExists ? iconToSet : null;
+        }
+      }
+      return null;
+    };
+
     const stylesBg = useBackgroundStyles(content);
 
     const sizeClassesMap = {
@@ -94,6 +114,7 @@ const ViewButtonUpdate = forwardRef(
           const shadowClass = section.content.style.shadow
             ? `${section.content.style.shadow}`
             : "";
+          const icon = getIconForSection(section.content.icon);
 
           return (
             <div
@@ -117,7 +138,38 @@ const ViewButtonUpdate = forwardRef(
                 }}
                 className={`${roundedClass} ${sizeClasses} hover:tw-bg-opacity-80 ${shadowClass}  tw-inline-block tw-cursor-pointer`}
               >
-                {section.content.title}
+                <div className="tw-flex tw-justify-center tw-items-center tw-gap-x-3">
+                  <div>
+                    {icon && icon.prefix && icon.iconName && (
+                      <div
+                        style={{
+                          color: section.content.iconColor,
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          size="lg"
+                          icon={[`${icon.prefix}`, icon.iconName]}
+                        />
+                      </div>
+                    )}
+
+                    {section.content.image && (
+                      <div
+                        style={{
+                          width: 30,
+                        }}
+                      >
+                        <img
+                          src={section.content.image}
+                          alt="icon"
+                          style={{ width: "100%", objectFit: "contain" }}
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  {section.content.title}
+                </div>
               </div>
             </div>
           );

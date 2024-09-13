@@ -21,7 +21,7 @@ import { alignOptions } from "../../SelectOptions";
 import { DraggableList } from "../../common/DraggableList";
 import BackgroundTab from "../../common/BackgroundTab";
 import { createUniqueID } from "../../../../../lib/unique-id";
-import UpdateContent from "./UpdateContent";
+import UpdateContent from "../floating-button/UpdateContent";
 
 const initialContents = [
   {
@@ -88,6 +88,8 @@ const Buttons = ({
   const [selectedAlign, setSelectedAlign] = useState(alignOptions[1]);
   const [selectedFlex, setSelectedFlex] = useState(flexOptions[0]);
 
+  const [isListIconVisible, setIsListIconVisible] = useState(false);
+
   useEffect(() => {
     if (isEditingSection) {
       const { wrapperStyle: { marginX, flexDirection, jusctifyContent } = {} } =
@@ -137,7 +139,7 @@ const Buttons = ({
   };
 
   const handleCancel = () => {
-    if (isAddContent) {
+    if (isAddContent && !isListIconVisible) {
       setIsAddContent(false);
       setIsEditingContent(false);
       setPreviewSection((prevSections) =>
@@ -154,7 +156,7 @@ const Buttons = ({
             : section;
         })
       );
-    } else if (isEditingContent) {
+    } else if (isEditingContent && !isListIconVisible) {
       setPreviewSection([...currentContentBeforeEdit]);
       setIsAddContent(false);
       setIsEditingContent(false);
@@ -172,7 +174,9 @@ const Buttons = ({
   };
 
   const handleConfirm = () => {
-    if (isAddContent || isEditingContent) {
+    if (isListIconVisible) {
+      setIsListIconVisible(false);
+    } else if (isAddContent || isEditingContent) {
       setIsAddContent(false);
       setIsEditingContent(false);
     } else {
@@ -257,27 +261,29 @@ const Buttons = ({
       <CRow>
         <CCol>
           <div style={{ height: 400 }}>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+            {!isListIconVisible && (
+              <div className="d-flex justify-content-end align-items-center border-bottom p-2">
+                <div>
+                  <CButton
+                    onClick={handleCancel}
+                    color="primary"
+                    variant="outline"
+                    className="mx-2"
+                  >
+                    Batal
+                  </CButton>
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
+                  <CButton onClick={handleConfirm} color="primary">
+                    Selesai
+                  </CButton>
+                </div>
               </div>
-            </div>
+            )}
 
             {isAddContent ? (
               <CTabs>
                 <CTabContent
-                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
+                  style={{ height: 380, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
                   <UpdateContent
@@ -286,13 +292,15 @@ const Buttons = ({
                     }
                     currentContent={initialContents}
                     setPreviewSection={setPreviewSection}
+                    isListIconVisible={isListIconVisible}
+                    setIsListIconVisible={setIsListIconVisible}
                   />
                 </CTabContent>
               </CTabs>
             ) : isEditingContent ? (
               <CTabs>
                 <CTabContent
-                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
+                  style={{ height: 380, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
                   <UpdateContent
@@ -301,6 +309,8 @@ const Buttons = ({
                     }
                     currentContent={selectedContent}
                     setPreviewSection={setPreviewSection}
+                    isListIconVisible={isListIconVisible}
+                    setIsListIconVisible={setIsListIconVisible}
                     isEditingContent={true}
                   />
                 </CTabContent>

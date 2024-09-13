@@ -54,6 +54,7 @@ import ViewQuote from "./_components/view-content/ViewQuote";
 import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
 import ViewTestimony from "./_components/view-content/ViewTestimony/index";
 import ViewFloatingButton from "./_components/view-content/ViewFloatingButton";
+import FloatingButton from "./_components/list-add-content/floating-button";
 
 const landingPage = {
   detail: {
@@ -524,6 +525,23 @@ const CustomLandingPage = () => {
       ) {
         return (
           <FormCheckout
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "floating-button" &&
+        section.name === "floating-button" &&
+        editing.id === section.id
+      ) {
+        return (
+          <FloatingButton
             currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}

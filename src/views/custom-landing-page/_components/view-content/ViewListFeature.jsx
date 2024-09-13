@@ -8,24 +8,44 @@ const ViewListFeature = forwardRef(
     const stylesBg = useBackgroundStyles(content);
 
     const iconPack = useFontAwesomeIconPack();
-    const [iconName, setIconName] = useState(null);
+    const [icon, setIcon] = useState(null);
+
+    // useEffect(() => {
+    //   if (iconPack && content.iconStyle?.icon) {
+    //     const iconToSet = content.iconStyle?.icon || "hand-point-right";
+    //     const iconExists = iconPack.some((icon) => icon.iconName === iconToSet);
+
+    //     if (iconExists) {
+    //       setIconName(iconToSet);
+    //     } else {
+    //       setIconName("hand-point-right"); // Set default icon
+    //     }
+    //   }
+    // }, [content.iconStyle.icon, iconPack]);
 
     useEffect(() => {
+      const defaultIcon = {
+        prefix: "fas",
+        iconName: "hand-point-right",
+      };
+
       if (iconPack && content.iconStyle?.icon) {
-        const iconToSet = content.iconStyle?.icon || "hand-point-right";
-        const iconExists = iconPack.some((icon) => icon.iconName === iconToSet);
+        const iconToSet = content.iconStyle?.icon || defaultIcon;
+        const iconExists = iconPack.some(
+          (icon) => icon.iconName === iconToSet?.iconName
+        );
 
         if (iconExists) {
-          setIconName(iconToSet);
+          setIcon(iconToSet);
         } else {
-          setIconName("hand-point-right"); // Set default icon
+          setIcon(defaultIcon);
         }
       }
     }, [content.iconStyle.icon, iconPack]);
 
     useEffect(() => {
       if (content.iconStyle?.image) {
-        setIconName(null);
+        setIcon(null);
       }
     }, [content.iconStyle.image]);
 
@@ -69,7 +89,7 @@ const ViewListFeature = forwardRef(
               key={index}
               className={`tw-flex tw-items-center ${content?.content?.textAlign} `}
             >
-              {iconName && (
+              {icon && (
                 <div
                   style={{
                     position: "relative",
@@ -82,7 +102,7 @@ const ViewListFeature = forwardRef(
                     className={`${
                       content.iconStyle?.shadow ? content.iconStyle?.shadow : ""
                     }`}
-                    icon={["fas", iconName]}
+                    icon={[`${icon.prefix}`, icon.iconName]}
                     style={{ fontSize: content.iconStyle?.iconSize }}
                   />
                 </div>

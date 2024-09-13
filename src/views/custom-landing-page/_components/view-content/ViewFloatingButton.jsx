@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useState } from "react";
+import React, { forwardRef } from "react";
 import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
@@ -10,11 +10,16 @@ const ViewFloatingButton = forwardRef(
 
     const getIconForSection = (icon) => {
       if (iconPack) {
+        // Pastikan 'icon' bukan undefined atau null
         const iconToSet = icon || "";
-        const iconExists = iconPack.some(
-          (iconItem) => iconItem.iconName === iconToSet
-        );
-        return iconExists ? iconToSet : null;
+
+        // Pastikan iconToSet memiliki properti iconName
+        if (iconToSet.iconName) {
+          const iconExists = iconPack.some(
+            (iconItem) => iconItem.iconName === iconToSet?.iconName
+          );
+          return iconExists ? iconToSet : null;
+        }
       }
       return null;
     };
@@ -126,8 +131,7 @@ const ViewFloatingButton = forwardRef(
             ? `${section.content.style.shadow}`
             : "";
 
-          const iconName = getIconForSection(section.content.icon);
-
+          const icon = getIconForSection(section.content.icon);
           return (
             <div
               style={{ zIndex: 2, flexGrow: 1 }}
@@ -154,20 +158,23 @@ const ViewFloatingButton = forwardRef(
               >
                 <div className="tw-flex tw-justify-center tw-items-center tw-gap-x-3">
                   <div>
-                    {iconName && (
+                    {icon && icon.prefix && icon.iconName && (
                       <div
                         style={{
                           color: section.content.iconColor,
                         }}
                       >
-                        <FontAwesomeIcon size="sm" icon={["fas", iconName]} />
+                        <FontAwesomeIcon
+                          size="lg"
+                          icon={[`${icon.prefix}`, icon.iconName]}
+                        />
                       </div>
                     )}
 
                     {section.content.image && (
                       <div
                         style={{
-                          width: 50,
+                          width: 30,
                         }}
                       >
                         <img

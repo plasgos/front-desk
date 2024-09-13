@@ -44,20 +44,23 @@ const IconTab = ({
   );
 
   const iconPack = useFontAwesomeIconPack();
+  const defaultIcon = {
+    prefix: "fas",
+    iconName: "hand-point-right",
+  };
 
   useEffect(() => {
-    if (iconPack) {
+    if (iconPack && iconPack.length > 0) {
       const iconToSet = !isEditing
-        ? currentSection?.iconStyle?.icon || "hand-point-right"
+        ? currentSection?.iconStyle?.icon || defaultIcon
         : currentSection?.iconStyle?.icon;
-      const iconExists = iconPack.some((icon) => icon.iconName === iconToSet);
+      const iconExists = iconPack.some(
+        (icon) => icon.iconName === iconToSet?.iconName
+      );
 
-      if (iconExists) {
-        setIconName(iconToSet);
-      } else {
-        console.warn(`Icon ${iconToSet} not found in iconPack`);
-        setIconName(null); // Atau set ke ikon default yang pasti ada
-      }
+      setIconName(iconExists ? iconToSet : defaultIcon);
+    } else {
+      setIconName(defaultIcon);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [iconPack, currentSection, isEditing]);
@@ -205,7 +208,10 @@ const IconTab = ({
                   className="mx-auto mb-2 p-2"
                 >
                   <div>
-                    <FontAwesomeIcon icon={["fas", iconName]} size="xl" />
+                    <FontAwesomeIcon
+                      icon={[`${iconName.prefix}`, iconName.iconName]}
+                      size="xl"
+                    />
                   </div>
                 </div>
               )}

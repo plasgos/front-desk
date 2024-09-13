@@ -142,13 +142,14 @@ const FAQ = ({
   const [isListIconVisible, setIsListIconVisible] = useState(false);
 
   const [currentVariant, setCurrentVariant] = useState({});
-  console.log("🚀 ~ currentVariant:", currentVariant);
-
   const [imageUrl, setImageUrl] = useState(
     currentSection?.variant?.style?.image || ""
   );
   const [icon, setIcon] = useState(
-    currentSection?.variant?.style?.icon || "plus"
+    currentSection?.variant?.style?.icon || {
+      prefix: "fas",
+      iconName: "plus",
+    }
   );
   const editSection = useCallback(
     (section) => {

@@ -386,7 +386,10 @@ const DesignSection = ({
                   className="mx-auto mb-2 p-2"
                 >
                   <div>
-                    <FontAwesomeIcon icon={["fas", icon]} size="xl" />
+                    <FontAwesomeIcon
+                      icon={[`${icon.prefix}`, icon.iconName]}
+                      size="xl"
+                    />
                   </div>
                 </div>
               )}

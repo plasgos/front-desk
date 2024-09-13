@@ -70,19 +70,23 @@ const DesignTab = ({
     setIsListIconVisible(true);
   };
 
-  useEffect(() => {
-    if (iconPack) {
-      const iconToSet = !isEditingSection
-        ? currentSection?.variant?.style?.icon || "plus"
-        : currentSection?.variant?.style?.icon;
-      const iconExists = iconPack.some((icon) => icon.iconName === iconToSet);
+  const defaultIcon = {
+    prefix: "fas",
+    iconName: "plus",
+  };
 
-      if (iconExists) {
-        setIcon(iconToSet);
-      } else {
-        console.warn(`Icon ${iconToSet} not found in iconPack`);
-        setIcon(null); // Atau set ke ikon default yang pasti ada
-      }
+  useEffect(() => {
+    if (iconPack && iconPack.length > 0) {
+      const iconToSet = !isEditingSection
+        ? currentSection?.variant?.style?.icon || defaultIcon
+        : currentSection?.variant?.style?.icon;
+      const iconExists = iconPack.some(
+        (icon) => icon.iconName === iconToSet?.iconName
+      );
+
+      setIcon(iconExists ? iconToSet : defaultIcon);
+    } else {
+      setIcon(defaultIcon);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [iconPack, currentSection, isEditingSection]);

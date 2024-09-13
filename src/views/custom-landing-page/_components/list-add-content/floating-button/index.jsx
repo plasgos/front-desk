@@ -94,12 +94,6 @@ const FloatingButton = ({
   const [shadow, setShadow] = useState(shadowOptions[2]);
 
   const [isListIconVisible, setIsListIconVisible] = useState(false);
-  const [iconBeforeEdit, setIconBeforeEdit] = useState([]);
-  const [previousIcon, setPreviousIcon] = useState("");
-  const [icon, setIcon] = useState(currentSection?.form?.style?.icon || "");
-  const [imageUrl, setImageUrl] = useState(
-    currentSection?.form?.style?.image || ""
-  );
 
   const handleChangeWrapperStyle = (key, selectedOption) => {
     setPreviewSection((arr) =>
@@ -122,7 +116,7 @@ const FloatingButton = ({
   };
 
   const handleCancel = () => {
-    if (isAddContent) {
+    if (isAddContent && !isListIconVisible) {
       setIsAddContent(false);
       setIsEditingContent(false);
       setPreviewSection((prevSections) =>
@@ -139,18 +133,10 @@ const FloatingButton = ({
             : section;
         })
       );
-    } else if (isEditingContent) {
+    } else if (isEditingContent && !isListIconVisible) {
       setPreviewSection([...currentContentBeforeEdit]);
       setIsAddContent(false);
       setIsEditingContent(false);
-    } else if (isListIconVisible) {
-      setIsListIconVisible(false);
-      if (imageUrl) {
-        setIcon(null);
-      } else {
-        setIcon(previousIcon);
-      }
-      setPreviewSection([...iconBeforeEdit]);
     } else if (isEditingSection) {
       setIsAddContent(false);
       isShowContent(false);
@@ -252,42 +238,37 @@ const FloatingButton = ({
       <CRow>
         <CCol>
           <div style={{ height: 400 }}>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+            {!isListIconVisible && (
+              <div className="d-flex justify-content-end align-items-center border-bottom p-2">
+                <div>
+                  <CButton
+                    onClick={handleCancel}
+                    color="primary"
+                    variant="outline"
+                    className="mx-2"
+                  >
+                    Batal
+                  </CButton>
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
+                  <CButton onClick={handleConfirm} color="primary">
+                    Selesai
+                  </CButton>
+                </div>
               </div>
-            </div>
+            )}
 
             {isAddContent ? (
               <CTabs>
                 <CTabContent
-                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
+                  style={{ height: 380, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
                   <UpdateContent
-                    previewSection={previewSection}
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
                     currentContent={initialContents}
                     setPreviewSection={setPreviewSection}
-                    imageUrl={imageUrl}
-                    setImageUrl={setImageUrl}
-                    icon={icon}
-                    setPreviousIcon={setPreviousIcon}
-                    setIcon={setIcon}
-                    setIconBeforeEdit={setIconBeforeEdit}
                     isListIconVisible={isListIconVisible}
                     setIsListIconVisible={setIsListIconVisible}
                   />
@@ -296,21 +277,14 @@ const FloatingButton = ({
             ) : isEditingContent ? (
               <CTabs>
                 <CTabContent
-                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
+                  style={{ height: 380, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
                   <UpdateContent
-                    previewSection={previewSection}
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
                     setPreviewSection={setPreviewSection}
-                    imageUrl={imageUrl}
-                    setImageUrl={setImageUrl}
-                    icon={icon}
-                    setPreviousIcon={setPreviousIcon}
-                    setIcon={setIcon}
-                    setIconBeforeEdit={setIconBeforeEdit}
                     isListIconVisible={isListIconVisible}
                     setIsListIconVisible={setIsListIconVisible}
                     currentContent={selectedContent}
@@ -329,7 +303,7 @@ const FloatingButton = ({
                   </CNavItem>
                 </CNav>
                 <CTabContent
-                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
+                  style={{ height: 400, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
                   <CTabPane className="p-1" data-tab="konten">
@@ -389,7 +363,7 @@ const FloatingButton = ({
                             .map((section, i) => renderSection(section, i))}
                         </div>
                         <CCard
-                          style={{ cursor: "pointer" }}
+                          style={{ cursor: "pointer", marginBottom: 60 }}
                           onClick={() => setIsAddContent(true)}
                         >
                           <CCardBody className="p-1">
