@@ -55,6 +55,10 @@ import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
 import ViewTestimony from "./_components/view-content/ViewTestimony/index";
 import ViewFloatingButton from "./_components/view-content/ViewFloatingButton";
 import FloatingButton from "./_components/list-add-content/floating-button";
+import Image from "./_components/list-add-content/image";
+import ViewImage from "./_components/view-content/ViewImage";
+import ImageText from "./_components/list-add-content/image-text";
+import ViewImageText from "./_components/view-content/ViewImageText";
 
 const landingPage = {
   detail: {
@@ -327,6 +331,32 @@ const CustomLandingPage = () => {
         );
       }
 
+      if (section.name === "image") {
+        return (
+          <ViewImage
+            containerRef={containerRef}
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
+
+      if (section.name === "image-text") {
+        return (
+          <ViewImageText
+            containerRef={containerRef}
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
+
       return null;
     },
     [dimensions.width, focusedIndex, id, isDragging, isPreview, isResizing]
@@ -542,6 +572,40 @@ const CustomLandingPage = () => {
       ) {
         return (
           <FloatingButton
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "image" &&
+        section.name === "image" &&
+        editing.id === section.id
+      ) {
+        return (
+          <Image
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "image-text" &&
+        section.name === "image-text" &&
+        editing.id === section.id
+      ) {
+        return (
+          <ImageText
             currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}

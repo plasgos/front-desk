@@ -7,7 +7,6 @@ export const useUrlChange = (
   selectedSectionToEdit
 ) => {
   const [url, setUrl] = useState(selectedSectionToEdit?.target?.url || {});
-
   const [urlValue] = useDebounce(url.url, 1000);
 
   useEffect(() => {

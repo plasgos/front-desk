@@ -2,7 +2,7 @@ import { CButton, CCard, CTabContent } from "@coreui/react";
 import React, { useState } from "react";
 import { MdTextFields, MdViewColumn } from "react-icons/md";
 import { PiArrowsDownUpLight, PiTargetDuotone } from "react-icons/pi";
-import { LuQuote } from "react-icons/lu";
+import { LuImagePlus, LuQuote } from "react-icons/lu";
 import { FaGripLines, FaListCheck } from "react-icons/fa6";
 import Text from "./text/index";
 import EmptySpace from "./empty-space/index";
@@ -12,7 +12,7 @@ import ScrollTarget from "./scroll-target/index";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 import { RxButton, RxSwitch } from "react-icons/rx";
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
-import { FaClipboardList } from "react-icons/fa";
+import { FaClipboardList, FaImage } from "react-icons/fa";
 import Line from "./line/index";
 import Quote from "./quote";
 import FAQ from "./faq";
@@ -23,6 +23,8 @@ import ListFeature from "./list-feature";
 import { SearchForm } from "../common/SearchForm";
 import FormCheckout from "./form-checkout";
 import FloatingButton from "./floating-button";
+import Image from "./image";
+import ImageText from "./image-text";
 
 const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
   const dataListContent = [
@@ -106,7 +108,20 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
       icon: <RxButton style={{ marginRight: 5 }} size={24} />,
       action: () => setAddContent("floating-button"),
     },
+    {
+      name: "image",
+      title: "Gambar",
+      icon: <FaImage style={{ marginRight: 5 }} size={24} />,
+      action: () => setAddContent("image"),
+    },
+    {
+      name: "image-text",
+      title: "Gambar + Teks",
+      icon: <LuImagePlus style={{ marginRight: 5 }} size={24} />,
+      action: () => setAddContent("image-text"),
+    },
   ];
+
   const [addContent, setAddContent] = useState("");
   const [searchContent, setSearchContent] = useState("");
   const [filteredContents, setFilteredContents] = useState(dataListContent);
@@ -247,6 +262,22 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
 
       {addContent === "floating-button" && (
         <FloatingButton
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
+      {addContent === "image" && (
+        <Image
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
+      {addContent === "image-text" && (
+        <ImageText
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
