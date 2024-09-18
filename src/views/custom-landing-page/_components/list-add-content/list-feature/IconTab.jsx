@@ -44,26 +44,23 @@ const IconTab = ({
   );
 
   const iconPack = useFontAwesomeIconPack();
-  const defaultIcon = {
-    prefix: "fas",
-    iconName: "hand-point-right",
-  };
 
   useEffect(() => {
-    if (iconPack && iconPack.length > 0) {
-      const iconToSet = !isEditing
-        ? currentSection?.iconStyle?.icon || defaultIcon
-        : currentSection?.iconStyle?.icon;
-      const iconExists = iconPack.some(
-        (icon) => icon.iconName === iconToSet?.iconName
-      );
+    console.log("RUNNNNN");
+    if (iconPack && iconPack.length > 0 && Object.keys(iconName).length > 0) {
+      const iconToSet = currentSection?.iconStyle?.icon;
 
-      setIconName(iconExists ? iconToSet : defaultIcon);
-    } else {
-      setIconName(defaultIcon);
+      if (Object.keys(iconToSet).length > 0) {
+        const iconExists = iconPack.some(
+          (icon) => icon.iconName === iconToSet?.iconName
+        );
+
+        setIconName(iconExists ? iconToSet : {});
+      }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [iconPack, currentSection, isEditing]);
+  }, [iconPack, currentSection]);
 
   useEffect(() => {
     if (isEditing) {
@@ -126,7 +123,7 @@ const IconTab = ({
   useEffect(() => {
     if (imageUrl !== "") {
       // Update tempSections hanya jika imageUrl bukan string kosong
-      setIconName(null);
+      setIconName({});
       setPreviewSection((arr) =>
         arr.map((item) =>
           String(item.id) === currentSection.id
@@ -198,23 +195,25 @@ const IconTab = ({
                 </div>
               )}
 
-              {iconName && iconPack && (
-                <div
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    width: "100%",
-                    overflow: "hidden",
-                  }}
-                  className="mx-auto mb-2 p-2"
-                >
-                  <div>
-                    <FontAwesomeIcon
-                      icon={[`${iconName.prefix}`, iconName.iconName]}
-                      size="xl"
-                    />
+              {iconPack &&
+                iconPack.length > 0 &&
+                Object.keys(iconName).length > 0 && (
+                  <div
+                    style={{
+                      backgroundColor: "#F5F5F5",
+                      width: "100%",
+                      overflow: "hidden",
+                    }}
+                    className="mx-auto mb-2 p-2"
+                  >
+                    <div>
+                      <FontAwesomeIcon
+                        icon={[`${iconName.prefix}`, iconName.iconName]}
+                        size="xl"
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
 
               <div style={{ gap: 5 }} className="d-flex align-items-center">
                 <ColorPicker

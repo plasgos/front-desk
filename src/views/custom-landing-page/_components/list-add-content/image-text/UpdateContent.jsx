@@ -23,11 +23,11 @@ const UpdateContent = ({
   const [fontSize, setFontSize] = useState(undefined);
   const [editorHtml, setEditorHtml] = useState(currentContent?.content || "");
   const [selectAlign, setSelectAlign] = useState(
-    currentContent?.textAlign || "tw-text-left"
+    currentSection?.variant?.style?.textAlign || "tw-text-left"
   );
 
   const [textColor, setTextColor] = useState(
-    currentContent?.textColor || "#151414"
+    currentSection?.variant?.style?.textColor || "#151414"
   );
 
   const [editorHtmlValue] = useDebounce(editorHtml, 1000);
@@ -42,7 +42,7 @@ const UpdateContent = ({
 
   useEffect(() => {
     const currentTextShadowOption = textShadowOptions.find(
-      (opt) => opt.value === currentContent?.textShadow
+      (opt) => opt.value === currentSection?.variant?.style?.textShadow
     );
 
     if (currentTextShadowOption) {
@@ -50,7 +50,7 @@ const UpdateContent = ({
     }
 
     const currentFontSizeOption = fontSizeOptions.find(
-      (opt) => opt.value === currentContent?.fontSize
+      (opt) => opt.value === currentSection?.variant?.style?.fontSize
     );
     if (currentFontSizeOption) {
       setFontSize(currentFontSizeOption);
@@ -61,7 +61,7 @@ const UpdateContent = ({
     if (currentContentText) {
       setEditorHtml(currentContentText);
     }
-  }, [currentContent]);
+  }, [currentContent, currentSection]);
 
   const handleChangeContent = (key, value) => {
     setPreviewSection((arr) =>
@@ -83,6 +83,25 @@ const UpdateContent = ({
     );
   };
 
+  const handleChangeStyle = (key, value) => {
+    setPreviewSection((arr) =>
+      arr.map((item) => {
+        return String(item.id) === currentSection.id
+          ? {
+              ...item,
+              variant: {
+                ...item.variant,
+                style: {
+                  ...item.variant.style,
+                  [key]: value,
+                },
+              },
+            }
+          : item;
+      })
+    );
+  };
+
   return (
     <div>
       <div style={{ gap: 10 }} className="d-flex align-items-center">
@@ -90,7 +109,7 @@ const UpdateContent = ({
           initialValue={selectAlign}
           onChange={(key, value) => {
             setSelectAlign(value);
-            handleChangeContent(key, value);
+            handleChangeStyle(key, value);
           }}
         />
         <ColorPicker
@@ -98,7 +117,7 @@ const UpdateContent = ({
           label="Warna Teks"
           onChange={(color) => {
             setTextColor(color);
-            handleChangeContent("textColor", color);
+            handleChangeStyle("textColor", color);
           }}
         />
       </div>
@@ -109,7 +128,7 @@ const UpdateContent = ({
           options={textShadowOptions}
           onChange={(selectedOption) => {
             setTextShadow(selectedOption);
-            handleChangeContent("textShadow", selectedOption.value);
+            handleChangeStyle("textShadow", selectedOption.value);
           }}
           value={textShadow}
           width="50"
@@ -120,7 +139,7 @@ const UpdateContent = ({
           options={fontSizeOptions}
           onChange={(selectedOption) => {
             setFontSize(selectedOption);
-            handleChangeContent("fontSize", selectedOption.value);
+            handleChangeStyle("fontSize", selectedOption.value);
           }}
           value={fontSize}
           width="50"

@@ -4,6 +4,7 @@ import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 
 const ViewImage = forwardRef(
   ({ containerRef, isDragging, isResizing, content, isFocused }, ref) => {
+    console.log("🚀 ~ content:", content);
     const stylesBg = useBackgroundStyles(content);
 
     return (
@@ -68,7 +69,9 @@ const ViewImage = forwardRef(
                       backgroundPosition: "center",
                       backgroundRepeat: "no-repeat",
                       paddingBottom: "100%",
-                      border: `1px solid ${content.wrapperStyle.borderColor} `,
+                      border: content.wrapperStyle.borderColor
+                        ? `1px solid ${content.wrapperStyle.borderColor}`
+                        : "",
                     }}
                   ></div>
                 ) : (
@@ -85,7 +88,9 @@ const ViewImage = forwardRef(
                       transform: `rotate(${content.wrapperStyle.rotation}deg)`,
                       transition: "transform 0.5s ease",
                       objectFit: "contain",
-                      border: `1px solid ${content.wrapperStyle.borderColor} `,
+                      border: content.wrapperStyle.borderColor
+                        ? `1px solid ${content.wrapperStyle.borderColor}`
+                        : "",
                     }}
                   />
                 )}

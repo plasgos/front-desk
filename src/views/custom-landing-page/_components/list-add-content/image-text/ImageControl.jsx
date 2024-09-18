@@ -3,20 +3,16 @@ import React, { useEffect, useState } from "react";
 
 import image from "../../../../../assets/bg.jpg";
 import Page from "./variant/Page";
+import Frosty from "./variant/Frosty";
 
 const ImageControl = ({
   setPreviewSection,
-  setSetting,
   currentSection,
   selectedVariant,
-  isEditingSection,
 }) => {
   const [imageUrl, setImageUrl] = useState(
     currentSection?.variant?.style?.image || image
   );
-
-  console.log("🚀 ~ currentSection:", currentSection);
-
   useEffect(() => {
     const currentImage = currentSection?.variant?.style?.image;
 
@@ -92,10 +88,20 @@ const ImageControl = ({
         </CButton>
       </div>
 
-      {selectedVariant.group === "Page" && (
+      {(selectedVariant.group === "Page" ||
+        selectedVariant.group === "Penuh") && (
         <Page
           setPreviewSection={setPreviewSection}
           currentSection={currentSection}
+          selectedVariant={selectedVariant}
+        />
+      )}
+
+      {selectedVariant.group === "Frosty" && (
+        <Frosty
+          setPreviewSection={setPreviewSection}
+          currentSection={currentSection}
+          selectedVariant={selectedVariant}
         />
       )}
     </div>

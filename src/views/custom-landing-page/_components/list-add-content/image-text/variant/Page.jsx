@@ -9,7 +9,7 @@ const imagePositionOptions = [
   { value: "right", label: "Kanan" },
 ];
 
-const Page = ({ setPreviewSection, currentSection }) => {
+const Page = ({ setPreviewSection, currentSection, selectedVariant }) => {
   const [shadow, setShadow] = useState(undefined);
 
   const [width, setWidth] = useState(
@@ -124,19 +124,21 @@ const Page = ({ setPreviewSection, currentSection }) => {
         onBlur={() => handleSetValueWhenBlurWrapperStyle(width, 0, 90, "width")}
       />
 
-      <InputRangeWithNumber
-        label="Melingkar"
-        value={rounded}
-        onChange={(newValue) => {
-          setRounded(newValue);
-          handleChangeVariantStyle("rounded", newValue);
-        }}
-        min={0}
-        max={100}
-        onBlur={() =>
-          handleSetValueWhenBlurWrapperStyle(rounded, 0, 100, "rounded")
-        }
-      />
+      {selectedVariant.group === "Page" && (
+        <InputRangeWithNumber
+          label="Melingkar"
+          value={rounded}
+          onChange={(newValue) => {
+            setRounded(newValue);
+            handleChangeVariantStyle("rounded", newValue);
+          }}
+          min={0}
+          max={100}
+          onBlur={() =>
+            handleSetValueWhenBlurWrapperStyle(rounded, 0, 100, "rounded")
+          }
+        />
+      )}
 
       <InputRangeWithNumber
         label="Jarak"

@@ -28,13 +28,25 @@ const ListFeature = ({
   const [listIconVisible, setListIconVisible] = useState(false);
   const [iconBeforeEdit, setIconBeforeEdit] = useState([]);
   const [previousIcon, setPreviousIcon] = useState("");
-  const [iconName, setIconName] = useState({
-    prefix: "fas",
-    iconName: "hand-point-right",
-  });
+  const [iconName, setIconName] = useState(
+    currentSection?.iconStyle?.icon || {
+      prefix: "fas",
+      iconName: "hand-point-right",
+    }
+  );
   const [imageUrl, setImageUrl] = useState(
     currentSection?.iconStyle?.image || ""
   );
+
+  const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
+
+  useEffect(() => {
+    const section = previewSection.find((section) => section.id === setting.id);
+
+    if (section) {
+      setSelectedCurrentSection(section);
+    }
+  }, [previewSection, setting.id]);
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
@@ -56,7 +68,10 @@ const ListFeature = ({
         textColor: "#424242",
       },
       iconStyle: {
-        icon: "hand-point-right",
+        icon: {
+          prefix: "fas",
+          iconName: "hand-point-right",
+        },
         image: "",
         iconSize: 24,
         shadow: "",
@@ -95,10 +110,15 @@ const ListFeature = ({
     } else if (isEditingSection && listIconVisible) {
       setListIconVisible(false);
       setPreviewSection([...iconBeforeEdit]);
+      if (imageUrl) {
+        setIconName({});
+      } else {
+        setIconName(previousIcon);
+      }
     } else if (listIconVisible) {
       setListIconVisible(false);
       if (imageUrl) {
-        setIconName(null);
+        setIconName({});
       } else {
         setIconName(previousIcon);
       }
@@ -114,7 +134,7 @@ const ListFeature = ({
   const handleConfirm = () => {
     if (listIconVisible) {
       setListIconVisible(false);
-      if (imageUrl && iconName) {
+      if (iconName.iconName) {
         setImageUrl("");
       }
     } else {
@@ -168,7 +188,9 @@ const ListFeature = ({
                 <CTabPane className="p-1" data-tab="konten">
                   <ContentTab
                     setPreviewSection={setPreviewSection}
-                    currentSection={isEditingSection ? currentSection : setting}
+                    currentSection={
+                      isEditingSection ? currentSection : selectedCurrentSection
+                    }
                   />
                 </CTabPane>
 
@@ -176,7 +198,9 @@ const ListFeature = ({
                   <IconTab
                     previewSection={previewSection}
                     setPreviewSection={setPreviewSection}
-                    currentSection={isEditingSection ? currentSection : setting}
+                    currentSection={
+                      isEditingSection ? currentSection : selectedCurrentSection
+                    }
                     isEditing={isEditingSection}
                     visible={listIconVisible}
                     setVisible={(value) => setListIconVisible(value)}

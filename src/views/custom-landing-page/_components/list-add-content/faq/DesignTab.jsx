@@ -24,7 +24,7 @@ const DesignTab = ({
   useEffect(() => {
     if (imageUrl !== "") {
       // Update tempSections hanya jika imageUrl bukan string kosong
-      setIcon(null);
+      setIcon({});
       setPreviewSection((arr) =>
         arr.map((item) =>
           String(item.id) === currentSection.id
@@ -35,7 +35,7 @@ const DesignTab = ({
                   style: {
                     ...item.variant.style,
                     image: imageUrl,
-                    icon: "",
+                    icon: {},
                   },
                 },
               }
@@ -70,26 +70,21 @@ const DesignTab = ({
     setIsListIconVisible(true);
   };
 
-  const defaultIcon = {
-    prefix: "fas",
-    iconName: "plus",
-  };
-
   useEffect(() => {
-    if (iconPack && iconPack.length > 0) {
-      const iconToSet = !isEditingSection
-        ? currentSection?.variant?.style?.icon || defaultIcon
-        : currentSection?.variant?.style?.icon;
-      const iconExists = iconPack.some(
-        (icon) => icon.iconName === iconToSet?.iconName
-      );
+    if (iconPack && iconPack.length > 0 && Object.keys(icon).length > 0) {
+      const iconToSet = currentSection?.variant?.style?.icon;
 
-      setIcon(iconExists ? iconToSet : defaultIcon);
-    } else {
-      setIcon(defaultIcon);
+      if (Object.keys(iconToSet).length > 0) {
+        const iconExists = iconPack.some(
+          (icon) => icon.iconName === iconToSet?.iconName
+        );
+
+        setIcon(iconExists ? iconToSet : {});
+      }
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [iconPack, currentSection, isEditingSection]);
+  }, [iconPack, currentSection]);
 
   const handleChangeStyle = (key, value) => {
     setPreviewSection((arr) =>
@@ -112,6 +107,7 @@ const DesignTab = ({
 
   const handleChangeIcon = (value) => {
     setIcon(value);
+
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === currentSection.id

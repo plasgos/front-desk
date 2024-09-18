@@ -96,10 +96,10 @@ const ViewPage = ({ content }) => {
                 <div key={contentItem.id} className="">
                   <div
                     style={{
-                      color: contentItem.textColor,
-                      textShadow: contentItem.textShadow,
+                      color: content?.variant?.style?.textColor,
+                      textShadow: content?.variant?.style?.textShadow,
                     }}
-                    className={`tw-p-2 ${contentItem.fontSize} ${contentItem.textAlign}`}
+                    className={`tw-p-2 ${content?.variant?.style?.fontSize} ${content?.variant?.style?.textAlign}`}
                     dangerouslySetInnerHTML={{ __html: cleanContent }}
                   />
                 </div>

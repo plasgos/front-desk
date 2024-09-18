@@ -151,6 +151,17 @@ const FAQ = ({
       iconName: "plus",
     }
   );
+
+  const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
+
+  useEffect(() => {
+    const section = previewSection.find((section) => section.id === setting.id);
+
+    if (section) {
+      setSelectedCurrentSection(section);
+    }
+  }, [previewSection, setting.id]);
+
   const editSection = useCallback(
     (section) => {
       setCurrentContentBeforeEdit([...previewSection]);
@@ -241,7 +252,7 @@ const FAQ = ({
     } else if (isListIconVisible) {
       setIsListIconVisible(false);
       if (imageUrl) {
-        setIcon(null);
+        setIcon({});
       } else {
         setIcon(previousIcon);
       }
@@ -264,16 +275,15 @@ const FAQ = ({
   };
 
   const handleConfirm = () => {
-    if (
-      isAddContent ||
-      isEditingContent ||
-      isSelectVariant ||
-      isListIconVisible
-    ) {
+    if (isAddContent || isEditingContent || isSelectVariant) {
       setIsAddContent(false);
       setIsEditingContent(false);
       setIsSelectVariant(false);
+    } else if (isListIconVisible) {
       setIsListIconVisible(false);
+      if (icon.iconName) {
+        setImageUrl("");
+      }
     } else {
       isShowContent(false);
     }
@@ -313,7 +323,10 @@ const FAQ = ({
           fontSize: 18,
           distance: 18,
           borderWidth: 2,
-          icon: "plus",
+          icon: {
+            prefix: "fas",
+            iconName: "plus",
+          },
           image: "",
           isIconOnRight: true,
           iconSize: 18,
@@ -537,12 +550,15 @@ const FAQ = ({
                         </div>
                       </div>
                     )}
-                    {Object.keys(isEditingSection ? currentSection : setting)
-                      .length > 0 ? (
+                    {Object.keys(
+                      isEditingSection ? currentSection : selectedCurrentSection
+                    ).length > 0 ? (
                       <DesignTab
                         previewSection={previewSection}
                         currentSection={
-                          isEditingSection ? currentSection : setting
+                          isEditingSection
+                            ? currentSection
+                            : selectedCurrentSection
                         }
                         setPreviewSection={setPreviewSection}
                         isEditingSection={isEditingSection}

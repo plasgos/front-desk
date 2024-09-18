@@ -25,7 +25,7 @@ const optionVariant = [
     group: "",
     options: [
       { id: "1", value: "center", label: "Tengah" },
-      { id: "1", value: "full", label: "Penuh" },
+      { id: "2", value: "full", label: "Penuh" },
     ],
   },
 ];
@@ -53,6 +53,15 @@ const Image = ({
   const [currentVariant, setCurrentVariant] = useState({});
 
   const [setting, setSetting] = useState({});
+  const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
+
+  useEffect(() => {
+    const section = previewSection.find((section) => section.id === setting.id);
+
+    if (section) {
+      setSelectedCurrentSection(section);
+    }
+  }, [previewSection, setting.id]);
 
   const handleCancel = () => {
     if (isSelectVariant) {
@@ -74,6 +83,17 @@ const Image = ({
                 },
               }
             : item;
+        })
+      );
+    } else if (!isEditingSection) {
+      isShowContent(false);
+      setPreviewSection((prevSections) =>
+        prevSections.filter((section) => {
+          const contentIdToCheck = isEditingSection
+            ? currentSection.id
+            : setting.id;
+
+          return section.id !== contentIdToCheck;
         })
       );
     } else if (isEditingSection) {
@@ -108,7 +128,7 @@ const Image = ({
         },
       ],
       wrapperStyle: {
-        width: 600,
+        width: 500,
         rotation: 0,
         borderColor: "",
         shadow: "tw-shadow",
@@ -144,6 +164,19 @@ const Image = ({
   };
 
   const handleVariantChange = (group, option) => {
+    const style =
+      option.id === "1"
+        ? {
+            width: 500,
+            rotation: 0,
+            borderColor: "",
+          }
+        : {
+            width: 0,
+            rotation: 0,
+            borderColor: "",
+          };
+
     setSelectedVariant({ ...option, group });
     setPreviewSection((arr) =>
       arr.map((item) => {
@@ -157,11 +190,23 @@ const Image = ({
               wrapperStyle: {
                 ...item.wrapperStyle,
                 variant: option.value,
+                ...style,
               },
             }
           : item;
       })
     );
+
+    if (!isEditingSection) {
+      setSelectedCurrentSection((prev) => ({
+        ...prev,
+        wrapperStyle: {
+          ...prev.wrapperStyle,
+          variant: option.value,
+          ...style,
+        },
+      }));
+    }
   };
 
   return (
@@ -206,7 +251,7 @@ const Image = ({
                   </CNavItem>
                 </CNav>
                 <CTabContent
-                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
+                  style={{ height: 320, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
                   <CTabPane className="p-1" data-tab="image">
@@ -229,12 +274,14 @@ const Image = ({
 
                     <ImageContent
                       currentSection={
-                        isEditingSection ? currentSection : setting
+                        isEditingSection
+                          ? currentSection
+                          : selectedCurrentSection
                       }
                       currentContent={
                         isEditingSection
                           ? currentSection?.content?.[0]
-                          : setting?.content?.[0]
+                          : selectedCurrentSection?.content?.[0]
                       }
                       setPreviewSection={setPreviewSection}
                       isEditingContent={isEditingSection}

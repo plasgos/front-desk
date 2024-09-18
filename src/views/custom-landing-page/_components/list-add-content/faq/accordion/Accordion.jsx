@@ -216,7 +216,7 @@ const Accordion = ({
             </div>
           )}
 
-          {icon && iconPack && (
+          {iconPack && iconPack.length > 0 && Object.keys(icon).length > 0 && (
             <div
               style={{
                 backgroundColor: "#F5F5F5",
