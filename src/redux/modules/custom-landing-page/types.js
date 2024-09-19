@@ -25,4 +25,6 @@ export default {
 
   SET_SELECT_COURIER: "set-selct-courier",
   SET_CURRENT_COURIER_BEFORE_EDIT: "set-current-courier-before-edit",
+
+  SET_IS_ANIMATION_VISIBLE: "set-is-animation-visible",
 };

@@ -13,28 +13,29 @@ import {
 } from "@coreui/react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDragLayer } from "react-dnd";
+import { renderToString } from "react-dom/server";
 import { IoIosPhonePortrait, IoIosTabletPortrait } from "react-icons/io";
 import { IoAdd } from "react-icons/io5";
 import { MdLaptopMac } from "react-icons/md";
-import { ListSectionContent } from "./_components/ListSectionContent";
-import ResizableView from "./_components/ResizebleView";
-import ListContent from "./_components/list-add-content/";
-import ViewText from "./_components/view-content/ViewText";
-
-import { renderToString } from "react-dom/server";
 import { useDispatch } from "react-redux";
 import {
   removeOptionScrollTarget,
   setLandingPageSection,
 } from "../../redux/modules/custom-landing-page/reducer";
 import DesignTabControl from "./_components/DesignTabControl";
+import { ListSectionContent } from "./_components/ListSectionContent";
 import ModalConfirmation from "./_components/ModalConfirmation";
+import ResizableView from "./_components/ResizebleView";
 import Input from "./_components/common/Input";
+import ListContent from "./_components/list-add-content/";
 import Buttons from "./_components/list-add-content/button";
 import ColumnTextAndImages from "./_components/list-add-content/colum-text-and-image";
 import EmptySpace from "./_components/list-add-content/empty-space";
 import FAQ from "./_components/list-add-content/faq";
+import FloatingButton from "./_components/list-add-content/floating-button";
 import FormCheckout from "./_components/list-add-content/form-checkout";
+import Image from "./_components/list-add-content/image";
+import ImageText from "./_components/list-add-content/image-text";
 import Line from "./_components/list-add-content/line/index";
 import ListFeature from "./_components/list-add-content/list-feature";
 import ListImages from "./_components/list-add-content/list-images";
@@ -46,19 +47,17 @@ import ViewButtonUpdate from "./_components/view-content/ViewButtonUpdate";
 import ViewColumnTextAndImage from "./_components/view-content/ViewColumnTextAndImage";
 import ViewEmptySpace from "./_components/view-content/ViewEmptySpace";
 import ViewFAQ from "./_components/view-content/ViewFAQ/index";
+import ViewFloatingButton from "./_components/view-content/ViewFloatingButton";
 import ViewFormCheckout from "./_components/view-content/ViewFormCheckout";
+import ViewImage from "./_components/view-content/ViewImage";
+import ViewImageText from "./_components/view-content/ViewImageText";
 import ViewLine from "./_components/view-content/ViewLine";
 import ViewListFeature from "./_components/view-content/ViewListFeature";
 import ViewListImages from "./_components/view-content/ViewListImages";
 import ViewQuote from "./_components/view-content/ViewQuote";
 import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
 import ViewTestimony from "./_components/view-content/ViewTestimony/index";
-import ViewFloatingButton from "./_components/view-content/ViewFloatingButton";
-import FloatingButton from "./_components/list-add-content/floating-button";
-import Image from "./_components/list-add-content/image";
-import ViewImage from "./_components/view-content/ViewImage";
-import ImageText from "./_components/list-add-content/image-text";
-import ViewImageText from "./_components/view-content/ViewImageText";
+import ViewText from "./_components/view-content/ViewText";
 
 const landingPage = {
   detail: {
@@ -95,7 +94,6 @@ const CustomLandingPage = () => {
 
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
-  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
   const [modal, setModal] = useState(false);
 
   const toggleModal = () => {
@@ -157,7 +155,6 @@ const CustomLandingPage = () => {
   const viewTypes = Object.keys(viewIcon);
 
   const [strViewContent, setStrViewContent] = useState({});
-
   const renderViewComponent = useCallback(
     (section, index) => {
       if (section.name === "text") {
@@ -700,17 +697,12 @@ const CustomLandingPage = () => {
 
   const moveSection = useCallback((dragIndex, hoverIndex) => {
     setPreviewSection((prevCards) => {
-      const draggedCard = prevCards[dragIndex];
-      const updatedSections = prevCards
-        .slice(0, dragIndex)
-        .concat(prevCards.slice(dragIndex + 1));
+      const updatedSections = [...prevCards]; // Copy array lama
+      const [draggedCard] = updatedSections.splice(dragIndex, 1); // Hapus item dari dragIndex
+      updatedSections.splice(hoverIndex, 0, draggedCard); // Tambahkan item ke posisi hoverIndex
 
-      return updatedSections
-        .slice(0, hoverIndex)
-        .concat([draggedCard])
-        .concat(updatedSections.slice(hoverIndex));
+      return updatedSections; // Kembalikan array yang sudah diubah
     });
-    return () => {};
   }, []);
 
   const editSection = useCallback(
@@ -786,6 +778,166 @@ const CustomLandingPage = () => {
   return (
     <>
       <div>
+        {/* <div
+          style={{ position: "relative", height: "100vh" }}
+          className="d-flex justify-content-between "
+        >
+          <div
+            style={{
+              // position: "absolute",
+              // left: 0,
+              height: "100%",
+              width: "40%",
+            }}
+          >
+            <div style={{ height: "88.10%", width: "100%" }}>
+              {!editing && !isAddContent && (
+                <CTabs activeTab="konten">
+                  <div className="d-flex justify-content-end align-items-center border-bottom p-2">
+                    <div>
+                      <CButton
+                        onClick={toggleModal}
+                        color="primary"
+                        variant="outline"
+                        className="mx-2"
+                      >
+                        Batal
+                      </CButton>
+
+                      <CButton onClick={handleSave} color="primary">
+                        Selesai
+                      </CButton>
+                    </div>
+                  </div>
+                  <CNav variant="tabs">
+                    <CNavItem>
+                      <CNavLink data-tab="konten">Kolom</CNavLink>
+                    </CNavItem>
+                    <CNavItem>
+                      <CNavLink data-tab="desain">Desain</CNavLink>
+                    </CNavItem>
+                  </CNav>
+                  <CTabContent
+                    style={{
+                      height: "350px",
+                      paddingRight: 5,
+                      overflowY: "auto",
+                    }}
+                    className="pt-2"
+                  >
+                    <CTabPane data-tab="konten">
+                      <div
+                        style={{ backgroundColor: "white" }}
+                        className=" w-100 px-2 pt-2 mb-3 border-bottom   "
+                      >
+                        <Input
+                          label="Nama halaman"
+                          placeholder="Masukan judul di sini"
+                          type="text"
+                          value={pageSetting.title}
+                          onChange={(e) =>
+                            handleChangeTitlePage(e.target.value)
+                          }
+                        />
+                      </div>
+
+                      {previewSection
+                        .filter((section) => section.name !== "floating-button")
+                        .map((section, index) =>
+                          renderListContent(section, index)
+                        )}
+
+                      <CCard
+                        style={{ cursor: "pointer", marginBottom: 8 }}
+                        onClick={handleAddContent}
+                      >
+                        <CCardBody className="p-1">
+                          <div className="d-flex align-items-center ">
+                            <IoAdd
+                              style={{
+                                cursor: "pointer",
+                                margin: "0px 10px 0px 6px",
+                              }}
+                              size={18}
+                            />
+
+                            <div>Tambah Konten</div>
+                          </div>
+                        </CCardBody>
+                      </CCard>
+
+                      {previewSection
+                        .filter((section) => section.name === "floating-button")
+                        .map((section, index) =>
+                          renderListContent(section, index)
+                        )}
+                    </CTabPane>
+                    <CTabPane data-tab="desain">
+                      <DesignTabControl
+                        previewSection={previewSection}
+                        setPreviewSection={(value) => setPreviewSection(value)}
+                        pageSetting={pageSetting}
+                        setPageSetting={(value) => setPageSetting(value)}
+                      />
+                    </CTabPane>
+                    <CTabPane data-tab="test2"></CTabPane>
+                  </CTabContent>
+                </CTabs>
+              )}
+
+              {editing &&
+                previewSection.map((section) => (
+                  <div key={section.id}>{renderEditSection(section)}</div>
+                ))}
+
+              {isAddContent && (
+                <ListContent
+                  previewSection={previewSection}
+                  setPreviewSection={(value) => setPreviewSection(value)}
+                  sections={sections}
+                  setSections={(value) => setSections(value)}
+                  isShowContent={(value) => setIsAddContent(value)}
+                />
+              )}
+            </div>
+            <div
+              style={{
+                position: "relative",
+                zIndex: 10,
+                backgroundColor: "white",
+              }}
+              className="d-flex justify-content-between align-items-center border rounded-sm p-2 mb-2 shadow-sm"
+            >
+              <div
+                className="d-flex align-items-center"
+                style={{ cursor: "pointer" }}
+              >
+                {viewTypes.map((view) => (
+                  <div
+                    key={view}
+                    onClick={() => setIsSelectedView(view)}
+                    style={{
+                      backgroundColor:
+                        isSelectedView === view ? "#fa541c" : "transparent",
+                    }}
+                    className="border p-1 px-2 "
+                  >
+                    {React.cloneElement(viewIcon[view], {
+                      color: isSelectedView === view ? "white" : "black",
+                    })}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ width: "55%" }}>
+            {previewSection.map((item, index) => (
+              <div key={item.id}>{renderViewComponent(item, index)}</div>
+            ))}
+          </div>
+        </div> */}
+
         <CRow>
           <CCol className="p-0" md="4">
             <div style={{ height: "88.10%" }}>
@@ -931,12 +1083,14 @@ const CustomLandingPage = () => {
 
           <CCol md="8">
             <ResizableView
+              previewSection={previewSection}
               pageSetting={pageSetting}
               ref={containerRef}
               dimensions={dimensions}
               isSelectedView={isSelectedView}
               isResizing={isResizing}
               handleMouseDown={handleMouseDown}
+              strViewConten={strViewContent}
             >
               {previewSection.map((item, index) => (
                 <div key={item.id}>{renderViewComponent(item, index)}</div>

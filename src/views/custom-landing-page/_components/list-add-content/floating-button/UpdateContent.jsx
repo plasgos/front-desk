@@ -506,7 +506,7 @@ const UpdateContent = ({
 
     if (imageUrl) {
       setImageUrl(imageUrl);
-      setIcon(undefined);
+      setIcon({});
       handleChangeImageUrl(imageUrl);
     } else {
       handleChangeIcon(previousIcon);
@@ -515,7 +515,7 @@ const UpdateContent = ({
 
   const handleConfirm = () => {
     setIsListIconVisible(false);
-    if (icon) {
+    if (icon.iconName) {
       setImageUrl("");
     }
   };
@@ -650,23 +650,25 @@ const UpdateContent = ({
                   </div>
                 )}
 
-                {icon && iconPack && (
-                  <div
-                    style={{
-                      backgroundColor: "#F5F5F5",
-                      width: "100%",
-                      overflow: "hidden",
-                    }}
-                    className="mx-auto mb-2 p-2"
-                  >
-                    <div>
-                      <FontAwesomeIcon
-                        icon={[`${icon.prefix}`, icon.iconName]}
-                        size="xl"
-                      />
+                {iconPack &&
+                  iconPack.length > 0 &&
+                  Object.keys(icon).length > 0 && (
+                    <div
+                      style={{
+                        backgroundColor: "#F5F5F5",
+                        width: "100%",
+                        overflow: "hidden",
+                      }}
+                      className="mx-auto mb-2 p-2"
+                    >
+                      <div>
+                        <FontAwesomeIcon
+                          icon={[`${icon.prefix}`, icon.iconName]}
+                          size="xl"
+                        />
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
                 <div style={{ gap: 5 }} className="d-flex align-items-center">
                   <ColorPicker

@@ -82,6 +82,7 @@ const initialState = {
   isEditingCouriers: false,
   selectedCourier: {},
   currentCourierBeforeEdit: [],
+  isAnimationVisible: false,
 };
 
 export default (state = initialState, action) => {
@@ -304,6 +305,12 @@ export default (state = initialState, action) => {
         currentCourierBeforeEdit: action.payload,
       };
 
+    case types.SET_IS_ANIMATION_VISIBLE:
+      return {
+        ...state,
+        isAnimationVisible: action.payload,
+      };
+
     default:
       return state;
   }
@@ -468,6 +475,13 @@ export const setSelectCourier = (value) => {
 export const setCurrentCourierBeforeEdit = (value) => {
   return {
     type: types.SET_CURRENT_COURIER_BEFORE_EDIT,
+    payload: value,
+  };
+};
+
+export const setIsAnimationVisible = (value) => {
+  return {
+    type: types.SET_IS_ANIMATION_VISIBLE,
     payload: value,
   };
 };

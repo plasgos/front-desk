@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect } from "react";
 
 const ResizableView = forwardRef(
   (
@@ -32,6 +32,7 @@ const ResizableView = forwardRef(
         }}
       >
         <div
+          id="scrolly-div"
           ref={ref}
           style={{
             width: "100%",
@@ -39,6 +40,7 @@ const ResizableView = forwardRef(
             height: "100%",
             margin: "auto",
             overflowY: "auto",
+            // paddingTop: 40,
           }}
         >
           {children}

@@ -133,7 +133,7 @@ const FormCheckout = ({
     } else if (isListIconVisible) {
       setIsListIconVisible(false);
       if (imageUrl) {
-        setIcon(null);
+        setIcon({});
       } else {
         setIcon(previousIcon);
       }
@@ -210,6 +210,9 @@ const FormCheckout = ({
     // Kondisi untuk menampilkan/menghilangkan ikon list
     else if (isListIconVisible) {
       setIsListIconVisible(false);
+      if (icon.iconName) {
+        setImageUrl("");
+      }
     }
     // Kondisi default jika tidak ada kondisi lain yang terpenuhi
     else {
@@ -279,7 +282,7 @@ const FormCheckout = ({
           distance: 0,
           btnSubmitText: "Selesaikan Order",
           btnSubmitColor: "#fa541c",
-          icon: "",
+          icon: {},
           iconColor: "",
           image: "",
         },

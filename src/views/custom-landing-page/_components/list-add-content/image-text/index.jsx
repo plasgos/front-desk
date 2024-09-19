@@ -136,6 +136,11 @@ const ImageText = ({
       name: "image-text",
       title: "Gambar + Teks",
       content: initialContents,
+      animation: {
+        type: undefined,
+        duration: 1,
+        replay: "",
+      },
       background: {
         bgType: undefined,
         bgColor: "",
@@ -391,7 +396,15 @@ const ImageText = ({
                   </CTabPane>
 
                   <CTabPane className="p-1" data-tab="animation">
-                    <AnimationControl />
+                    <AnimationControl
+                      label="Gambar"
+                      currentSection={
+                        isEditingSection
+                          ? currentSection
+                          : selectedCurrentSection
+                      }
+                      setPreviewSection={setPreviewSection}
+                    />
                   </CTabPane>
 
                   {selectedVariant.group !== "Frosty" && (

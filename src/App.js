@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { CSpinner } from "@coreui/react";
 import { useSelector } from "react-redux";
 import "./scss/style.scss";
 import "./scss/tailwind.css";
+// import "aos/dist/aos.css";
+import "animate.css/animate.min.css";
 
 // Containers
 const TheLayout = React.lazy(() => import("./containers/TheLayout"));
@@ -16,6 +18,18 @@ const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 
 const App = () => {
   const { logged_in } = useSelector((state) => state.login);
+
+  // useEffect(() => {
+  //   AOS.init({
+  //     once: false, // Allow animations to replay
+  //     easing: "ease-in-out",
+  //   });
+
+  //   return () => {
+  //     AOS.refreshHard(); // Ensure AOS is refreshed on component unmount
+  //   };
+  // }, []);
+
   if (!logged_in) {
     return (
       <BrowserRouter>
