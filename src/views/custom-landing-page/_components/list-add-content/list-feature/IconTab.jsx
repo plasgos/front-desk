@@ -46,7 +46,6 @@ const IconTab = ({
   const iconPack = useFontAwesomeIconPack();
 
   useEffect(() => {
-    console.log("RUNNNNN");
     if (iconPack && iconPack.length > 0 && Object.keys(iconName).length > 0) {
       const iconToSet = currentSection?.iconStyle?.icon;
 

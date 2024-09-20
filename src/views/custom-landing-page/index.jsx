@@ -85,12 +85,14 @@ const CustomLandingPage = () => {
   const [editing, setEditing] = useState("");
   const [isAddContent, setIsAddContent] = useState(false);
   const [previewSection, setPreviewSection] = useState([]);
+  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
   const [timers, setTimers] = useState({});
   const setRef = (el, index) => {
     previewRefs.current[index] = el;
   };
   const containerRef = useRef(null);
+  const scrollyDivRef = useRef(null);
 
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);

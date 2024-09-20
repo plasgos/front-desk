@@ -1,9 +1,34 @@
-import React from "react";
-
-import "animate.css/animate.compat.css";
-import ScrollAnimation from "react-animate-on-scroll";
+import React, { useEffect, useState } from "react";
 
 const ViewPage = ({ content }) => {
+  const [isParentReady, setIsParentReady] = useState(false);
+  const [animationKey, setAnimationKey] = useState(Date.now()); // State untuk memicu re-render
+
+  useEffect(() => {
+    const checkParentElement = () => {
+      const parentElement = document.querySelector("#scrolly-div");
+      if (parentElement) {
+        setIsParentReady(true);
+      } else {
+        setTimeout(checkParentElement, 100);
+      }
+    };
+
+    checkParentElement();
+
+    return () => {
+      clearTimeout(checkParentElement);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (content?.animation?.type) {
+      setTimeout(() => {
+        setAnimationKey(Date.now()); // Reset animasi setelah jeda
+      }, 100); // Tambahkan jeda 100ms sebelum merender ulang
+    }
+  }, [content.animation.type]);
+
   return (
     <div className="tw-flex tw-items-center">
       {content?.variant?.style?.imagePosition === "right" ? (
@@ -60,19 +85,40 @@ const ViewPage = ({ content }) => {
         </>
       ) : (
         <>
-          <div
-            style={{
-              width: content?.variant?.style?.width * 10,
-            }}
-          >
-            {content?.animation?.type ? (
-              <ScrollAnimation
-                key={`${content?.animation?.type}-${content?.animation?.duration}-${content?.animation?.replay}`}
-                animateIn={content?.animation?.type}
-                animateOut="fadeOut"
-                duration={content?.animation?.duration}
-                scrollableParentSelector="#scrolly-div"
-              >
+          {isParentReady && (
+            <div
+              style={{
+                width: content?.variant?.style?.width * 10,
+              }}
+            >
+              {content?.animation?.type ? (
+                // <ScrollAnimation
+                //   // key={`${content?.animation?.type}-${content?.animation?.duration}-${content?.animation?.replay}`}
+                //   key={animationKey}
+                //   animateIn={content?.animation?.type}
+                //   animateOut="fadeOut"
+                //   duration={content?.animation?.duration}
+                //   scrollableParentSelector="#scrolly-div"
+                // >
+                //   <img
+                //     className={`${
+                //       content?.variant?.style?.shadow
+                //         ? content?.variant?.style?.shadow
+                //         : ""
+                //     }`}
+                //     src={content?.variant?.style?.image}
+                //     alt=""
+                //     style={{
+                //       width: "100%",
+                //       transform: `rotate(${content?.variant?.style?.rotation}deg)`,
+                //       transition: "transform 0.5s ease",
+                //       objectFit: "contain",
+                //       borderRadius: content?.variant?.style?.rounded,
+                //     }}
+                //   />
+                // </ScrollAnimation>
+                <div></div>
+              ) : (
                 <img
                   className={`${
                     content?.variant?.style?.shadow
@@ -89,26 +135,9 @@ const ViewPage = ({ content }) => {
                     borderRadius: content?.variant?.style?.rounded,
                   }}
                 />
-              </ScrollAnimation>
-            ) : (
-              <img
-                className={`${
-                  content?.variant?.style?.shadow
-                    ? content?.variant?.style?.shadow
-                    : ""
-                }`}
-                src={content?.variant?.style?.image}
-                alt=""
-                style={{
-                  width: "100%",
-                  transform: `rotate(${content?.variant?.style?.rotation}deg)`,
-                  transition: "transform 0.5s ease",
-                  objectFit: "contain",
-                  borderRadius: content?.variant?.style?.rounded,
-                }}
-              />
-            )}
-          </div>
+              )}
+            </div>
+          )}
 
           <div
             style={{

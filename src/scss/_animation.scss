@@ -1,0 +1,33 @@
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fadeInDown {
+  animation: fade-in-down var(--animation-duration, 1s) ease-out forwards;
+}
+
+@keyframes fade-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fadeInLeft {
+  animation: fade-in-left var(--animation-duration, 1s) ease-out;
+}
+
+.custom-animation {
+  animation-duration: var(--animation-duration) !important;
+}

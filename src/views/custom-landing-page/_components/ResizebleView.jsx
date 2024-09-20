@@ -9,6 +9,7 @@ const ResizableView = forwardRef(
       isSelectedView,
       isResizing,
       handleMouseDown,
+      scrollyDivRef,
       // containerRef,
     },
     ref
@@ -40,7 +41,8 @@ const ResizableView = forwardRef(
             height: "100%",
             margin: "auto",
             overflowY: "auto",
-            // paddingTop: 40,
+            overflowX: "hidden",
+            position: "relative",
           }}
         >
           {children}

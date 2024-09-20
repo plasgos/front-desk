@@ -1,22 +1,20 @@
 import { CButton } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SelectOptions from "./SelectOptions";
 
 const animationTypeOptions = [
   { value: undefined, label: "Tidak Ada" },
-  { value: "fadeIn", label: "Fade In" },
-  { value: "fadeInUp", label: "Fade In Up" },
+  { value: "animate__fadeIn", label: "Fade In" },
+  { value: "animate__fadeInUp", label: "Fade In Up" },
   { value: "fadeInDown", label: "Fade In Down" },
   { value: "fadeInLeft", label: "Fade In Left" },
-  { value: "fadeInRight", label: "Fade In Right" },
-  { value: "zoomIn", label: "Zoom In" },
-  { value: "slideInUp", label: "Slide In Up" },
-  { value: "slideInDown", label: "Slide In Down" },
-  { value: "slideInLeft", label: "Slide In Left" },
-  { value: "slideInRight", label: "Slide In Right" },
-  { value: "bounceIn", label: "Bounce In" },
-  { value: "flipInX", label: "Flip In X" },
-  { value: "flipInY", label: "Flip In Y" },
+  { value: "animate__fadeInRight", label: "Fade In Right" },
+  { value: "animate__bounceIn", label: "Bounce In" },
+  { value: "animate__flipInX", label: "Flip In X" },
+  { value: "animate__flipInY", label: "Flip In Y" },
+  { value: "animate__zoomIn", label: "Zoom In" },
+  { value: "animate__lightSpeedInRight", label: "SpeedInRight" },
+  { value: "animate__lightSpeedInLeft", label: "SpeedInLeft" },
 ];
 
 const durationOptions = [
@@ -24,77 +22,140 @@ const durationOptions = [
     label: "Cepat",
     options: [
       { value: 0.3, label: "0.3s" },
-      { value: 0.4, label: "0.4s" },
-      { value: 0.5, label: "0.5s" },
       { value: 0.6, label: "0.6s" },
-      { value: 0.7, label: "0.7s" },
-      { value: 0.8, label: "0.8s" },
-      { value: 0.9, label: "0.9s" },
     ],
   },
   {
     label: "Lambat",
     options: [
       { value: 1, label: "1s" },
-      { value: 1.3, label: "1.3s" },
-      { value: 1.6, label: "1.6s" },
       { value: 2, label: "2s" },
+      { value: 3, label: "3s" },
     ],
   },
 ];
 
-const AnimationControl = ({ label, currentSection, setPreviewSection }) => {
-  const [typeAnimation, setTypeAnimation] = useState(
-    animationTypeOptions.find(
-      (opt) => opt.value === currentSection?.animation?.type
-    ) || animationTypeOptions[0]
-  );
+const AnimationControl = ({
+  label,
+  currentSection,
+  currentContent,
+  setPreviewSection,
+  isForContent,
+}) => {
+  const [typeAnimation, setTypeAnimation] = useState(animationTypeOptions[0]);
 
-  const [duration, setDuration] = useState(
-    durationOptions
+  const [duration, setDuration] = useState(durationOptions[1]?.options[0]);
+
+  const setAnimationAndDuration = (source) => {
+    const currentAnimationType = animationTypeOptions.find(
+      (opt) => opt.value === source?.animation?.type
+    );
+
+    if (currentAnimationType) {
+      setTypeAnimation(currentAnimationType);
+    }
+
+    const currentDuration = durationOptions
       .flatMap((group) => group.options)
-      .find((opt) => opt?.value === currentSection?.animation?.duration) ||
-      durationOptions[1]?.options[0]
-  );
+      .find((opt) => opt?.value === source?.animation?.duration);
 
-  const [replay, setReplay] = useState(0);
+    if (currentDuration) {
+      setDuration(currentDuration);
+    }
+  };
+
+  useEffect(() => {
+    if (isForContent) {
+      setAnimationAndDuration(currentContent);
+    } else {
+      setAnimationAndDuration(currentSection);
+    }
+  }, [currentSection, currentContent, isForContent]);
+
+  const [isReplay, setIsReplay] = useState(true);
 
   const handelChangeAnimation = (key, value) => {
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        item.id === currentSection.id
-          ? {
-              ...item,
-              animation: {
-                ...item.animation,
-                [key]: value,
-              },
-            }
-          : item
-      )
-    );
+    if (isForContent) {
+      setPreviewSection((arr) =>
+        arr.map((item) => {
+          return String(item.id) === currentSection.id
+            ? {
+                ...item,
+                content: item.content.map((contentItem) =>
+                  contentItem.id === currentContent.id
+                    ? {
+                        ...contentItem,
+                        animation: {
+                          ...contentItem.animation,
+                          [key]: value,
+                        },
+                      }
+                    : contentItem
+                ),
+              }
+            : item;
+        })
+      );
+    } else {
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          item.id === currentSection.id
+            ? {
+                ...item,
+                animation: {
+                  ...item.animation,
+                  [key]: value,
+                },
+              }
+            : item
+        )
+      );
+    }
   };
 
   const handleReplay = () => {
-    setReplay((prev) => prev + 1);
+    setIsReplay((prev) => !prev);
 
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        item.id === currentSection.id
-          ? {
-              ...item,
-              animation: {
-                ...item.animation,
-                replay: replay,
-              },
-            }
-          : item
-      )
-    );
+    if (isForContent) {
+      setPreviewSection((arr) =>
+        arr.map((item) => {
+          return String(item.id) === currentSection.id
+            ? {
+                ...item,
+                content: item.content.map((contentItem) =>
+                  contentItem.id === currentContent.id
+                    ? {
+                        ...contentItem,
+                        animation: {
+                          ...contentItem.animation,
+                          isReplay,
+                        },
+                      }
+                    : contentItem
+                ),
+              }
+            : item;
+        })
+      );
+    } else {
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          item.id === currentSection.id
+            ? {
+                ...item,
+                animation: {
+                  ...item.animation,
+                  isReplay,
+                },
+              }
+            : item
+        )
+      );
+    }
   };
 
   return (
-    <div>
+    <div className="mb-3">
       <h5>{label}</h5>
 
       <div style={{ gap: 10 }} className="d-flex align-items-center">

@@ -24,6 +24,11 @@ const initialContents = [
     id: "content-1",
     content:
       "<div><strong>Pepatah Tua Mengatakan</strong></div><div>Kita tidak boleh selalu saja bergantung pada orang lain</div><div><br></div><div>Karena bayangan kita sendiri saja,</div><div><br></div><div>Akan meninggalkan kita saat kita berada di dalam kegelapan.</div>",
+    animation: {
+      type: undefined,
+      duration: 1,
+      isReplay: false,
+    },
   },
 ];
 
@@ -139,7 +144,7 @@ const ImageText = ({
       animation: {
         type: undefined,
         duration: 1,
-        replay: "",
+        isReplay: false,
       },
       background: {
         bgType: undefined,
@@ -404,6 +409,22 @@ const ImageText = ({
                           : selectedCurrentSection
                       }
                       setPreviewSection={setPreviewSection}
+                    />
+
+                    <AnimationControl
+                      label="Konten"
+                      currentSection={
+                        isEditingSection
+                          ? currentSection
+                          : selectedCurrentSection
+                      }
+                      currentContent={
+                        isEditingSection
+                          ? currentSection?.content?.[0]
+                          : selectedCurrentSection?.content?.[0]
+                      }
+                      setPreviewSection={setPreviewSection}
+                      isForContent={true}
                     />
                   </CTabPane>
 
