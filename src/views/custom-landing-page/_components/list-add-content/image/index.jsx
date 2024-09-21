@@ -127,6 +127,11 @@ const Image = ({
           target: {},
         },
       ],
+      animation: {
+        type: undefined,
+        duration: 1,
+        isReplay: false,
+      },
       wrapperStyle: {
         width: 500,
         rotation: 0,
@@ -290,7 +295,15 @@ const Image = ({
                   </CTabPane>
 
                   <CTabPane className="p-1" data-tab="animation">
-                    <AnimationControl />
+                    <AnimationControl
+                      label="Gambar"
+                      currentSection={
+                        isEditingSection
+                          ? currentSection
+                          : selectedCurrentSection
+                      }
+                      setPreviewSection={setPreviewSection}
+                    />
                   </CTabPane>
 
                   <CTabPane

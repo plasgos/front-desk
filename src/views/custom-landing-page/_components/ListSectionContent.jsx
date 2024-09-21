@@ -7,11 +7,12 @@ import { useDrag, useDrop } from "react-dnd";
 import { MdTextFields, MdViewColumn } from "react-icons/md";
 import { PiArrowsDownUpLight, PiTargetDuotone } from "react-icons/pi";
 import { FaGripLines, FaListCheck } from "react-icons/fa6";
-import { RxSwitch } from "react-icons/rx";
+import { RxButton, RxSwitch } from "react-icons/rx";
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
 import { IoMdImages } from "react-icons/io";
-import { LuQuote } from "react-icons/lu";
+import { LuImagePlus, LuQuote } from "react-icons/lu";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
+import { FaClipboardList, FaImage } from "react-icons/fa";
 
 export const ItemTypes = {
   CARD: "card",
@@ -62,6 +63,22 @@ const iconListContent = [
   {
     name: "faq",
     icon: <TfiLayoutAccordionSeparated style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "form-checkout",
+    icon: <FaClipboardList style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "floating-button",
+    icon: <RxButton style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "image",
+    icon: <FaImage style={{ marginRight: 5 }} size={24} />,
+  },
+  {
+    name: "image-text",
+    icon: <LuImagePlus style={{ marginRight: 5 }} size={24} />,
   },
 ];
 

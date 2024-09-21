@@ -1,7 +1,12 @@
 import React, { forwardRef } from "react";
+import useAnimatedVisibility from "../../../../../../hooks/useAnimatedVisibility";
 
 const ViewFrosty = forwardRef(
   ({ isDragging, isResizing, content, isFocused }, ref) => {
+    const { elementRef, getClassName, duration } = useAnimatedVisibility(
+      content.content[0]
+    );
+
     const backgroundImgStyle = {
       position: "absolute",
       top: 0,
@@ -93,6 +98,7 @@ const ViewFrosty = forwardRef(
           className={`tw-flex tw-w-full tw-p-3 ${content.variant?.style?.contentPosition} `}
         >
           <div
+            ref={elementRef}
             style={{
               backdropFilter: backdropFilterValue,
               width: content.variant?.style?.widthContent,
@@ -102,15 +108,23 @@ const ViewFrosty = forwardRef(
               transform: `rotate(${content?.variant?.style?.rotationContent}deg)`,
               backgroundColor: backgroundColorWithAlpha,
               boxShadow: boxShadowValue,
+              "--animation-duration": `${duration}s`,
             }}
-            className={`${content.variant?.style?.shadow}`}
+            className={`${content.variant?.style?.shadow} ${getClassName()} `}
           >
             {content?.content.map((contentItem) => {
               const cleanContent = contentItem.content
                 .replace(/<p>/g, "<div>")
                 .replace(/<\/p>/g, "</div>");
               return (
-                <div key={contentItem.id} className="">
+                <div
+                  ref={elementRef}
+                  className={getClassName()}
+                  style={{
+                    "--animation-duration": `${duration}s`,
+                  }}
+                  key={contentItem.id}
+                >
                   <div
                     style={{
                       color: content?.variant?.style?.textColor,

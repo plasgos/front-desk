@@ -1,11 +1,14 @@
 import React, { forwardRef } from "react";
 import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
+import useAnimatedVisibility from "../../../../hooks/useAnimatedVisibility";
 
 const ViewImage = forwardRef(
   ({ containerRef, isDragging, isResizing, content, isFocused }, ref) => {
-    console.log("🚀 ~ content:", content);
     const stylesBg = useBackgroundStyles(content);
+
+    const { elementRef, getClassName, duration } =
+      useAnimatedVisibility(content);
 
     return (
       <div
@@ -40,11 +43,15 @@ const ViewImage = forwardRef(
         {content.content.map((section) => {
           return (
             <div
+              ref={elementRef}
+              className={getClassName()}
+              key={section.id}
               style={{
                 width:
                   content.wrapperStyle.variant === "full"
                     ? "100%"
                     : content.wrapperStyle.width,
+                "--animation-duration": `${duration}s`,
               }}
             >
               <div

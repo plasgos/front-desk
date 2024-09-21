@@ -1,32 +1,38 @@
 import { CButton, CCard, CTabContent } from "@coreui/react";
 import React, { useState } from "react";
-import { MdTextFields, MdViewColumn } from "react-icons/md";
-import { PiArrowsDownUpLight, PiTargetDuotone } from "react-icons/pi";
-import { LuImagePlus, LuQuote } from "react-icons/lu";
-import { FaGripLines, FaListCheck } from "react-icons/fa6";
-import Text from "./text/index";
-import EmptySpace from "./empty-space/index";
-import { IoMdImages } from "react-icons/io";
-import ListImagesControl from "./list-images/index";
-import ScrollTarget from "./scroll-target/index";
-import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
-import { RxButton, RxSwitch } from "react-icons/rx";
 import { BsFillChatSquareQuoteFill } from "react-icons/bs";
 import { FaClipboardList, FaImage } from "react-icons/fa";
-import Line from "./line/index";
-import Quote from "./quote";
-import FAQ from "./faq";
-import ColumnTextAndImages from "./colum-text-and-image";
-import Buttons from "./button";
-import Testimony from "./testimony";
-import ListFeature from "./list-feature";
+import { FaGripLines, FaListCheck } from "react-icons/fa6";
+import { IoMdImages } from "react-icons/io";
+import { LuImagePlus, LuQuote } from "react-icons/lu";
+import { MdTextFields, MdViewColumn } from "react-icons/md";
+import { PiArrowsDownUpLight, PiTargetDuotone } from "react-icons/pi";
+import { RxButton, RxSwitch } from "react-icons/rx";
+import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 import { SearchForm } from "../common/SearchForm";
-import FormCheckout from "./form-checkout";
+import Buttons from "./button";
+import ColumnTextAndImages from "./colum-text-and-image";
+import EmptySpace from "./empty-space/index";
+import FAQ from "./faq";
 import FloatingButton from "./floating-button";
+import FormCheckout from "./form-checkout";
 import Image from "./image";
 import ImageText from "./image-text";
+import Line from "./line/index";
+import ListFeature from "./list-feature";
+import ListImagesControl from "./list-images/index";
+import Quote from "./quote";
+import ScrollTarget from "./scroll-target/index";
+import Testimony from "./testimony";
+import Text from "./text/index";
 
-const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
+const ListContent = ({
+  previewSection,
+  setPreviewSection,
+  isShowContent,
+  previewFloatingSection,
+  setPreviewFloatingSection,
+}) => {
   const dataListContent = [
     {
       name: "text",
@@ -262,8 +268,8 @@ const ListContent = ({ previewSection, setPreviewSection, isShowContent }) => {
 
       {addContent === "floating-button" && (
         <FloatingButton
-          previewSection={previewSection}
-          setPreviewSection={(value) => setPreviewSection(value)}
+          previewFloatingSection={previewFloatingSection}
+          setPreviewFloatingSection={setPreviewFloatingSection}
           isShowContent={isShowContent}
         />
       )}

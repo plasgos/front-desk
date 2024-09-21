@@ -86,7 +86,7 @@ const ViewFloatingButton = forwardRef(
           position: "absolute",
           bottom: 0,
           width: "100%",
-          zIndex: 1,
+          zIndex: 999,
         }}
         className={`tw-flex ${
           content.wrapperStyle.flexDirection

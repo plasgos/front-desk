@@ -28,6 +28,21 @@
   animation: fade-in-left var(--animation-duration, 1s) ease-out;
 }
 
+@keyframes fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fadeInRight {
+  animation: fade-in-right var(--animation-duration, 1s) ease-out;
+}
+
 .custom-animation {
   animation-duration: var(--animation-duration) !important;
 }

@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from "react";
+import React, { forwardRef } from "react";
 
 const ResizableView = forwardRef(
   (
@@ -9,8 +9,6 @@ const ResizableView = forwardRef(
       isSelectedView,
       isResizing,
       handleMouseDown,
-      scrollyDivRef,
-      // containerRef,
     },
     ref
   ) => {
@@ -42,7 +40,6 @@ const ResizableView = forwardRef(
             margin: "auto",
             overflowY: "auto",
             overflowX: "hidden",
-            position: "relative",
           }}
         >
           {children}

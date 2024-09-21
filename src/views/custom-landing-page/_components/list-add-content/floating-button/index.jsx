@@ -73,12 +73,12 @@ export const flexOptions = [
 ];
 
 const FloatingButton = ({
-  previewSection,
-  setPreviewSection,
   currentSection,
   isShowContent,
   isEditingSection,
   sectionBeforeEdit,
+  previewFloatingSection,
+  setPreviewFloatingSection,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -96,7 +96,7 @@ const FloatingButton = ({
   const [isListIconVisible, setIsListIconVisible] = useState(false);
 
   const handleChangeWrapperStyle = (key, selectedOption) => {
-    setPreviewSection((arr) =>
+    setPreviewFloatingSection((arr) =>
       arr.map((item) => {
         const contentIdToCheck = isEditingSection
           ? currentSection.id
@@ -119,7 +119,7 @@ const FloatingButton = ({
     if (isAddContent && !isListIconVisible) {
       setIsAddContent(false);
       setIsEditingContent(false);
-      setPreviewSection((prevSections) =>
+      setPreviewFloatingSection((prevSections) =>
         prevSections.map((section) => {
           const contentIdToCheck = isEditingSection
             ? currentSection.id
@@ -134,17 +134,17 @@ const FloatingButton = ({
         })
       );
     } else if (isEditingContent && !isListIconVisible) {
-      setPreviewSection([...currentContentBeforeEdit]);
+      setPreviewFloatingSection([...currentContentBeforeEdit]);
       setIsAddContent(false);
       setIsEditingContent(false);
     } else if (isEditingSection) {
       setIsAddContent(false);
       isShowContent(false);
-      setPreviewSection([...sectionBeforeEdit]);
+      setPreviewFloatingSection([...sectionBeforeEdit]);
     } else {
       setIsAddContent(false);
       isShowContent(false);
-      setPreviewSection((prevSections) =>
+      setPreviewFloatingSection((prevSections) =>
         prevSections.filter((section) => section.id !== setting.id)
       );
     }
@@ -163,15 +163,15 @@ const FloatingButton = ({
 
   const editSection = useCallback(
     (section) => {
-      setCurrentContentBeforeEdit([...previewSection]);
+      setCurrentContentBeforeEdit([...previewFloatingSection]);
       setSelectedContent(section);
       setIsEditingContent(true);
     },
-    [previewSection]
+    [previewFloatingSection]
   );
 
-  const removeSection = useRemoveSection(setPreviewSection);
-  const moveSection = useMoveSection(setPreviewSection);
+  const removeSection = useRemoveSection(setPreviewFloatingSection);
+  const moveSection = useMoveSection(setPreviewFloatingSection);
 
   const renderSection = useCallback(
     (section) => {
@@ -197,7 +197,7 @@ const FloatingButton = ({
   );
 
   const onAddContent = () => {
-    let uniqueId = createUniqueID(previewSection);
+    let uniqueId = createUniqueID(previewFloatingSection);
     let payload = {
       id: uniqueId,
       name: "floating-button",
@@ -221,7 +221,7 @@ const FloatingButton = ({
       },
     };
 
-    setPreviewSection((prevSections) => [...prevSections, payload]);
+    setPreviewFloatingSection((prevSections) => [...prevSections, payload]);
     setSetting(payload);
   };
 
@@ -267,7 +267,7 @@ const FloatingButton = ({
                       isEditingSection ? currentSection.id : setting.id
                     }
                     currentContent={initialContents}
-                    setPreviewSection={setPreviewSection}
+                    setPreviewSection={setPreviewFloatingSection}
                     isListIconVisible={isListIconVisible}
                     setIsListIconVisible={setIsListIconVisible}
                   />
@@ -283,7 +283,7 @@ const FloatingButton = ({
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
-                    setPreviewSection={setPreviewSection}
+                    setPreviewSection={setPreviewFloatingSection}
                     isListIconVisible={isListIconVisible}
                     setIsListIconVisible={setIsListIconVisible}
                     currentContent={selectedContent}
@@ -353,7 +353,7 @@ const FloatingButton = ({
                         />
 
                         <div>
-                          {previewSection
+                          {previewFloatingSection
                             .filter((section) =>
                               isEditingSection
                                 ? section.id === currentSection.id
@@ -391,7 +391,7 @@ const FloatingButton = ({
                       currentSection={
                         isEditingSection ? currentSection : setting
                       }
-                      setPreviewSection={setPreviewSection}
+                      setPreviewFloatingSection={setPreviewFloatingSection}
                       type={isEditingSection ? "edit" : "add"}
                     />
                   </CTabPane>

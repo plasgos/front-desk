@@ -1,33 +1,12 @@
-import React, { useEffect, useState } from "react";
-
-const ViewPage = ({ content }) => {
-  const [isParentReady, setIsParentReady] = useState(false);
-  const [animationKey, setAnimationKey] = useState(Date.now()); // State untuk memicu re-render
-
-  useEffect(() => {
-    const checkParentElement = () => {
-      const parentElement = document.querySelector("#scrolly-div");
-      if (parentElement) {
-        setIsParentReady(true);
-      } else {
-        setTimeout(checkParentElement, 100);
-      }
-    };
-
-    checkParentElement();
-
-    return () => {
-      clearTimeout(checkParentElement);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (content?.animation?.type) {
-      setTimeout(() => {
-        setAnimationKey(Date.now()); // Reset animasi setelah jeda
-      }, 100); // Tambahkan jeda 100ms sebelum merender ulang
-    }
-  }, [content.animation.type]);
+import React from "react";
+import useAnimatedVisibility from "../../../../../../hooks/useAnimatedVisibility";
+const ViewPageCSS = ({ content }) => {
+  const { elementRef, getClassName, duration } = useAnimatedVisibility(content);
+  const {
+    elementRef: elementRefContent,
+    getClassName: getClassNameContent,
+    duration: durationContent,
+  } = useAnimatedVisibility(content.content[0]);
 
   return (
     <div className="tw-flex tw-items-center">
@@ -37,14 +16,20 @@ const ViewPage = ({ content }) => {
             style={{
               marginRight: content?.variant?.style?.distance,
             }}
-            className=""
           >
             {content?.content.map((contentItem) => {
               const cleanContent = contentItem.content
                 .replace(/<p>/g, "<div>")
                 .replace(/<\/p>/g, "</div>");
               return (
-                <div key={contentItem.id} className="">
+                <div
+                  ref={elementRefContent}
+                  className={getClassNameContent()}
+                  style={{
+                    "--animation-duration": `${durationContent}s`,
+                  }}
+                  key={contentItem.id}
+                >
                   <div
                     style={{
                       color: contentItem.textColor,
@@ -63,7 +48,13 @@ const ViewPage = ({ content }) => {
               width: content?.variant?.style?.width * 10,
             }}
           >
-            <div className={`tw-w-full`}>
+            <div
+              ref={elementRef}
+              className={getClassName()}
+              style={{
+                "--animation-duration": `${duration}s`,
+              }}
+            >
               <img
                 className={`${
                   content?.variant?.style?.shadow
@@ -85,59 +76,36 @@ const ViewPage = ({ content }) => {
         </>
       ) : (
         <>
-          {isParentReady && (
+          <div
+            style={{
+              width: content?.variant?.style?.width * 10,
+            }}
+          >
             <div
+              ref={elementRef}
+              className={getClassName()}
               style={{
-                width: content?.variant?.style?.width * 10,
+                "--animation-duration": `${duration}s`,
               }}
             >
-              {content?.animation?.type ? (
-                // <ScrollAnimation
-                //   // key={`${content?.animation?.type}-${content?.animation?.duration}-${content?.animation?.replay}`}
-                //   key={animationKey}
-                //   animateIn={content?.animation?.type}
-                //   animateOut="fadeOut"
-                //   duration={content?.animation?.duration}
-                //   scrollableParentSelector="#scrolly-div"
-                // >
-                //   <img
-                //     className={`${
-                //       content?.variant?.style?.shadow
-                //         ? content?.variant?.style?.shadow
-                //         : ""
-                //     }`}
-                //     src={content?.variant?.style?.image}
-                //     alt=""
-                //     style={{
-                //       width: "100%",
-                //       transform: `rotate(${content?.variant?.style?.rotation}deg)`,
-                //       transition: "transform 0.5s ease",
-                //       objectFit: "contain",
-                //       borderRadius: content?.variant?.style?.rounded,
-                //     }}
-                //   />
-                // </ScrollAnimation>
-                <div></div>
-              ) : (
-                <img
-                  className={`${
-                    content?.variant?.style?.shadow
-                      ? content?.variant?.style?.shadow
-                      : ""
-                  }`}
-                  src={content?.variant?.style?.image}
-                  alt=""
-                  style={{
-                    width: "100%",
-                    transform: `rotate(${content?.variant?.style?.rotation}deg)`,
-                    transition: "transform 0.5s ease",
-                    objectFit: "contain",
-                    borderRadius: content?.variant?.style?.rounded,
-                  }}
-                />
-              )}
+              <img
+                className={`${
+                  content?.variant?.style?.shadow
+                    ? content?.variant?.style?.shadow
+                    : ""
+                }`}
+                src={content?.variant?.style?.image}
+                alt=""
+                style={{
+                  width: "100%",
+                  transform: `rotate(${content?.variant?.style?.rotation}deg)`,
+                  transition: "transform 0.5s ease",
+                  objectFit: "contain",
+                  borderRadius: content?.variant?.style?.rounded,
+                }}
+              />
             </div>
-          )}
+          </div>
 
           <div
             style={{
@@ -150,7 +118,14 @@ const ViewPage = ({ content }) => {
                 .replace(/<p>/g, "<div>")
                 .replace(/<\/p>/g, "</div>");
               return (
-                <div key={contentItem.id} className="">
+                <div
+                  ref={elementRefContent}
+                  className={getClassNameContent()}
+                  style={{
+                    "--animation-duration": `${durationContent}s`,
+                  }}
+                  key={contentItem.id}
+                >
                   <div
                     style={{
                       color: content?.variant?.style?.textColor,
@@ -169,4 +144,4 @@ const ViewPage = ({ content }) => {
   );
 };
 
-export default ViewPage;
+export default ViewPageCSS;

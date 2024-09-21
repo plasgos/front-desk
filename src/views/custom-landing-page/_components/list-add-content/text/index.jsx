@@ -20,6 +20,8 @@ import { createUniqueID } from "../../../../../lib/unique-id";
 import ColorPicker from "../../common/ColorPicker";
 import { CustomReactQuill } from "../../common/ReactQuill";
 import { useDebounce } from "use-debounce";
+import AnimationControl from "../../common/AnimationControl";
+import BackgroundTab from "../../common/BackgroundTab";
 
 const Text = ({
   previewSection,
@@ -113,6 +115,22 @@ const Text = ({
           color: selectedColor,
         },
       },
+      animation: {
+        type: undefined,
+        duration: 1,
+        isReplay: false,
+      },
+      background: {
+        bgType: undefined,
+        bgColor: "",
+        bgImage: "",
+        blur: 0,
+        opacity: 0,
+        paddingY: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
+        paddingType: "equal",
+      },
     };
 
     setPreviewSection((prevSections) => [...prevSections, payload]);
@@ -165,6 +183,12 @@ const Text = ({
         <CNav variant="tabs">
           <CNavItem>
             <CNavLink data-tab="konten">Konten</CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink data-tab="animation">Animasi</CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink data-tab="background">Background</CNavLink>
           </CNavItem>
         </CNav>
         <CTabContent
@@ -261,6 +285,26 @@ const Text = ({
                 version="full"
               />
             </div>
+          </CTabPane>
+
+          <CTabPane className="p-1" data-tab="animation">
+            <AnimationControl
+              label="Teks"
+              currentSection={isEditingSection ? currentSection : settingText}
+              setPreviewSection={setPreviewSection}
+            />
+          </CTabPane>
+
+          <CTabPane
+            style={{ overflowX: "hidden", height: "100%" }}
+            className="p-1"
+            data-tab="background"
+          >
+            <BackgroundTab
+              currentSection={isEditingSection ? currentSection : settingText}
+              setPreviewSection={setPreviewSection}
+              type={isEditingSection ? "edit" : "add"}
+            />
           </CTabPane>
         </CTabContent>
       </CTabs>

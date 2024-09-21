@@ -401,31 +401,51 @@ const ImageText = ({
                   </CTabPane>
 
                   <CTabPane className="p-1" data-tab="animation">
-                    <AnimationControl
-                      label="Gambar"
-                      currentSection={
-                        isEditingSection
-                          ? currentSection
-                          : selectedCurrentSection
-                      }
-                      setPreviewSection={setPreviewSection}
-                    />
+                    {selectedVariant.group === "Frosty" ? (
+                      <AnimationControl
+                        label="Konten"
+                        currentSection={
+                          isEditingSection
+                            ? currentSection
+                            : selectedCurrentSection
+                        }
+                        currentContent={
+                          isEditingSection
+                            ? currentSection?.content?.[0]
+                            : selectedCurrentSection?.content?.[0]
+                        }
+                        setPreviewSection={setPreviewSection}
+                        isForContent={true}
+                      />
+                    ) : (
+                      <div>
+                        <AnimationControl
+                          label="Gambar"
+                          currentSection={
+                            isEditingSection
+                              ? currentSection
+                              : selectedCurrentSection
+                          }
+                          setPreviewSection={setPreviewSection}
+                        />
 
-                    <AnimationControl
-                      label="Konten"
-                      currentSection={
-                        isEditingSection
-                          ? currentSection
-                          : selectedCurrentSection
-                      }
-                      currentContent={
-                        isEditingSection
-                          ? currentSection?.content?.[0]
-                          : selectedCurrentSection?.content?.[0]
-                      }
-                      setPreviewSection={setPreviewSection}
-                      isForContent={true}
-                    />
+                        <AnimationControl
+                          label="Konten"
+                          currentSection={
+                            isEditingSection
+                              ? currentSection
+                              : selectedCurrentSection
+                          }
+                          currentContent={
+                            isEditingSection
+                              ? currentSection?.content?.[0]
+                              : selectedCurrentSection?.content?.[0]
+                          }
+                          setPreviewSection={setPreviewSection}
+                          isForContent={true}
+                        />
+                      </div>
+                    )}
                   </CTabPane>
 
                   {selectedVariant.group !== "Frosty" && (

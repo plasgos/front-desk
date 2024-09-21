@@ -85,14 +85,13 @@ const CustomLandingPage = () => {
   const [editing, setEditing] = useState("");
   const [isAddContent, setIsAddContent] = useState(false);
   const [previewSection, setPreviewSection] = useState([]);
-  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
+  const [previewFloatingSection, setPreviewFloatingSection] = useState([]);
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
   const [timers, setTimers] = useState({});
   const setRef = (el, index) => {
     previewRefs.current[index] = el;
   };
   const containerRef = useRef(null);
-  const scrollyDivRef = useRef(null);
 
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
@@ -163,7 +162,7 @@ const CustomLandingPage = () => {
         return (
           <ViewText
             isDragging={isDragging && section.id === id}
-            content={section.content}
+            section={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
@@ -572,8 +571,10 @@ const CustomLandingPage = () => {
         return (
           <FloatingButton
             currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
+            previewFloatingSection={previewFloatingSection}
+            setPreviewFloatingSection={(value) =>
+              setPreviewFloatingSection(value)
+            }
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
@@ -617,7 +618,13 @@ const CustomLandingPage = () => {
 
       return null;
     },
-    [editing.id, editing.name, previewSection, sectionBeforeEdit]
+    [
+      editing.id,
+      editing.name,
+      previewFloatingSection,
+      previewSection,
+      sectionBeforeEdit,
+    ]
   );
 
   const handleSave = () => {
@@ -748,6 +755,13 @@ const CustomLandingPage = () => {
     [dispatch]
   );
 
+  const removeSectionFloating = useCallback((index) => {
+    setPreviewFloatingSection((prev) => {
+      // Hapus section berdasarkan index
+      return prev.filter((_, i) => i !== index);
+    });
+  }, []);
+
   const renderListContent = useCallback(
     (section, index) => {
       return (
@@ -756,14 +770,24 @@ const CustomLandingPage = () => {
           index={index}
           id={section.id}
           section={section}
-          moveSection={moveSection}
+          moveSection={section.name.includes("floating") ? null : moveSection}
           editSection={() => editSection(section)}
-          removeSection={removeSection}
+          removeSection={
+            section.name.includes("floating")
+              ? removeSectionFloating
+              : removeSection
+          }
           focusContent={() => handleContentFocus(index)}
         />
       );
     },
-    [editSection, handleContentFocus, moveSection, removeSection]
+    [
+      editSection,
+      handleContentFocus,
+      moveSection,
+      removeSection,
+      removeSectionFloating,
+    ]
   );
 
   const handleAddContent = () => {
@@ -780,166 +804,6 @@ const CustomLandingPage = () => {
   return (
     <>
       <div>
-        {/* <div
-          style={{ position: "relative", height: "100vh" }}
-          className="d-flex justify-content-between "
-        >
-          <div
-            style={{
-              // position: "absolute",
-              // left: 0,
-              height: "100%",
-              width: "40%",
-            }}
-          >
-            <div style={{ height: "88.10%", width: "100%" }}>
-              {!editing && !isAddContent && (
-                <CTabs activeTab="konten">
-                  <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-                    <div>
-                      <CButton
-                        onClick={toggleModal}
-                        color="primary"
-                        variant="outline"
-                        className="mx-2"
-                      >
-                        Batal
-                      </CButton>
-
-                      <CButton onClick={handleSave} color="primary">
-                        Selesai
-                      </CButton>
-                    </div>
-                  </div>
-                  <CNav variant="tabs">
-                    <CNavItem>
-                      <CNavLink data-tab="konten">Kolom</CNavLink>
-                    </CNavItem>
-                    <CNavItem>
-                      <CNavLink data-tab="desain">Desain</CNavLink>
-                    </CNavItem>
-                  </CNav>
-                  <CTabContent
-                    style={{
-                      height: "350px",
-                      paddingRight: 5,
-                      overflowY: "auto",
-                    }}
-                    className="pt-2"
-                  >
-                    <CTabPane data-tab="konten">
-                      <div
-                        style={{ backgroundColor: "white" }}
-                        className=" w-100 px-2 pt-2 mb-3 border-bottom   "
-                      >
-                        <Input
-                          label="Nama halaman"
-                          placeholder="Masukan judul di sini"
-                          type="text"
-                          value={pageSetting.title}
-                          onChange={(e) =>
-                            handleChangeTitlePage(e.target.value)
-                          }
-                        />
-                      </div>
-
-                      {previewSection
-                        .filter((section) => section.name !== "floating-button")
-                        .map((section, index) =>
-                          renderListContent(section, index)
-                        )}
-
-                      <CCard
-                        style={{ cursor: "pointer", marginBottom: 8 }}
-                        onClick={handleAddContent}
-                      >
-                        <CCardBody className="p-1">
-                          <div className="d-flex align-items-center ">
-                            <IoAdd
-                              style={{
-                                cursor: "pointer",
-                                margin: "0px 10px 0px 6px",
-                              }}
-                              size={18}
-                            />
-
-                            <div>Tambah Konten</div>
-                          </div>
-                        </CCardBody>
-                      </CCard>
-
-                      {previewSection
-                        .filter((section) => section.name === "floating-button")
-                        .map((section, index) =>
-                          renderListContent(section, index)
-                        )}
-                    </CTabPane>
-                    <CTabPane data-tab="desain">
-                      <DesignTabControl
-                        previewSection={previewSection}
-                        setPreviewSection={(value) => setPreviewSection(value)}
-                        pageSetting={pageSetting}
-                        setPageSetting={(value) => setPageSetting(value)}
-                      />
-                    </CTabPane>
-                    <CTabPane data-tab="test2"></CTabPane>
-                  </CTabContent>
-                </CTabs>
-              )}
-
-              {editing &&
-                previewSection.map((section) => (
-                  <div key={section.id}>{renderEditSection(section)}</div>
-                ))}
-
-              {isAddContent && (
-                <ListContent
-                  previewSection={previewSection}
-                  setPreviewSection={(value) => setPreviewSection(value)}
-                  sections={sections}
-                  setSections={(value) => setSections(value)}
-                  isShowContent={(value) => setIsAddContent(value)}
-                />
-              )}
-            </div>
-            <div
-              style={{
-                position: "relative",
-                zIndex: 10,
-                backgroundColor: "white",
-              }}
-              className="d-flex justify-content-between align-items-center border rounded-sm p-2 mb-2 shadow-sm"
-            >
-              <div
-                className="d-flex align-items-center"
-                style={{ cursor: "pointer" }}
-              >
-                {viewTypes.map((view) => (
-                  <div
-                    key={view}
-                    onClick={() => setIsSelectedView(view)}
-                    style={{
-                      backgroundColor:
-                        isSelectedView === view ? "#fa541c" : "transparent",
-                    }}
-                    className="border p-1 px-2 "
-                  >
-                    {React.cloneElement(viewIcon[view], {
-                      color: isSelectedView === view ? "white" : "black",
-                    })}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div style={{ width: "55%" }}>
-            {previewSection.map((item, index) => (
-              <div key={item.id}>{renderViewComponent(item, index)}</div>
-            ))}
-          </div>
-        </div> */}
-
         <CRow>
           <CCol className="p-0" md="4">
             <div style={{ height: "88.10%" }}>
@@ -1018,11 +882,9 @@ const CustomLandingPage = () => {
                         </CCardBody>
                       </CCard>
 
-                      {previewSection
-                        .filter((section) => section.name === "floating-button")
-                        .map((section, index) =>
-                          renderListContent(section, index)
-                        )}
+                      {previewFloatingSection.map((section, index) =>
+                        renderListContent(section, index)
+                      )}
                     </CTabPane>
                     <CTabPane data-tab="desain">
                       <DesignTabControl
@@ -1037,10 +899,17 @@ const CustomLandingPage = () => {
                 </CTabs>
               )}
 
-              {editing &&
-                previewSection.map((section) => (
-                  <div key={section.id}>{renderEditSection(section)}</div>
-                ))}
+              {editing && (
+                <div>
+                  {previewSection.map((section) => (
+                    <div key={section.id}>{renderEditSection(section)}</div>
+                  ))}
+
+                  {previewFloatingSection.map((section) => (
+                    <div key={section.id}>{renderEditSection(section)}</div>
+                  ))}
+                </div>
+              )}
 
               {isAddContent && (
                 <ListContent
@@ -1049,6 +918,8 @@ const CustomLandingPage = () => {
                   sections={sections}
                   setSections={(value) => setSections(value)}
                   isShowContent={(value) => setIsAddContent(value)}
+                  previewFloatingSection={previewFloatingSection}
+                  setPreviewFloatingSection={setPreviewFloatingSection}
                 />
               )}
             </div>
@@ -1095,6 +966,10 @@ const CustomLandingPage = () => {
               strViewConten={strViewContent}
             >
               {previewSection.map((item, index) => (
+                <div key={item.id}>{renderViewComponent(item, index)}</div>
+              ))}
+
+              {previewFloatingSection.map((item, index) => (
                 <div key={item.id}>{renderViewComponent(item, index)}</div>
               ))}
             </ResizableView>

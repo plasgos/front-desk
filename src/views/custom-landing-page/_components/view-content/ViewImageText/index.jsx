@@ -1,8 +1,7 @@
 import React, { forwardRef } from "react";
 import { useBackgroundStyles } from "../../../../../hooks/useBackgroundStyles";
-import ViewPage from "./variant/ViewPage";
 import ViewFrosty from "./variant/ViewFrosty";
-import ViewPageCSS from "./variant/ViewPageCss";
+import ViewPage from "./variant/ViewPage";
 
 const ViewImageText = forwardRef(
   ({ isDragging, isResizing, content, isFocused }, ref) => {
@@ -54,8 +53,7 @@ const ViewImageText = forwardRef(
 
             {(content?.variant?.group === "Page" ||
               content?.variant?.group === "Penuh") && (
-              // <ViewPage content={content} />
-              <ViewPageCSS content={content} />
+              <ViewPage content={content} />
             )}
           </div>
         )}

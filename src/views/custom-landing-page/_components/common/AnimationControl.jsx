@@ -8,7 +8,7 @@ const animationTypeOptions = [
   { value: "animate__fadeInUp", label: "Fade In Up" },
   { value: "fadeInDown", label: "Fade In Down" },
   { value: "fadeInLeft", label: "Fade In Left" },
-  { value: "animate__fadeInRight", label: "Fade In Right" },
+  { value: "fadeInRight", label: "Fade In Right" },
   { value: "animate__bounceIn", label: "Bounce In" },
   { value: "animate__flipInX", label: "Flip In X" },
   { value: "animate__flipInY", label: "Flip In Y" },
