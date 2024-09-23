@@ -16,12 +16,12 @@ import {
   FaAlignLeft,
   FaAlignRight,
 } from "react-icons/fa6";
-import { createUniqueID } from "../../../../../lib/unique-id";
-import ColorPicker from "../../common/ColorPicker";
-import { CustomReactQuill } from "../../common/ReactQuill";
 import { useDebounce } from "use-debounce";
-import AnimationControl from "../../common/AnimationControl";
-import BackgroundTab from "../../common/BackgroundTab";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import AnimationControl from "../../../../common/AnimationControl";
+import { CustomReactQuill } from "../../../../common/ReactQuill";
+import ColorPicker from "../../../../common/ColorPicker";
+import BackgroundTab from "../../../../common/BackgroundTab";
 
 const Text = ({
   previewSection,
@@ -30,8 +30,9 @@ const Text = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
-  isMultiColumn,
+  sectionId,
   columnId,
+  setIsAddColumnSectionMultiColumn,
 }) => {
   const [editorHtml, setEditorHtml] = useState(
     currentSection?.content?.editorHtml || "Type your text here"
@@ -63,43 +64,63 @@ const Text = ({
 
   const handleChangeContentStyle = (key, value) => {
     setPreviewSection((arr) =>
-      arr.map((item) => {
-        const contentIdToCheck = isEditingSection
-          ? currentSection.id
-          : settingText.id;
-
-        return String(item.id) === contentIdToCheck
+      arr.map((section) => {
+        return String(section.id) === sectionId
           ? {
-              ...item,
-              content: {
-                ...item.content,
-                style: {
-                  ...item.content.style,
-                  [key]: value,
-                },
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) =>
+                        content.id === settingText.id
+                          ? {
+                              ...content,
+                              content: {
+                                ...content.content,
+                                style: {
+                                  ...content.content.style,
+                                  [key]: value,
+                                },
+                              },
+                            }
+                          : content
+                      ),
+                    }
+                  : column
+              ),
             }
-          : item;
+          : section;
       })
     );
   };
 
-  const handleEditorChange = (html) => {
+  const handleEditorChange = () => {
     setPreviewSection((arr) =>
-      arr.map((item) => {
-        const contentIdToCheck = isEditingSection
-          ? currentSection.id
-          : settingText.id;
-
-        return String(item.id) === contentIdToCheck
+      arr.map((section) => {
+        return String(section.id) === sectionId
           ? {
-              ...item,
-              content: {
-                ...item.content,
-                editorHtml: html,
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) =>
+                        content.id === settingText.id
+                          ? {
+                              ...content,
+                              content: {
+                                ...content.content,
+                                editorHtml,
+                              },
+                            }
+                          : content
+                      ),
+                    }
+                  : column
+              ),
             }
-          : item;
+          : section;
       })
     );
   };
@@ -134,7 +155,7 @@ const Text = ({
         paddingType: "equal",
       },
     };
-    const multiColumnSection = setPreviewSection((prevSections) =>
+    setPreviewSection((prevSections) =>
       prevSections.map((section) => {
         // Hanya memodifikasi section dengan name "multi-column"
         if (section.name === "multi-column") {
@@ -160,59 +181,12 @@ const Text = ({
         return section;
       })
     );
-
-    // const addContent = multiColumnSection.map((prevContent) => [
-    //   ...prevContent,
-    //   payload,
-    // ]);
-    // console.log("🚀 ~ addContentMultiColumn ~ addContent:", addContent);
-
-    console.log(
-      "🚀 ~ addContentMultiColumn ~ multiColumnSection:",
-      multiColumnSection
-    );
-
-    console.log("RUNNNN");
-  };
-
-  const handleAddContent = () => {
-    let uniqueId = createUniqueID(previewSection);
-    let payload = {
-      id: uniqueId,
-      name: "text",
-      title: "Teks",
-      content: {
-        editorHtml,
-        style: {
-          textAlign: selectAlign,
-          color: selectedColor,
-        },
-      },
-      animation: {
-        type: undefined,
-        duration: 1,
-        isReplay: false,
-      },
-      background: {
-        bgType: undefined,
-        bgColor: "",
-        bgImage: "",
-        blur: 0,
-        opacity: 0,
-        paddingY: 0,
-        paddingTop: 0,
-        paddingBottom: 0,
-        paddingType: "equal",
-      },
-    };
-
-    setPreviewSection((prevSections) => [...prevSections, payload]);
     setSettingText(payload);
   };
 
   useEffect(() => {
     if (!isEditingSection) {
-      isMultiColumn ? addContentMultiColumn() : handleAddContent();
+      addContentMultiColumn();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditingSection]);
@@ -222,15 +196,31 @@ const Text = ({
       isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
     } else {
-      isShowContent(false);
+      setIsAddColumnSectionMultiColumn(false);
       setPreviewSection((prevSections) =>
-        prevSections.filter((section) => section.id !== settingText.id)
+        prevSections.map((section) =>
+          section.id === sectionId
+            ? {
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.filter(
+                          (content) => content.id !== settingText.id
+                        ),
+                      }
+                    : column
+                ),
+              }
+            : section
+        )
       );
     }
   };
 
   const handleConfirm = () => {
-    isShowContent(false);
+    setIsAddColumnSectionMultiColumn(false);
   };
 
   return (

@@ -4,7 +4,6 @@ const useAnimatedVisibility = (
   content,
   observerOptions = { root: null, rootMargin: "0px", threshold: 0.1 }
 ) => {
-  console.log("🚀 ~ content:", content);
   const [isVisible, setIsVisible] = useState(false);
   const elementRef = useRef(null);
 

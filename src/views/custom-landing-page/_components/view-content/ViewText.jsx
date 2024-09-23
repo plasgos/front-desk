@@ -53,7 +53,7 @@ const ViewText = forwardRef(
           {section.content.editorHtml && (
             <div
               ref={elementRef}
-              className={`${getClassName()} tw-p-2`}
+              className={`${getClassName()} `}
               style={{
                 "--animation-duration": `${duration}s`,
               }}

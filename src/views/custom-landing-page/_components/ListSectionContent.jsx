@@ -1,86 +1,14 @@
 import { CCard, CCardBody } from "@coreui/react";
 import React, { useEffect, useRef, useState } from "react";
+import { useDrag, useDrop } from "react-dnd";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoCloseOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
-import { useDrag, useDrop } from "react-dnd";
 
-import { MdTextFields, MdViewColumn } from "react-icons/md";
-import { PiArrowsDownUpLight, PiTargetDuotone } from "react-icons/pi";
-import { FaGripLines, FaListCheck } from "react-icons/fa6";
-import { RxButton, RxSwitch } from "react-icons/rx";
-import { BsFillChatSquareQuoteFill } from "react-icons/bs";
-import { IoMdImages } from "react-icons/io";
-import { LuImagePlus, LuQuote } from "react-icons/lu";
-import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
-import { FaClipboardList, FaImage } from "react-icons/fa";
+import { dataListContent } from "./list-add-content/DataListContent";
 
 export const ItemTypes = {
   CARD: "card",
 };
-
-const iconListContent = [
-  {
-    name: "text",
-    icon: <MdTextFields style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "column-text-and-image",
-    icon: <MdViewColumn style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "empty-space",
-    icon: <PiArrowsDownUpLight style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "list-images",
-    icon: <IoMdImages style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "scroll-target",
-    icon: <PiTargetDuotone style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "button",
-    icon: <RxSwitch style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "testimony",
-    icon: <BsFillChatSquareQuoteFill style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "line",
-    icon: <FaGripLines style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "list-feature",
-    icon: <FaListCheck style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "quote",
-    icon: <LuQuote style={{ marginRight: 5 }} size={24} />,
-  },
-
-  {
-    name: "faq",
-    icon: <TfiLayoutAccordionSeparated style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "form-checkout",
-    icon: <FaClipboardList style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "floating-button",
-    icon: <RxButton style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "image",
-    icon: <FaImage style={{ marginRight: 5 }} size={24} />,
-  },
-  {
-    name: "image-text",
-    icon: <LuImagePlus style={{ marginRight: 5 }} size={24} />,
-  },
-];
 
 export const ListSectionContent = ({
   index,
@@ -152,7 +80,7 @@ export const ListSectionContent = ({
 
   const [icon, setIcon] = useState(undefined);
   useEffect(() => {
-    const selectedIcon = iconListContent.find(
+    const selectedIcon = dataListContent.find(
       (icon) => icon.name === section.name
     );
     if (selectedIcon) {

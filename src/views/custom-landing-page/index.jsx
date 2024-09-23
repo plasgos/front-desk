@@ -58,6 +58,7 @@ import ViewQuote from "./_components/view-content/ViewQuote";
 import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
 import ViewTestimony from "./_components/view-content/ViewTestimony/index";
 import ViewText from "./_components/view-content/ViewText";
+import ViewMultiColumn from "./_components/view-content/ViewMultiColumn";
 
 const landingPage = {
   detail: {
@@ -85,8 +86,12 @@ const CustomLandingPage = () => {
   const [editing, setEditing] = useState("");
   const [isAddContent, setIsAddContent] = useState(false);
   const [previewSection, setPreviewSection] = useState([]);
+  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
   const [previewFloatingSection, setPreviewFloatingSection] = useState([]);
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
+  const [sectionFloatingBeforeEdit, setSectionFloatingBeforeEdit] = useState(
+    []
+  );
   const [timers, setTimers] = useState({});
   const setRef = (el, index) => {
     previewRefs.current[index] = el;
@@ -355,6 +360,19 @@ const CustomLandingPage = () => {
         );
       }
 
+      if (section.name === "multi-column") {
+        return (
+          <ViewMultiColumn
+            containerRef={containerRef}
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
+
       return null;
     },
     [dimensions.width, focusedIndex, id, isDragging, isPreview, isResizing]
@@ -576,7 +594,7 @@ const CustomLandingPage = () => {
               setPreviewFloatingSection(value)
             }
             isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
+            sectionBeforeEdit={sectionFloatingBeforeEdit}
             isEditingSection={true}
           />
         );
@@ -624,6 +642,7 @@ const CustomLandingPage = () => {
       previewFloatingSection,
       previewSection,
       sectionBeforeEdit,
+      sectionFloatingBeforeEdit,
     ]
   );
 
@@ -722,6 +741,14 @@ const CustomLandingPage = () => {
     [previewSection]
   );
 
+  const editSectionFlaoting = useCallback(
+    (sectionToEdit) => {
+      setSectionFloatingBeforeEdit([...previewFloatingSection]);
+      setEditing(sectionToEdit);
+    },
+    [previewFloatingSection]
+  );
+
   // const { landingPageSection } = useSelector(
   //   (state) => state.customLandingPage
   // );
@@ -771,7 +798,11 @@ const CustomLandingPage = () => {
           id={section.id}
           section={section}
           moveSection={section.name.includes("floating") ? null : moveSection}
-          editSection={() => editSection(section)}
+          editSection={
+            section.name.includes("floating")
+              ? () => editSectionFlaoting(section)
+              : () => editSection(section)
+          }
           removeSection={
             section.name.includes("floating")
               ? removeSectionFloating
@@ -783,6 +814,7 @@ const CustomLandingPage = () => {
     },
     [
       editSection,
+      editSectionFlaoting,
       handleContentFocus,
       moveSection,
       removeSection,
@@ -963,7 +995,6 @@ const CustomLandingPage = () => {
               isSelectedView={isSelectedView}
               isResizing={isResizing}
               handleMouseDown={handleMouseDown}
-              strViewConten={strViewContent}
             >
               {previewSection.map((item, index) => (
                 <div key={item.id}>{renderViewComponent(item, index)}</div>

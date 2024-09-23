@@ -1,25 +1,10 @@
+import React, { useState } from "react";
+import { dataListContent } from "../DataListContent";
 import { CButton, CCard, CTabContent } from "@coreui/react";
-import React, { useEffect, useState } from "react";
-import { SearchForm } from "../common/SearchForm";
-import Buttons from "./button";
-import ColumnTextAndImages from "./colum-text-and-image";
-import { dataListContent } from "./DataListContent";
-import EmptySpace from "./empty-space/index";
-import FAQ from "./faq";
-import FloatingButton from "./floating-button";
-import FormCheckout from "./form-checkout";
-import Image from "./image";
-import ImageText from "./image-text";
-import Line from "./line/index";
-import ListFeature from "./list-feature";
-import ListImagesControl from "./list-images/index";
-import Quote from "./quote";
-import ScrollTarget from "./scroll-target/index";
-import Testimony from "./testimony";
-import Text from "./text/index";
-import MultiColumn from "./multi-column";
+import { SearchForm } from "../../common/SearchForm";
+import Text from "./sections/text";
 
-const ListContent = ({
+const ListContentMultiColumn = ({
   previewSection,
   setPreviewSection,
   isShowContent,
@@ -28,6 +13,7 @@ const ListContent = ({
   isMultiColumn,
   isAddColumnSectionMultiColumn,
   setIsAddColumnSectionMultiColumn,
+  sectionId,
   columnId,
 }) => {
   const [addContent, setAddContent] = useState("");
@@ -50,10 +36,6 @@ const ListContent = ({
       setAddContent("");
     }
   };
-
-  useEffect(() => {
-    console.log("RUNNNN");
-  }, []);
 
   return (
     <div style={{ width: "100%", height: 400 }}>
@@ -85,12 +67,13 @@ const ListContent = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
-          isMultiColumn={isMultiColumn}
+          setIsAddColumnSectionMultiColumn={setIsAddColumnSectionMultiColumn}
+          sectionId={sectionId}
           columnId={columnId}
         />
       ) : null}
 
-      {addContent === "column-text-and-image" && (
+      {/* {addContent === "column-text-and-image" && (
         <ColumnTextAndImages
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
@@ -107,12 +90,12 @@ const ListContent = ({
       )}
 
       {addContent === "list-images" && (
-        <ListImagesControl
-          previewSection={previewSection}
-          setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
-        />
-      )}
+      <ListImagesControl
+        previewSection={previewSection}
+        setPreviewSection={(value) => setPreviewSection(value)}
+        isShowContent={isShowContent}
+      />
+    )}
 
       {addContent === "scroll-target" && (
         <ScrollTarget
@@ -210,7 +193,7 @@ const ListContent = ({
           previewFloatingSection={previewFloatingSection}
           setPreviewFloatingSection={setPreviewFloatingSection}
         />
-      )}
+      )} */}
 
       <CTabContent
         style={{
@@ -233,12 +216,12 @@ const ListContent = ({
               </div>
             </CCard>
           ))
-        ) : searchContent && filteredContents.length === 0 ? (
+        ) : (
           <div className="text-center my-3">Kontent tidak ada !</div>
-        ) : null}
+        )}
       </CTabContent>
     </div>
   );
 };
 
-export default ListContent;
+export default ListContentMultiColumn;
