@@ -3,19 +3,26 @@ import { dataListContent } from "../DataListContent";
 import { CButton, CCard, CTabContent } from "@coreui/react";
 import { SearchForm } from "../../common/SearchForm";
 import Text from "./sections/text";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsAddColumnSection,
+  setIsEditingColumnSection,
+} from "../../../../../redux/modules/custom-landing-page/reducer";
 
 const ListContentMultiColumn = ({
   previewSection,
   setPreviewSection,
-  isShowContent,
   previewFloatingSection,
   setPreviewFloatingSection,
-  isMultiColumn,
-  isAddColumnSectionMultiColumn,
-  setIsAddColumnSectionMultiColumn,
   sectionId,
   columnId,
 }) => {
+  const { multiColumnSection } = useSelector(
+    (state) => state.customLandingPage
+  );
+
+  const dispatch = useDispatch();
+
   const [addContent, setAddContent] = useState("");
   const [searchContent, setSearchContent] = useState("");
   const [filteredContents, setFilteredContents] = useState(dataListContent);
@@ -29,12 +36,9 @@ const ListContentMultiColumn = ({
   };
 
   const handleCancelAddContent = () => {
-    if (isMultiColumn) {
-      setIsAddColumnSectionMultiColumn(false);
-    } else {
-      isShowContent(false);
-      setAddContent("");
-    }
+    dispatch(setIsAddColumnSection(false));
+    dispatch(setIsEditingColumnSection(false));
+    setAddContent("");
   };
 
   return (
@@ -62,16 +66,14 @@ const ListContentMultiColumn = ({
         </>
       )}
 
-      {addContent === "text" ? (
+      {addContent === "text" && (
         <Text
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
-          setIsAddColumnSectionMultiColumn={setIsAddColumnSectionMultiColumn}
           sectionId={sectionId}
           columnId={columnId}
         />
-      ) : null}
+      )}
 
       {/* {addContent === "column-text-and-image" && (
         <ColumnTextAndImages
@@ -216,9 +218,9 @@ const ListContentMultiColumn = ({
               </div>
             </CCard>
           ))
-        ) : (
+        ) : searchContent && filteredContents.length === 0 ? (
           <div className="text-center my-3">Kontent tidak ada !</div>
-        )}
+        ) : null}
       </CTabContent>
     </div>
   );

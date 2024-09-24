@@ -51,10 +51,6 @@ const ListContent = ({
     }
   };
 
-  useEffect(() => {
-    console.log("RUNNNN");
-  }, []);
-
   return (
     <div style={{ width: "100%", height: 400 }}>
       {!addContent && (
@@ -206,7 +202,7 @@ const ListContent = ({
         <MultiColumn
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          isShowMultiColumn={isShowContent}
           previewFloatingSection={previewFloatingSection}
           setPreviewFloatingSection={setPreviewFloatingSection}
         />
@@ -216,7 +212,6 @@ const ListContent = ({
         style={{
           height: addContent ? 0 : 280,
           paddingRight: 5,
-          paddingBottom: 20,
           overflowY: "auto",
         }}
       >

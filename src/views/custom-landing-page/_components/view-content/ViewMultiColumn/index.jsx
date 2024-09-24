@@ -2,94 +2,128 @@ import React, { forwardRef } from "react";
 import useAnimatedVisibility from "../../../../../hooks/useAnimatedVisibility";
 
 import ViewText from "../ViewText";
+import { useBackgroundStyles } from "../../../../../hooks/useBackgroundStyles";
 
 const ViewMultiColumn = forwardRef(
   ({ containerRef, isDragging, isResizing, content, isFocused }, ref) => {
+    const stylesBg = useBackgroundStyles(content);
+
     const { elementRef, getClassName, duration } =
       useAnimatedVisibility(content);
 
     return (
-      <div
-        ref={ref}
-        style={{
-          ...(isResizing ? { cursor: "not-allowed" } : {}),
-          ...(isDragging ? { border: "2px solid green" } : {}),
-          ...(isFocused && { border: "2px solid green" }),
-        }}
-        className=" tw-flex tw-items-center  "
-      >
-        {content?.column.map((column) => {
-          const paddingTop = column.background?.paddingTop
-            ? `calc(16px + ${column.background.paddingTop}px)`
-            : column.background?.paddingY
-            ? `calc(16px + ${column.background.paddingY}px)`
-            : "16px";
+      <>
+        <div
+          ref={ref}
+          style={{
+            ...(isResizing ? { cursor: "not-allowed" } : {}),
+            ...(isDragging ? { border: "2px solid green" } : {}),
+            ...(isFocused && { border: "2px solid green" }),
+            paddingTop: stylesBg.paddingTop,
+            paddingBottom: stylesBg.paddingBottom,
+            backgroundColor: content.background.bgColor || "",
+            position: "relative",
+            zIndex: 1,
+          }}
+          // className="tw-flex tw-flex-row tw-justify-center tw-items-center tw-flex-wrap tw-p-3 tw-gap-y-3"
+          className=" tw-flex   "
+        >
+          <div style={stylesBg.backgroundImgStyle}></div>
 
-          const paddingBottom = column.background?.paddingBottom
-            ? `calc(16px + ${column.background.paddingBottom}px)`
-            : column.background?.paddingY
-            ? `calc(16px + ${column.background.paddingY}px)`
-            : "16px";
+          {content.background?.opacity ? (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                backgroundColor:
+                  content.background?.opacity < 0 ? "black" : "white",
+                opacity: Math.abs(stylesBg.calculateOpacity),
+              }}
+            ></div>
+          ) : null}
 
-          const backgroundImgStyle = {
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-            backgroundImage: column.background?.bgImage
-              ? `url(${column.background.bgImage})`
-              : "",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            filter: `blur(${column.background?.blur}px)`,
-            zIndex: -1,
-            overflow: "hidden",
-          };
+          {/* <div
+            style={{
+              ...(isResizing ? { cursor: "not-allowed" } : {}),
+              ...(isDragging ? { border: "2px solid green" } : {}),
+              ...(isFocused && { border: "2px solid green" }),
+            }}
+            className=" tw-flex   "
+          >
+          </div> */}
+          {content?.column.map((column) => {
+            const paddingTop = column.background?.paddingTop
+              ? `calc(16px + ${column.background.paddingTop}px)`
+              : column.background?.paddingY
+              ? `calc(16px + ${column.background.paddingY}px)`
+              : "16px";
 
-          const calculateOpacity = column.background?.opacity / 100;
-          return (
-            <div className="tw-flex-1" key={column.id}>
-              <div
-                style={{
-                  paddingTop: paddingTop,
-                  paddingBottom: paddingBottom,
-                  backgroundColor: column.background.bgColor || "",
-                  position: "relative",
-                  zIndex: 1,
-                }}
-                className="tw-flex tw-flex-col "
-              >
-                <div style={backgroundImgStyle}></div>
+            const paddingBottom = column.background?.paddingBottom
+              ? `calc(16px + ${column.background.paddingBottom}px)`
+              : column.background?.paddingY
+              ? `calc(16px + ${column.background.paddingY}px)`
+              : "16px";
 
-                {column.background?.opacity ? (
-                  <div
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      backgroundColor:
-                        column.background?.opacity < 0 ? "black" : "white",
-                      opacity: Math.abs(calculateOpacity),
-                    }}
-                  ></div>
-                ) : null}
+            const backgroundImgStyle = {
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundImage: column.background?.bgImage
+                ? `url(${column.background.bgImage})`
+                : "",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              filter: `blur(${column.background?.blur}px)`,
+              zIndex: -1,
+              overflow: "hidden",
+            };
 
-                {column.content.map(
-                  (content) =>
-                    content.name === "text" && (
-                      <ViewText
-                        key={content.id}
-                        section={content}
-                        isResizing={isResizing}
-                      />
-                    )
-                )}
+            const calculateOpacity = column.background?.opacity / 100;
+            return (
+              <div className="tw-flex-1" key={column.id}>
+                <div
+                  style={{
+                    paddingTop: paddingTop,
+                    paddingBottom: paddingBottom,
+                    backgroundColor: column.background.bgColor || "",
+                    position: "relative",
+                    zIndex: 1,
+                  }}
+                  className="tw-flex tw-flex-col "
+                >
+                  <div style={backgroundImgStyle}></div>
+
+                  {column.background?.opacity ? (
+                    <div
+                      style={{
+                        position: "absolute",
+                        inset: 0,
+                        backgroundColor:
+                          column.background?.opacity < 0 ? "black" : "white",
+                        opacity: Math.abs(calculateOpacity),
+                      }}
+                    ></div>
+                  ) : null}
+
+                  {column.content.map(
+                    (content) =>
+                      content.name === "text" && (
+                        <ViewText
+                          key={content.id}
+                          section={content}
+                          isResizing={isResizing}
+                        />
+                      )
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </>
     );
   }
 );

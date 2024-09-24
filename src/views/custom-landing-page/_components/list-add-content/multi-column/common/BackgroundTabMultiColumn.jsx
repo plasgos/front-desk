@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
-import imageDefault from "../../../../assets/bg.jpg";
+import imageDefault from "../../../../../../assets/bg.jpg";
 import { CButton } from "@coreui/react";
-import { backgroundType, PaddingYOptions } from "../SelectOptions";
-import InputRangeWithNumber from "./InputRangeWithNumber";
-import ColorPicker from "./ColorPicker";
-import SelectOptions from "./SelectOptions";
+import { backgroundType, PaddingYOptions } from "../../../SelectOptions";
+import SelectOptions from "../../../common/SelectOptions";
+import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
+import ColorPicker from "../../../common/ColorPicker";
 
-const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
+const BackgroundTabMultiColumn = ({
+  currentSection: currentContent,
+  setPreviewSection,
+  type,
+  sectionId,
+  columnId,
+}) => {
   const [selectedBackgroundType, setSelectedBackgroundType] = useState(
     type === "edit" ? undefined : backgroundType[0]
   );
@@ -15,38 +21,38 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
     type === "edit" ? undefined : PaddingYOptions[0]
   );
   const [paddingY, setPaddingY] = useState(
-    currentSection.background?.paddingY || 0
+    currentContent.background?.paddingY || 0
   );
   const [paddingTop, setPaddingTop] = useState(
-    currentSection.background?.paddingTop || 0
+    currentContent.background?.paddingTop || 0
   );
   const [paddingBottom, setPaddingBottom] = useState(
-    currentSection.background?.paddingBottom || 0
+    currentContent.background?.paddingBottom || 0
   );
 
   const [selectedBgColor, setSelectedBgColor] = useState(
-    currentSection.background?.bgColor || "#EEEEEE"
+    currentContent.background?.bgColor || "#EEEEEE"
   );
 
   const [imageUrl, setImageUrl] = useState(
-    currentSection.background?.bgImage || imageDefault
+    currentContent.background?.bgImage || imageDefault
   );
-  const [blur, setBlur] = useState(currentSection.background?.blur || 0);
+  const [blur, setBlur] = useState(currentContent.background?.blur || 0);
   const [opacity, setOpacity] = useState(
-    currentSection.background?.opacity || 0
+    currentContent.background?.opacity || 0
   );
 
   useEffect(() => {
     if (type === "edit") {
       const currentBgTypeOption = backgroundType.find(
-        (opt) => opt.value === currentSection.background?.bgType
+        (opt) => opt.value === currentContent.background?.bgType
       );
       if (currentBgTypeOption) {
         setSelectedBackgroundType(currentBgTypeOption);
       }
 
       const currentPaddingTypeOption = PaddingYOptions.find(
-        (opt) => opt.value === currentSection.background?.paddingType
+        (opt) => opt.value === currentContent.background?.paddingType
       );
 
       if (currentPaddingTypeOption) {
@@ -55,7 +61,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type, backgroundType, PaddingYOptions, currentSection.background]);
+  }, [type, backgroundType, PaddingYOptions, currentContent.background]);
 
   const defaultBgValues = {
     bgType: undefined,
@@ -73,7 +79,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
     if (!selectedOption.value) {
       setPreviewSection((arr) =>
         arr.map((item) =>
-          String(item.id) === currentSection.id
+          String(item.id) === currentContent.id
             ? {
                 ...item,
                 background: defaultBgValues,
@@ -84,7 +90,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
     } else if (selectedOption !== "image") {
       setPreviewSection((arr) =>
         arr.map((item) =>
-          String(item.id) === currentSection.id
+          String(item.id) === currentContent.id
             ? {
                 ...item,
                 background: {
@@ -99,7 +105,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
 
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === currentSection.id
+        String(item.id) === currentContent.id
           ? {
               ...item,
               background: {
@@ -114,18 +120,46 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
 
   const handleChangeBgColor = (color) => {
     setSelectedBgColor(color);
+    // setPreviewSection((arr) =>
+    //   arr.map((item) =>
+    //     String(item.id) === currentContent.id
+    //       ? {
+    //           ...item,
+    //           background: {
+    //             ...item.background,
+    //             bgColor: color,
+    //           },
+    //         }
+    //       : item
+    //   )
+    // );
+
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
+      arr.map((section) => {
+        return String(section.id) === sectionId
           ? {
-              ...item,
-              background: {
-                ...item.background,
-                bgColor: color,
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) => {
+                        return content.id === currentContent
+                          ? {
+                              ...content,
+                              background: {
+                                ...content.background,
+                                bgColor: color,
+                              },
+                            }
+                          : content;
+                      }),
+                    }
+                  : column
+              ),
             }
-          : item
-      )
+          : section;
+      })
     );
   };
 
@@ -136,7 +170,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
       setPaddingY(0);
       setPreviewSection((arr) =>
         arr.map((item) =>
-          String(item.id) === currentSection.id
+          String(item.id) === currentContent.id
             ? {
                 ...item,
                 background: {
@@ -153,7 +187,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
       setPaddingBottom(0);
       setPreviewSection((arr) =>
         arr.map((item) =>
-          String(item.id) === currentSection.id
+          String(item.id) === currentContent.id
             ? {
                 ...item,
                 background: {
@@ -172,7 +206,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
   const handleUpdateBackground = (key, value) => {
     setPreviewSection((arr) =>
       arr.map((item) =>
-        String(item.id) === currentSection.id
+        String(item.id) === currentContent.id
           ? {
               ...item,
               background: {
@@ -225,7 +259,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
     if (selectedBackgroundType?.value === "image") {
       setPreviewSection((arr) =>
         arr.map((item) =>
-          String(item.id) === currentSection.id
+          String(item.id) === currentContent.id
             ? {
                 ...item,
                 background: {
@@ -240,7 +274,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
     } else if (selectedBackgroundType?.value === "color") {
       setPreviewSection((arr) =>
         arr.map((item) =>
-          String(item.id) === currentSection.id
+          String(item.id) === currentContent.id
             ? {
                 ...item,
                 background: {
@@ -400,4 +434,4 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
   );
 };
 
-export default BackgroundTab;
+export default BackgroundTabMultiColumn;

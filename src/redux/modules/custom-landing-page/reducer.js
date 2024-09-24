@@ -82,7 +82,13 @@ const initialState = {
   isEditingCouriers: false,
   selectedCourier: {},
   currentCourierBeforeEdit: [],
-  isAnimationVisible: false,
+  multiColumnSection: {
+    isAddColumn: false,
+    isEditingColumn: false,
+    isAddColumnSection: false,
+    isEditingColumnSection: false,
+    isEditingSection: false,
+  },
 };
 
 export default (state = initialState, action) => {
@@ -305,10 +311,49 @@ export default (state = initialState, action) => {
         currentCourierBeforeEdit: action.payload,
       };
 
-    case types.SET_IS_ANIMATION_VISIBLE:
+    case types.SET_IS_ADD_COLUMN:
       return {
         ...state,
-        isAnimationVisible: action.payload,
+        multiColumnSection: {
+          ...state.multiColumnSection,
+          isAddColumn: action.payload,
+        },
+      };
+
+    case types.SET_IS_EDITING_COLUMN:
+      return {
+        ...state,
+        multiColumnSection: {
+          ...state.multiColumnSection,
+          isEditingColumn: action.payload,
+        },
+      };
+
+    case types.SET_IS_ADD_COLUMN_SECTION:
+      return {
+        ...state,
+        multiColumnSection: {
+          ...state.multiColumnSection,
+          isAddColumnSection: action.payload,
+        },
+      };
+
+    case types.SET_IS_EDITING_COLUMN_SECTION:
+      return {
+        ...state,
+        multiColumnSection: {
+          ...state.multiColumnSection,
+          isEditingColumnSection: action.payload,
+        },
+      };
+
+    case types.SET_IS_EDITING_SECTION:
+      return {
+        ...state,
+        multiColumnSection: {
+          ...state.multiColumnSection,
+          isEditingSection: action.payload,
+        },
       };
 
     default:
@@ -479,9 +524,37 @@ export const setCurrentCourierBeforeEdit = (value) => {
   };
 };
 
-export const setIsAnimationVisible = (value) => {
+export const setIsAddColumn = (value) => {
   return {
-    type: types.SET_IS_ANIMATION_VISIBLE,
+    type: types.SET_IS_ADD_COLUMN,
+    payload: value,
+  };
+};
+
+export const setIsEditingColumn = (value) => {
+  return {
+    type: types.SET_IS_EDITING_COLUMN,
+    payload: value,
+  };
+};
+
+export const setIsAddColumnSection = (value) => {
+  return {
+    type: types.SET_IS_ADD_COLUMN_SECTION,
+    payload: value,
+  };
+};
+
+export const setIsEditingColumnSection = (value) => {
+  return {
+    type: types.SET_IS_EDITING_COLUMN_SECTION,
+    payload: value,
+  };
+};
+
+export const setIsEditingSection = (value) => {
+  return {
+    type: types.SET_IS_EDITING_SECTION,
     payload: value,
   };
 };

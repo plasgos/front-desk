@@ -22,18 +22,28 @@ import AnimationControl from "../../../../common/AnimationControl";
 import { CustomReactQuill } from "../../../../common/ReactQuill";
 import ColorPicker from "../../../../common/ColorPicker";
 import BackgroundTab from "../../../../common/BackgroundTab";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsAddColumnSection,
+  setIsEditingColumnSection,
+  setIsEditingSection,
+} from "../../../../../../../redux/modules/custom-landing-page/reducer";
+import BackgroundTabMultiColumn from "../../common/BackgroundTabMultiColumn";
 
 const Text = ({
   previewSection,
   setPreviewSection,
-  isShowContent,
-  isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
   sectionId,
   columnId,
-  setIsAddColumnSectionMultiColumn,
 }) => {
+  const { isEditingSection, isAddColumnSection } = useSelector(
+    (state) => state.customLandingPage.multiColumnSection
+  );
+
+  const dispatch = useDispatch();
+
   const [editorHtml, setEditorHtml] = useState(
     currentSection?.content?.editorHtml || "Type your text here"
   );
@@ -72,8 +82,12 @@ const Text = ({
                 column.id === columnId
                   ? {
                       ...column,
-                      content: column.content.map((content) =>
-                        content.id === settingText.id
+                      content: column.content.map((content) => {
+                        const contentIdToCheck = isEditingSection
+                          ? currentSection.id
+                          : settingText.id;
+
+                        return content.id === contentIdToCheck
                           ? {
                               ...content,
                               content: {
@@ -84,8 +98,8 @@ const Text = ({
                                 },
                               },
                             }
-                          : content
-                      ),
+                          : content;
+                      }),
                     }
                   : column
               ),
@@ -105,8 +119,11 @@ const Text = ({
                 column.id === columnId
                   ? {
                       ...column,
-                      content: column.content.map((content) =>
-                        content.id === settingText.id
+                      content: column.content.map((content) => {
+                        const contentIdToCheck = isEditingSection
+                          ? currentSection.id
+                          : settingText.id;
+                        return content.id === contentIdToCheck
                           ? {
                               ...content,
                               content: {
@@ -114,8 +131,8 @@ const Text = ({
                                 editorHtml,
                               },
                             }
-                          : content
-                      ),
+                          : content;
+                      }),
                     }
                   : column
               ),
@@ -193,10 +210,11 @@ const Text = ({
 
   const handleCancel = () => {
     if (isEditingSection) {
-      isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
+      dispatch(setIsEditingSection(false));
     } else {
-      setIsAddColumnSectionMultiColumn(false);
+      dispatch(setIsAddColumnSection(false));
+      dispatch(setIsEditingColumnSection(false));
       setPreviewSection((prevSections) =>
         prevSections.map((section) =>
           section.id === sectionId
@@ -220,7 +238,13 @@ const Text = ({
   };
 
   const handleConfirm = () => {
-    setIsAddColumnSectionMultiColumn(false);
+    if (isAddColumnSection) {
+      dispatch(setIsAddColumnSection(false));
+    } else if (isEditingSection) {
+      dispatch(setIsEditingSection(false));
+    } else {
+      dispatch(setIsEditingColumnSection(false));
+    }
   };
 
   return (
@@ -363,10 +387,12 @@ const Text = ({
             className="p-1"
             data-tab="background"
           >
-            <BackgroundTab
+            <BackgroundTabMultiColumn
               currentSection={isEditingSection ? currentSection : settingText}
               setPreviewSection={setPreviewSection}
               type={isEditingSection ? "edit" : "add"}
+              sectionId={sectionId}
+              columnId={columnId}
             />
           </CTabPane>
         </CTabContent>

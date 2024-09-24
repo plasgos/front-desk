@@ -26,5 +26,9 @@ export default {
   SET_SELECT_COURIER: "set-selct-courier",
   SET_CURRENT_COURIER_BEFORE_EDIT: "set-current-courier-before-edit",
 
-  SET_IS_ANIMATION_VISIBLE: "set-is-animation-visible",
+  SET_IS_ADD_COLUMN: "set-is-add-column",
+  SET_IS_EDITING_COLUMN: "set-is-editing-column",
+  SET_IS_ADD_COLUMN_SECTION: "set-is-add-column-section",
+  SET_IS_EDITING_COLUMN_SECTION: "set-is-editing-column-section",
+  SET_IS_EDITING_SECTION: "set-is-editing-section",
 };

@@ -59,6 +59,7 @@ import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
 import ViewTestimony from "./_components/view-content/ViewTestimony/index";
 import ViewText from "./_components/view-content/ViewText";
 import ViewMultiColumn from "./_components/view-content/ViewMultiColumn";
+import MultiColumn from "./_components/list-add-content/multi-column";
 
 const landingPage = {
   detail: {
@@ -630,6 +631,23 @@ const CustomLandingPage = () => {
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "multi-column" &&
+        section.name === "multi-column" &&
+        editing.id === section.id
+      ) {
+        return (
+          <MultiColumn
+            currentSectionMultiColumn={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowMultiColumn={(value) => setEditing(value)}
+            sectionMultiColumnBeforeEdit={sectionBeforeEdit}
+            isEditingSectionMultiColumn={true}
           />
         );
       }
