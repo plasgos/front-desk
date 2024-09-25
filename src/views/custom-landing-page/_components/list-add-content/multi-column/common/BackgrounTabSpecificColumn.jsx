@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
-import imageDefault from "../../../../assets/bg.jpg";
+import imageDefault from "../../../../../../assets/bg.jpg";
 import { CButton } from "@coreui/react";
-import { backgroundType, PaddingYOptions } from "../SelectOptions";
-import InputRangeWithNumber from "./InputRangeWithNumber";
-import ColorPicker from "./ColorPicker";
-import SelectOptions from "./SelectOptions";
+import { backgroundType, PaddingYOptions } from "../../../SelectOptions";
+import SelectOptions from "../../../common/SelectOptions";
+import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
+import ColorPicker from "../../../common/ColorPicker";
 
-const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
+const BackgrounTabSpecificColumn = ({
+  currentSection: currentContent,
+  setPreviewSection,
+  sectionId,
+  columnId,
+  isSlidingOutColumn,
+}) => {
   const [selectedBackgroundType, setSelectedBackgroundType] = useState(
     backgroundType[0]
   );
@@ -14,37 +20,37 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
   const [selectedPadding, setSelectedPadding] = useState(PaddingYOptions[0]);
 
   const [paddingY, setPaddingY] = useState(
-    currentSection.background?.paddingY || 0
+    currentContent.background?.paddingY || 0
   );
   const [paddingTop, setPaddingTop] = useState(
-    currentSection.background?.paddingTop || 0
+    currentContent.background?.paddingTop || 0
   );
   const [paddingBottom, setPaddingBottom] = useState(
-    currentSection.background?.paddingBottom || 0
+    currentContent.background?.paddingBottom || 0
   );
 
   const [selectedBgColor, setSelectedBgColor] = useState(
-    currentSection.background?.bgColor || "#EEEEEE"
+    currentContent.background?.bgColor || "#EEEEEE"
   );
 
   const [imageUrl, setImageUrl] = useState(
-    currentSection.background?.bgImage || imageDefault
+    currentContent.background?.bgImage || imageDefault
   );
-  const [blur, setBlur] = useState(currentSection.background?.blur || 0);
+  const [blur, setBlur] = useState(currentContent.background?.blur || 0);
   const [opacity, setOpacity] = useState(
-    currentSection.background?.opacity || 0
+    currentContent.background?.opacity || 0
   );
 
   useEffect(() => {
     const currentBgTypeOption = backgroundType.find(
-      (opt) => opt.value === currentSection.background?.bgType
+      (opt) => opt.value === currentContent.background?.bgType
     );
     if (currentBgTypeOption) {
       setSelectedBackgroundType(currentBgTypeOption);
     }
 
     const currentPaddingTypeOption = PaddingYOptions.find(
-      (opt) => opt.value === currentSection.background?.paddingType
+      (opt) => opt.value === currentContent.background?.paddingType
     );
 
     if (currentPaddingTypeOption) {
@@ -52,7 +58,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type, backgroundType, PaddingYOptions, currentSection.background]);
+  }, [backgroundType, PaddingYOptions, currentContent.background]);
 
   const defaultBgValues = {
     bgType: undefined,
@@ -66,119 +72,143 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
     paddingType: "equal",
   };
 
-  const handleChangeValueOptions = (selectedOption, key) => {
-    if (!selectedOption.value) {
+  const handleChangeValueOptions = (key, value) => {
+    if (!value) {
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: defaultBgValues,
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        background: defaultBgValues,
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
-    } else if (selectedOption !== "image") {
+    } else if (value !== "image") {
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: {
-                  ...item.background,
-                  bgImage: "",
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        background: {
+                          ...column.background,
+                          bgImage: "",
+                        },
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
     }
 
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
+      arr.map((section) => {
+        return String(section.id) === sectionId
           ? {
-              ...item,
-              background: {
-                ...item.background,
-                [key]: selectedOption.value,
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      background: {
+                        ...column.background,
+                        [key]: value,
+                      },
+                    }
+                  : column
+              ),
             }
-          : item
-      )
-    );
-  };
-
-  const handleChangeBgColor = (color) => {
-    setSelectedBgColor(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              background: {
-                ...item.background,
-                bgColor: color,
-              },
-            }
-          : item
-      )
+          : section;
+      })
     );
   };
 
   const handleChangePaddingOptions = (selectedOption) => {
     setSelectedPadding(selectedOption);
-
     if (selectedOption.value !== "equal") {
       setPaddingY(0);
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: {
-                  ...item.background,
-                  paddingY: 0,
-                  paddingType: selectedOption.value,
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        background: {
+                          ...column.background,
+                          paddingY: 0,
+                          paddingType: selectedOption.value,
+                        },
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
     } else {
       setPaddingTop(0);
       setPaddingBottom(0);
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: {
-                  ...item.background,
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                  paddingType: selectedOption.value,
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        background: {
+                          ...column.background,
+                          paddingTop: 0,
+                          paddingBottom: 0,
+                          paddingType: selectedOption.value,
+                        },
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
     }
   };
 
   const handleUpdateBackground = (key, value) => {
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
+      arr.map((section) => {
+        return String(section.id) === sectionId
           ? {
-              ...item,
-              background: {
-                ...item.background,
-                [key]: value,
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      background: {
+                        ...column.background,
+                        [key]: value,
+                      },
+                    }
+                  : column
+              ),
             }
-          : item
-      )
+          : section;
+      })
     );
   };
 
@@ -221,46 +251,64 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
 
     if (selectedBackgroundType?.value === "image") {
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: {
-                  ...item.background,
-                  bgImage: imageUrl,
-                  bgColor: "",
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        background: {
+                          ...column.background,
+                          bgImage: imageUrl,
+                          bgColor: "",
+                        },
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
     } else if (selectedBackgroundType?.value === "color") {
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: {
-                  ...item.background,
-                  bgColor: selectedBgColor,
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        background: {
+                          ...column.background,
+                          bgColor: selectedBgColor,
+                        },
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl, selectedBackgroundType, selectedBgColor]);
 
   return (
-    <div className="pb-3">
+    <div
+      className={`animate__animated pb-4 ${
+        isSlidingOutColumn ? "animate__fadeOutRight animate__fast" : ""
+      }`}
+    >
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
         <SelectOptions
           label="Tipe Background"
           options={backgroundType}
           onChange={(selectedOption) => {
-            handleChangeValueOptions(selectedOption, "bgType");
             setSelectedBackgroundType(selectedOption);
+            handleChangeValueOptions("bgType", selectedOption.value);
           }}
           value={selectedBackgroundType}
           width="50"
@@ -269,7 +317,10 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
         <SelectOptions
           label="Pengisi Atas dan Bawah"
           options={PaddingYOptions}
-          onChange={handleChangePaddingOptions}
+          onChange={(selectedOption) => {
+            setSelectedPadding(selectedOption);
+            handleChangePaddingOptions(selectedOption);
+          }}
           value={selectedPadding}
           width="50"
         />
@@ -330,7 +381,10 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
           <ColorPicker
             initialColor={selectedBgColor}
             label="Warna"
-            onChange={handleChangeBgColor}
+            onChange={(color) => {
+              setSelectedBgColor(color);
+              handleUpdateBackground("bgColor", color);
+            }}
             top={"0"}
             right={"34px"}
             type="rgba"
@@ -397,4 +451,4 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
   );
 };
 
-export default BackgroundTab;
+export default BackgrounTabSpecificColumn;

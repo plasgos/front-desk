@@ -183,7 +183,7 @@ const ColumnTextAndImages = ({
               showInfoText={contentItem.content?.title}
               showThumbnail={contentItem.content?.image}
               moveSection={(dragIndex, hoverIndex) =>
-                moveSection(section.name, dragIndex, hoverIndex)
+                moveSection(section.id, dragIndex, hoverIndex)
               }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}

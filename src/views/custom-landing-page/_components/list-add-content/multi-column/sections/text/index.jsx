@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   CButton,
   CFormGroup,
@@ -10,25 +9,25 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
+import React, { useEffect, useState } from "react";
 import {
   FaAlignCenter,
   FaAlignJustify,
   FaAlignLeft,
   FaAlignRight,
 } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
 import { createUniqueID } from "../../../../../../../lib/unique-id";
-import AnimationControl from "../../../../common/AnimationControl";
-import { CustomReactQuill } from "../../../../common/ReactQuill";
-import ColorPicker from "../../../../common/ColorPicker";
-import BackgroundTab from "../../../../common/BackgroundTab";
-import { useDispatch, useSelector } from "react-redux";
 import {
   setIsAddColumnSection,
   setIsEditingColumnSection,
   setIsEditingSection,
 } from "../../../../../../../redux/modules/custom-landing-page/reducer";
-import BackgroundTabMultiColumn from "../../common/BackgroundTabMultiColumn";
+import ColorPicker from "../../../../common/ColorPicker";
+import { CustomReactQuill } from "../../../../common/ReactQuill";
+import AnimationControlMultiColumn from "../../common/AnimationControlMultiColumn";
+import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
 
 const Text = ({
   previewSection,
@@ -174,11 +173,9 @@ const Text = ({
     };
     setPreviewSection((prevSections) =>
       prevSections.map((section) => {
-        // Hanya memodifikasi section dengan name "multi-column"
-        if (section.name === "multi-column") {
+        if (section.id === sectionId) {
           const updatedColumns = section.column.map((column) => {
             if (column.id === columnId) {
-              // Jika id kolom cocok, tambahkan content baru ke kolom tersebut
               return {
                 ...column,
                 content: [...column.content, payload],
@@ -186,8 +183,6 @@ const Text = ({
             }
             return column;
           });
-
-          // const updatedColumns = [...section.column, newColumn];
 
           return {
             ...section,
@@ -280,9 +275,8 @@ const Text = ({
         </CNav>
         <CTabContent
           style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
-          className="pt-3"
         >
-          <CTabPane data-tab="konten">
+          <CTabPane className="my-2 pb-5" data-tab="konten">
             <div>
               <div className="d-flex align-items-center justify-content-between">
                 <CFormGroup>
@@ -375,10 +369,12 @@ const Text = ({
           </CTabPane>
 
           <CTabPane className="p-1" data-tab="animation">
-            <AnimationControl
+            <AnimationControlMultiColumn
               label="Teks"
               currentSection={isEditingSection ? currentSection : settingText}
               setPreviewSection={setPreviewSection}
+              sectionId={sectionId}
+              columnId={columnId}
             />
           </CTabPane>
 
@@ -387,7 +383,7 @@ const Text = ({
             className="p-1"
             data-tab="background"
           >
-            <BackgroundTabMultiColumn
+            <BackgroundTabMultiColumnContent
               currentSection={isEditingSection ? currentSection : settingText}
               setPreviewSection={setPreviewSection}
               type={isEditingSection ? "edit" : "add"}

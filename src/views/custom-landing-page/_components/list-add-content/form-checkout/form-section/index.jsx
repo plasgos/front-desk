@@ -55,7 +55,7 @@ const FormSection = ({
               id={contentItem.id}
               showInfoText={`${contentItem.label} - ${contentItem.labelType}`}
               moveSection={(dragIndex, hoverIndex) =>
-                moveSection(section.name, dragIndex, hoverIndex)
+                moveSection(section.id, dragIndex, hoverIndex)
               }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}

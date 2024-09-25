@@ -42,15 +42,6 @@ const ViewMultiColumn = forwardRef(
             ></div>
           ) : null}
 
-          {/* <div
-            style={{
-              ...(isResizing ? { cursor: "not-allowed" } : {}),
-              ...(isDragging ? { border: "2px solid green" } : {}),
-              ...(isFocused && { border: "2px solid green" }),
-            }}
-            className=" tw-flex   "
-          >
-          </div> */}
           {content?.column.map((column) => {
             const paddingTop = column.background?.paddingTop
               ? `calc(16px + ${column.background.paddingTop}px)`
@@ -83,7 +74,19 @@ const ViewMultiColumn = forwardRef(
 
             const calculateOpacity = column.background?.opacity / 100;
             return (
-              <div className="tw-flex-1" key={column.id}>
+              <div
+                style={{
+                  ...(content?.wrapperStyle?.isWidthCustom === "equal"
+                    ? { flex: "1 1 0%" }
+                    : { flex: `${column.width} 1 0% ` }),
+                }}
+                className={`${
+                  content?.wrapperStyle?.isWidthCustom === "equal"
+                    ? "tw-flex-1"
+                    : ""
+                }`}
+                key={column.id}
+              >
                 <div
                   style={{
                     paddingTop: paddingTop,

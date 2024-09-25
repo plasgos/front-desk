@@ -314,7 +314,7 @@ const Testimony = ({
               id={contentItem.id}
               showInfoText={contentItem.name}
               moveSection={(dragIndex, hoverIndex) =>
-                moveSection(section.name, dragIndex, hoverIndex)
+                moveSection(section.id, dragIndex, hoverIndex)
               }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}

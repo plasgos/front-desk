@@ -123,7 +123,7 @@ const Shipping = ({ previewSection, setPreviewSection, currentSection }) => {
               id={contentItem.id}
               showInfoText={contentItem.label}
               moveSection={(dragIndex, hoverIndex) =>
-                moveSection(section.name, dragIndex, hoverIndex)
+                moveSection(section.id, dragIndex, hoverIndex)
               }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}

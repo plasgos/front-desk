@@ -185,7 +185,7 @@ const FAQ = ({
               id={contentItem.id}
               showInfoText={contentItem.title}
               moveSection={(dragIndex, hoverIndex) =>
-                moveSection(section.name, dragIndex, hoverIndex)
+                moveSection(section.id, dragIndex, hoverIndex)
               }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}

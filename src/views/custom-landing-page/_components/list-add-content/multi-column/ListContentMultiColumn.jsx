@@ -8,6 +8,7 @@ import {
   setIsAddColumnSection,
   setIsEditingColumnSection,
 } from "../../../../../redux/modules/custom-landing-page/reducer";
+import ColumnTextAndImages from "./sections/colum-text-and-image";
 
 const ListContentMultiColumn = ({
   previewSection,
@@ -75,119 +76,120 @@ const ListContentMultiColumn = ({
         />
       )}
 
-      {/* {addContent === "column-text-and-image" && (
+      {addContent === "column-text-and-image" && (
         <ColumnTextAndImages
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
       )}
 
-      {addContent === "empty-space" && (
+      {/* {addContent === "empty-space" && (
         <EmptySpace
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
-
+      )} */}
+      {/* 
       {addContent === "list-images" && (
       <ListImagesControl
         previewSection={previewSection}
         setPreviewSection={(value) => setPreviewSection(value)}
         isShowContent={isShowContent}
       />
-    )}
+    )} */}
 
-      {addContent === "scroll-target" && (
+      {/* {addContent === "scroll-target" && (
         <ScrollTarget
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
-
+      )} */}
+      {/* 
       {addContent === "button" && (
         <Buttons
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "testimony" && (
+      {/* {addContent === "testimony" && (
         <Testimony
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
-
+      )} */}
+      {/* 
       {addContent === "line" && (
         <Line
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "list-feature" && (
+      {/* {addContent === "list-feature" && (
         <ListFeature
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "quote" && (
+      {/* {addContent === "quote" && (
         <Quote
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
-
+      )} */}
+      {/* 
       {addContent === "faq" && (
         <FAQ
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
-
+      )} */}
+      {/* 
       {addContent === "form-checkout" && (
         <FormCheckout
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "floating-button" && (
+      {/* {addContent === "floating-button" && (
         <FloatingButton
           previewFloatingSection={previewFloatingSection}
           setPreviewFloatingSection={setPreviewFloatingSection}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "image" && (
+      {/* {addContent === "image" && (
         <Image
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "image-text" && (
+      {/* {addContent === "image-text" && (
         <ImageText
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "multi-column" && (
+      {/* {addContent === "multi-column" && (
         <MultiColumn
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}

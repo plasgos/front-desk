@@ -6,7 +6,7 @@ import SelectOptions from "../../../common/SelectOptions";
 import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
 import ColorPicker from "../../../common/ColorPicker";
 
-const BackgroundTabMultiColumn = ({
+const BackgroundTabMultiColumnContent = ({
   currentSection: currentContent,
   setPreviewSection,
   type,
@@ -75,64 +75,61 @@ const BackgroundTabMultiColumn = ({
     paddingType: "equal",
   };
 
-  const handleChangeValueOptions = (selectedOption, key) => {
-    if (!selectedOption.value) {
+  const handleChangeValueOptions = (key, value) => {
+    if (!value) {
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentContent.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: defaultBgValues,
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) => {
+                          return content.id === currentContent.id
+                            ? {
+                                ...content,
+                                background: defaultBgValues,
+                              }
+                            : content;
+                        }),
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
-    } else if (selectedOption !== "image") {
+    } else if (value !== "image") {
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentContent.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: {
-                  ...item.background,
-                  bgImage: "",
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) => {
+                          return content.id === currentContent.id
+                            ? {
+                                ...content,
+                                background: {
+                                  ...content.background,
+                                  bgImage: "",
+                                },
+                              }
+                            : content;
+                        }),
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
     }
-
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentContent.id
-          ? {
-              ...item,
-              background: {
-                ...item.background,
-                [key]: selectedOption.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeBgColor = (color) => {
-    setSelectedBgColor(color);
-    // setPreviewSection((arr) =>
-    //   arr.map((item) =>
-    //     String(item.id) === currentContent.id
-    //       ? {
-    //           ...item,
-    //           background: {
-    //             ...item.background,
-    //             bgColor: color,
-    //           },
-    //         }
-    //       : item
-    //   )
-    // );
 
     setPreviewSection((arr) =>
       arr.map((section) => {
@@ -144,12 +141,12 @@ const BackgroundTabMultiColumn = ({
                   ? {
                       ...column,
                       content: column.content.map((content) => {
-                        return content.id === currentContent
+                        return content.id === currentContent.id
                           ? {
                               ...content,
                               background: {
                                 ...content.background,
-                                bgColor: color,
+                                [key]: value,
                               },
                             }
                           : content;
@@ -165,57 +162,98 @@ const BackgroundTabMultiColumn = ({
 
   const handleChangePaddingOptions = (selectedOption) => {
     setSelectedPadding(selectedOption);
-
     if (selectedOption.value !== "equal") {
       setPaddingY(0);
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentContent.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: {
-                  ...item.background,
-                  paddingY: 0,
-                  paddingType: selectedOption.value,
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) => {
+                          return content.id === currentContent.id
+                            ? {
+                                ...content,
+                                background: {
+                                  ...content.background,
+                                  paddingY: 0,
+                                  paddingType: selectedOption.value,
+                                },
+                              }
+                            : content;
+                        }),
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
     } else {
       setPaddingTop(0);
       setPaddingBottom(0);
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentContent.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: {
-                  ...item.background,
-                  paddingTop: 0,
-                  paddingBottom: 0,
-                  paddingType: selectedOption.value,
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) => {
+                          return content.id === currentContent.id
+                            ? {
+                                ...content,
+                                background: {
+                                  ...content.background,
+                                  paddingTop: 0,
+                                  paddingBottom: 0,
+                                  paddingType: selectedOption.value,
+                                },
+                              }
+                            : content;
+                        }),
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
     }
   };
 
   const handleUpdateBackground = (key, value) => {
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentContent.id
+      arr.map((section) => {
+        return String(section.id) === sectionId
           ? {
-              ...item,
-              background: {
-                ...item.background,
-                [key]: value,
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) => {
+                        return content.id === currentContent.id
+                          ? {
+                              ...content,
+                              background: {
+                                ...content.background,
+                                [key]: value,
+                              },
+                            }
+                          : content;
+                      }),
+                    }
+                  : column
+              ),
             }
-          : item
-      )
+          : section;
+      })
     );
   };
 
@@ -258,46 +296,74 @@ const BackgroundTabMultiColumn = ({
 
     if (selectedBackgroundType?.value === "image") {
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentContent.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: {
-                  ...item.background,
-                  bgImage: imageUrl,
-                  bgColor: "",
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) => {
+                          return content.id === currentContent.id
+                            ? {
+                                ...content,
+                                background: {
+                                  ...content.background,
+                                  bgImage: imageUrl,
+                                  bgColor: "",
+                                },
+                              }
+                            : content;
+                        }),
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
     } else if (selectedBackgroundType?.value === "color") {
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentContent.id
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                background: {
-                  ...item.background,
-                  bgColor: selectedBgColor,
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) => {
+                          return content.id === currentContent.id
+                            ? {
+                                ...content,
+                                background: {
+                                  ...content.background,
+                                  bgColor: selectedBgColor,
+                                },
+                              }
+                            : content;
+                        }),
+                      }
+                    : column
+                ),
               }
-            : item
-        )
+            : section;
+        })
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl, selectedBackgroundType, selectedBgColor]);
 
   return (
-    <div className="pb-3">
+    <div className="pb-4">
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
         <SelectOptions
           label="Tipe Background"
           options={backgroundType}
           onChange={(selectedOption) => {
-            handleChangeValueOptions(selectedOption, "bgType");
             setSelectedBackgroundType(selectedOption);
+            handleChangeValueOptions("bgType", selectedOption.value);
           }}
           value={selectedBackgroundType}
           width="50"
@@ -306,7 +372,10 @@ const BackgroundTabMultiColumn = ({
         <SelectOptions
           label="Pengisi Atas dan Bawah"
           options={PaddingYOptions}
-          onChange={handleChangePaddingOptions}
+          onChange={(selectedOption) => {
+            setSelectedPadding(selectedOption);
+            handleChangePaddingOptions(selectedOption);
+          }}
           value={selectedPadding}
           width="50"
         />
@@ -367,7 +436,10 @@ const BackgroundTabMultiColumn = ({
           <ColorPicker
             initialColor={selectedBgColor}
             label="Warna"
-            onChange={handleChangeBgColor}
+            onChange={(color) => {
+              setSelectedBgColor(color);
+              handleUpdateBackground("bgColor", color);
+            }}
             top={"0"}
             right={"34px"}
             type="rgba"
@@ -434,4 +506,4 @@ const BackgroundTabMultiColumn = ({
   );
 };
 
-export default BackgroundTabMultiColumn;
+export default BackgroundTabMultiColumnContent;

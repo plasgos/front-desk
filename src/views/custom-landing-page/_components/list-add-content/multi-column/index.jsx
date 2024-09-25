@@ -15,7 +15,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { IoAdd } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
-import BackgroundTab from "../../common/BackgroundTab";
+import BackgroundTabSpecificColumn from "./common/BackgrounTabSpecificColumn";
 import { DraggableList } from "../../common/DraggableList";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import SelectOptions from "../../common/SelectOptions";
@@ -30,6 +30,7 @@ import {
   setIsEditingColumnSection,
   setIsEditingSection,
 } from "../../../../../redux/modules/custom-landing-page/reducer";
+import BackgroundTab from "../../common/BackgroundTab";
 
 const widthTypeOptions = [
   { value: "equal", label: "Sama Rata" },
@@ -53,9 +54,10 @@ const MultiColumn = ({
     isAddColumn,
     isEditingColumn,
   } = useSelector((state) => state.customLandingPage.multiColumnSection);
-
   const dispatch = useDispatch();
 
+  const [isSlidingOutColumn, setIsSlidingOutColumn] = useState(false);
+  const [activeTab, setActiveTab] = useState("column");
   const [columnId, setColumnId] = useState("");
   const [setting, setSetting] = useState({});
   const [selectedColumn, setSelectedColumn] = useState({});
@@ -65,7 +67,29 @@ const MultiColumn = ({
 
   const [widthType, setWidthType] = useState(widthTypeOptions[0]);
 
-  const [width1, setWidth1] = useState(0);
+  const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
+  console.log("🚀 ~ selectedCurrentSection:", selectedCurrentSection);
+
+  useEffect(() => {
+    const section = previewSection.find((section) => section.id === setting.id);
+
+    if (section) {
+      setSelectedCurrentSection(section);
+    }
+  }, [previewSection, setting.id, isEditingSectionMultiColumn]);
+
+  useEffect(() => {
+    if (isEditingSectionMultiColumn) {
+      const currentWidhtType = widthTypeOptions.find(
+        (opt) =>
+          opt.value === currentSectionMultiColumn?.wrapperStyle?.isWidthCustom
+      );
+
+      if (currentWidhtType) {
+        setWidthType(currentWidhtType);
+      }
+    }
+  }, [currentSectionMultiColumn, isEditingSectionMultiColumn]);
 
   const sectionIdCheck = isEditingSectionMultiColumn
     ? currentSectionMultiColumn.id
@@ -106,8 +130,22 @@ const MultiColumn = ({
 
   const handleConfirm = () => {
     if (isAddColumn || isEditingColumn) {
-      dispatch(setIsAddColumn(false));
-      dispatch(setIsEditingColumn(false));
+      if (activeTab === "background") {
+        setIsSlidingOutColumn(true);
+        setTimeout(() => {
+          setActiveTab("column");
+          dispatch(setIsAddColumn(false));
+          dispatch(setIsEditingColumn(false));
+          setIsSlidingOutColumn(false);
+        }, 800);
+      } else {
+        setIsSlidingOutColumn(true);
+        setTimeout(() => {
+          dispatch(setIsAddColumn(false));
+          dispatch(setIsEditingColumn(false));
+          setIsSlidingOutColumn(false);
+        }, 800);
+      }
     } else {
       isShowMultiColumn(false);
     }
@@ -160,17 +198,18 @@ const MultiColumn = ({
           name: "Kolom",
           content: [initialSection],
           background,
+          width: 50,
         },
         {
           id: uniqueIdColumn2,
           name: "Kolom",
           content: [{ ...initialSection, id: newId() }],
           background,
+          width: 50,
         },
       ],
       wrapperStyle: {
-        isWidthCustom: false,
-        width1: 50,
+        isWidthCustom: "equal",
       },
       background,
     };
@@ -186,13 +225,14 @@ const MultiColumn = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditingSectionMultiColumn]);
 
-  const onAddSection = () => {
+  const onAddColumnSection = () => {
     let uniqueId = createUniqueID(previewSection);
     const newColumn = {
       id: uniqueId,
       name: "Kolom",
       content: [initialSection],
       background,
+      width: 50,
     };
 
     setPreviewSection((prevSections) =>
@@ -225,14 +265,6 @@ const MultiColumn = ({
           : section;
       })
     );
-  };
-
-  const handleSetValueWhenBlurWrapperStyle = (value, min, max, key) => {
-    const newValue = Math.min(Math.max(value, min), max);
-    if (key === "width1") {
-      setWidth1(newValue);
-    }
-    handleChangeWrapperStyle(key, newValue);
   };
 
   const editSection = useCallback(
@@ -433,6 +465,7 @@ const MultiColumn = ({
                 ) {
                   return (
                     <Text
+                      key={content.id}
                       currentSection={content}
                       previewSection={previewSection}
                       setPreviewSection={setPreviewSection}
@@ -465,6 +498,71 @@ const MultiColumn = ({
     ]
   );
 
+  const handleChangeWidthColumn = useCallback(
+    (columnId, value) => {
+      setPreviewSection((arr) =>
+        arr.map((section) =>
+          section.id === sectionIdCheck
+            ? {
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        width: value,
+                      }
+                    : column
+                ),
+              }
+            : section
+        )
+      );
+    },
+    [sectionIdCheck, setPreviewSection]
+  );
+
+  const handleSetValueWhenBlurWrapperStyle = useCallback(
+    (value, min, max, columnId) => {
+      const newValue = Math.min(Math.max(value, min), max);
+      handleChangeWidthColumn(columnId, newValue);
+    },
+    [handleChangeWidthColumn]
+  );
+
+  const renderCustomWidthColumn = useCallback(
+    (section) => {
+      return (
+        <div key={section.id}>
+          {section.column.map((column, index) => {
+            const label = `Lebar ${index + 1}`;
+            return (
+              <div key={column.id}>
+                <InputRangeWithNumber
+                  label={label}
+                  value={column.width}
+                  onChange={(newValue) => {
+                    handleChangeWidthColumn(column.id, newValue);
+                  }}
+                  min={1}
+                  max={100}
+                  onBlur={() =>
+                    handleSetValueWhenBlurWrapperStyle(
+                      column.width,
+                      1,
+                      100,
+                      column.id
+                    )
+                  }
+                />
+              </div>
+            );
+          })}
+        </div>
+      );
+    },
+    [handleChangeWidthColumn, handleSetValueWhenBlurWrapperStyle]
+  );
+
   return (
     <div>
       <CRow>
@@ -491,23 +589,33 @@ const MultiColumn = ({
                 </div>
               )}
 
-            <CTabs activeTab="column">
+            <CTabs activeTab={activeTab}>
               {!isAddColumn && !isEditingColumnSection && !isEditingSection && (
                 <CNav variant="tabs">
-                  <CNavItem>
+                  <CNavItem onClick={() => setActiveTab("column")}>
                     <CNavLink data-tab="column">Kolom</CNavLink>
                   </CNavItem>
-                  <CNavItem>
+                  <CNavItem onClick={() => setActiveTab("background")}>
                     <CNavLink data-tab="background">Background</CNavLink>
                   </CNavItem>
                 </CNav>
               )}
-              <CTabContent style={{}} className="pt-3">
+              <CTabContent
+                style={{
+                  height:
+                    !isAddColumnSection &&
+                    !isEditingColumnSection &&
+                    !isEditingSection &&
+                    380,
+                  overflowY: "auto",
+                  overflowX: "hidden",
+                }}
+              >
                 <CTabPane className="p-1" data-tab="column">
                   {!isEditingSection ? (
                     <>
                       {!isAddColumn && !isEditingColumn && (
-                        <div>
+                        <div className="my-3 pb-5">
                           <div>
                             <SelectOptions
                               label="Lebar"
@@ -524,28 +632,21 @@ const MultiColumn = ({
                             />
 
                             {widthType.value === "custom" && (
-                              <InputRangeWithNumber
-                                label="Width 1"
-                                value={width1}
-                                onChange={(newValue) => {
-                                  setWidth1(newValue);
-                                  handleChangeWrapperStyle("width1", newValue);
-                                }}
-                                min={1}
-                                max={100}
-                                onBlur={() =>
-                                  handleSetValueWhenBlurWrapperStyle(
-                                    width1,
-                                    1,
-                                    100,
-                                    "width1"
-                                  )
-                                }
-                              />
+                              <div>
+                                {previewSection.map((section) => {
+                                  if (section.id === sectionIdCheck) {
+                                    return renderCustomWidthColumn(
+                                      section,
+                                      columnId
+                                    );
+                                  }
+                                  return null;
+                                })}
+                              </div>
                             )}
                           </div>
 
-                          <div>
+                          <div className="my-3">
                             {previewSection
                               .filter((section) =>
                                 isEditingSectionMultiColumn
@@ -558,7 +659,7 @@ const MultiColumn = ({
                             style={{ cursor: "pointer" }}
                             onClick={() => {
                               dispatch(setIsAddColumn(true));
-                              onAddSection();
+                              onAddColumnSection();
                             }}
                           >
                             <CCardBody className="p-1">
@@ -598,7 +699,7 @@ const MultiColumn = ({
                               columnId={columnId}
                             />
                           ) : (
-                            <div>
+                            <div className="my-3 pb-5">
                               {previewSection.map((section) => {
                                 if (section.id === sectionIdCheck) {
                                   return renderSection(section, columnId); // Render hanya section "multi-column"
@@ -655,7 +756,13 @@ const MultiColumn = ({
                               columnId={selectedColumn.id}
                             />
                           ) : (
-                            <div>
+                            <div
+                              className={`animate__animated my-3 pb-5 ${
+                                isSlidingOutColumn
+                                  ? "animate__fadeOutRight animate__fast"
+                                  : "animate__fadeInRight animate__fast"
+                              }`}
+                            >
                               {previewSection.map((section) => {
                                 if (section.id === sectionIdCheck) {
                                   return renderSection(
@@ -717,15 +824,25 @@ const MultiColumn = ({
                   className="p-1"
                   data-tab="background"
                 >
-                  <BackgroundTab
-                    currentSection={
-                      isEditingSectionMultiColumn
-                        ? currentSectionMultiColumn
-                        : setting
-                    }
-                    setPreviewSection={setPreviewSection}
-                    type={isEditingSectionMultiColumn ? "edit" : "add"}
-                  />
+                  {isEditingColumn ? (
+                    <BackgroundTabSpecificColumn
+                      currentSection={selectedColumn}
+                      setPreviewSection={setPreviewSection}
+                      sectionId={sectionIdCheck}
+                      columnId={selectedColumn.id}
+                      isSlidingOutColumn={isSlidingOutColumn}
+                    />
+                  ) : (
+                    <BackgroundTab
+                      currentSection={
+                        isEditingSectionMultiColumn
+                          ? currentSectionMultiColumn
+                          : selectedCurrentSection
+                      }
+                      setPreviewSection={setPreviewSection}
+                      type={isEditingSectionMultiColumn ? "edit" : "add"}
+                    />
+                  )}
                 </CTabPane>
               </CTabContent>
             </CTabs>

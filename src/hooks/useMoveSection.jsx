@@ -2,10 +2,10 @@ import { useCallback } from "react";
 
 export const useMoveSection = (setPreviewSection) => {
   const moveSection = useCallback(
-    (name, dragIndex, hoverIndex) => {
+    (sectionId, dragIndex, hoverIndex) => {
       setPreviewSection((prevSections) => {
         return prevSections.map((section) => {
-          if (section.name === name) {
+          if (section.id === sectionId) {
             const updatedContent = [...section.content];
             const draggedItem = updatedContent[dragIndex];
             updatedContent.splice(dragIndex, 1);

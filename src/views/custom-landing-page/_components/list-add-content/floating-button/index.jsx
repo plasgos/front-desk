@@ -184,7 +184,7 @@ const FloatingButton = ({
               id={contentItem.id}
               showInfoText={contentItem.content?.title}
               moveSection={(dragIndex, hoverIndex) =>
-                moveSection(section.name, dragIndex, hoverIndex)
+                moveSection(section.id, dragIndex, hoverIndex)
               }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
