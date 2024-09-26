@@ -30,8 +30,6 @@ const Text = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
-  isMultiColumn,
-  columnId,
 }) => {
   const [editorHtml, setEditorHtml] = useState(
     currentSection?.content?.editorHtml || "Type your text here"
@@ -104,77 +102,6 @@ const Text = ({
     );
   };
 
-  const addContentMultiColumn = () => {
-    let uniqueId = createUniqueID(previewSection);
-    let payload = {
-      id: uniqueId,
-      name: "text",
-      title: "Teks",
-      content: {
-        editorHtml,
-        style: {
-          textAlign: selectAlign,
-          color: selectedColor,
-        },
-      },
-      animation: {
-        type: undefined,
-        duration: 1,
-        isReplay: false,
-      },
-      background: {
-        bgType: undefined,
-        bgColor: "",
-        bgImage: "",
-        blur: 0,
-        opacity: 0,
-        paddingY: 0,
-        paddingTop: 0,
-        paddingBottom: 0,
-        paddingType: "equal",
-      },
-    };
-    const multiColumnSection = setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        // Hanya memodifikasi section dengan name "multi-column"
-        if (section.name === "multi-column") {
-          const updatedColumns = section.column.map((column) => {
-            if (column.id === columnId) {
-              // Jika id kolom cocok, tambahkan content baru ke kolom tersebut
-              return {
-                ...column,
-                content: [...column.content, payload],
-              };
-            }
-            return column;
-          });
-
-          // const updatedColumns = [...section.column, newColumn];
-
-          return {
-            ...section,
-            column: updatedColumns,
-          };
-        }
-
-        return section;
-      })
-    );
-
-    // const addContent = multiColumnSection.map((prevContent) => [
-    //   ...prevContent,
-    //   payload,
-    // ]);
-    // console.log("🚀 ~ addContentMultiColumn ~ addContent:", addContent);
-
-    console.log(
-      "🚀 ~ addContentMultiColumn ~ multiColumnSection:",
-      multiColumnSection
-    );
-
-    console.log("RUNNNN");
-  };
-
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
     let payload = {
@@ -212,7 +139,7 @@ const Text = ({
 
   useEffect(() => {
     if (!isEditingSection) {
-      isMultiColumn ? addContentMultiColumn() : handleAddContent();
+      handleAddContent();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditingSection]);

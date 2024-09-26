@@ -8,7 +8,13 @@ import {
 import ColorPicker from "../../../../common/ColorPicker";
 import SelectOptions from "../../../../common/SelectOptions";
 
-const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
+const DesignTab = ({
+  currentSection,
+  setPreviewSection,
+  isEditingSection,
+  sectionId,
+  columnId,
+}) => {
   const [selectedColorTitle, setSelectedColorTitle] = useState(
     currentSection?.wrapperStyle?.colorTitle || "#000000"
   );
@@ -66,34 +72,32 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
     }
   }, [currentSection, isEditingSection]);
 
-  const handleChangeWrapperStyle = (key, selectedOption) => {
+  const handleChangeWrapperStyle = (key, color) => {
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
+      arr.map((section) =>
+        String(section.id) === sectionId
           ? {
-              ...item,
-              wrapperStyle: {
-                ...item.wrapperStyle,
-                [key]: selectedOption.value,
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) =>
+                        content.id === currentSection.id
+                          ? {
+                              ...content,
+                              wrapperStyle: {
+                                ...content.wrapperStyle,
+                                [key]: color,
+                              },
+                            }
+                          : content
+                      ),
+                    }
+                  : column
+              ),
             }
-          : item
-      )
-    );
-  };
-
-  const handleChangeColor = (key, color) => {
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              wrapperStyle: {
-                ...item.wrapperStyle,
-                [key]: color,
-              },
-            }
-          : item
+          : section
       )
     );
   };
@@ -106,7 +110,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           label="Warna Judul"
           onChange={(color) => {
             setSelectedColorTitle(color);
-            handleChangeColor("colorTitle", color);
+            handleChangeWrapperStyle("colorTitle", color);
           }}
           bottom={"10px"}
         />
@@ -116,7 +120,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           label="Warna Deskripsi"
           onChange={(color) => {
             setSelectedColorDesc(color);
-            handleChangeColor("colorDescription", color);
+            handleChangeWrapperStyle("colorDescription", color);
           }}
           bottom={"10px"}
         />
@@ -128,7 +132,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           options={maxColumnOptions}
           onChange={(selectedOption) => {
             setSelectedMaxColumn(selectedOption);
-            handleChangeWrapperStyle("maxColumn", selectedOption);
+            handleChangeWrapperStyle("maxColumn", selectedOption.value);
           }}
           value={selectedMaxColumn}
           width="50"
@@ -139,7 +143,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           options={distanceOptions}
           onChange={(selectedOption) => {
             setSelectedDistance(selectedOption);
-            handleChangeWrapperStyle("paddingX", selectedOption);
+            handleChangeWrapperStyle("paddingX", selectedOption.value);
           }}
           value={selectedDistance}
           width="50"
@@ -153,7 +157,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           options={aspectRatioOptions}
           onChange={(selectedOption) => {
             setSelectedImageRatio(selectedOption);
-            handleChangeWrapperStyle("aspectRatio", selectedOption);
+            handleChangeWrapperStyle("aspectRatio", selectedOption.value);
           }}
           value={selectedImageRatio}
           width="50"
@@ -167,7 +171,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           options={fontSizeOptions}
           onChange={(selectedOption) => {
             setSelectedFontSize(selectedOption);
-            handleChangeWrapperStyle("fontSizeTitle", selectedOption);
+            handleChangeWrapperStyle("fontSizeTitle", selectedOption.value);
           }}
           value={selectedFontSize}
           width="50"

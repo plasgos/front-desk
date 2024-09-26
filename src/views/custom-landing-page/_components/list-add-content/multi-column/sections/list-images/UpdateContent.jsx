@@ -1,20 +1,20 @@
 import { CButton, CCard } from "@coreui/react";
 import React, { useEffect, useState } from "react";
+
 import image from "../../../../../../../assets/action-figure.jpg";
 
 import { useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
-import { createUniqueID } from "../../../../../../../lib/unique-id";
-import Input from "../../../../common/Input";
-import { CustomReactQuill } from "../../../../common/ReactQuill";
-import ScrollTargetInput from "../../../../common/ScrollTargetSelect";
-import SelectOptions from "../../../../common/SelectOptions";
-import UrlInput from "../../../../common/UrlInput";
-import WhatsAppInput from "../../../../common/WhatAppsInput";
-import FacebookPixel from "../../../../FacebookPixel";
+import { useSCrollTargetChangeMultiColumn } from "../../hooks/useScrolltargetChangeMultiColumn";
 import { useUrlChangeMultiColumn } from "../../hooks/useUrlChangeMulitColumn";
 import { useWhatAppsChangeMultiColumn } from "../../hooks/useWhatAppsChangeMultiColumn";
-import { useSCrollTargetChangeMultiColumn } from "../../hooks/useScrolltargetChangeMultiColumn";
+import Input from "../../../../common/Input";
+import UrlInput from "../../../../common/UrlInput";
+import WhatsAppInput from "../../../../common/WhatAppsInput";
+import ScrollTargetInput from "../../../../common/ScrollTargetSelect";
+import FacebookPixel from "../../../../FacebookPixel";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import SelectOptions from "../../../../common/SelectOptions";
 
 export const UpdateContent = ({
   idSection,
@@ -31,16 +31,10 @@ export const UpdateContent = ({
   const [imageUrl, setImageUrl] = useState(
     currentContent?.content?.image || image
   );
-  const [title, setTitle] = useState(
-    currentContent?.content?.title || "How awesome are you?"
-  );
-  const [description, setDescription] = useState(
-    currentContent?.content?.description ||
-      "So awesome that you will not believe it"
-  );
 
-  const [titleValue] = useDebounce(title, 1000);
-  const [descriptionValue] = useDebounce(description, 1000);
+  const [alt, setAlt] = useState(currentContent?.content?.alt || "");
+
+  const [altValue] = useDebounce(alt, 1000);
 
   const [setting, setSetting] = useState({});
   const [selectedOption, setSelectedOption] = useState(
@@ -48,16 +42,12 @@ export const UpdateContent = ({
   );
 
   useEffect(() => {
-    if (titleValue !== currentContent?.content?.title) {
-      handleChangeContent("title", titleValue);
-    }
-
-    if (descriptionValue !== currentContent?.content?.description) {
-      handleChangeContent("description", descriptionValue);
+    if (altValue !== currentContent?.content?.alt) {
+      handleChangeContent("alt", altValue);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [titleValue, descriptionValue]);
+  }, [altValue]);
 
   const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChangeMultiColumn(
     sectionId,
@@ -99,7 +89,6 @@ export const UpdateContent = ({
         const updatedOption = optionsScrollTarget.find(
           (option) => option.id === selectedOptionScrollTarget.id
         );
-
         setPreviewSection((arr) =>
           arr.map((section) =>
             section.id === sectionId
@@ -143,7 +132,6 @@ export const UpdateContent = ({
               : section
           )
         );
-
         setSelectedOptionScrollTarget(updatedOption);
       }
     }
@@ -207,7 +195,6 @@ export const UpdateContent = ({
             : section
         )
       );
-
       setSelectedOptionScrollTarget(undefined);
     }
 
@@ -262,7 +249,6 @@ export const UpdateContent = ({
             : section
         )
       );
-
       setSelectedOptionScrollTarget(optionsScrollTarget[0]);
     }
 
@@ -391,8 +377,6 @@ export const UpdateContent = ({
     let payload = {
       id: uniqueId,
       content: {
-        title,
-        description,
         image: imageUrl,
       },
       target: {},
@@ -472,6 +456,16 @@ export const UpdateContent = ({
           </CButton>
         </div>
 
+        <Input
+          label="Alt"
+          value={alt}
+          onChange={(event) => {
+            const { value } = event.target;
+            setAlt(value);
+          }}
+          type="text"
+        />
+
         <form>
           <SelectOptions
             label="Target"
@@ -480,10 +474,9 @@ export const UpdateContent = ({
             value={selectedOption}
             width="100"
           />
-
           {selectedOption?.value === "url" && (
             <UrlInput
-              id="urlOpenNewTabText&Img"
+              id="urlOpenNewTabListImg"
               url={url}
               handleUrlChange={(newValue) => {
                 setUrl((prevValue) => ({
@@ -497,7 +490,7 @@ export const UpdateContent = ({
 
           {selectedOption?.value === "whatApps" && (
             <WhatsAppInput
-              id="waOpenNewTabText&Img"
+              id="waOpenNewTabListImg"
               whatApps={whatApps}
               handlePhoneNumberChange={(newValue) => {
                 setWhatApps((prevValue) => ({
@@ -522,27 +515,9 @@ export const UpdateContent = ({
               selectedOptionScrollTarget={selectedOptionScrollTarget}
             />
           )}
-
-          <Input
-            label="Judul"
-            value={title}
-            onChange={(e) => {
-              const { value } = e.target;
-              setTitle(value);
-            }}
-            type="text"
-          />
         </form>
 
         {selectedOption.value !== undefined && <FacebookPixel />}
-
-        <CustomReactQuill
-          value={description}
-          onChange={(value) => {
-            setDescription(value);
-          }}
-          version="basic"
-        />
       </div>
     </CCard>
   );

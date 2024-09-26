@@ -9,6 +9,9 @@ import {
   setIsEditingColumnSection,
 } from "../../../../../redux/modules/custom-landing-page/reducer";
 import ColumnTextAndImages from "./sections/colum-text-and-image";
+import EmptySpace from "./sections/empty-space";
+import ListImages from "./sections/list-images";
+import ScrollTarget from "./sections/scroll-target";
 
 const ListContentMultiColumn = ({
   previewSection,
@@ -85,29 +88,33 @@ const ListContentMultiColumn = ({
         />
       )}
 
-      {/* {addContent === "empty-space" && (
+      {addContent === "empty-space" && (
         <EmptySpace
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
-      )} */}
-      {/* 
-      {addContent === "list-images" && (
-      <ListImagesControl
-        previewSection={previewSection}
-        setPreviewSection={(value) => setPreviewSection(value)}
-        isShowContent={isShowContent}
-      />
-    )} */}
+      )}
 
-      {/* {addContent === "scroll-target" && (
+      {addContent === "list-images" && (
+        <ListImages
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          sectionId={sectionId}
+          columnId={columnId}
+        />
+      )}
+
+      {addContent === "scroll-target" && (
         <ScrollTarget
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
-      )} */}
+      )}
+
       {/* 
       {addContent === "button" && (
         <Buttons

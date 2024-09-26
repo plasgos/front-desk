@@ -31,6 +31,8 @@ import {
   setIsEditingSection,
 } from "../../../../../redux/modules/custom-landing-page/reducer";
 import BackgroundTab from "../../common/BackgroundTab";
+import ColumnTextAndImages from "./sections/colum-text-and-image";
+import { useRenderEditSection } from "./hooks/useRenderEditSection";
 
 const widthTypeOptions = [
   { value: "equal", label: "Sama Rata" },
@@ -54,6 +56,11 @@ const MultiColumn = ({
     isAddColumn,
     isEditingColumn,
   } = useSelector((state) => state.customLandingPage.multiColumnSection);
+  // console.log("🚀 ~ isEditingColumnSection:", isEditingColumnSection);
+  // console.log("🚀 ~ isEditingColumn:", isEditingColumn);
+  // console.log("🚀 ~ isEditingSection:", isEditingSection);
+  // console.log("🚀 ~ isAddColumn:", isAddColumn);
+  // console.log("🚀 ~ isAddColumnSection:", isAddColumnSection);
   const dispatch = useDispatch();
 
   const [isSlidingOutColumn, setIsSlidingOutColumn] = useState(false);
@@ -68,8 +75,6 @@ const MultiColumn = ({
   const [widthType, setWidthType] = useState(widthTypeOptions[0]);
 
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
-  console.log("🚀 ~ selectedCurrentSection:", selectedCurrentSection);
-
   useEffect(() => {
     const section = previewSection.find((section) => section.id === setting.id);
 
@@ -449,54 +454,15 @@ const MultiColumn = ({
     [moveSection, editSection, removeSection]
   );
 
-  const renderEditSection = useCallback(
-    (section) => {
-      return (
-        <div key={section.id}>
-          {section.column.map((column) => {
-            const columIdCheck = isAddColumn ? columnId : selectedColumn.id;
-
-            if (column.id === columIdCheck) {
-              const columnContent = column.content.map((content) => {
-                if (
-                  selectedSection.name === "text" &&
-                  content.name === "text" &&
-                  selectedSection.id === content.id
-                ) {
-                  return (
-                    <Text
-                      key={content.id}
-                      currentSection={content}
-                      previewSection={previewSection}
-                      setPreviewSection={setPreviewSection}
-                      sectionBeforeEdit={currentSetionBeforeEdit}
-                      sectionId={section.id}
-                      columnId={columIdCheck}
-                    />
-                  );
-                }
-                return null;
-              });
-
-              return <div key={column.id}>{columnContent}</div>;
-            }
-
-            return null;
-          })}
-        </div>
-      );
-    },
-    [
-      columnId,
-      currentSetionBeforeEdit,
-      isAddColumn,
-      previewSection,
-      selectedColumn.id,
-      selectedSection.id,
-      selectedSection.name,
-      setPreviewSection,
-    ]
-  );
+  const { renderEditSection } = useRenderEditSection({
+    previewSection,
+    setPreviewSection,
+    currentSetionBeforeEdit,
+    selectedSection,
+    selectedColumn,
+    columnId,
+    isAddColumn,
+  });
 
   const handleChangeWidthColumn = useCallback(
     (columnId, value) => {

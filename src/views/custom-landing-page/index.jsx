@@ -370,6 +370,8 @@ const CustomLandingPage = () => {
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
+            width={dimensions.width}
+            isPreview={isPreview}
           />
         );
       }

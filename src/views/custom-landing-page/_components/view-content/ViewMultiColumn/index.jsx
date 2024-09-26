@@ -3,9 +3,24 @@ import useAnimatedVisibility from "../../../../../hooks/useAnimatedVisibility";
 
 import ViewText from "../ViewText";
 import { useBackgroundStyles } from "../../../../../hooks/useBackgroundStyles";
+import ViewColumnTextAndImage from "../ViewColumnTextAndImage";
+import ViewEmptySpace from "../ViewEmptySpace";
+import ViewListImages from "../ViewListImages";
+import ViewScrollTraget from "../ViewScrollTraget";
 
 const ViewMultiColumn = forwardRef(
-  ({ containerRef, isDragging, isResizing, content, isFocused }, ref) => {
+  (
+    {
+      containerRef,
+      isDragging,
+      isResizing,
+      content,
+      isFocused,
+      width,
+      isPreview,
+    },
+    ref
+  ) => {
     const stylesBg = useBackgroundStyles(content);
 
     const { elementRef, getClassName, duration } =
@@ -111,16 +126,49 @@ const ViewMultiColumn = forwardRef(
                     ></div>
                   ) : null}
 
-                  {column.content.map(
-                    (content) =>
-                      content.name === "text" && (
-                        <ViewText
-                          key={content.id}
-                          section={content}
-                          isResizing={isResizing}
-                        />
-                      )
-                  )}
+                  {column.content.map((content) => {
+                    return (
+                      <div key={content.id}>
+                        {content.name === "text" && (
+                          <ViewText section={content} isResizing={isResizing} />
+                        )}
+
+                        {content.name === "column-text-and-image" && (
+                          <ViewColumnTextAndImage
+                            containerRef={containerRef}
+                            content={content}
+                            isResizing={isResizing}
+                            isPreview={isPreview}
+                            width={width}
+                          />
+                        )}
+
+                        {content.name === "empty-space" && (
+                          <ViewEmptySpace
+                            content={content.content}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {content.name === "list-images" && (
+                          <ViewListImages
+                            containerRef={containerRef}
+                            content={content}
+                            isResizing={isResizing}
+                            isPreview={isPreview}
+                            width={width}
+                          />
+                        )}
+
+                        {content.name === "scroll-target" && (
+                          <ViewScrollTraget
+                            content={content}
+                            isResizing={isResizing}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             );
