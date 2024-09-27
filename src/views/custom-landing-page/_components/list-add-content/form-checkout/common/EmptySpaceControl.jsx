@@ -7,7 +7,7 @@ const EmptySpaceControl = ({ currentContent, handleChangeValueContent }) => {
   const [height, setHeight] = useState(currentContent?.height || 24);
 
   const [label, setLabel] = useState(currentContent?.label || "Nama");
-  const [labelValue] = useDebounce(label, 1000);
+  const [labelValue] = useDebounce(label, 300);
   const [heightValue] = useDebounce(height, 500);
 
   const handleSetValueWhenBlur = (value, min, max, key) => {

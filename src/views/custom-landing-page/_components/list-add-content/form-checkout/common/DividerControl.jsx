@@ -12,7 +12,7 @@ const DividerControl = ({ currentContent, handleChangeValueContent }) => {
     currentContent?.label || "Nama"
   );
 
-  const [labelDividerValue] = useDebounce(labelDivider, 1000);
+  const [labelDividerValue] = useDebounce(labelDivider, 300);
   const [fontSizeDividerValue] = useDebounce(fontSizeDivider, 500);
 
   const handleSetValueWhenBlur = (value, min, max, key) => {

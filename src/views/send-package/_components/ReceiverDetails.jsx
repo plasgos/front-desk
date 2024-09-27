@@ -16,9 +16,9 @@ const ReceiverDetails = () => {
   const [noTelp, setNoTelp] = useState("");
   const [address, setAddress] = useState("");
 
-  const [debouncedReceiverName] = useDebounce(receiverName, 1000);
-  const [debouncednoTelp] = useDebounce(noTelp, 1000);
-  const [debouncedAddress] = useDebounce(address, 1000);
+  const [debouncedReceiverName] = useDebounce(receiverName, 300);
+  const [debouncednoTelp] = useDebounce(noTelp, 300);
+  const [debouncedAddress] = useDebounce(address, 300);
 
   const onSetSubdistrict = (value) => {
     setSubdistrict(value);

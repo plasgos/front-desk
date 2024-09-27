@@ -10,9 +10,9 @@ export const useWhatAppsChange = (
     selectedSectionToEdit?.target?.whatApps || {}
   );
 
-  const [whatAppsPhoneNumberValue] = useDebounce(whatApps.phoneNumber, 1000);
+  const [whatAppsPhoneNumberValue] = useDebounce(whatApps.phoneNumber, 300);
 
-  const [whatAppsMessageValue] = useDebounce(whatApps.message, 1000);
+  const [whatAppsMessageValue] = useDebounce(whatApps.message, 300);
 
   useEffect(() => {
     if (

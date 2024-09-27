@@ -14,7 +14,7 @@ function* watchGetShippingCost(values) {
     //   yield put(actions.getShippingCostSuccess(data.data));
     // }
 
-    yield delay(1000);
+    yield delay(300);
     yield put(actions.getShippingCostSuccess(costs));
   } catch (e) {
     yield put(actions.setIsLoadingGetShippingCost(false));

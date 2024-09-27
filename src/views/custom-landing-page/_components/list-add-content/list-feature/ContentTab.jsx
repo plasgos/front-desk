@@ -38,7 +38,7 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
       ])
   );
 
-  const [editorHtmlValue] = useDebounce(editorHtml, 1000);
+  const [editorHtmlValue] = useDebounce(editorHtml, 300);
 
   useEffect(() => {
     if (editorHtmlValue !== convertArrayToHtml(currentSection.content?.text)) {

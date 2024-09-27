@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import SelectOptions from "../../common/SelectOptions";
-import { fontSizeOptions } from "../../SelectOptions";
-import { CustomReactQuill } from "../../common/ReactQuill";
 import { useDebounce } from "use-debounce";
-import TextAlignSelect from "../../common/TextAlignSelect";
-import ColorPicker from "../../common/ColorPicker";
+import { fontSizeOptions } from "../../../../SelectOptions";
+import TextAlignSelect from "../../../../common/TextAlignSelect";
+import ColorPicker from "../../../../common/ColorPicker";
+import SelectOptions from "../../../../common/SelectOptions";
+import { CustomReactQuill } from "../../../../common/ReactQuill";
+import { changeContentBySectionId } from "../../helper/changeContentBySectionId";
+import { handleChaneStyleImageTextSection } from "./ImageControl";
 
 const textShadowOptions = [
   { value: undefined, label: "Tidak Ada" },
@@ -17,7 +19,8 @@ const UpdateContent = ({
   setPreviewSection,
   currentSection,
   currentContent,
-  isEditingContent,
+  sectionId,
+  columnId,
 }) => {
   const [textShadow, setTextShadow] = useState(undefined);
   const [fontSize, setFontSize] = useState(undefined);
@@ -64,42 +67,60 @@ const UpdateContent = ({
   }, [currentContent, currentSection]);
 
   const handleChangeContent = (key, value) => {
-    setPreviewSection((arr) =>
-      arr.map((item) => {
-        return String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: item.content.map((contentItem) =>
-                contentItem.id === currentContent.id
-                  ? {
-                      ...contentItem,
-                      [key]: value,
-                    }
-                  : contentItem
-              ),
-            }
-          : item;
-      })
+    const updateContent = {
+      [key]: value,
+    };
+
+    changeContentBySectionId(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      currentSection.id,
+      currentContent.id,
+      updateContent
     );
   };
 
   const handleChangeStyle = (key, value) => {
-    setPreviewSection((arr) =>
-      arr.map((item) => {
-        return String(item.id) === currentSection.id
-          ? {
-              ...item,
-              variant: {
-                ...item.variant,
-                style: {
-                  ...item.variant.style,
-                  [key]: value,
-                },
-              },
-            }
-          : item;
-      })
+    handleChaneStyleImageTextSection(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      currentSection.id,
+      key,
+      value
     );
+
+    // setPreviewSection((arr) =>
+    //   arr.map((section) =>
+    //     section.id === sectionId
+    //       ? {
+    //           ...section,
+    //           column: section.column.map((column) =>
+    //             column.id === columnId
+    //               ? {
+    //                   ...column,
+    //                   content: column.content.map((content) =>
+    //                     content.id === currentSection.id
+    //                       ? {
+    //                           ...content,
+    //                           variant: {
+    //                             ...content.variant,
+    //                             style: {
+    //                               ...content.variant.style,
+    //                               [key]: value,
+    //                             },
+    //                           },
+    //                         }
+    //                       : content
+    //                   ),
+    //                 }
+    //               : column
+    //           ),
+    //         }
+    //       : section
+    //   )
+    // );
   };
 
   return (

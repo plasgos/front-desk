@@ -11,14 +11,21 @@ import {
   CTabs,
 } from "@coreui/react";
 
-import image from "../../../../../assets/action-figure.jpg";
-
-import { createUniqueID } from "../../../../../lib/unique-id";
-
-import BackgroundTab from "../../common/BackgroundTab";
+import image from "../../../../../../../assets/action-figure.jpg";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import SelectVariant from "../../../../common/SelectVariant";
 import ImageContent from "./ImageContent";
-import AnimationControl from "../../common/AnimationControl";
-import SelectVariant from "../../common/SelectVariant";
+import AnimationControlMultiColumn from "../../common/AnimationControlMultiColumn";
+import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsAddColumnSection,
+  setIsEditingColumnSection,
+  setIsEditingSection,
+} from "../../../../../../../redux/modules/custom-landing-page/reducer";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import { changeWrapperStyleMultiColumn } from "../../helper/changeWrapperStyleMultiColumn";
 
 const optionVariant = [
   {
@@ -39,11 +46,16 @@ const flattenedOptions = optionVariant.flatMap((group) =>
 const Image = ({
   previewSection,
   setPreviewSection,
-  isShowContent,
-  isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  sectionId,
+  columnId,
 }) => {
+  const { isEditingSection, isAddColumnSection } = useSelector(
+    (state) => state.customLandingPage.multiColumnSection
+  );
+  const dispatch = useDispatch();
+
   const [isSelectVariant, setIsSelectVariant] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState(
     flattenedOptions.find(
@@ -51,16 +63,25 @@ const Image = ({
     ) || flattenedOptions[0]
   );
   const [currentVariant, setCurrentVariant] = useState({});
+
   const [setting, setSetting] = useState({});
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
+  const contentIdToCheck = isEditingSection ? currentSection.id : setting.id;
 
   useEffect(() => {
-    const section = previewSection.find((section) => section.id === setting.id);
-
-    if (section) {
-      setSelectedCurrentSection(section);
+    if (!isEditingSection) {
+      let section = previewSection.find((section) => section.id === sectionId);
+      if (section) {
+        let column = section.column.find((col) => col.id === columnId);
+        if (column) {
+          let content = column.content.find((cnt) => cnt.id === setting?.id);
+          if (content) {
+            setSelectedCurrentSection(content);
+          }
+        }
+      }
     }
-  }, [previewSection, setting.id]);
+  }, [previewSection, isEditingSection, sectionId, columnId, setting.id]);
 
   const handleCancel = () => {
     if (isSelectVariant) {
@@ -70,48 +91,37 @@ const Image = ({
 
       setIsSelectVariant(false);
 
-      setPreviewSection((arr) =>
-        arr.map((item) => {
-          const contentIdToCheck = isEditingSection
-            ? currentSection.id
-            : setting.id;
+      const updateContent = {
+        variant: currentVariant.value,
+        ...style,
+      };
 
-          return String(item.id) === contentIdToCheck
-            ? {
-                ...item,
-                wrapperStyle: {
-                  ...item.wrapperStyle,
-                  variant: currentVariant.value,
-                  ...style,
-                },
-              }
-            : item;
-        })
-      );
-    } else if (!isEditingSection) {
-      isShowContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.filter((section) => {
-          const contentIdToCheck = isEditingSection
-            ? currentSection.id
-            : setting.id;
-
-          return section.id !== contentIdToCheck;
-        })
+      changeWrapperStyleMultiColumn(
+        setPreviewSection,
+        sectionId,
+        columnId,
+        contentIdToCheck,
+        updateContent
       );
     } else if (isEditingSection) {
-      isShowContent(false);
+      dispatch(setIsEditingSection(false));
       setPreviewSection([...sectionBeforeEdit]);
     } else {
-      isShowContent(false);
+      dispatch(setIsAddColumnSection(false));
+      dispatch(setIsEditingColumnSection(false));
+      cancelSectionMultiColumn(setPreviewSection, sectionId, columnId, setting);
     }
   };
 
   const handleConfirm = () => {
     if (isSelectVariant) {
       setIsSelectVariant(false);
+    } else if (isAddColumnSection) {
+      dispatch(setIsAddColumnSection(false));
+    } else if (isEditingSection) {
+      dispatch(setIsEditingSection(false));
     } else {
-      isShowContent(false);
+      dispatch(setIsEditingColumnSection(false));
     }
   };
 
@@ -136,7 +146,7 @@ const Image = ({
         isReplay: false,
       },
       wrapperStyle: {
-        width: 500,
+        width: 150,
         rotation: 0,
         borderColor: "",
         shadow: "tw-shadow",
@@ -155,7 +165,8 @@ const Image = ({
       },
     };
 
-    setPreviewSection((prevSections) => [...prevSections, payload]);
+    addSectionMultiColumn(setPreviewSection, sectionId, columnId, payload);
+
     setSetting(payload);
   };
 
@@ -173,7 +184,7 @@ const Image = ({
 
   const styleMap = {
     1: {
-      width: 500,
+      width: 150,
       rotation: 0,
       borderColor: "",
     },
@@ -188,23 +199,18 @@ const Image = ({
     const style = styleMap[option.id] || {};
 
     setSelectedVariant({ ...option, group });
-    setPreviewSection((arr) =>
-      arr.map((item) => {
-        const contentIdToCheck = isEditingSection
-          ? currentSection.id
-          : setting.id;
 
-        return String(item.id) === contentIdToCheck
-          ? {
-              ...item,
-              wrapperStyle: {
-                ...item.wrapperStyle,
-                variant: option.value,
-                ...style,
-              },
-            }
-          : item;
-      })
+    const updateContent = {
+      variant: option.value,
+      ...style,
+    };
+
+    changeWrapperStyleMultiColumn(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      contentIdToCheck,
+      updateContent
     );
 
     if (!isEditingSection) {
@@ -283,6 +289,8 @@ const Image = ({
                     </div>
 
                     <ImageContent
+                      sectionId={sectionId}
+                      columnId={columnId}
                       currentSection={
                         isEditingSection
                           ? currentSection
@@ -300,7 +308,9 @@ const Image = ({
                   </CTabPane>
 
                   <CTabPane className="p-1" data-tab="animation">
-                    <AnimationControl
+                    <AnimationControlMultiColumn
+                      sectionId={sectionId}
+                      columnId={columnId}
                       label="Gambar"
                       currentSection={
                         isEditingSection
@@ -316,7 +326,9 @@ const Image = ({
                     className="p-1"
                     data-tab="background"
                   >
-                    <BackgroundTab
+                    <BackgroundTabMultiColumnContent
+                      sectionId={sectionId}
+                      columnId={columnId}
                       currentSection={
                         isEditingSection ? currentSection : setting
                       }

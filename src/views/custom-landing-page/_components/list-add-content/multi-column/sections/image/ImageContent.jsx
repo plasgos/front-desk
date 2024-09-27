@@ -2,29 +2,34 @@ import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
-import Input from "../../common/Input";
 
-import image from "../../../../../assets/action-figure.jpg";
-import { useSCrollTargetChange } from "../../../../../hooks/useScrolltargetChange";
-import { useUrlChange } from "../../../../../hooks/useUrlChange";
-import { useWhatAppsChange } from "../../../../../hooks/useWhatAppsChange";
-import Checkbox from "../../common/Checkbox";
-import ColorPicker from "../../common/ColorPicker";
-import InputRangeWithNumber from "../../common/InputRangeWithNumber";
-import ScrollTargetInput from "../../common/ScrollTargetSelect";
-import SelectOptions from "../../common/SelectOptions";
-import UrlInput from "../../common/UrlInput";
-import WhatsAppInput from "../../common/WhatAppsInput";
-import FacebookPixel from "../../FacebookPixel";
-import { shadowOptions } from "../../SelectOptions";
+import image from "../../../../../../../assets/action-figure.jpg";
+import Checkbox from "../../../../common/Checkbox";
+import ColorPicker from "../../../../common/ColorPicker";
+import Input from "../../../../common/Input";
+import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
+import ScrollTargetInput from "../../../../common/ScrollTargetSelect";
+import SelectOptions from "../../../../common/SelectOptions";
+import UrlInput from "../../../../common/UrlInput";
+import WhatsAppInput from "../../../../common/WhatAppsInput";
+import FacebookPixel from "../../../../FacebookPixel";
+import { shadowOptions } from "../../../../SelectOptions";
+import { useSCrollTargetChangeMultiColumn } from "../../hooks/useScrolltargetChangeMultiColumn";
+import { useUrlChangeMultiColumn } from "../../hooks/useUrlChangeMulitColumn";
+import { useWhatAppsChangeMultiColumn } from "../../hooks/useWhatAppsChangeMultiColumn";
+import { changeContentBySectionId } from "../../helper/changeContentBySectionId";
+import { changeWrapperStyleMultiColumn } from "../../helper/changeWrapperStyleMultiColumn";
 
 const ImageContent = ({
+  sectionId,
+  columnId,
   setPreviewSection,
   currentSection,
   currentContent,
   isEditingContent,
   selectedVariant,
 }) => {
+  console.log("🚀 ~ currentSection:", currentSection);
   const { optionsScrollTarget, optionsTarget } = useSelector(
     (state) => state.customLandingPage
   );
@@ -56,20 +61,30 @@ const ImageContent = ({
     optionsTarget[0].options[0]
   );
 
-  const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChange(
+  const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChangeMultiColumn(
+    sectionId,
+    columnId,
     setPreviewSection,
     currentSection.id,
     currentContent
   );
 
   const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
-    useWhatAppsChange(setPreviewSection, currentSection.id, currentContent);
+    useWhatAppsChangeMultiColumn(
+      sectionId,
+      columnId,
+      setPreviewSection,
+      currentSection.id,
+      currentContent
+    );
 
   const {
     selectedOptionScrollTarget,
     setSelectedOptionScrollTarget,
     handleChangeScrollTarget,
-  } = useSCrollTargetChange(
+  } = useSCrollTargetChangeMultiColumn(
+    sectionId,
+    columnId,
     setPreviewSection,
     currentSection.id,
     currentContent
@@ -107,38 +122,31 @@ const ImageContent = ({
   }, [isEditingContent, optionsTarget]);
 
   const handleChangeContent = (key, value) => {
-    setPreviewSection((arr) =>
-      arr.map((item) => {
-        return String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: item.content.map((contentItem) =>
-                contentItem.id === currentContent.id
-                  ? {
-                      ...contentItem,
-                      [key]: value,
-                    }
-                  : contentItem
-              ),
-            }
-          : item;
-      })
+    const updateContent = {
+      [key]: value,
+    };
+
+    changeContentBySectionId(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      currentSection.id,
+      currentContent.id,
+      updateContent
     );
   };
 
   const handleChangeWrapperStyle = (key, value) => {
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              wrapperStyle: {
-                ...item.wrapperStyle,
-                [key]: value,
-              },
-            }
-          : item
-      )
+    const updateContent = {
+      [key]: value,
+    };
+
+    changeWrapperStyleMultiColumn(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      currentSection.id,
+      updateContent
     );
   };
 
@@ -174,23 +182,20 @@ const ImageContent = ({
 
   useEffect(() => {
     // Update tempSections setelah imageUrl berubah
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: item.content.map((contentItem) =>
-                contentItem.id === currentContent.id
-                  ? {
-                      ...contentItem,
-                      image: imageUrl,
-                    }
-                  : contentItem
-              ),
-            }
-          : item
-      )
+
+    const updateContent = {
+      image: imageUrl,
+    };
+
+    changeContentBySectionId(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      currentSection?.id,
+      currentContent?.id,
+      updateContent
     );
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl]);
 
@@ -207,23 +212,19 @@ const ImageContent = ({
   const handleChangeOptions = (selectedOptionValue) => {
     setSelectedOption(selectedOptionValue);
     if (!selectedOptionValue.value) {
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
-            ? {
-                ...item,
-                content: item.content.map((contentItem) =>
-                  contentItem.id === currentContent.id
-                    ? {
-                        ...contentItem,
-                        target: {},
-                      }
-                    : contentItem
-                ),
-              }
-            : item
-        )
+      const updateContent = {
+        target: {},
+      };
+
+      changeContentBySectionId(
+        setPreviewSection,
+        sectionId,
+        columnId,
+        currentSection?.id,
+        currentContent?.id,
+        updateContent
       );
+
       setSelectedOptionScrollTarget(undefined);
     }
 
@@ -243,29 +244,49 @@ const ImageContent = ({
         const updatedOption = optionsScrollTarget.find(
           (option) => option.id === selectedOptionScrollTarget.id
         );
+
         setPreviewSection((arr) =>
-          arr.map((item) =>
-            String(item.id) === currentSection.id
+          arr.map((section) =>
+            section.id === sectionId
               ? {
-                  ...item,
-                  content: item.content.map((contentItem) =>
-                    String(contentItem.id) === String(currentContent.id)
+                  ...section,
+                  column: section.column.map((column) =>
+                    column.id === columnId
                       ? {
-                          ...contentItem,
-                          target: {
-                            scrollTarget: {
-                              ...contentItem.target.scrollTarget,
-                              value: updatedOption.value,
-                              label: updatedOption.label,
-                            },
-                          },
+                          ...column,
+                          content: column.content.map((content) =>
+                            content.id === currentSection.id
+                              ? {
+                                  ...content,
+                                  content: content.content.map(
+                                    (contentItem) => {
+                                      return contentItem.id ===
+                                        currentContent.id
+                                        ? {
+                                            ...contentItem,
+                                            target: {
+                                              scrollTarget: {
+                                                ...contentItem.target
+                                                  .scrollTarget,
+                                                value: updatedOption.value,
+                                                label: updatedOption.label,
+                                              },
+                                            },
+                                          }
+                                        : contentItem;
+                                    }
+                                  ),
+                                }
+                              : content
+                          ),
                         }
-                      : contentItem
+                      : column
                   ),
                 }
-              : item
+              : section
           )
         );
+
         setSelectedOptionScrollTarget(updatedOption);
       }
     }
@@ -284,22 +305,36 @@ const ImageContent = ({
         !currentContent.target?.scrollTarget?.value)
     ) {
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
+        arr.map((section) =>
+          section.id === sectionId
             ? {
-                ...item,
-                content: item.content.map((contentItem) => {
-                  return String(contentItem.id) === String(currentContent.id)
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
                     ? {
-                        ...contentItem,
-                        target: {
-                          scrollTarget: optionsScrollTarget[0],
-                        },
+                        ...column,
+                        content: column.content.map((content) =>
+                          content.id === currentSection.id
+                            ? {
+                                ...content,
+                                content: content.content.map((contentItem) => {
+                                  return contentItem.id === currentContent.id
+                                    ? {
+                                        ...contentItem,
+                                        target: {
+                                          scrollTarget: optionsScrollTarget[0],
+                                        },
+                                      }
+                                    : contentItem;
+                                }),
+                              }
+                            : content
+                        ),
                       }
-                    : contentItem;
-                }),
+                    : column
+                ),
               }
-            : item
+            : section
         )
       );
       setSelectedOptionScrollTarget(optionsScrollTarget[0]);

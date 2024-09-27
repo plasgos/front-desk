@@ -12,6 +12,9 @@ import ColumnTextAndImages from "./sections/colum-text-and-image";
 import EmptySpace from "./sections/empty-space";
 import ListImages from "./sections/list-images";
 import ScrollTarget from "./sections/scroll-target";
+import Quote from "./sections/quote";
+import Image from "./sections/image";
+import ImageText from "./sections/image-text";
 
 const ListContentMultiColumn = ({
   previewSection,
@@ -148,13 +151,14 @@ const ListContentMultiColumn = ({
         />
       )} */}
 
-      {/* {addContent === "quote" && (
+      {addContent === "quote" && (
         <Quote
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
-      )} */}
+      )}
       {/* 
       {addContent === "faq" && (
         <FAQ
@@ -180,21 +184,23 @@ const ListContentMultiColumn = ({
         />
       )} */}
 
-      {/* {addContent === "image" && (
+      {addContent === "image" && (
         <Image
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
-      )} */}
+      )}
 
-      {/* {addContent === "image-text" && (
+      {addContent === "image-text" && (
         <ImageText
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
-      )} */}
+      )}
 
       {/* {addContent === "multi-column" && (
         <MultiColumn

@@ -19,9 +19,9 @@ export const Dimension = ({ selectedProduct }) => {
 
   const [totalWeight, setTotalWeight] = useState("");
 
-  const [debouncedLength] = useDebounce(length, 1000);
-  const [debouncedWidth] = useDebounce(width, 1000);
-  const [debouncedHeight] = useDebounce(height, 1000);
+  const [debouncedLength] = useDebounce(length, 300);
+  const [debouncedWidth] = useDebounce(width, 300);
+  const [debouncedHeight] = useDebounce(height, 300);
   const [debounceNotes] = useDebounce(notes, 2000);
   const [debounceTotalWeight] = useDebounce(totalWeight, 2000);
   const dispatch = useDispatch();

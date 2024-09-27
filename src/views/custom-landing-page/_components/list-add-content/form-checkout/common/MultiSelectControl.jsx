@@ -68,7 +68,7 @@ const MultiSelectControl = ({
 
   const dispatch = useDispatch();
 
-  const [labelValue] = useDebounce(label, 1000);
+  const [labelValue] = useDebounce(label, 300);
 
   useEffect(() => {
     if (labelValue) {

@@ -15,9 +15,10 @@ import ScrollTargetInput from "../../../../common/ScrollTargetSelect";
 import FacebookPixel from "../../../../FacebookPixel";
 import { createUniqueID } from "../../../../../../../lib/unique-id";
 import SelectOptions from "../../../../common/SelectOptions";
+import { addContentBySectionId } from "../../helper/addContentBySectionId";
 
 export const UpdateContent = ({
-  idSection,
+  idSection: contentId,
   currentContent,
   setPreviewSection,
   isEditingContent,
@@ -34,7 +35,7 @@ export const UpdateContent = ({
 
   const [alt, setAlt] = useState(currentContent?.content?.alt || "");
 
-  const [altValue] = useDebounce(alt, 1000);
+  const [altValue] = useDebounce(alt, 300);
 
   const [setting, setSetting] = useState({});
   const [selectedOption, setSelectedOption] = useState(
@@ -53,7 +54,7 @@ export const UpdateContent = ({
     sectionId,
     columnId,
     setPreviewSection,
-    idSection,
+    contentId,
     isEditingContent ? currentContent : setting
   );
 
@@ -62,7 +63,7 @@ export const UpdateContent = ({
       sectionId,
       columnId,
       setPreviewSection,
-      idSection,
+      contentId,
       isEditingContent ? currentContent : setting
     );
 
@@ -74,7 +75,7 @@ export const UpdateContent = ({
     sectionId,
     columnId,
     setPreviewSection,
-    idSection,
+    contentId,
     isEditingContent ? currentContent : setting
   );
 
@@ -99,7 +100,7 @@ export const UpdateContent = ({
                       ? {
                           ...column,
                           content: column.content.map((content) =>
-                            content.id === idSection
+                            content.id === contentId
                               ? {
                                   ...content,
                                   content: content.content.map(
@@ -171,7 +172,7 @@ export const UpdateContent = ({
                     ? {
                         ...column,
                         content: column.content.map((content) =>
-                          content.id === idSection
+                          content.id === contentId
                             ? {
                                 ...content,
                                 content: content.content.map((contentItem) => {
@@ -223,7 +224,7 @@ export const UpdateContent = ({
                     ? {
                         ...column,
                         content: column.content.map((content) =>
-                          content.id === idSection
+                          content.id === contentId
                             ? {
                                 ...content,
                                 content: content.content.map((contentItem) => {
@@ -302,7 +303,7 @@ export const UpdateContent = ({
                   ? {
                       ...column,
                       content: column.content.map((content) =>
-                        content.id === idSection
+                        content.id === contentId
                           ? {
                               ...content,
                               content: content.content.map((contentItem) => {
@@ -343,7 +344,7 @@ export const UpdateContent = ({
                   ? {
                       ...column,
                       content: column.content.map((content) =>
-                        content.id === idSection
+                        content.id === contentId
                           ? {
                               ...content,
                               content: content.content.map((contentItem) => {
@@ -382,34 +383,12 @@ export const UpdateContent = ({
       target: {},
     };
 
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === sectionId) {
-          const updateContent = section.column.map((column) => {
-            if (column.id === columnId) {
-              return {
-                ...column,
-                content: column.content.map((content) => {
-                  return content.id === idSection
-                    ? {
-                        ...content,
-                        content: [...content.content, payload],
-                      }
-                    : content;
-                }),
-              };
-            }
-            return column;
-          });
-
-          return {
-            ...section,
-            column: updateContent,
-          };
-        }
-
-        return section;
-      })
+    addContentBySectionId(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      contentId,
+      payload
     );
 
     setSetting(payload);

@@ -7,6 +7,9 @@ import ViewColumnTextAndImage from "../ViewColumnTextAndImage";
 import ViewEmptySpace from "../ViewEmptySpace";
 import ViewListImages from "../ViewListImages";
 import ViewScrollTraget from "../ViewScrollTraget";
+import ViewQuote from "../ViewQuote";
+import ViewImage from "../ViewImage";
+import ViewImageText from "../ViewImageText";
 
 const ViewMultiColumn = forwardRef(
   (
@@ -162,6 +165,27 @@ const ViewMultiColumn = forwardRef(
 
                         {content.name === "scroll-target" && (
                           <ViewScrollTraget
+                            content={content}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {content.name === "quote" && (
+                          <ViewQuote
+                            content={content}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {content.name === "image" && (
+                          <ViewImage
+                            content={content}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {content.name === "image-text" && (
+                          <ViewImageText
                             content={content}
                             isResizing={isResizing}
                           />

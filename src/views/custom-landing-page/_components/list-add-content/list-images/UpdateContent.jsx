@@ -33,7 +33,7 @@ export const UpdateContent = ({
 
   const [alt, setAlt] = useState(currentContent?.content?.alt || "");
 
-  const [altValue] = useDebounce(alt, 1000);
+  const [altValue] = useDebounce(alt, 300);
 
   const [setting, setSetting] = useState({});
   const [selectedOption, setSelectedOption] = useState(

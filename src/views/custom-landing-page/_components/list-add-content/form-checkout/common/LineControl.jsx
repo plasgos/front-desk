@@ -12,7 +12,7 @@ const LineControl = ({ currentContent, handleChangeValueContent }) => {
 
   const [width, setWidth] = useState(currentContent?.width || 4);
 
-  const [labelLineValue] = useDebounce(labelLine, 1000);
+  const [labelLineValue] = useDebounce(labelLine, 300);
   const [heightValue] = useDebounce(height, 500);
   const [emptySpaceValue] = useDebounce(emptySpace, 500);
   const [widthValue] = useDebounce(width, 500);

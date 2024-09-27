@@ -22,8 +22,8 @@ export const UpdateContents = ({
 
   const [name, setName] = useState(currentContent?.name || "John Doe");
 
-  const [nameValue] = useDebounce(name, 1000);
-  const [contentValue] = useDebounce(content, 1000);
+  const [nameValue] = useDebounce(name, 300);
+  const [contentValue] = useDebounce(content, 300);
 
   useEffect(() => {
     if (nameValue !== currentContent?.name) {

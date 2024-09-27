@@ -1,20 +1,34 @@
 import { CButton, CCard, CTabContent } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
-import { createUniqueID } from "../../../../../lib/unique-id";
 import StripeLineControl from "./StripeLineControl";
 import BasicLineControl from "./BasicLineControl";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
+import { useDispatch, useSelector } from "react-redux";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import {
+  setIsAddColumnSection,
+  setIsEditingColumnSection,
+  setIsEditingSection,
+} from "../../../../../../../redux/modules/custom-landing-page/reducer";
 
 const Line = ({
   previewSection,
   setPreviewSection,
-  isShowContent,
-  isEditing = false,
   sectionBeforeEdit,
   currentSection,
+  sectionId,
+  columnId,
 }) => {
+  const { isEditingSection, isAddColumnSection } = useSelector(
+    (state) => state.customLandingPage.multiColumnSection
+  );
+
+  const dispatch = useDispatch();
+
   const [variantLine, setVariantLine] = useState(
-    isEditing ? currentSection.content?.variant : "Stripe - Barber"
+    isEditingSection ? currentSection.content?.variant : "Stripe - Barber"
   );
   const [isEditDesign, setIsEditDesign] = useState(false);
   const [designBeforeEdit, setDesignBeforeEdit] = useState("");
@@ -41,60 +55,80 @@ const Line = ({
       },
     };
 
-    setPreviewSection((prevSections) => [...prevSections, payload]);
+    addSectionMultiColumn(setPreviewSection, sectionId, columnId, payload);
     setSetting(payload);
   };
 
   useEffect(() => {
-    if (!isEditing) {
+    if (!isEditingSection) {
       handleAddContent();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEditing]);
+  }, [isEditingSection]);
 
   const handleCancel = () => {
-    if (isEditing) {
-      isShowContent(false);
+    if (isEditingSection) {
+      dispatch(setIsEditingSection(false));
       setPreviewSection([...sectionBeforeEdit]);
     } else if (isEditDesign) {
       setIsEditDesign(false);
       setVariantLine(designBeforeEdit);
 
-      const contentIdToCheck = isEditing ? currentSection.id : setting.id;
+      const contentIdToCheck = isEditingSection
+        ? currentSection.id
+        : setting.id;
 
       setPreviewSection((arr) =>
-        arr.map((item) => {
-          const currentVariant = item.content.variant;
-
-          const prevContent = commonContent(
-            currentVariant === "Basic",
-            designBeforeEdit
-          );
-
-          return String(item.id) === contentIdToCheck
+        arr.map((section) => {
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                content: {
-                  ...item.content,
-                  ...prevContent,
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) => {
+                          const currentVariant = content.content.variant;
+
+                          const prevContent = commonContent(
+                            currentVariant === "Basic",
+                            designBeforeEdit
+                          );
+
+                          return content.id === contentIdToCheck
+                            ? {
+                                ...content,
+                                content: {
+                                  ...content.content,
+                                  ...prevContent,
+                                },
+                              }
+                            : content;
+                        }),
+                      }
+                    : column
+                ),
               }
-            : item;
+            : section;
         })
       );
     } else {
-      isShowContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.filter((section) => section.id !== setting.id)
-      );
+      dispatch(setIsAddColumnSection(false));
+      dispatch(setIsEditingColumnSection(false));
+
+      cancelSectionMultiColumn(setPreviewSection, sectionId, columnId, setting);
     }
   };
 
   const handleConfirm = () => {
     if (isEditDesign) {
       setIsEditDesign(false);
+    } else if (isAddColumnSection) {
+      dispatch(setIsAddColumnSection(false));
+    } else if (isEditingSection) {
+      dispatch(setIsEditingSection(false));
     } else {
-      isShowContent(false);
+      dispatch(setIsEditingColumnSection(false));
     }
   };
 
@@ -138,19 +172,33 @@ const Line = ({
       };
     };
 
-    const updatePreviewSection = (sectionId) => {
+    const updatePreviewSection = (contentId) => {
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === sectionId
-            ? updateContent(item, value, value === "Basic")
-            : item
+        arr.map((section) =>
+          String(section.id) === sectionId
+            ? {
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) =>
+                          content.id === contentId
+                            ? updateContent(content, value, value === "Basic")
+                            : content
+                        ),
+                      }
+                    : column
+                ),
+              }
+            : section
         )
       );
     };
 
     setVariantLine(value);
 
-    if (isEditing) {
+    if (isEditingSection) {
       updatePreviewSection(currentSection.id);
     } else {
       updatePreviewSection(setting.id);
@@ -248,13 +296,13 @@ const Line = ({
           <div>
             <StripeLineControl
               setPreviewSection={setPreviewSection}
-              currentSection={isEditing ? currentSection : setting}
+              currentSection={isEditingSection ? currentSection : setting}
             />
           </div>
         ) : variantLine === "Basic" ? (
           <BasicLineControl
             setPreviewSection={setPreviewSection}
-            currentSection={isEditing ? currentSection : setting}
+            currentSection={isEditingSection ? currentSection : setting}
           />
         ) : null}
       </CTabContent>

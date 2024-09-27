@@ -163,7 +163,7 @@ const UpdateContent = ({
   );
 
   const [label, setLabel] = useState(currentContent?.label || "Nama");
-  const [labelValue] = useDebounce(label, 1000);
+  const [labelValue] = useDebounce(label, 300);
 
   useEffect(() => {
     if (labelValue) {

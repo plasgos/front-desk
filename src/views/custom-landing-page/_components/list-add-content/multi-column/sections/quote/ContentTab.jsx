@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Input from "../../common/Input";
-import SelectOptions from "../../common/SelectOptions";
-import ColorPicker from "../../common/ColorPicker";
-import { CustomReactQuill } from "../../common/ReactQuill";
 import { useDebounce } from "use-debounce";
+import ColorPicker from "../../../../common/ColorPicker";
+import SelectOptions from "../../../../common/SelectOptions";
+import Input from "../../../../common/Input";
+import { CustomReactQuill } from "../../../../common/ReactQuill";
 
 const fontSizeQuoteOptions = [
   { value: "tw-text-base", label: "Normal" },
@@ -11,7 +11,13 @@ const fontSizeQuoteOptions = [
   { value: "tw-text-xl", label: "Lebih Besar" },
 ];
 
-const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
+const ContentTab = ({
+  setPreviewSection,
+  currentSection,
+  isEditing,
+  sectionId,
+  columnId,
+}) => {
   const [quoteText, setQuoteText] = useState(
     currentSection?.content?.quoteText ||
       "Kamu tidak bisa membangunkan orang yang pura-pura tidur"
@@ -82,17 +88,31 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
 
   const handleChangeContent = (key, value) => {
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === String(currentSection.id)
+      arr.map((section) => {
+        return String(section.id) === sectionId
           ? {
-              ...item,
-              content: {
-                ...item.content,
-                [key]: value,
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) => {
+                        return content.id === currentSection.id
+                          ? {
+                              ...content,
+                              content: {
+                                ...content.content,
+                                [key]: value,
+                              },
+                            }
+                          : content;
+                      }),
+                    }
+                  : column
+              ),
             }
-          : item
-      )
+          : section;
+      })
     );
   };
 

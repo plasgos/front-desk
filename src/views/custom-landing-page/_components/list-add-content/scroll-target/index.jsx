@@ -23,7 +23,7 @@ const ScrollTarget = ({
   const [setting, setSetting] = useState({});
   const [hasAddedContent, setHasAddedContent] = useState(false);
 
-  const [nameValue] = useDebounce(name, 1000);
+  const [nameValue] = useDebounce(name, 300);
 
   const dispatch = useDispatch();
 
@@ -50,7 +50,7 @@ const ScrollTarget = ({
       .finally(() => {
         setTimeout(() => {
           setIsCopiedAnchor(false);
-        }, 1000);
+        }, 300);
       });
   };
 
@@ -68,7 +68,7 @@ const ScrollTarget = ({
       .finally(() => {
         setTimeout(() => {
           setIsCopiedLink(false);
-        }, 1000);
+        }, 300);
       });
   };
 

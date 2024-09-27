@@ -26,7 +26,7 @@ export const Summary = () => {
 
   const [customCod, setCustomCod] = useState(null);
 
-  const [debouncedCustomCod] = useDebounce(customCod, 1000);
+  const [debouncedCustomCod] = useDebounce(customCod, 300);
 
   const [billedByReceiver, setBilledByReceiver] = useState(0);
   const [estimateFundReceived, setEstimateFundReceived] = useState(0);

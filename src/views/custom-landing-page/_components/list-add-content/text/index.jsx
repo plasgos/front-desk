@@ -38,7 +38,7 @@ const Text = ({
     currentSection?.content?.style?.color || "#000000"
   );
 
-  const [editorHtmlValue] = useDebounce(editorHtml, 1000);
+  const [editorHtmlValue] = useDebounce(editorHtml, 300);
   const [selectedColorValue] = useDebounce(selectedColor, 500);
 
   const [selectAlign, setSelectAlign] = useState(

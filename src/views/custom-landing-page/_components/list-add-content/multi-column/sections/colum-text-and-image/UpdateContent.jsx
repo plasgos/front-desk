@@ -15,9 +15,11 @@ import FacebookPixel from "../../../../FacebookPixel";
 import { useUrlChangeMultiColumn } from "../../hooks/useUrlChangeMulitColumn";
 import { useWhatAppsChangeMultiColumn } from "../../hooks/useWhatAppsChangeMultiColumn";
 import { useSCrollTargetChangeMultiColumn } from "../../hooks/useScrolltargetChangeMultiColumn";
+import { addContentBySectionId } from "../../helper/addContentBySectionId";
+import { changeContentBySectionId } from "../../helper/changeContentBySectionId";
 
 export const UpdateContent = ({
-  idSection,
+  idSection: contentId,
   currentContent,
   setPreviewSection,
   isEditingContent,
@@ -39,13 +41,15 @@ export const UpdateContent = ({
       "So awesome that you will not believe it"
   );
 
-  const [titleValue] = useDebounce(title, 1000);
-  const [descriptionValue] = useDebounce(description, 1000);
+  const [titleValue] = useDebounce(title, 300);
+  const [descriptionValue] = useDebounce(description, 300);
 
   const [setting, setSetting] = useState({});
   const [selectedOption, setSelectedOption] = useState(
     optionsTarget[0].options[0]
   );
+
+  const contentIdToCheck = isEditingContent ? currentContent.id : setting.id;
 
   useEffect(() => {
     if (titleValue !== currentContent?.content?.title) {
@@ -63,7 +67,7 @@ export const UpdateContent = ({
     sectionId,
     columnId,
     setPreviewSection,
-    idSection,
+    contentId,
     isEditingContent ? currentContent : setting
   );
 
@@ -72,7 +76,7 @@ export const UpdateContent = ({
       sectionId,
       columnId,
       setPreviewSection,
-      idSection,
+      contentId,
       isEditingContent ? currentContent : setting
     );
 
@@ -84,7 +88,7 @@ export const UpdateContent = ({
     sectionId,
     columnId,
     setPreviewSection,
-    idSection,
+    contentId,
     isEditingContent ? currentContent : setting
   );
 
@@ -110,14 +114,11 @@ export const UpdateContent = ({
                       ? {
                           ...column,
                           content: column.content.map((content) =>
-                            content.id === idSection
+                            content.id === contentId
                               ? {
                                   ...content,
                                   content: content.content.map(
                                     (contentItem) => {
-                                      const contentIdToCheck = isEditingContent
-                                        ? currentContent.id
-                                        : setting.id;
                                       return contentItem.id === contentIdToCheck
                                         ? {
                                             ...contentItem,
@@ -183,13 +184,10 @@ export const UpdateContent = ({
                     ? {
                         ...column,
                         content: column.content.map((content) =>
-                          content.id === idSection
+                          content.id === contentId
                             ? {
                                 ...content,
                                 content: content.content.map((contentItem) => {
-                                  const contentIdToCheck = isEditingContent
-                                    ? currentContent.id
-                                    : setting.id;
                                   return contentItem.id === contentIdToCheck
                                     ? {
                                         ...contentItem,
@@ -236,13 +234,10 @@ export const UpdateContent = ({
                     ? {
                         ...column,
                         content: column.content.map((content) =>
-                          content.id === idSection
+                          content.id === contentId
                             ? {
                                 ...content,
                                 content: content.content.map((contentItem) => {
-                                  const contentIdToCheck = isEditingContent
-                                    ? currentContent.id
-                                    : setting.id;
                                   return contentItem.id === contentIdToCheck
                                     ? {
                                         ...contentItem,
@@ -316,13 +311,10 @@ export const UpdateContent = ({
                   ? {
                       ...column,
                       content: column.content.map((content) =>
-                        content.id === idSection
+                        content.id === contentId
                           ? {
                               ...content,
                               content: content.content.map((contentItem) => {
-                                const contentIdToCheck = isEditingContent
-                                  ? currentContent.id
-                                  : setting.id;
                                 return contentItem.id === contentIdToCheck
                                   ? {
                                       ...contentItem,
@@ -357,13 +349,10 @@ export const UpdateContent = ({
                   ? {
                       ...column,
                       content: column.content.map((content) =>
-                        content.id === idSection
+                        content.id === contentId
                           ? {
                               ...content,
                               content: content.content.map((contentItem) => {
-                                const contentIdToCheck = isEditingContent
-                                  ? currentContent.id
-                                  : setting.id;
                                 return contentItem.id === contentIdToCheck
                                   ? {
                                       ...contentItem,
@@ -398,34 +387,12 @@ export const UpdateContent = ({
       target: {},
     };
 
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === sectionId) {
-          const updateContent = section.column.map((column) => {
-            if (column.id === columnId) {
-              return {
-                ...column,
-                content: column.content.map((content) => {
-                  return content.id === idSection
-                    ? {
-                        ...content,
-                        content: [...content.content, payload],
-                      }
-                    : content;
-                }),
-              };
-            }
-            return column;
-          });
-
-          return {
-            ...section,
-            column: updateContent,
-          };
-        }
-
-        return section;
-      })
+    addContentBySectionId(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      contentId,
+      payload
     );
 
     setSetting(payload);

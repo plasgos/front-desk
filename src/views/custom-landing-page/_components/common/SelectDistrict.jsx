@@ -50,7 +50,7 @@ export const SelectDistrict = ({
   const loadOptions = (inputValue, callback) => {
     setTimeout(() => {
       callback(filteredSubdistricts(inputValue));
-    }, 1000);
+    }, 300);
   };
 
   const handleSelectChange = (selectedOption) => {

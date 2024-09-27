@@ -67,7 +67,7 @@ const UpdateContent = ({
     currentContent?.content?.title || "Click Me"
   );
 
-  const [titleValue] = useDebounce(title, 1000);
+  const [titleValue] = useDebounce(title, 300);
 
   const [selectedColorButton, setSelectedColorButton] = useState(
     currentContent?.content?.style?.btnColor || "#2196F3"

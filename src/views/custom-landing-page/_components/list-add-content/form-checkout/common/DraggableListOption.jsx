@@ -88,7 +88,7 @@ export const DraggableListOption = ({
     value: showInfoText,
   });
 
-  const [labelOptionValue] = useDebounce(labelOption.value, 1000);
+  const [labelOptionValue] = useDebounce(labelOption.value, 300);
 
   useEffect(() => {
     if (labelOptionValue !== showInfoText) {

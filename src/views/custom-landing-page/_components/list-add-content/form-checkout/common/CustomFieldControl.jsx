@@ -26,11 +26,11 @@ const CustomFieldControl = ({
   const [minValue, setMinValue] = useState(currentContent?.minValue || "");
   const [maxValue, setMaxValue] = useState(currentContent?.maxValue || "");
 
-  const [placeholderValue] = useDebounce(placeholder, 1000);
-  const [labelValue] = useDebounce(label, 1000);
-  const [minLenthValue] = useDebounce(minLength, 1000);
-  const [minimumValue] = useDebounce(minValue, 1000);
-  const [maximumValue] = useDebounce(maxValue, 1000);
+  const [placeholderValue] = useDebounce(placeholder, 300);
+  const [labelValue] = useDebounce(label, 300);
+  const [minLenthValue] = useDebounce(minLength, 300);
+  const [minimumValue] = useDebounce(minValue, 300);
+  const [maximumValue] = useDebounce(maxValue, 300);
 
   useEffect(() => {
     setPlaceholder(currentContent?.placeholder || "");

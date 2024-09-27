@@ -17,8 +17,8 @@ const UpdateContent = ({
     currentContent?.desc || "So awesome that you will not believe it"
   );
 
-  const [titleValue] = useDebounce(title, 1000);
-  const [contentValue] = useDebounce(content, 1000);
+  const [titleValue] = useDebounce(title, 300);
+  const [contentValue] = useDebounce(content, 300);
 
   useEffect(() => {
     if (titleValue !== currentContent?.title) {

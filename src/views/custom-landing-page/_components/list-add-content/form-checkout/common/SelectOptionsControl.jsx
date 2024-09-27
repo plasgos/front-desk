@@ -36,8 +36,8 @@ const SelectOptionsControl = ({
   const [placeholder, setPlaceholder] = useState(
     currentContent?.placeholder || "Pilih Opsi"
   );
-  const [placeholderValue] = useDebounce(placeholder, 1000);
-  const [labelValue] = useDebounce(label, 1000);
+  const [placeholderValue] = useDebounce(placeholder, 300);
+  const [labelValue] = useDebounce(label, 300);
 
   const [optionCounter, setOptionCounter] = useState(1);
   const [optionGroupCounter, setOptionGroupCounter] = useState(1);

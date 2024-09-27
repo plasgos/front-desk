@@ -31,6 +31,8 @@ import { DraggableList } from "../../../../common/DraggableList";
 import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
 import { useMoveContentMultiColumn } from "../../hooks/useMoveContentMultiColumn";
 import { useRemoveContentMultiColumn } from "../../hooks/useRemoveContentMultiColumn";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 
 const initialContents = [
   {
@@ -133,25 +135,8 @@ const ColumnTextAndImages = ({
     } else {
       dispatch(setIsAddColumnSection(false));
       dispatch(setIsEditingColumnSection(false));
-      setPreviewSection((prevSections) =>
-        prevSections.map((section) =>
-          section.id === sectionId
-            ? {
-                ...section,
-                column: section.column.map((column) =>
-                  column.id === columnId
-                    ? {
-                        ...column,
-                        content: column.content.filter(
-                          (content) => content.id !== setting.id
-                        ),
-                      }
-                    : column
-                ),
-              }
-            : section
-        )
-      );
+
+      cancelSectionMultiColumn(setPreviewSection, sectionId, columnId, setting);
     }
   };
 
@@ -194,28 +179,7 @@ const ColumnTextAndImages = ({
       },
     };
 
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === sectionId) {
-          const updatedColumns = section.column.map((column) => {
-            if (column.id === columnId) {
-              return {
-                ...column,
-                content: [...column.content, payload],
-              };
-            }
-            return column;
-          });
-
-          return {
-            ...section,
-            column: updatedColumns,
-          };
-        }
-
-        return section;
-      })
-    );
+    addSectionMultiColumn(setPreviewSection, sectionId, columnId, payload);
 
     setSetting(payload);
   };

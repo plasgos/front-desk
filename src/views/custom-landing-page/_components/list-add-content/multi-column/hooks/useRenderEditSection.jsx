@@ -4,6 +4,9 @@ import ColumnTextAndImages from "../sections/colum-text-and-image";
 import EmptySpace from "../sections/empty-space";
 import ListImages from "../sections/list-images";
 import ScrollTarget from "../sections/scroll-target";
+import Quote from "../sections/quote";
+import Image from "../sections/image";
+import ImageText from "../sections/image-text";
 
 export function useRenderEditSection({
   previewSection,
@@ -120,6 +123,60 @@ export function useRenderEditSection({
                 ) {
                   return (
                     <ScrollTarget
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "quote" &&
+                  content.name === "quote" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <Quote
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "image" &&
+                  content.name === "image" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <Image
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "image-text" &&
+                  content.name === "image-text" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <ImageText
                       key={content.id}
                       currentSection={content}
                       previewSection={previewSection}
