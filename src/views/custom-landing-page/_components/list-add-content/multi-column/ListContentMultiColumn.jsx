@@ -15,12 +15,15 @@ import ScrollTarget from "./sections/scroll-target";
 import Quote from "./sections/quote";
 import Image from "./sections/image";
 import ImageText from "./sections/image-text";
+import Line from "./sections/line";
+import ListFeature from "./sections/list-feature";
+import Testimony from "./sections/testimony";
+import Buttons from "./sections/button";
+import FAQ from "./sections/faq";
 
 const ListContentMultiColumn = ({
   previewSection,
   setPreviewSection,
-  previewFloatingSection,
-  setPreviewFloatingSection,
   sectionId,
   columnId,
 }) => {
@@ -118,38 +121,41 @@ const ListContentMultiColumn = ({
         />
       )}
 
-      {/* 
       {addContent === "button" && (
         <Buttons
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
-      )} */}
+      )}
 
-      {/* {addContent === "testimony" && (
+      {addContent === "testimony" && (
         <Testimony
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
-      )} */}
-      {/* 
+      )}
+
       {addContent === "line" && (
         <Line
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
-      )} */}
+      )}
 
-      {/* {addContent === "list-feature" && (
+      {addContent === "list-feature" && (
         <ListFeature
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
-      )} */}
+      )}
 
       {addContent === "quote" && (
         <Quote
@@ -159,27 +165,20 @@ const ListContentMultiColumn = ({
           columnId={columnId}
         />
       )}
-      {/* 
+
       {addContent === "faq" && (
         <FAQ
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
-      )} */}
+      )}
       {/* 
       {addContent === "form-checkout" && (
         <FormCheckout
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
-        />
-      )} */}
-
-      {/* {addContent === "floating-button" && (
-        <FloatingButton
-          previewFloatingSection={previewFloatingSection}
-          setPreviewFloatingSection={setPreviewFloatingSection}
           isShowContent={isShowContent}
         />
       )} */}
@@ -221,18 +220,23 @@ const ListContentMultiColumn = ({
         }}
       >
         {!addContent && filteredContents.length > 0 ? (
-          filteredContents.map((item, index) => (
-            <CCard
-              key={index}
-              style={{ marginBottom: 10, cursor: "pointer" }}
-              onClick={() => item.action(setAddContent)}
-            >
-              <div className="d-flex align-items-center py-1 px-2">
-                <div>{item.icon}</div>
-                <div>{item.title}</div>
-              </div>
-            </CCard>
-          ))
+          filteredContents
+            .filter(
+              (item) =>
+                !item.name.includes("floating") && item.name !== "multi-column"
+            )
+            .map((section, index) => (
+              <CCard
+                key={index}
+                style={{ marginBottom: 10, cursor: "pointer" }}
+                onClick={() => section.action(setAddContent)}
+              >
+                <div className="d-flex align-items-center py-1 px-2">
+                  <div>{section.icon}</div>
+                  <div>{section.title}</div>
+                </div>
+              </CCard>
+            ))
         ) : searchContent && filteredContents.length === 0 ? (
           <div className="text-center my-3">Kontent tidak ada !</div>
         ) : null}

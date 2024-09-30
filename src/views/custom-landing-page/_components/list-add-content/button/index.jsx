@@ -242,7 +242,6 @@ const Buttons = ({
               index={contentIndex}
               id={contentItem.id}
               showInfoText={contentItem.content?.title}
-              showThumbnail={contentItem.content?.image}
               moveSection={(dragIndex, hoverIndex) =>
                 moveSection(section.id, dragIndex, hoverIndex)
               }

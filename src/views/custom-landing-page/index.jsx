@@ -89,6 +89,10 @@ const CustomLandingPage = () => {
   const [previewSection, setPreviewSection] = useState([]);
   console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
   const [previewFloatingSection, setPreviewFloatingSection] = useState([]);
+  console.log(
+    "🚀 ~ CustomLandingPage ~ previewFloatingSection:",
+    previewFloatingSection
+  );
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
   const [sectionFloatingBeforeEdit, setSectionFloatingBeforeEdit] = useState(
     []

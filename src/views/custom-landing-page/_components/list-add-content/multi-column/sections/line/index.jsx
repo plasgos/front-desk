@@ -295,12 +295,16 @@ const Line = ({
         ) : variantLine === "Stripe - Barber" ? (
           <div>
             <StripeLineControl
+              sectionId={sectionId}
+              columnId={columnId}
               setPreviewSection={setPreviewSection}
               currentSection={isEditingSection ? currentSection : setting}
             />
           </div>
         ) : variantLine === "Basic" ? (
           <BasicLineControl
+            sectionId={sectionId}
+            columnId={columnId}
             setPreviewSection={setPreviewSection}
             currentSection={isEditingSection ? currentSection : setting}
           />

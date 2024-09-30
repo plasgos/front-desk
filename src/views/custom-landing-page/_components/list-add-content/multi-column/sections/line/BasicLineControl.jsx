@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import ColorPicker from "../../../../common/ColorPicker";
 import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
+import { setUpdateValue } from "./StripeLineControl";
 
-const BasicLineControl = ({ setPreviewSection, currentSection }) => {
+const BasicLineControl = ({
+  setPreviewSection,
+  currentSection,
+  sectionId,
+  columnId,
+}) => {
   const [colorBasicLine, setColorBasicLine] = useState(
     currentSection?.content?.colorBasicLine || "#FFCC80"
   );
@@ -12,18 +18,13 @@ const BasicLineControl = ({ setPreviewSection, currentSection }) => {
   );
 
   const handleUpdateValue = (key, value) => {
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                [key]: value,
-              },
-            }
-          : item
-      )
+    setUpdateValue(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      currentSection.id,
+      key,
+      value
     );
   };
 

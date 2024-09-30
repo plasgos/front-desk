@@ -37,6 +37,7 @@ import {
 } from "../../../../SelectOptions";
 import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import { cancelSectionContentLastIndex } from "../../helper/cancelSectionContentLastIndex";
 
 const initialContents = [
   {
@@ -127,6 +128,13 @@ const ListImages = ({
   }, [currentSection, isEditingSection]);
 
   const handleChangeWrapperStyle = (key, selectedOption) => {
+    cancelSectionContentLastIndex(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      contentIdCheck
+    );
+
     setPreviewSection((arr) =>
       arr.map((section) =>
         String(section.id) === sectionId
@@ -160,33 +168,12 @@ const ListImages = ({
     if (isAddContent) {
       setIsAddContent(false);
       setIsEditingContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.map((section) =>
-          section.id === sectionId
-            ? {
-                ...section,
-                column: section.column.map((column) =>
-                  column.id === columnId
-                    ? {
-                        ...column,
-                        content: column.content.map((content) => {
-                          const contentIdToCheck = isEditingSection
-                            ? currentSection.id
-                            : setting.id;
 
-                          return content.id === contentIdToCheck
-                            ? {
-                                ...content,
-                                content: content.content.slice(0, -1),
-                              }
-                            : section;
-                        }),
-                      }
-                    : column
-                ),
-              }
-            : section
-        )
+      cancelSectionContentLastIndex(
+        setPreviewSection,
+        sectionId,
+        columnId,
+        contentIdCheck
       );
     } else if (isEditingContent) {
       setPreviewSection([...currentContentBeforeEdit]);

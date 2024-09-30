@@ -76,7 +76,7 @@ const ViewButtonUpdate = forwardRef(
         }}
         className={`tw-flex ${
           content.wrapperStyle.flexDirection
-        } ${isFlexColumnItemsPosition} ${isFlexColumnGapY}  tw-flex-wrap ${
+        } ${isFlexColumnItemsPosition} ${isFlexColumnGapY}   ${
           content.wrapperStyle.jusctifyContent
         } ${
           content.wrapperStyle.flexDirection === "tw-flex-row" && "tw-gap-y-2"
@@ -138,12 +138,13 @@ const ViewButtonUpdate = forwardRef(
                 }}
                 className={`${roundedClass} ${sizeClasses} hover:tw-bg-opacity-80 ${shadowClass}  tw-inline-block tw-cursor-pointer`}
               >
-                <div className="tw-flex tw-justify-center tw-items-center tw-gap-x-3">
+                <div className="tw-flex tw-justify-center tw-items-center">
                   <div>
                     {icon && icon.prefix && icon.iconName && (
                       <div
                         style={{
                           color: section.content.iconColor,
+                          marginRight: 8,
                         }}
                       >
                         <FontAwesomeIcon
@@ -157,6 +158,7 @@ const ViewButtonUpdate = forwardRef(
                       <div
                         style={{
                           width: 30,
+                          marginRight: 8,
                         }}
                       >
                         <img

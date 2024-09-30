@@ -7,6 +7,11 @@ import ScrollTarget from "../sections/scroll-target";
 import Quote from "../sections/quote";
 import Image from "../sections/image";
 import ImageText from "../sections/image-text";
+import Line from "../sections/line";
+import ListFeature from "../sections/list-feature";
+import Testimony from "../sections/testimony";
+import Buttons from "../sections/button";
+import FAQ from "../sections/faq";
 
 export function useRenderEditSection({
   previewSection,
@@ -177,6 +182,96 @@ export function useRenderEditSection({
                 ) {
                   return (
                     <ImageText
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "line" &&
+                  content.name === "line" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <Line
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "list-feature" &&
+                  content.name === "list-feature" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <ListFeature
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "testimony" &&
+                  content.name === "testimony" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <Testimony
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "button" &&
+                  content.name === "button" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <Buttons
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "faq" &&
+                  content.name === "faq" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <FAQ
                       key={content.id}
                       currentSection={content}
                       previewSection={previewSection}

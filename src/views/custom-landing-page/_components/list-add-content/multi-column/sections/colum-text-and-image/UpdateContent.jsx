@@ -12,11 +12,10 @@ import SelectOptions from "../../../../common/SelectOptions";
 import UrlInput from "../../../../common/UrlInput";
 import WhatsAppInput from "../../../../common/WhatAppsInput";
 import FacebookPixel from "../../../../FacebookPixel";
+import { addContentBySectionId } from "../../helper/addContentBySectionId";
+import { useSCrollTargetChangeMultiColumn } from "../../hooks/useScrolltargetChangeMultiColumn";
 import { useUrlChangeMultiColumn } from "../../hooks/useUrlChangeMulitColumn";
 import { useWhatAppsChangeMultiColumn } from "../../hooks/useWhatAppsChangeMultiColumn";
-import { useSCrollTargetChangeMultiColumn } from "../../hooks/useScrolltargetChangeMultiColumn";
-import { addContentBySectionId } from "../../helper/addContentBySectionId";
-import { changeContentBySectionId } from "../../helper/changeContentBySectionId";
 
 export const UpdateContent = ({
   idSection: contentId,

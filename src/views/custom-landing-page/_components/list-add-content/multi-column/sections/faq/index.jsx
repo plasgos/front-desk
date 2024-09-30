@@ -12,15 +12,24 @@ import {
   CTabs,
 } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
-import BackgroundTab from "../../common/BackgroundTab";
 import { IoAdd } from "react-icons/io5";
-import { DraggableList } from "../../common/DraggableList";
-import { createUniqueID } from "../../../../../lib/unique-id";
-import { useMoveSection } from "../../../../../hooks/useMoveSection";
-import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
-import SelectVariant from "../../common/SelectVariant";
 import UpdateContent from "./UpdateContent";
 import DesignTab from "./DesignTab";
+import { DraggableList } from "../../../../common/DraggableList";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import SelectVariant from "../../../../common/SelectVariant";
+import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
+import { useDispatch, useSelector } from "react-redux";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import {
+  setIsAddColumnSection,
+  setIsEditingColumnSection,
+  setIsEditingSection,
+} from "../../../../../../../redux/modules/custom-landing-page/reducer";
+import { cancelSectionContentLastIndex } from "../../helper/cancelSectionContentLastIndex";
+import { useMoveContentMultiColumn } from "../../hooks/useMoveContentMultiColumn";
+import { useRemoveContentMultiColumn } from "../../hooks/useRemoveContentMultiColumn";
 
 const initialContents = [
   {
@@ -128,11 +137,16 @@ const accordionClean = {
 const FAQ = ({
   previewSection,
   setPreviewSection,
-  isShowContent,
-  isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  sectionId,
+  columnId,
 }) => {
+  const { isEditingSection } = useSelector(
+    (state) => state.customLandingPage.multiColumnSection
+  );
+  const dispatch = useDispatch();
+
   const [activeTab, setActiveTab] = useState("faqs");
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -162,13 +176,22 @@ const FAQ = ({
 
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
 
-  useEffect(() => {
-    const section = previewSection.find((section) => section.id === setting.id);
+  const contentIdToCheck = isEditingSection ? currentSection.id : setting.id;
 
-    if (section) {
-      setSelectedCurrentSection(section);
+  useEffect(() => {
+    if (!isEditingSection) {
+      let section = previewSection.find((section) => section.id === sectionId);
+      if (section) {
+        let column = section.column.find((col) => col.id === columnId);
+        if (column) {
+          let content = column.content.find((cnt) => cnt.id === setting?.id);
+          if (content) {
+            setSelectedCurrentSection(content);
+          }
+        }
+      }
     }
-  }, [previewSection, setting.id]);
+  }, [previewSection, isEditingSection, sectionId, columnId, setting.id]);
 
   const editSection = useCallback(
     (section) => {
@@ -179,49 +202,70 @@ const FAQ = ({
     [previewSection]
   );
 
-  const removeSection = useRemoveSection(setPreviewSection);
-  const moveSection = useMoveSection(setPreviewSection);
+  const removeSection = useRemoveContentMultiColumn(setPreviewSection);
+  const moveSection = useMoveContentMultiColumn(setPreviewSection);
 
   const renderSection = useCallback(
     (section) => {
-      return (
-        <div key={section.id}>
-          {section.content.map((contentItem, contentIndex) => (
-            <DraggableList
-              key={contentItem.id || contentIndex}
-              index={contentIndex}
-              id={contentItem.id}
-              showInfoText={contentItem.title}
-              moveSection={(dragIndex, hoverIndex) =>
-                moveSection(section.id, dragIndex, hoverIndex)
-              }
-              editSection={() => editSection(contentItem)}
-              removeSection={() => removeSection(section.id, contentIndex)}
-            />
-          ))}
-        </div>
+      if (section.id !== sectionId) return null;
+
+      const selectedColumn = section.column.find(
+        (column) => column.id === columnId
       );
+      if (!selectedColumn) return null;
+
+      const selectedContent = selectedColumn.content.find(
+        (content) => content.id === contentIdToCheck
+      );
+
+      return selectedContent?.content.map((contentItem, contentIndex) => (
+        <div key={contentItem.id || contentIndex}>
+          <DraggableList
+            index={contentIndex}
+            id={contentItem.id}
+            showInfoText={contentItem?.title}
+            moveSection={(dragIndex, hoverIndex) =>
+              moveSection(
+                section.id,
+                columnId,
+                contentIdToCheck,
+                dragIndex,
+                hoverIndex
+              )
+            }
+            editSection={() => editSection(contentItem)}
+            removeSection={() =>
+              removeSection(
+                section.id,
+                columnId,
+                contentIdToCheck,
+                contentItem.id
+              )
+            }
+          />
+        </div>
+      ));
     },
-    [moveSection, editSection, removeSection]
+    [
+      columnId,
+      contentIdToCheck,
+      editSection,
+      moveSection,
+      removeSection,
+      sectionId,
+    ]
   );
 
   const handleCancel = () => {
     if (isAddContent) {
       setIsAddContent(false);
       setIsEditingContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.map((section) => {
-          const contentIdToCheck = isEditingSection
-            ? currentSection.id
-            : setting.id;
 
-          return section.id === contentIdToCheck
-            ? {
-                ...section,
-                content: section.content.slice(0, -1),
-              }
-            : section;
-        })
+      cancelSectionContentLastIndex(
+        setPreviewSection,
+        sectionId,
+        columnId,
+        contentIdToCheck
       );
     } else if (isSelectVariant) {
       setSelectedVariant(currentVariant);
@@ -238,22 +282,33 @@ const FAQ = ({
           : {};
 
       setPreviewSection((arr) =>
-        arr.map((item) => {
-          const contentIdToCheck = isEditingSection
-            ? currentSection.id
-            : setting.id;
-
-          return String(item.id) === contentIdToCheck
+        arr.map((section) =>
+          String(section.id) === sectionId
             ? {
-                ...item,
-                variant: {
-                  ...currentVariant,
-                  style,
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) =>
+                          content.id === contentIdToCheck
+                            ? {
+                                ...content,
+                                variant: {
+                                  ...currentVariant,
+                                  style,
+                                },
+                              }
+                            : content
+                        ),
+                      }
+                    : column
+                ),
               }
-            : item;
-        })
+            : section
+        )
       );
+
       setIsSelectVariant(false);
       setIsAddContent(false);
       setIsEditingContent(false);
@@ -270,15 +325,13 @@ const FAQ = ({
       setIsAddContent(false);
       setIsEditingContent(false);
     } else if (isEditingSection) {
-      setIsAddContent(false);
-      isShowContent(false);
+      dispatch(setIsEditingSection(false));
       setPreviewSection([...sectionBeforeEdit]);
     } else {
-      setIsAddContent(false);
-      isShowContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.filter((section) => section.id !== setting.id)
-      );
+      dispatch(setIsAddColumnSection(false));
+      dispatch(setIsEditingColumnSection(false));
+
+      cancelSectionMultiColumn(setPreviewSection, sectionId, columnId, setting);
     }
   };
 
@@ -293,7 +346,9 @@ const FAQ = ({
         setImageUrl("");
       }
     } else {
-      isShowContent(false);
+      dispatch(setIsEditingColumnSection(false));
+      dispatch(setIsAddColumnSection(false));
+      dispatch(setIsEditingSection(false));
     }
   };
 
@@ -342,7 +397,7 @@ const FAQ = ({
       },
     };
 
-    setPreviewSection((prevSections) => [...prevSections, payload]);
+    addSectionMultiColumn(setPreviewSection, sectionId, columnId, payload);
     setSetting(payload);
   };
 
@@ -371,25 +426,36 @@ const FAQ = ({
         : {};
 
     setSelectedVariant({ ...option, group });
-    setPreviewSection((arr) =>
-      arr.map((item) => {
-        const contentIdToCheck = isEditingSection
-          ? currentSection.id
-          : setting.id;
 
-        return String(item.id) === contentIdToCheck
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        String(section.id) === sectionId
           ? {
-              ...item,
-              variant: {
-                ...item.variant,
-                group,
-                id: option.id,
-                name: option.value,
-                style,
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) =>
+                        content.id === contentIdToCheck
+                          ? {
+                              ...content,
+                              variant: {
+                                ...content.variant,
+                                group,
+                                id: option.id,
+                                name: option.value,
+                                style,
+                              },
+                            }
+                          : content
+                      ),
+                    }
+                  : column
+              ),
             }
-          : item;
-      })
+          : section
+      )
     );
 
     if (!isEditingSection) {
@@ -440,6 +506,8 @@ const FAQ = ({
                     }
                     currentContent={initialContents}
                     setPreviewSection={setPreviewSection}
+                    sectionId={sectionId}
+                    columnId={columnId}
                   />
                 </CTabContent>
               </CTabs>
@@ -456,6 +524,8 @@ const FAQ = ({
                     currentContent={selectedContent}
                     setPreviewSection={setPreviewSection}
                     isEditingContent={true}
+                    sectionId={sectionId}
+                    columnId={columnId}
                   />
                 </CTabContent>
               </CTabs>
@@ -504,11 +574,7 @@ const FAQ = ({
 
                         <div>
                           {previewSection
-                            .filter((section) =>
-                              isEditingSection
-                                ? section.id === currentSection.id
-                                : section.id === setting.id
-                            )
+                            .filter((section) => section.id === sectionId)
                             .map((section, i) => renderSection(section, i))}
                         </div>
                         <CCard
@@ -579,6 +645,8 @@ const FAQ = ({
                         icon={icon}
                         setIcon={setIcon}
                         setPreviousIcon={setPreviousIcon}
+                        sectionId={sectionId}
+                        columnId={columnId}
                       />
                     ) : (
                       <div>Loading...</div>
@@ -590,12 +658,14 @@ const FAQ = ({
                     className="p-1"
                     data-tab="background"
                   >
-                    <BackgroundTab
+                    <BackgroundTabMultiColumnContent
                       currentSection={
                         isEditingSection ? currentSection : setting
                       }
                       setPreviewSection={setPreviewSection}
                       type={isEditingSection ? "edit" : "add"}
+                      sectionId={sectionId}
+                      columnId={columnId}
                     />
                   </CTabPane>
                 </CTabContent>

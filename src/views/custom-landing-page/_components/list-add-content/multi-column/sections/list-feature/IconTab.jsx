@@ -1,11 +1,11 @@
 import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import ColorPicker from "../../common/ColorPicker";
-import SelectOptions from "../../common/SelectOptions";
-import InputRangeWithNumber from "../../common/InputRangeWithNumber";
-import IconPicker from "../../common/IconPicker";
+import { useFontAwesomeIconPack } from "../../../../../../../hooks/useFontAwesomePack";
+import IconPicker from "../../../../common/IconPicker";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack";
+import ColorPicker from "../../../../common/ColorPicker";
+import SelectOptions from "../../../../common/SelectOptions";
+import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 
 const shadowOptions = [
   { value: "", label: "Tidak Ada" },
@@ -25,6 +25,8 @@ const IconTab = ({
   imageUrl,
   setImageUrl,
   setPreviousIcon,
+  sectionId,
+  columnId,
 }) => {
   const [colorIcon, setColorIcon] = useState(
     currentSection.iconStyle?.color || "#424242"
@@ -73,39 +75,53 @@ const IconTab = ({
     }
   }, [currentSection, isEditing]);
 
-  const handleChangeIcon = (value) => {
-    setIconName(value);
-
+  const setIconStyleValue = (newData) => {
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
+      arr.map((section) =>
+        String(section.id) === sectionId
           ? {
-              ...item,
-              iconStyle: {
-                ...item.iconStyle,
-                icon: value,
-                image: "",
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) =>
+                        content.id === currentSection?.id
+                          ? {
+                              ...content,
+                              iconStyle: {
+                                ...content.iconStyle,
+                                ...newData,
+                              },
+                            }
+                          : content
+                      ),
+                    }
+                  : column
+              ),
             }
-          : item
+          : section
       )
     );
   };
 
+  const handleChangeIcon = (value) => {
+    setIconName(value);
+
+    const newData = {
+      icon: value,
+      image: "",
+    };
+
+    setIconStyleValue(newData);
+  };
+
   const handleUpdateValue = (key, value) => {
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              iconStyle: {
-                ...item.iconStyle,
-                [key]: value,
-              },
-            }
-          : item
-      )
-    );
+    const newData = {
+      [key]: value,
+    };
+
+    setIconStyleValue(newData);
   };
 
   const handleSetValueWhenBlurValue = (value, min, max, key) => {
@@ -123,23 +139,14 @@ const IconTab = ({
   useEffect(() => {
     if (imageUrl !== "") {
       // Update tempSections hanya jika imageUrl bukan string kosong
-      if (iconName) {
-        setIconName({});
-      }
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
-            ? {
-                ...item,
-                iconStyle: {
-                  ...item.iconStyle,
-                  image: imageUrl,
-                  icon: "",
-                },
-              }
-            : item
-        )
-      );
+      setIconName({});
+
+      const newData = {
+        image: imageUrl,
+        icon: "",
+      };
+
+      setIconStyleValue(newData);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl]);

@@ -11,6 +11,7 @@ import { useBackgroundStyles } from "../../../../../hooks/useBackgroundStyles";
 
 const ViewTestimony = forwardRef(
   ({ isPreview, width, isDragging, content, isResizing, isFocused }, ref) => {
+    console.log("🚀 ~ content:", content);
     const stylesBg = useBackgroundStyles(content);
 
     return (
@@ -42,7 +43,7 @@ const ViewTestimony = forwardRef(
             }}
           ></div>
         ) : null}
-        {content.content?.map((item) => (
+        {content?.content?.map((item) => (
           <div
             style={{
               zIndex: 2,
@@ -52,7 +53,7 @@ const ViewTestimony = forwardRef(
                 ? `calc(${content.wrapperStyle.paddingX}px * 2)`
                 : "0px",
             }}
-            key={item.id}
+            key={item?.id}
             className={
               isPreview
                 ? `${

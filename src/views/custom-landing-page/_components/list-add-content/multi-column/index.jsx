@@ -14,15 +14,8 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 
 import { IoAdd } from "react-icons/io5";
-import { createUniqueID } from "../../../../../lib/unique-id";
-import BackgroundTabSpecificColumn from "./common/BackgrounTabSpecificColumn";
-import { DraggableList } from "../../common/DraggableList";
-import InputRangeWithNumber from "../../common/InputRangeWithNumber";
-import SelectOptions from "../../common/SelectOptions";
-import ListContentMultiColumn from "./ListContentMultiColumn";
-import { ListSectionContent } from "../../ListSectionContent";
-import Text from "./sections/text";
 import { useDispatch, useSelector } from "react-redux";
+import { createUniqueID } from "../../../../../lib/unique-id";
 import {
   setIsAddColumn,
   setIsAddColumnSection,
@@ -31,8 +24,13 @@ import {
   setIsEditingSection,
 } from "../../../../../redux/modules/custom-landing-page/reducer";
 import BackgroundTab from "../../common/BackgroundTab";
-import ColumnTextAndImages from "./sections/colum-text-and-image";
+import { DraggableList } from "../../common/DraggableList";
+import InputRangeWithNumber from "../../common/InputRangeWithNumber";
+import SelectOptions from "../../common/SelectOptions";
+import { ListSectionContent } from "../../ListSectionContent";
+import BackgroundTabSpecificColumn from "./common/BackgrounTabSpecificColumn";
 import { useRenderEditSection } from "./hooks/useRenderEditSection";
+import ListContentMultiColumn from "./ListContentMultiColumn";
 
 const widthTypeOptions = [
   { value: "equal", label: "Sama Rata" },
@@ -46,8 +44,6 @@ const MultiColumn = ({
   isEditingSectionMultiColumn = false,
   sectionMultiColumnBeforeEdit,
   currentSectionMultiColumn,
-  previewFloatingSection,
-  setPreviewFloatingSection,
 }) => {
   const {
     isAddColumnSection,
@@ -56,11 +52,7 @@ const MultiColumn = ({
     isAddColumn,
     isEditingColumn,
   } = useSelector((state) => state.customLandingPage.multiColumnSection);
-  // console.log("🚀 ~ isEditingColumnSection:", isEditingColumnSection);
-  // console.log("🚀 ~ isEditingColumn:", isEditingColumn);
-  // console.log("🚀 ~ isEditingSection:", isEditingSection);
-  // console.log("🚀 ~ isAddColumn:", isAddColumn);
-  // console.log("🚀 ~ isAddColumnSection:", isAddColumnSection);
+
   const dispatch = useDispatch();
 
   const [isSlidingOutColumn, setIsSlidingOutColumn] = useState(false);
@@ -653,10 +645,6 @@ const MultiColumn = ({
                               setPreviewSection={(value) =>
                                 setPreviewSection(value)
                               }
-                              previewFloatingSection={previewFloatingSection}
-                              setPreviewFloatingSection={
-                                setPreviewFloatingSection
-                              }
                               sectionId={
                                 isEditingSectionMultiColumn
                                   ? currentSectionMultiColumn.id
@@ -709,10 +697,6 @@ const MultiColumn = ({
                               previewSection={previewSection}
                               setPreviewSection={(value) =>
                                 setPreviewSection(value)
-                              }
-                              previewFloatingSection={previewFloatingSection}
-                              setPreviewFloatingSection={
-                                setPreviewFloatingSection
                               }
                               sectionId={
                                 isEditingSectionMultiColumn

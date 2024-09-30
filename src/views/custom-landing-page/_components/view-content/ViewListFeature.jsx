@@ -10,38 +10,21 @@ const ViewListFeature = forwardRef(
     const iconPack = useFontAwesomeIconPack();
     const [icon, setIcon] = useState(null);
 
-    // useEffect(() => {
-    //   if (iconPack && content.iconStyle?.icon) {
-    //     const iconToSet = content.iconStyle?.icon || "hand-point-right";
-    //     const iconExists = iconPack.some((icon) => icon.iconName === iconToSet);
-
-    //     if (iconExists) {
-    //       setIconName(iconToSet);
-    //     } else {
-    //       setIconName("hand-point-right"); // Set default icon
-    //     }
-    //   }
-    // }, [content.iconStyle.icon, iconPack]);
-
     useEffect(() => {
-      const defaultIcon = {
-        prefix: "fas",
-        iconName: "hand-point-right",
-      };
+      if (iconPack && iconPack.length > 0) {
+        const iconToSet = content?.iconStyle?.icon;
 
-      if (iconPack && content.iconStyle?.icon) {
-        const iconToSet = content.iconStyle?.icon || defaultIcon;
-        const iconExists = iconPack.some(
-          (icon) => icon.iconName === iconToSet?.iconName
-        );
+        if (iconToSet && Object.keys(iconToSet).length > 0) {
+          const iconExists = iconPack.some(
+            (icon) => icon.iconName === iconToSet.iconName
+          );
 
-        if (iconExists) {
-          setIcon(iconToSet);
-        } else {
-          setIcon(defaultIcon);
+          setIcon(iconExists ? iconToSet : {});
         }
       }
-    }, [content.iconStyle.icon, iconPack]);
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [iconPack, content]);
 
     useEffect(() => {
       if (content.iconStyle?.image) {

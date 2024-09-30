@@ -10,6 +10,11 @@ import ViewScrollTraget from "../ViewScrollTraget";
 import ViewQuote from "../ViewQuote";
 import ViewImage from "../ViewImage";
 import ViewImageText from "../ViewImageText";
+import ViewLine from "../ViewLine";
+import ViewListFeature from "../ViewListFeature";
+import ViewTestimony from "../ViewTestimony";
+import ViewButtonUpdate from "../ViewButtonUpdate";
+import ViewFAQ from "../ViewFAQ";
 
 const ViewMultiColumn = forwardRef(
   (
@@ -189,6 +194,38 @@ const ViewMultiColumn = forwardRef(
                             content={content}
                             isResizing={isResizing}
                           />
+                        )}
+
+                        {content.name === "line" && (
+                          <ViewLine
+                            content={content.content}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {content.name === "list-feature" && (
+                          <ViewListFeature
+                            content={content}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {content.name === "testimony" && (
+                          <ViewTestimony
+                            content={content}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {content.name === "button" && (
+                          <ViewButtonUpdate
+                            content={content}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {content.name === "faq" && (
+                          <ViewFAQ content={content} isResizing={isResizing} />
                         )}
                       </div>
                     );

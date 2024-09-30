@@ -12,18 +12,32 @@ import {
 import React, { useEffect, useState } from "react";
 
 import ContentTab from "./ContentTab";
-import { createUniqueID } from "../../../../../lib/unique-id";
 import IconTab from "./IconTab";
-import BackgroundTab from "../../common/BackgroundTab";
+import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsAddColumnSection,
+  setIsEditingColumnSection,
+  setIsEditingSection,
+} from "../../../../../../../redux/modules/custom-landing-page/reducer";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 
 const ListFeature = ({
   previewSection,
   setPreviewSection,
-  isShowContent,
-  isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  sectionId,
+  columnId,
 }) => {
+  const { isEditingSection, isAddColumnSection } = useSelector(
+    (state) => state.customLandingPage.multiColumnSection
+  );
+
+  const dispatch = useDispatch();
+
   const [setting, setSetting] = useState({});
   const [listIconVisible, setListIconVisible] = useState(false);
   const [iconBeforeEdit, setIconBeforeEdit] = useState([]);
@@ -34,7 +48,6 @@ const ListFeature = ({
       iconName: "hand-point-right",
     }
   );
-  console.log("🚀 ~ iconName:", iconName);
   const [imageUrl, setImageUrl] = useState(
     currentSection?.iconStyle?.image || ""
   );
@@ -42,12 +55,19 @@ const ListFeature = ({
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
 
   useEffect(() => {
-    const section = previewSection.find((section) => section.id === setting.id);
-
-    if (section) {
-      setSelectedCurrentSection(section);
+    if (!isEditingSection) {
+      let section = previewSection.find((section) => section.id === sectionId);
+      if (section) {
+        let column = section.column.find((col) => col.id === columnId);
+        if (column) {
+          let content = column.content.find((cnt) => cnt.id === setting?.id);
+          if (content) {
+            setSelectedCurrentSection(content);
+          }
+        }
+      }
     }
-  }, [previewSection, setting.id]);
+  }, [previewSection, isEditingSection, sectionId, columnId, setting.id]);
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
@@ -93,7 +113,7 @@ const ListFeature = ({
       },
     };
 
-    setPreviewSection((prevSections) => [...prevSections, payload]);
+    addSectionMultiColumn(setPreviewSection, sectionId, columnId, payload);
     setSetting(payload);
   };
 
@@ -106,8 +126,8 @@ const ListFeature = ({
 
   const handleCancel = () => {
     if (isEditingSection && !listIconVisible) {
-      isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
+      dispatch(setIsEditingSection(false));
     } else if (isEditingSection && listIconVisible) {
       setListIconVisible(false);
       setPreviewSection([...iconBeforeEdit]);
@@ -125,10 +145,10 @@ const ListFeature = ({
       }
       setPreviewSection([...iconBeforeEdit]);
     } else {
-      isShowContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.filter((section) => section.id !== setting.id)
-      );
+      dispatch(setIsAddColumnSection(false));
+      dispatch(setIsEditingColumnSection(false));
+
+      cancelSectionMultiColumn(setPreviewSection, sectionId, columnId, setting);
     }
   };
 
@@ -138,8 +158,12 @@ const ListFeature = ({
       if (iconName.iconName) {
         setImageUrl("");
       }
+    } else if (isAddColumnSection) {
+      dispatch(setIsAddColumnSection(false));
+    } else if (isEditingSection) {
+      dispatch(setIsEditingSection(false));
     } else {
-      isShowContent(false);
+      dispatch(setIsEditingColumnSection(false));
     }
   };
 
@@ -192,6 +216,8 @@ const ListFeature = ({
                     currentSection={
                       isEditingSection ? currentSection : selectedCurrentSection
                     }
+                    sectionId={sectionId}
+                    columnId={columnId}
                   />
                 </CTabPane>
 
@@ -211,6 +237,8 @@ const ListFeature = ({
                     imageUrl={imageUrl}
                     setImageUrl={(value) => setImageUrl(value)}
                     setPreviousIcon={setPreviousIcon}
+                    sectionId={sectionId}
+                    columnId={columnId}
                   />
                 </CTabPane>
 
@@ -219,10 +247,12 @@ const ListFeature = ({
                   className="p-1"
                   data-tab="wadah"
                 >
-                  <BackgroundTab
+                  <BackgroundTabMultiColumnContent
                     currentSection={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                     type={isEditingSection ? "edit" : "add"}
+                    sectionId={sectionId}
+                    columnId={columnId}
                   />
                 </CTabPane>
               </CTabContent>

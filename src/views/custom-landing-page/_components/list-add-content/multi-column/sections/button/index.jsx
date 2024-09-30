@@ -1,3 +1,4 @@
+import React, { useCallback, useEffect, useState } from "react";
 import {
   CButton,
   CCard,
@@ -11,67 +12,74 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import React, { useCallback, useEffect, useState } from "react";
-
-import image from "../../../../../../../assets/action-figure.jpg";
 
 import { IoAdd } from "react-icons/io5";
-
+import { alignOptions } from "../../../../SelectOptions";
 import { createUniqueID } from "../../../../../../../lib/unique-id";
-import DesignTab from "./DesignTab";
-import { UpdateContent } from "./UpdateContent";
-
+import { DraggableList } from "../../../../common/DraggableList";
+import SelectOptions from "../../../../common/SelectOptions";
+import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
 import { useDispatch, useSelector } from "react-redux";
+import { useRemoveContentMultiColumn } from "../../hooks/useRemoveContentMultiColumn";
+import { useMoveContentMultiColumn } from "../../hooks/useMoveContentMultiColumn";
+import { cancelSectionContentLastIndex } from "../../helper/cancelSectionContentLastIndex";
 import {
   setIsAddColumnSection,
   setIsEditingColumnSection,
   setIsEditingSection,
 } from "../../../../../../../redux/modules/custom-landing-page/reducer";
-import { DraggableList } from "../../../../common/DraggableList";
-import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
-import { useMoveContentMultiColumn } from "../../hooks/useMoveContentMultiColumn";
-import { useRemoveContentMultiColumn } from "../../hooks/useRemoveContentMultiColumn";
 import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
 import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
-import { cancelSectionContentLastIndex } from "../../helper/cancelSectionContentLastIndex";
+import { changeWrapperStyleMultiColumn } from "../../helper/changeWrapperStyleMultiColumn";
+import UpdateContent from "./UpdateContent";
 
 const initialContents = [
   {
-    id: "adguiwbj",
-
+    id: "btn01",
     content: {
-      title: "Rahasia ",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
+      title: "Please Click Me",
+      style: {
+        btnColor: "#2196F3",
+        textColor: "#FFFFFF",
+        variant: "fill",
+        rounded: "tw-rounded",
+        buttonSize: "md",
+        shadow: "tw-shadow",
+      },
     },
     target: {},
   },
   {
-    id: "adgdawdw",
-
+    id: "btn02",
     content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-    target: {},
-  },
-  {
-    id: "feqawd",
-
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
+      title: "Dont't Click Me",
+      style: {
+        btnColor: "#EF5350",
+        textColor: "#FFFFFF",
+        variant: "fill",
+        rounded: "tw-rounded",
+        buttonSize: "md",
+        shadow: "tw-shadow",
+      },
     },
     target: {},
   },
 ];
 
-const ColumnTextAndImages = ({
+export const distanceOptions = [
+  { value: "0", label: "0" },
+  { value: "1", label: "1" },
+  { value: "2", label: "2" },
+  { value: "3", label: "3" },
+  { value: "4", label: "4" },
+];
+
+export const flexOptions = [
+  { value: "tw-flex-row", label: "Horizontal" },
+  { value: "tw-flex-col", label: "Vertical" },
+];
+
+const Buttons = ({
   previewSection,
   setPreviewSection,
   sectionBeforeEdit,
@@ -79,7 +87,7 @@ const ColumnTextAndImages = ({
   sectionId,
   columnId,
 }) => {
-  const { isEditingSection } = useSelector(
+  const { isEditingSection, isAddColumnSection } = useSelector(
     (state) => state.customLandingPage.multiColumnSection
   );
   const dispatch = useDispatch();
@@ -91,10 +99,57 @@ const ColumnTextAndImages = ({
 
   const [setting, setSetting] = useState({});
 
-  const contentIdCheck = isEditingSection ? currentSection.id : setting.id;
+  const [selectedDistance, setSelectedDistance] = useState(distanceOptions[2]);
+  const [selectedAlign, setSelectedAlign] = useState(alignOptions[1]);
+  const [selectedFlex, setSelectedFlex] = useState(flexOptions[0]);
+
+  const [isListIconVisible, setIsListIconVisible] = useState(false);
+
+  const contentIdToCheck = isEditingSection ? currentSection.id : setting.id;
+
+  useEffect(() => {
+    if (isEditingSection) {
+      const { wrapperStyle: { marginX, flexDirection, jusctifyContent } = {} } =
+        currentSection || {};
+
+      const distanceOption = distanceOptions.find(
+        (opt) => opt.value === marginX
+      );
+      if (distanceOption) {
+        setSelectedDistance(distanceOption);
+      }
+
+      const flexDirectionOption = flexOptions.find(
+        (opt) => opt.value === flexDirection
+      );
+      if (flexDirectionOption) {
+        setSelectedFlex(flexDirectionOption);
+      }
+
+      const jusctifyContentOption = alignOptions.find(
+        (opt) => opt.value === jusctifyContent
+      );
+      if (jusctifyContentOption) {
+        setSelectedAlign(jusctifyContentOption);
+      }
+    }
+  }, [currentSection, isEditingSection]);
+
+  const handleChangeWrapperStyle = (key, value) => {
+    const updatedContent = {
+      [key]: value,
+    };
+    changeWrapperStyleMultiColumn(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      contentIdToCheck,
+      updatedContent
+    );
+  };
 
   const handleCancel = () => {
-    if (isAddContent) {
+    if (isAddContent && !isListIconVisible) {
       setIsAddContent(false);
       setIsEditingContent(false);
 
@@ -102,9 +157,9 @@ const ColumnTextAndImages = ({
         setPreviewSection,
         sectionId,
         columnId,
-        contentIdCheck
+        contentIdToCheck
       );
-    } else if (isEditingContent) {
+    } else if (isEditingContent && !isListIconVisible) {
       setPreviewSection([...currentContentBeforeEdit]);
       setIsAddContent(false);
       setIsEditingContent(false);
@@ -121,13 +176,17 @@ const ColumnTextAndImages = ({
   };
 
   const handleConfirm = () => {
-    if (isAddContent || isEditingContent) {
+    if (isListIconVisible) {
+      setIsListIconVisible(false);
+    } else if (isAddContent || isEditingContent) {
       setIsAddContent(false);
       setIsEditingContent(false);
+    } else if (isAddColumnSection) {
+      dispatch(setIsAddColumnSection(false));
+    } else if (isEditingSection) {
+      dispatch(setIsEditingSection(false));
     } else {
       dispatch(setIsEditingColumnSection(false));
-      dispatch(setIsAddColumnSection(false));
-      dispatch(setIsEditingSection(false));
     }
   };
 
@@ -135,16 +194,13 @@ const ColumnTextAndImages = ({
     let uniqueId = createUniqueID(previewSection);
     let payload = {
       id: uniqueId,
-      name: "column-text-and-image",
-      title: "Column Text And Image",
+      name: "button",
+      title: "Tombol",
       content: initialContents,
       wrapperStyle: {
-        paddingX: 2,
-        maxColumn: "tw-w-1/3",
-        aspectRatio: 1 / 1,
-        colorTitle: "#000000",
-        colorDescription: "#000000",
-        fontSizeTitle: "tw-text-sm",
+        jusctifyContent: "tw-justify-center",
+        flexDirection: "tw-flex-row",
+        marginX: "2",
       },
       background: {
         bgType: undefined,
@@ -160,7 +216,6 @@ const ColumnTextAndImages = ({
     };
 
     addSectionMultiColumn(setPreviewSection, sectionId, columnId, payload);
-
     setSetting(payload);
   };
 
@@ -179,7 +234,6 @@ const ColumnTextAndImages = ({
     },
     [previewSection]
   );
-
   const removeSection = useRemoveContentMultiColumn(setPreviewSection);
   const moveSection = useMoveContentMultiColumn(setPreviewSection);
 
@@ -193,7 +247,7 @@ const ColumnTextAndImages = ({
       if (!selectedColumn) return null;
 
       const selectedContent = selectedColumn.content.find(
-        (content) => content.id === contentIdCheck
+        (content) => content.id === contentIdToCheck
       );
 
       return selectedContent?.content.map((contentItem, contentIndex) => (
@@ -202,12 +256,11 @@ const ColumnTextAndImages = ({
             index={contentIndex}
             id={contentItem.id}
             showInfoText={contentItem.content?.title}
-            showThumbnail={contentItem.content?.image}
             moveSection={(dragIndex, hoverIndex) =>
               moveSection(
                 section.id,
                 columnId,
-                contentIdCheck,
+                contentIdToCheck,
                 dragIndex,
                 hoverIndex
               )
@@ -217,7 +270,7 @@ const ColumnTextAndImages = ({
               removeSection(
                 section.id,
                 columnId,
-                contentIdCheck,
+                contentIdToCheck,
                 contentItem.id
               )
             }
@@ -227,7 +280,7 @@ const ColumnTextAndImages = ({
     },
     [
       columnId,
-      contentIdCheck,
+      contentIdToCheck,
       editSection,
       moveSection,
       removeSection,
@@ -240,27 +293,29 @@ const ColumnTextAndImages = ({
       <CRow>
         <CCol>
           <div style={{ height: 400 }}>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+            {!isListIconVisible && (
+              <div className="d-flex justify-content-end align-items-center border-bottom p-2">
+                <div>
+                  <CButton
+                    onClick={handleCancel}
+                    color="primary"
+                    variant="outline"
+                    className="mx-2"
+                  >
+                    Batal
+                  </CButton>
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
+                  <CButton onClick={handleConfirm} color="primary">
+                    Selesai
+                  </CButton>
+                </div>
               </div>
-            </div>
+            )}
 
             {isAddContent ? (
               <CTabs>
                 <CTabContent
-                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
+                  style={{ height: 380, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
                   <UpdateContent
@@ -269,6 +324,8 @@ const ColumnTextAndImages = ({
                     }
                     currentContent={initialContents}
                     setPreviewSection={setPreviewSection}
+                    isListIconVisible={isListIconVisible}
+                    setIsListIconVisible={setIsListIconVisible}
                     sectionId={sectionId}
                     columnId={columnId}
                   />
@@ -277,7 +334,7 @@ const ColumnTextAndImages = ({
             ) : isEditingContent ? (
               <CTabs>
                 <CTabContent
-                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
+                  style={{ height: 380, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
                   <UpdateContent
@@ -286,6 +343,8 @@ const ColumnTextAndImages = ({
                     }
                     currentContent={selectedContent}
                     setPreviewSection={setPreviewSection}
+                    isListIconVisible={isListIconVisible}
+                    setIsListIconVisible={setIsListIconVisible}
                     isEditingContent={true}
                     sectionId={sectionId}
                     columnId={columnId}
@@ -293,31 +352,74 @@ const ColumnTextAndImages = ({
                 </CTabContent>
               </CTabs>
             ) : (
-              <CTabs activeTab="kolom">
+              <CTabs activeTab="konten">
                 <CNav variant="tabs">
                   <CNavItem>
-                    <CNavLink data-tab="kolom">Kolom</CNavLink>
+                    <CNavLink data-tab="konten">Konten</CNavLink>
                   </CNavItem>
                   <CNavItem>
-                    <CNavLink data-tab="desain">Desain</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="background">Background</CNavLink>
+                    <CNavLink data-tab="wadah">Wadah</CNavLink>
                   </CNavItem>
                 </CNav>
                 <CTabContent
                   style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
                   className="pt-3"
                 >
-                  <CTabPane className="p-1" data-tab="kolom">
+                  <CTabPane className="p-1" data-tab="konten">
                     {!isAddContent && !isEditingContent && (
                       <>
+                        <div
+                          style={{ gap: 10 }}
+                          className="d-flex align-items-center "
+                        >
+                          <SelectOptions
+                            label="Align"
+                            options={alignOptions}
+                            onChange={(selectedOption) => {
+                              setSelectedAlign(selectedOption);
+                              handleChangeWrapperStyle(
+                                "jusctifyContent",
+                                selectedOption.value
+                              );
+                            }}
+                            value={selectedAlign}
+                            width="50"
+                          />
+
+                          <SelectOptions
+                            label="Jarak"
+                            options={distanceOptions}
+                            onChange={(selectedOption) => {
+                              setSelectedDistance(selectedOption);
+                              handleChangeWrapperStyle(
+                                "marginX",
+                                selectedOption.value
+                              );
+                            }}
+                            value={selectedDistance}
+                            width="50"
+                          />
+                        </div>
+
+                        <SelectOptions
+                          label="Barisan"
+                          options={flexOptions}
+                          onChange={(selectedOption) => {
+                            setSelectedFlex(selectedOption);
+                            handleChangeWrapperStyle(
+                              "flexDirection",
+                              selectedOption.value
+                            );
+                          }}
+                          value={selectedFlex}
+                          width="50"
+                        />
+
                         <div>
                           {previewSection
                             .filter((section) => section.id === sectionId)
                             .map((section, i) => renderSection(section, i))}
                         </div>
-
                         <CCard
                           style={{ cursor: "pointer" }}
                           onClick={() => setIsAddContent(true)}
@@ -339,32 +441,19 @@ const ColumnTextAndImages = ({
                       </>
                     )}
                   </CTabPane>
-
-                  <CTabPane className="p-1" data-tab="desain">
-                    <DesignTab
-                      setPreviewSection={setPreviewSection}
-                      currentSection={
-                        isEditingSection ? currentSection : setting
-                      }
-                      isEditingSection={isEditingSection}
-                      sectionId={sectionId}
-                      columnId={columnId}
-                    />
-                  </CTabPane>
-
                   <CTabPane
                     style={{ overflowX: "hidden", height: "100%" }}
                     className="p-1"
-                    data-tab="background"
+                    data-tab="wadah"
                   >
                     <BackgroundTabMultiColumnContent
-                      sectionId={sectionId}
-                      columnId={columnId}
                       currentSection={
                         isEditingSection ? currentSection : setting
                       }
                       setPreviewSection={setPreviewSection}
                       type={isEditingSection ? "edit" : "add"}
+                      sectionId={sectionId}
+                      columnId={columnId}
                     />
                   </CTabPane>
                 </CTabContent>
@@ -377,4 +466,4 @@ const ColumnTextAndImages = ({
   );
 };
 
-export default ColumnTextAndImages;
+export default Buttons;

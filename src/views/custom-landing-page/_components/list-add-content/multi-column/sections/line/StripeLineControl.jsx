@@ -3,7 +3,49 @@ import ColorPicker from "../../../../common/ColorPicker";
 import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 import Checkbox from "../../../../common/Checkbox";
 
-const StripeLineControl = ({ setPreviewSection, currentSection }) => {
+export const setUpdateValue = (
+  setPreviewSection,
+  sectionId,
+  columnId,
+  contentId,
+  key,
+  value
+) => {
+  setPreviewSection((arr) =>
+    arr.map((section) =>
+      section.id === sectionId
+        ? {
+            ...section,
+            column: section.column.map((column) =>
+              column.id === columnId
+                ? {
+                    ...column,
+                    content: column.content.map((content) =>
+                      content.id === contentId
+                        ? {
+                            ...content,
+                            content: {
+                              ...content.content,
+                              [key]: value,
+                            },
+                          }
+                        : content
+                    ),
+                  }
+                : column
+            ),
+          }
+        : section
+    )
+  );
+};
+
+const StripeLineControl = ({
+  setPreviewSection,
+  currentSection,
+  sectionId,
+  columnId,
+}) => {
   const [height, setHeight] = useState(currentSection?.content?.height || 10);
   const [width1, setWidth1] = useState(currentSection?.content?.width1 || 40);
   const [width2, setWidth2] = useState(currentSection?.content?.width2 || 20);
@@ -24,18 +66,13 @@ const StripeLineControl = ({ setPreviewSection, currentSection }) => {
   );
 
   const handleUpdateValue = (key, value) => {
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                [key]: value,
-              },
-            }
-          : item
-      )
+    setUpdateValue(
+      setPreviewSection,
+      sectionId,
+      columnId,
+      currentSection.id,
+      key,
+      value
     );
   };
 
