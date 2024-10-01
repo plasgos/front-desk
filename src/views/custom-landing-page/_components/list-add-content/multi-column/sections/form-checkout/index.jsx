@@ -24,11 +24,11 @@ import {
   setIsSelectVariantSelectOption,
   setSelectCourier,
   setSelectedVariant,
-} from "../../../../../../redux/modules/custom-landing-page/reducer";
-import { createUniqueID } from "../../../../../../lib/unique-id";
-import { cancelSectionMultiColumn } from "../helper/cancelSectionMultiColumn";
-import { cancelSectionContentLastIndex } from "../helper/cancelSectionContentLastIndex";
-import { addSectionMultiColumn } from "../helper/addSectionMultiColumn";
+} from "../../../../../../../redux/modules/custom-landing-page/reducer";
+import { cancelSectionContentLastIndex } from "../../helper/cancelSectionContentLastIndex";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 
 const FormCheckout = ({
   previewSection,
@@ -130,7 +130,7 @@ const FormCheckout = ({
                     ? {
                         ...column,
                         content: column.content.map((content) =>
-                          content.id === contentId
+                          content.id === contentIdToCheck
                             ? {
                                 ...content,
                                 content: content.content.map((contentItem) => {
@@ -324,7 +324,7 @@ const FormCheckout = ({
           textInputColor: "#000000",
           bgInputColor: "",
           outlineInputColor: "#D8DBE0",
-          widthForm: 450,
+          widthForm: 200,
           fontSizeLabel: 12,
           fontStyle: "tw-font-normal",
           fontSizeTextInputColor: 16,

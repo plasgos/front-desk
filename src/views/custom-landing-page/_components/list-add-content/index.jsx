@@ -18,6 +18,7 @@ import ScrollTarget from "./scroll-target/index";
 import Testimony from "./testimony";
 import Text from "./text/index";
 import MultiColumn from "./multi-column";
+import Video from "./video";
 
 const ListContent = ({
   previewSection,
@@ -205,6 +206,14 @@ const ListContent = ({
           isShowMultiColumn={isShowContent}
           previewFloatingSection={previewFloatingSection}
           setPreviewFloatingSection={setPreviewFloatingSection}
+        />
+      )}
+
+      {addContent === "video" && (
+        <Video
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
         />
       )}
 

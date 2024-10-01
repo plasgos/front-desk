@@ -3,9 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { IoCloseOutline, IoMenu } from "react-icons/io5";
 import { useDrag, useDrop } from "react-dnd";
 import { useDispatch } from "react-redux";
-import { updateOption } from "../../../../../../redux/modules/custom-landing-page/reducer";
 
 import { useDebounce } from "use-debounce";
+import { updateOption } from "../../../../../../../../redux/modules/custom-landing-page/reducer";
 
 export const ItemTypes = {
   CARD: "card",
@@ -114,7 +114,7 @@ export const DraggableListOption = ({
                         content.id === contentId
                           ? {
                               ...content,
-                              content: section.content.map((contentItem) => {
+                              content: content.content.map((contentItem) => {
                                 if (contentItem.type === type) {
                                   return {
                                     ...contentItem,

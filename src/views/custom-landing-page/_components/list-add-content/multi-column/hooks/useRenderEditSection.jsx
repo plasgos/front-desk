@@ -12,6 +12,7 @@ import ListFeature from "../sections/list-feature";
 import Testimony from "../sections/testimony";
 import Buttons from "../sections/button";
 import FAQ from "../sections/faq";
+import FormCheckout from "../sections/form-checkout";
 
 export function useRenderEditSection({
   previewSection,
@@ -272,6 +273,24 @@ export function useRenderEditSection({
                 ) {
                   return (
                     <FAQ
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "form-checkout" &&
+                  content.name === "form-checkout" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <FormCheckout
                       key={content.id}
                       currentSection={content}
                       previewSection={previewSection}

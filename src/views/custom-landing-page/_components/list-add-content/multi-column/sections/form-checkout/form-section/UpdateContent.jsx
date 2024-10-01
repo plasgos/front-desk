@@ -8,11 +8,11 @@ import MultiSelectControl from "../common/MultiSelectControl";
 import { useSelector } from "react-redux";
 import SelectOptionsControl from "../common/SelectOptionsControl";
 import { useDebounce } from "use-debounce";
-import { createUniqueID } from "../../../../../../../lib/unique-id";
-import SelectOptions from "../../../../common/SelectOptions";
-import Checkbox from "../../../../common/Checkbox";
-import Input from "../../../../common/Input";
-import { addContentBySectionId } from "../../helper/addContentBySectionId";
+import SelectOptions from "../../../../../common/SelectOptions";
+import Checkbox from "../../../../../common/Checkbox";
+import Input from "../../../../../common/Input";
+import { createUniqueID } from "../../../../../../../../lib/unique-id";
+import { addContentBySectionId } from "../../../helper/addContentBySectionId";
 
 const typeOptions = [
   {
@@ -405,7 +405,7 @@ const UpdateContent = ({
       setPreviewSection,
       sectionId,
       columnId,
-      contentIdToCheck,
+      idSection,
       payload
     );
 

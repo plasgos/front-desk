@@ -1,21 +1,23 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Input from "../../../common/Input";
-import SelectOptions from "../../../common/SelectOptions";
-import SelectVariant from "../../../common/SelectVariant";
+
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addOption,
-  setCurrentVariantMultiSelect,
-  setIsSelectVariantMultiSelect,
-  setSelectedVariant,
-} from "../../../../../../redux/modules/custom-landing-page/reducer";
+
 import { useRemoveOption } from "../hooks/removeOption";
 import { useMoveOption } from "../hooks/moveOption";
 import { CButton } from "@coreui/react";
 import { IoAdd } from "react-icons/io5";
 import { DraggableListOption } from "./DraggableListOption";
-import { createUniqueID } from "../../../../../../lib/unique-id";
 import { useDebounce } from "use-debounce";
+import {
+  addOption,
+  setCurrentVariantMultiSelect,
+  setIsSelectVariantMultiSelect,
+  setSelectedVariant,
+} from "../../../../../../../../redux/modules/custom-landing-page/reducer";
+import { createUniqueID } from "../../../../../../../../lib/unique-id";
+import SelectVariant from "../../../../../common/SelectVariant";
+import SelectOptions from "../../../../../common/SelectOptions";
+import Input from "../../../../../common/Input";
 
 const optionVariant = [
   {
@@ -48,6 +50,8 @@ const flattenedOptions = optionVariant.flatMap((group) =>
 );
 
 const MultiSelectControl = ({
+  sectionId,
+  columnId,
   idSection,
   currentContent,
   handleChangeValueContent,
@@ -100,27 +104,40 @@ const MultiSelectControl = ({
     );
 
     setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === idSection) {
-          return {
-            ...section,
-            content: section.content.map((contentItem) => {
-              if (
-                contentItem.type === "multiSelect" &&
-                contentItem.id === currentContent.id
-              ) {
-                return {
-                  ...contentItem,
-                  designId: option.id,
-                };
-              }
+      prevSections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) => {
+                        return content.id === idSection
+                          ? {
+                              ...content,
+                              content: content.content.map((contentItem) => {
+                                if (
+                                  contentItem.type === "multiSelect" &&
+                                  contentItem.id === currentContent.id
+                                ) {
+                                  return {
+                                    ...contentItem,
+                                    designId: option.id,
+                                  };
+                                }
 
-              return contentItem;
-            }),
-          };
-        }
-        return section;
-      })
+                                return contentItem;
+                              }),
+                            }
+                          : content;
+                      }),
+                    }
+                  : column
+              ),
+            }
+          : section
+      )
     );
   };
 
@@ -134,27 +151,43 @@ const MultiSelectControl = ({
     };
 
     setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === idSection) {
-          return {
-            ...section,
-            content: section.content.map((contentItem) => {
-              if (
-                contentItem.type === "multiSelect" &&
-                contentItem.id === currentContent.id
-              ) {
-                return {
-                  ...contentItem,
-                  options: [...contentItem.options, newOption],
-                };
-              }
+      prevSections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) => {
+                        return content.id === idSection
+                          ? {
+                              ...content,
+                              content: content.content.map((contentItem) => {
+                                if (
+                                  contentItem.type === "multiSelect" &&
+                                  contentItem.id === currentContent.id
+                                ) {
+                                  return {
+                                    ...contentItem,
+                                    options: [
+                                      ...contentItem.options,
+                                      newOption,
+                                    ],
+                                  };
+                                }
 
-              return contentItem;
-            }),
-          };
-        }
-        return section;
-      })
+                                return contentItem;
+                              }),
+                            }
+                          : content;
+                      }),
+                    }
+                  : column
+              ),
+            }
+          : section
+      )
     );
 
     dispatch(addOption(newOption));
@@ -170,55 +203,72 @@ const MultiSelectControl = ({
 
   const renderSection = useCallback(
     (section) => {
-      return (
-        <div key={section.id}>
-          {section?.content?.map((contentItem, contentIndex) => {
-            // Filter atau cari contentItem berdasarkan kondisi tertentu
-            if (
-              contentItem?.type === "multiSelect" &&
-              contentItem.id === currentContent.id
-            ) {
-              return (
-                <div key={contentItem.id || contentIndex}>
-                  {contentItem?.options?.map((option, optionIndex) => (
-                    <DraggableListOption
-                      key={option.id || optionIndex}
-                      index={optionIndex}
-                      id={option.id}
-                      showInfoText={option.label}
-                      moveSection={(dragIndex, hoverIndex) =>
-                        moveSection(
-                          section.id,
-                          dragIndex,
-                          hoverIndex,
-                          true,
-                          contentIndex
-                        )
-                      }
-                      removeSection={() =>
-                        removeSection(section.id, contentIndex, optionIndex)
-                      }
-                      setPreviewSection={setPreviewSection}
-                      idSection={idSection}
-                      idOption={option.id}
-                      type="multiSelect"
-                    />
-                  ))}
-                </div>
-              );
-            }
+      if (section.id !== sectionId) return null;
 
-            // Jika tidak memenuhi kondisi, Anda bisa mengembalikan null atau komponen lainnya
-            return null;
-          })}
-        </div>
+      const selectedColumn = section.column.find(
+        (column) => column.id === columnId
       );
+      if (!selectedColumn) return null;
+
+      const selectedContent = selectedColumn.content.find(
+        (content) => content.id === idSection
+      );
+
+      return selectedContent?.content.map((contentItem, contentIndex) => {
+        if (
+          contentItem?.type === "multiSelect" &&
+          contentItem.id === currentContent.id
+        ) {
+          return (
+            <div key={contentItem.id || contentIndex}>
+              {contentItem?.options?.map((option, optionIndex) => (
+                <DraggableListOption
+                  key={option.id || optionIndex}
+                  index={optionIndex}
+                  id={option.id}
+                  showInfoText={option.label}
+                  moveSection={(dragIndex, hoverIndex) =>
+                    moveSection(
+                      sectionId,
+                      columnId,
+                      idSection,
+                      dragIndex,
+                      hoverIndex,
+                      true,
+                      contentIndex
+                    )
+                  }
+                  removeSection={() =>
+                    removeSection(
+                      sectionId,
+                      columnId,
+                      idSection,
+                      contentIndex,
+                      optionIndex,
+                      option
+                    )
+                  }
+                  setPreviewSection={setPreviewSection}
+                  sectionId={sectionId}
+                  columnId={columnId}
+                  contentId={idSection}
+                  idOption={option.id}
+                  type="multiSelect"
+                />
+              ))}
+            </div>
+          );
+        }
+        return null;
+      });
     },
     [
+      columnId,
       currentContent.id,
       idSection,
       moveSection,
       removeSection,
+      sectionId,
       setPreviewSection,
     ]
   );
@@ -279,7 +329,7 @@ const MultiSelectControl = ({
 
           <div>
             {previewSection
-              .filter((section) => section.id === idSection)
+              .filter((section) => section.id === sectionId)
               .map((section, i) => renderSection(section, i))}
           </div>
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import Input from "../../../../common/Input";
-import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
+import Input from "../../../../../common/Input";
+import InputRangeWithNumber from "../../../../../common/InputRangeWithNumber";
 
 const EmptySpaceControl = ({ currentContent, handleChangeValueContent }) => {
   const [height, setHeight] = useState(currentContent?.height || 24);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SelectOptions from "../../../../common/SelectOptions";
+import SelectOptions from "../../../../../common/SelectOptions";
 
 const visitorOptions = [
   { value: "phoneNumber", label: "Telepon" },

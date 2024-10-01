@@ -5,7 +5,11 @@ import { FaGripLines, FaListCheck } from "react-icons/fa6";
 import { IoMdImages } from "react-icons/io";
 import { LuImagePlus, LuQuote } from "react-icons/lu";
 import { MdTextFields, MdViewColumn } from "react-icons/md";
-import { PiArrowsDownUpLight, PiTargetDuotone } from "react-icons/pi";
+import {
+  PiArrowsDownUpLight,
+  PiTargetDuotone,
+  PiVideoLight,
+} from "react-icons/pi";
 import { RxButton, RxSwitch } from "react-icons/rx";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 import { PiColumnsPlusRightThin } from "react-icons/pi";
@@ -106,5 +110,11 @@ export const dataListContent = [
     title: "Multi Kolom",
     icon: <PiColumnsPlusRightThin style={{ marginRight: 5 }} size={24} />,
     action: (setAddContent) => setAddContent("multi-column"),
+  },
+  {
+    name: "video",
+    title: "Video",
+    icon: <PiVideoLight style={{ marginRight: 5 }} size={24} />,
+    action: (setAddContent) => setAddContent("video"),
   },
 ];

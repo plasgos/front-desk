@@ -167,10 +167,11 @@ export default (state = initialState, action) => {
       };
 
     case types.UPDATE_OPTION:
+      console.log("UPDATE OPTION PAYLOAD", action.payload);
       return {
         ...state,
         options: state.options.map((opt) =>
-          opt.id === action.payload.optionId
+          opt.id === action.payload?.optionId
             ? {
                 ...opt,
                 label: action.payload.value,
@@ -468,6 +469,7 @@ export const addOption = (option) => {
 };
 
 export const updateOption = (optionId, value) => {
+  console.log("🚀 ~ updateOption ~ optionId:", optionId);
   return {
     type: types.UPDATE_OPTION,
     payload: {

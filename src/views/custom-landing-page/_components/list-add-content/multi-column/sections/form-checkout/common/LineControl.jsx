@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
-import Input from "../../../../common/Input";
+import InputRangeWithNumber from "../../../../../common/InputRangeWithNumber";
+import Input from "../../../../../common/Input";
 
 const LineControl = ({ currentContent, handleChangeValueContent }) => {
   const [labelLine, setLabelLine] = useState(currentContent?.label || "Nama");

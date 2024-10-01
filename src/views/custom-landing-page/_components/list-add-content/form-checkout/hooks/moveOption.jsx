@@ -9,10 +9,16 @@ export const useMoveOption = (setPreviewSection, key, optionTomaping) => {
   const dispatch = useDispatch();
 
   const moveOption = useCallback(
-    (name, dragIndex, hoverIndex, isOption = false, contentIndex = null) => {
+    (
+      sectionId,
+      dragIndex,
+      hoverIndex,
+      isOption = false,
+      contentIndex = null
+    ) => {
       setPreviewSection((prevSections) => {
         return prevSections.map((section) => {
-          if (section.name === name) {
+          if (section.id === sectionId) {
             const updatedContent = [...section.content];
 
             if (isOption && contentIndex !== null) {

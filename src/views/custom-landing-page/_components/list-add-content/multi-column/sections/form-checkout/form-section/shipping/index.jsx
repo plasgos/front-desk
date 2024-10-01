@@ -8,10 +8,10 @@ import {
   setCurrentCourierBeforeEdit,
   setIsAddCouriers,
   setIsEditCouriers,
-} from "../../../../../../../../redux/modules/custom-landing-page/reducer";
-import { DraggableList } from "../../../../../common/DraggableList";
-import SelectOptions from "../../../../../common/SelectOptions";
-import Checkbox from "../../../../../common/Checkbox";
+} from "../../../../../../../../../redux/modules/custom-landing-page/reducer";
+import SelectOptions from "../../../../../../common/SelectOptions";
+import Checkbox from "../../../../../../common/Checkbox";
+import { DraggableList } from "../../../../../../common/DraggableList";
 
 const shippingMethodOptions = [
   { value: "required", label: "Harus Di Isi" },

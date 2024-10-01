@@ -127,7 +127,15 @@ export const DraggableListOption = ({
       })
     );
 
-    dispatch(updateOption(id, value));
+    console.log("IDDDD", id);
+
+    if (id) {
+      dispatch(updateOption(id, value));
+    } else {
+      console.warn("ID tidak ditemukan saat dispatch");
+    }
+
+    // dispatch(updateOption(labelOption.id, value));
   };
 
   return (
@@ -153,6 +161,8 @@ export const DraggableListOption = ({
                     id,
                     value,
                   }));
+
+                  // handleChangeLabelOption(value, id);
                 }}
               />
             </div>

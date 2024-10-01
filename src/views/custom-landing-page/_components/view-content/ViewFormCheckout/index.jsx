@@ -15,7 +15,19 @@ import ViewPaymentMethod from "./ViewPaymentMethod";
 import ViewShippingMethod from "./ViewShippingMethod";
 
 const ViewFormCheckout = forwardRef(
-  ({ isDragging, content, isResizing, isFocused, setPreviewSection }, ref) => {
+  (
+    {
+      isDragging,
+      content,
+      isResizing,
+      isFocused,
+      setPreviewSection,
+      sectionId,
+      columnId,
+      isMultiColumn,
+    },
+    ref
+  ) => {
     const {
       emailVisitor,
       subscribeNewsletter,
@@ -158,21 +170,55 @@ const ViewFormCheckout = forwardRef(
 
       console.log("🚀 ~ onSubmit ~ filteredData:", filteredData);
 
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === content.id
-            ? {
-                ...item,
-                form: {
-                  ...item.form,
-                  information: {
-                    ...filteredData,
+      if (isMultiColumn) {
+        const contentId = content.id;
+
+        setPreviewSection((arr) =>
+          arr.map((section) =>
+            section.id === sectionId
+              ? {
+                  ...section,
+                  column: section.column.map((column) =>
+                    column.id === columnId
+                      ? {
+                          ...column,
+                          content: column.content.map((content) =>
+                            content.id === contentId
+                              ? {
+                                  ...content,
+                                  form: {
+                                    ...content.form,
+                                    information: {
+                                      ...filteredData,
+                                    },
+                                  },
+                                }
+                              : content
+                          ),
+                        }
+                      : column
+                  ),
+                }
+              : section
+          )
+        );
+      } else {
+        setPreviewSection((arr) =>
+          arr.map((item) =>
+            String(item.id) === content.id
+              ? {
+                  ...item,
+                  form: {
+                    ...item.form,
+                    information: {
+                      ...filteredData,
+                    },
                   },
-                },
-              }
-            : item
-        )
-      );
+                }
+              : item
+          )
+        );
+      }
     };
 
     const inputStyle = {

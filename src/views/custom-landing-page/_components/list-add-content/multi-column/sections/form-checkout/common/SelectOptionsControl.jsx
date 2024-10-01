@@ -10,13 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRemoveOption } from "../hooks/removeOption";
 
 import { useDebounce } from "use-debounce";
-import { createUniqueID } from "../../../../../../../lib/unique-id";
 import {
   addOption,
   addOptionsGroup,
-} from "../../../../../../../redux/modules/custom-landing-page/reducer";
-import Input from "../../../../common/Input";
-import SelectOptions from "../../../../common/SelectOptions";
+} from "../../../../../../../../redux/modules/custom-landing-page/reducer";
+import { createUniqueID } from "../../../../../../../../lib/unique-id";
+import SelectOptions from "../../../../../common/SelectOptions";
+import Input from "../../../../../common/Input";
 
 const typeOptions = [
   { value: "single", label: "Single" },
@@ -173,68 +173,6 @@ const SelectOptionsControl = ({
     "optionsGroup"
   );
 
-  // const renderSection = useCallback(
-  //   (section) => {
-  //     return (
-  //       <div key={section.id}>
-  //         {section?.content?.map((contentItem, contentIndex) => {
-  //           // Filter atau cari contentItem berdasarkan kondisi tertentu
-  //           if (
-  //             contentItem?.type === "selectOption" &&
-  //             contentItem.id === currentContent.id
-  //           ) {
-  //             return (
-  //               <div key={contentItem.id || contentIndex}>
-  //                 {contentItem?.options?.map((option, optionIndex) => (
-  //                   <DraggableListOption
-  //                     key={option.id || optionIndex}
-  //                     index={optionIndex}
-  //                     id={option.id}
-  //                     showInfoText={option.label}
-  //                     moveSection={(dragIndex, hoverIndex) =>
-  //                       moveSection(
-  //                         section.name,
-  //                         dragIndex,
-  //                         hoverIndex,
-  //                         true,
-  //                         contentIndex
-  //                       )
-  //                     }
-  //                     removeSection={() =>
-  //                       removeSection(
-  //                         section.id,
-  //                         contentIndex,
-  //                         optionIndex,
-  //                         option,
-  //                         setDefaultValue
-  //                       )
-  //                     }
-  //                     setPreviewSection={setPreviewSection}
-  //                     idSection={idSection}
-  //                     idOption={option.id}
-  //                     type="selectOption"
-  //                     setDefaultValue={setDefaultValue}
-  //                   />
-  //                 ))}
-  //               </div>
-  //             );
-  //           }
-
-  //           // Jika tidak memenuhi kondisi, Anda bisa mengembalikan null atau komponen lainnya
-  //           return null;
-  //         })}
-  //       </div>
-  //     );
-  //   },
-  //   [
-  //     currentContent.id,
-  //     idSection,
-  //     moveSection,
-  //     removeSection,
-  //     setPreviewSection,
-  //   ]
-  // );
-
   const renderSection = useCallback(
     (section) => {
       if (section.id !== sectionId) return null;
@@ -263,7 +201,9 @@ const SelectOptionsControl = ({
                   showInfoText={option.label}
                   moveSection={(dragIndex, hoverIndex) =>
                     moveSection(
-                      section.name,
+                      sectionId,
+                      columnId,
+                      idSection,
                       dragIndex,
                       hoverIndex,
                       true,
@@ -317,27 +257,43 @@ const SelectOptionsControl = ({
     };
 
     setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === idSection) {
-          return {
-            ...section,
-            content: section.content.map((contentItem) => {
-              if (
-                contentItem.type === "selectOption" &&
-                contentItem.id === currentContent.id
-              ) {
-                return {
-                  ...contentItem,
-                  options: [...contentItem.options, newOption],
-                };
-              }
+      prevSections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) => {
+                        return content.id === idSection
+                          ? {
+                              ...content,
+                              content: content.content.map((contentItem) => {
+                                if (
+                                  contentItem.type === "selectOption" &&
+                                  contentItem.id === currentContent.id
+                                ) {
+                                  return {
+                                    ...contentItem,
+                                    options: [
+                                      ...contentItem.options,
+                                      newOption,
+                                    ],
+                                  };
+                                }
 
-              return contentItem;
-            }),
-          };
-        }
-        return section;
-      })
+                                return contentItem;
+                              }),
+                            }
+                          : content;
+                      }),
+                    }
+                  : column
+              ),
+            }
+          : section
+      )
     );
 
     dispatch(addOption(newOption));
@@ -361,93 +317,119 @@ const SelectOptionsControl = ({
     };
 
     setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === idSection) {
-          return {
-            ...section,
-            content: section.content.map((contentItem) => {
-              if (
-                contentItem.type === "selectOption" &&
-                contentItem.id === currentContent.id
-              ) {
-                return {
-                  ...contentItem,
-                  optionsGroup: [...contentItem.optionsGroup, newOptionGroup],
-                };
-              }
+      prevSections.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) => {
+                        return content.id === idSection
+                          ? {
+                              ...content,
+                              content: content.content.map((contentItem) => {
+                                if (
+                                  contentItem.type === "selectOption" &&
+                                  contentItem.id === currentContent.id
+                                ) {
+                                  return {
+                                    ...contentItem,
+                                    optionsGroup: [
+                                      ...contentItem.optionsGroup,
+                                      newOptionGroup,
+                                    ],
+                                  };
+                                }
 
-              return contentItem;
-            }),
-          };
-        }
-        return section;
-      })
+                                return contentItem;
+                              }),
+                            }
+                          : content;
+                      }),
+                    }
+                  : column
+              ),
+            }
+          : section
+      )
     );
-
-    // setSetting(newOption);
 
     dispatch(addOptionsGroup(newOptionGroup));
   };
 
   const renderSectionGroup = useCallback(
     (section) => {
-      return (
-        <div key={section.id}>
-          {section?.content?.map((contentItem, contentIndex) => {
-            // Filter atau cari contentItem berdasarkan kondisi tertentu
-            if (
-              contentItem?.type === "selectOption" &&
-              contentItem.id === currentContent.id
-            ) {
-              return (
-                <div key={contentItem.id || contentIndex}>
-                  {contentItem?.optionsGroup?.map((option, optionIndex) => (
-                    <DraggableListGroupOption
-                      key={option.groupId || optionIndex}
-                      index={optionIndex}
-                      id={option.groupId}
-                      showInfoText={option.label}
-                      moveSection={(dragIndex, hoverIndex) =>
-                        moveSectionGroup(
-                          section.name,
-                          dragIndex,
-                          hoverIndex,
-                          true,
-                          contentIndex
-                        )
-                      }
-                      removeSection={() =>
-                        removeSectionGroup(
-                          section.id,
-                          contentIndex,
-                          optionIndex,
-                          option,
-                          setDefaultValue
-                        )
-                      }
-                      setPreviewSection={setPreviewSection}
-                      idSection={idSection}
-                      idOption={option.groupId}
-                      type="selectOption"
-                      options={option.options}
-                      setDefaultValue={setDefaultValue}
-                    />
-                  ))}
-                </div>
-              );
-            }
+      if (section.id !== sectionId) return null;
 
-            // Jika tidak memenuhi kondisi, Anda bisa mengembalikan null atau komponen lainnya
-            return null;
-          })}
-        </div>
+      const selectedColumn = section.column.find(
+        (column) => column.id === columnId
       );
+      if (!selectedColumn) return null;
+
+      const selectedContent = selectedColumn.content.find(
+        (content) => content.id === idSection
+      );
+
+      return selectedContent?.content.map((contentItem, contentIndex) => {
+        if (
+          contentItem?.type === "selectOption" &&
+          contentItem.id === currentContent.id
+        ) {
+          return (
+            <div key={contentItem.id || contentIndex}>
+              {contentItem?.optionsGroup?.map((option, optionIndex) => (
+                <DraggableListGroupOption
+                  key={option.groupId || optionIndex}
+                  index={optionIndex}
+                  id={option.groupId}
+                  showInfoText={option.label}
+                  moveSection={(dragIndex, hoverIndex) =>
+                    moveSectionGroup(
+                      sectionId,
+                      columnId,
+                      idSection,
+                      dragIndex,
+                      hoverIndex,
+                      true,
+                      contentIndex
+                    )
+                  }
+                  removeSection={() =>
+                    removeSectionGroup(
+                      sectionId,
+                      columnId,
+                      idSection,
+                      contentIndex,
+                      optionIndex,
+                      option,
+                      setDefaultValue
+                    )
+                  }
+                  setPreviewSection={setPreviewSection}
+                  sectionId={sectionId}
+                  columnId={columnId}
+                  contentId={idSection}
+                  idOption={option.groupId}
+                  type="selectOption"
+                  options={option.options}
+                  setDefaultValue={setDefaultValue}
+                />
+              ))}
+            </div>
+          );
+        }
+        return null;
+      });
     },
     [
+      columnId,
       currentContent.id,
       idSection,
       moveSectionGroup,
       removeSectionGroup,
+      sectionId,
       setPreviewSection,
     ]
   );

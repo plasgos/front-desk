@@ -159,3 +159,25 @@ export const aspectRatioOptions = [
     ],
   },
 ];
+
+export const aspectRatioVideoOptions = [
+  {
+    label: "Kotak",
+    options: [{ value: "100%", label: "1:1" }], // 1:1
+  },
+  {
+    label: "Melebar",
+    options: [
+      { value: "75%", label: "4:3" }, // 4:3
+      { value: "56.25%", label: "16:9" }, // 16:9
+    ],
+  },
+  {
+    label: "Potret",
+    options: [
+      { value: "80%", label: "4:5" }, // 4:5
+      { value: "150%", label: "2:3" }, // 2:3
+      { value: "177.78%", label: "9:16" }, // 9:16
+    ],
+  },
+];

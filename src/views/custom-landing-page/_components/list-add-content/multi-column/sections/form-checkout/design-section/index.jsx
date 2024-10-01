@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
-import ColorPicker from "../../../common/ColorPicker";
-import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
-import SelectOptions from "../../../common/SelectOptions";
-import { fontStyleOptions } from "../../../SelectOptions";
-import Input from "../../../common/Input";
-import { useFontAwesomeIconPack } from "../../../../../../hooks/useFontAwesomePack";
 import { CButton } from "@coreui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import IconPicker from "../../../common/IconPicker";
+import { fontStyleOptions } from "../../../../../SelectOptions";
+import { useFontAwesomeIconPack } from "../../../../../../../../hooks/useFontAwesomePack";
+import IconPicker from "../../../../../common/IconPicker";
+import ColorPicker from "../../../../../common/ColorPicker";
+import InputRangeWithNumber from "../../../../../common/InputRangeWithNumber";
+import SelectOptions from "../../../../../common/SelectOptions";
+import Input from "../../../../../common/Input";
 
 const DesignSection = ({
   previewSection,
@@ -22,6 +22,8 @@ const DesignSection = ({
   setIsListIconVisible,
   setIconBeforeEdit,
   setPreviousIcon,
+  sectionId,
+  columnId,
 }) => {
   const [labelColor, setLabelColor] = useState(
     currentSection?.form?.style?.labelColor || "#000000"
@@ -36,7 +38,7 @@ const DesignSection = ({
     currentSection?.form?.style?.outlineInputColor || "#D8DBE0"
   );
   const [widthForm, setWidthForm] = useState(
-    currentSection?.form?.style?.widthForm || 450
+    currentSection?.form?.style?.widthForm || 200
   );
 
   const [fontSizeLabel, setFontSizeLabel] = useState(
@@ -73,20 +75,34 @@ const DesignSection = ({
       // Update tempSections hanya jika imageUrl bukan string kosong
       setIcon({});
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
+        arr.map((section) =>
+          section.id === sectionId
             ? {
-                ...item,
-                form: {
-                  ...item.form,
-                  style: {
-                    ...item.form.style,
-                    image: imageUrl,
-                    icon: "",
-                  },
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) =>
+                          content.id === currentSection.id
+                            ? {
+                                ...content,
+                                form: {
+                                  ...content.form,
+                                  style: {
+                                    ...content.form.style,
+                                    image: imageUrl,
+                                    icon: "",
+                                  },
+                                },
+                              }
+                            : content
+                        ),
+                      }
+                    : column
+                ),
               }
-            : item
+            : section
         )
       );
     }
@@ -119,40 +135,69 @@ const DesignSection = ({
 
   const handleChangeFormValue = (key, selectedOption) => {
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
+      arr.map((section) =>
+        section.id === sectionId
           ? {
-              ...item,
-              form: {
-                ...item.form,
-                style: {
-                  ...item.form.style,
-                  [key]: selectedOption,
-                },
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) =>
+                        content.id === currentSection.id
+                          ? {
+                              ...content,
+                              form: {
+                                ...content.form,
+                                style: {
+                                  ...content.form.style,
+                                  [key]: selectedOption,
+                                },
+                              },
+                            }
+                          : content
+                      ),
+                    }
+                  : column
+              ),
             }
-          : item
+          : section
       )
     );
   };
 
   const handleChangeIcon = (value) => {
     setIcon(value);
+
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
+      arr.map((section) =>
+        section.id === sectionId
           ? {
-              ...item,
-              form: {
-                ...item.form,
-                style: {
-                  ...item.form.style,
-                  icon: value,
-                  image: "",
-                },
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) =>
+                        content.id === currentSection.id
+                          ? {
+                              ...content,
+                              form: {
+                                ...content.form,
+                                style: {
+                                  ...content.form.style,
+                                  icon: value,
+                                  image: "",
+                                },
+                              },
+                            }
+                          : content
+                      ),
+                    }
+                  : column
+              ),
             }
-          : item
+          : section
       )
     );
   };

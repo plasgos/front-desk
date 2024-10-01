@@ -11,13 +11,13 @@ import {
   CTabs,
 } from "@coreui/react";
 import { IoAdd } from "react-icons/io5";
-import { useMoveContentMultiColumn } from "../../hooks/useMoveContentMultiColumn";
-import { useRemoveContentMultiColumn } from "../../hooks/useRemoveContentMultiColumn";
 import Information from "./Information";
 import UpdateContent from "./UpdateContent";
 import Payment from "./payment";
 import Shipping from "./shipping";
-import { DraggableList } from "../../../../common/DraggableList";
+import { useRemoveContentMultiColumn } from "../../../hooks/useRemoveContentMultiColumn";
+import { useMoveContentMultiColumn } from "../../../hooks/useMoveContentMultiColumn";
+import { DraggableList } from "../../../../../common/DraggableList";
 
 const FormSection = ({
   previewSection,

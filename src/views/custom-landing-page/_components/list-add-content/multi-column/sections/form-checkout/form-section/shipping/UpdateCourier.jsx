@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import jne from "../../../../../../../../assets/jne-logo.png";
-import sicepat from "../../../../../../../../assets/logo-sicepat.png";
-import ninja from "../../../../../../../../assets/ninja-xpress.png";
-import jnt from "../../../../../../../../assets/jnt.png";
-import sap from "../../../../../../../../assets/sap xpress logo.png";
-import anteraja from "../../../../../../../../assets/anteraja logo.png";
-import idexpress from "../../../../../../../../assets/id-express logo.png";
+import jne from "../../../../../../../../../assets/jne-logo.png";
+import sicepat from "../../../../../../../../../assets/logo-sicepat.png";
+import ninja from "../../../../../../../../../assets/ninja-xpress.png";
+import jnt from "../../../../../../../../../assets/jnt.png";
+import sap from "../../../../../../../../../assets/sap xpress logo.png";
+import anteraja from "../../../../../../../../../assets/anteraja logo.png";
+import idexpress from "../../../../../../../../../assets/id-express logo.png";
 import { useDispatch } from "react-redux";
-import { setSelectCourier } from "../../../../../../../../redux/modules/custom-landing-page/reducer";
-import SelectOptions from "../../../../../common/SelectOptions";
-import Checkbox from "../../../../../common/Checkbox";
+import Checkbox from "../../../../../../common/Checkbox";
+import SelectOptions from "../../../../../../common/SelectOptions";
+import { setSelectCourier } from "../../../../../../../../../redux/modules/custom-landing-page/reducer";
 
 const couriersOptions = [
   {

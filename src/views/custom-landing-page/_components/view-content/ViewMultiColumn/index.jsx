@@ -1,20 +1,20 @@
 import React, { forwardRef } from "react";
-import useAnimatedVisibility from "../../../../../hooks/useAnimatedVisibility";
 
-import ViewText from "../ViewText";
 import { useBackgroundStyles } from "../../../../../hooks/useBackgroundStyles";
+import ViewButtonUpdate from "../ViewButtonUpdate";
 import ViewColumnTextAndImage from "../ViewColumnTextAndImage";
 import ViewEmptySpace from "../ViewEmptySpace";
-import ViewListImages from "../ViewListImages";
-import ViewScrollTraget from "../ViewScrollTraget";
-import ViewQuote from "../ViewQuote";
+import ViewFAQ from "../ViewFAQ";
+import ViewFormCheckout from "../ViewFormCheckout";
 import ViewImage from "../ViewImage";
 import ViewImageText from "../ViewImageText";
 import ViewLine from "../ViewLine";
 import ViewListFeature from "../ViewListFeature";
+import ViewListImages from "../ViewListImages";
+import ViewQuote from "../ViewQuote";
+import ViewScrollTraget from "../ViewScrollTraget";
 import ViewTestimony from "../ViewTestimony";
-import ViewButtonUpdate from "../ViewButtonUpdate";
-import ViewFAQ from "../ViewFAQ";
+import ViewText from "../ViewText";
 
 const ViewMultiColumn = forwardRef(
   (
@@ -26,13 +26,11 @@ const ViewMultiColumn = forwardRef(
       isFocused,
       width,
       isPreview,
+      setPreviewSection,
     },
     ref
   ) => {
     const stylesBg = useBackgroundStyles(content);
-
-    const { elementRef, getClassName, duration } =
-      useAnimatedVisibility(content);
 
     return (
       <>
@@ -134,98 +132,115 @@ const ViewMultiColumn = forwardRef(
                     ></div>
                   ) : null}
 
-                  {column.content.map((content) => {
+                  {column.content.map((contentItem) => {
                     return (
-                      <div key={content.id}>
-                        {content.name === "text" && (
-                          <ViewText section={content} isResizing={isResizing} />
+                      <div key={contentItem.id}>
+                        {contentItem.name === "text" && (
+                          <ViewText
+                            section={contentItem}
+                            isResizing={isResizing}
+                          />
                         )}
 
-                        {content.name === "column-text-and-image" && (
+                        {contentItem.name === "column-text-and-image" && (
                           <ViewColumnTextAndImage
                             containerRef={containerRef}
-                            content={content}
+                            content={contentItem}
                             isResizing={isResizing}
                             isPreview={isPreview}
                             width={width}
                           />
                         )}
 
-                        {content.name === "empty-space" && (
+                        {contentItem.name === "empty-space" && (
                           <ViewEmptySpace
-                            content={content.content}
+                            content={contentItem.content}
                             isResizing={isResizing}
                           />
                         )}
 
-                        {content.name === "list-images" && (
+                        {contentItem.name === "list-images" && (
                           <ViewListImages
                             containerRef={containerRef}
-                            content={content}
+                            content={contentItem}
                             isResizing={isResizing}
                             isPreview={isPreview}
                             width={width}
                           />
                         )}
 
-                        {content.name === "scroll-target" && (
+                        {contentItem.name === "scroll-target" && (
                           <ViewScrollTraget
-                            content={content}
+                            content={contentItem}
                             isResizing={isResizing}
                           />
                         )}
 
-                        {content.name === "quote" && (
+                        {contentItem.name === "quote" && (
                           <ViewQuote
-                            content={content}
+                            content={contentItem}
                             isResizing={isResizing}
                           />
                         )}
 
-                        {content.name === "image" && (
+                        {contentItem.name === "image" && (
                           <ViewImage
-                            content={content}
+                            content={contentItem}
                             isResizing={isResizing}
                           />
                         )}
 
-                        {content.name === "image-text" && (
+                        {contentItem.name === "image-text" && (
                           <ViewImageText
-                            content={content}
+                            content={contentItem}
                             isResizing={isResizing}
                           />
                         )}
 
-                        {content.name === "line" && (
+                        {contentItem.name === "line" && (
                           <ViewLine
-                            content={content.content}
+                            content={contentItem.content}
                             isResizing={isResizing}
                           />
                         )}
 
-                        {content.name === "list-feature" && (
+                        {contentItem.name === "list-feature" && (
                           <ViewListFeature
-                            content={content}
+                            content={contentItem}
                             isResizing={isResizing}
                           />
                         )}
 
-                        {content.name === "testimony" && (
+                        {contentItem.name === "testimony" && (
                           <ViewTestimony
-                            content={content}
+                            content={contentItem}
                             isResizing={isResizing}
                           />
                         )}
 
-                        {content.name === "button" && (
+                        {contentItem.name === "button" && (
                           <ViewButtonUpdate
-                            content={content}
+                            content={contentItem}
                             isResizing={isResizing}
                           />
                         )}
 
-                        {content.name === "faq" && (
-                          <ViewFAQ content={content} isResizing={isResizing} />
+                        {contentItem.name === "faq" && (
+                          <ViewFAQ
+                            content={contentItem}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {contentItem.name === "form-checkout" && (
+                          <ViewFormCheckout
+                            setPreviewSection={setPreviewSection}
+                            content={contentItem}
+                            isResizing={isResizing}
+                            sectionId={content.id}
+                            columnId={column.id}
+                            isMultiColumn={true}
+                          />
                         )}
                       </div>
                     );

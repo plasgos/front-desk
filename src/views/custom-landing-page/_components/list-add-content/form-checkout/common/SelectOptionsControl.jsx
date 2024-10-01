@@ -190,7 +190,7 @@ const SelectOptionsControl = ({
                       showInfoText={option.label}
                       moveSection={(dragIndex, hoverIndex) =>
                         moveSection(
-                          section.name,
+                          section.id,
                           dragIndex,
                           hoverIndex,
                           true,
@@ -334,7 +334,7 @@ const SelectOptionsControl = ({
                       showInfoText={option.label}
                       moveSection={(dragIndex, hoverIndex) =>
                         moveSectionGroup(
-                          section.name,
+                          section.id,
                           dragIndex,
                           hoverIndex,
                           true,

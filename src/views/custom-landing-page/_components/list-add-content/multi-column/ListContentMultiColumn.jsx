@@ -20,6 +20,7 @@ import ListFeature from "./sections/list-feature";
 import Testimony from "./sections/testimony";
 import Buttons from "./sections/button";
 import FAQ from "./sections/faq";
+import FormCheckout from "./sections/form-checkout";
 
 const ListContentMultiColumn = ({
   previewSection,
@@ -174,14 +175,15 @@ const ListContentMultiColumn = ({
           columnId={columnId}
         />
       )}
-      {/* 
+
       {addContent === "form-checkout" && (
         <FormCheckout
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
+          sectionId={sectionId}
+          columnId={columnId}
         />
-      )} */}
+      )}
 
       {addContent === "image" && (
         <Image
@@ -200,16 +202,6 @@ const ListContentMultiColumn = ({
           columnId={columnId}
         />
       )}
-
-      {/* {addContent === "multi-column" && (
-        <MultiColumn
-          previewSection={previewSection}
-          setPreviewSection={(value) => setPreviewSection(value)}
-          isShowContent={isShowContent}
-          previewFloatingSection={previewFloatingSection}
-          setPreviewFloatingSection={setPreviewFloatingSection}
-        />
-      )} */}
 
       <CTabContent
         style={{

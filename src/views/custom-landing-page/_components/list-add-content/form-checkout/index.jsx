@@ -44,7 +44,9 @@ const FormCheckout = ({
     isEditingCouriers,
     selectedCourier,
     currentCourierBeforeEdit,
+    options,
   } = useSelector((state) => state.customLandingPage);
+  console.log("🚀 ~ options:", options);
 
   const dispatch = useDispatch();
 

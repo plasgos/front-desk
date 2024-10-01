@@ -60,6 +60,7 @@ import ViewTestimony from "./_components/view-content/ViewTestimony/index";
 import ViewText from "./_components/view-content/ViewText";
 import ViewMultiColumn from "./_components/view-content/ViewMultiColumn";
 import MultiColumn from "./_components/list-add-content/multi-column";
+import ViewVideo from "./_components/view-content/ViewVideo";
 
 const landingPage = {
   detail: {
@@ -376,6 +377,20 @@ const CustomLandingPage = () => {
             isFocused={focusedIndex === index}
             width={dimensions.width}
             isPreview={isPreview}
+            setPreviewSection={setPreviewSection}
+          />
+        );
+      }
+
+      if (section.name === "video") {
+        return (
+          <ViewVideo
+            containerRef={containerRef}
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
           />
         );
       }

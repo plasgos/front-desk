@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import SelectOptions from "../../../../common/SelectOptions";
-import Input from "../../../../common/Input";
+import SelectOptions from "../../../../../common/SelectOptions";
+import Input from "../../../../../common/Input";
 
 const subdistrictOption = [
   { value: "search", label: "Pencarian" },
