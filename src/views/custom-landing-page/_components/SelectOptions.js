@@ -160,24 +160,46 @@ export const aspectRatioOptions = [
   },
 ];
 
+// export const aspectRatioVideoOptions = [
+//   {
+//     label: "Kotak",
+//     options: [{ value: "100%", label: "1:1" }], // 1:1
+//   },
+//   {
+//     label: "Melebar",
+//     options: [
+//       { value: "75%", label: "4:3" }, // 4:3
+//       { value: "56.25%", label: "16:9" }, // 16:9
+//     ],
+//   },
+//   {
+//     label: "Potret",
+//     options: [
+//       { value: "80%", label: "4:5" }, // 4:5
+//       { value: "150%", label: "2:3" }, // 2:3
+//       { value: "177.78%", label: "9:16" }, // 9:16
+//     ],
+//   },
+// ];
+
 export const aspectRatioVideoOptions = [
   {
     label: "Kotak",
-    options: [{ value: "100%", label: "1:1" }], // 1:1
+    options: [{ value: 1 / 1, label: "1:1" }], // 1:1
   },
   {
     label: "Melebar",
     options: [
-      { value: "75%", label: "4:3" }, // 4:3
-      { value: "56.25%", label: "16:9" }, // 16:9
+      { value: 4 / 3, label: "4:3" }, // 4:3
+      { value: 16 / 9, label: "16:9" }, // 16:9
     ],
   },
   {
     label: "Potret",
     options: [
-      { value: "80%", label: "4:5" }, // 4:5
-      { value: "150%", label: "2:3" }, // 2:3
-      { value: "177.78%", label: "9:16" }, // 9:16
+      { value: 4 / 5, label: "4:5" }, // 4:5
+      { value: 2 / 3, label: "2:3" }, // 2:3
+      { value: 9 / 16, label: "9:16" }, // 9:16
     ],
   },
 ];

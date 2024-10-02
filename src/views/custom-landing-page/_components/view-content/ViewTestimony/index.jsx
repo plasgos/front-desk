@@ -27,8 +27,13 @@ const ViewTestimony = forwardRef(
           position: "relative",
           zIndex: 1,
         }}
-        className={`tw-w-full tw-flex tw-flex-wrap ${content.wrapperStyle?.jusctifyContent} tw-items-center tw-p-4 
-          `}
+        className={`tw-w-full tw-flex tw-flex-wrap ${
+          content.wrapperStyle?.jusctifyContent
+        } tw-items-center tw-p-4 
+        ${
+          isFocused &&
+          "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20 "
+        }`}
       >
         <div style={stylesBg.backgroundImgStyle}></div>
 

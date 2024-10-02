@@ -31,7 +31,10 @@ const ViewListImages = forwardRef(
           position: "relative",
           zIndex: 1,
         }}
-        className=" tw-flex tw-flex-row tw-flex-wrap tw-justify-center tw-items-center tw-p-3 tw-gap-y-3 "
+        className={`tw-flex tw-flex-row tw-justify-center tw-items-center tw-flex-wrap tw-p-3 tw-gap-y-3 ${
+          isFocused &&
+          "animate__animated  animate__headShake animate__fast tw-bg-green-300/20 "
+        } `}
       >
         <div style={stylesBg.backgroundImgStyle}></div>
 

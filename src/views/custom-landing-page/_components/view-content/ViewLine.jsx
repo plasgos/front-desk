@@ -56,6 +56,10 @@ const ViewLine = forwardRef(
           transformOrigin: "center",
           position: "relative",
         }}
+        className={`  ${
+          isFocused &&
+          "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20 "
+        } `}
       >
         {variant === "Basic" ? (
           <div

@@ -61,6 +61,9 @@ import ViewText from "./_components/view-content/ViewText";
 import ViewMultiColumn from "./_components/view-content/ViewMultiColumn";
 import MultiColumn from "./_components/list-add-content/multi-column";
 import ViewVideo from "./_components/view-content/ViewVideo";
+import Video from "./_components/list-add-content/video";
+import VideoText from "./_components/list-add-content/video-text";
+import ViewVideoText from "./_components/view-content/ViewVideoText";
 
 const landingPage = {
   detail: {
@@ -151,7 +154,7 @@ const CustomLandingPage = () => {
       // Set a timer to remove focus after 3 seconds
       const timer = setTimeout(() => {
         setFocusedIndex(null);
-      }, 2000);
+      }, 800);
 
       setTimers({ ...timers, [index]: timer });
     },
@@ -385,6 +388,19 @@ const CustomLandingPage = () => {
       if (section.name === "video") {
         return (
           <ViewVideo
+            containerRef={containerRef}
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
+
+      if (section.name === "video-text") {
+        return (
+          <ViewVideoText
             containerRef={containerRef}
             isDragging={isDragging && section.id === id}
             content={section}
@@ -669,6 +685,40 @@ const CustomLandingPage = () => {
             isShowMultiColumn={(value) => setEditing(value)}
             sectionMultiColumnBeforeEdit={sectionBeforeEdit}
             isEditingSectionMultiColumn={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "video" &&
+        section.name === "video" &&
+        editing.id === section.id
+      ) {
+        return (
+          <Video
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "video-text" &&
+        section.name === "video-text" &&
+        editing.id === section.id
+      ) {
+        return (
+          <VideoText
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }

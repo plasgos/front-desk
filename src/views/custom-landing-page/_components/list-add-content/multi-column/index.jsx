@@ -406,6 +406,7 @@ const MultiColumn = ({
                 <div key={column.id || columnIndex}>
                   {column.content.map((contentItem, contentIndex) => (
                     <ListSectionContent
+                      isMultiColumn={true}
                       key={contentItem.id || contentIndex}
                       index={contentIndex}
                       id={contentItem.id}
@@ -641,6 +642,7 @@ const MultiColumn = ({
                         <div>
                           {isAddColumnSection ? (
                             <ListContentMultiColumn
+                              isMultiColumn={true}
                               previewSection={previewSection}
                               setPreviewSection={(value) =>
                                 setPreviewSection(value)
@@ -694,6 +696,7 @@ const MultiColumn = ({
                         <div>
                           {isEditingColumnSection ? (
                             <ListContentMultiColumn
+                              isMultiColumn={true}
                               previewSection={previewSection}
                               setPreviewSection={(value) =>
                                 setPreviewSection(value)

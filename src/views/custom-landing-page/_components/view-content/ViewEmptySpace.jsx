@@ -11,6 +11,10 @@ const ViewEmptySpace = forwardRef(
           ...(isFocused && { border: "2px solid green" }),
           height: content.height,
         }}
+        className={`${
+          isFocused &&
+          "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20 "
+        }`}
       ></div>
     );
   }

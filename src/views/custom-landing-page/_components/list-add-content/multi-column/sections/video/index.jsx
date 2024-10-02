@@ -8,19 +8,33 @@ import {
   CTabs,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import { createUniqueID } from "../../../../../lib/unique-id";
-import AnimationControl from "../../common/AnimationControl";
-import BackgroundTab from "../../common/BackgroundTab";
 import VideoControlSetting from "./VideoControlSetting";
+import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
+import AnimationControlMultiColumn from "../../common/AnimationControlMultiColumn";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsAddColumnSection,
+  setIsEditingColumnSection,
+  setIsEditingSection,
+} from "../../../../../../../redux/modules/custom-landing-page/reducer";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 
 const Video = ({
   previewSection,
   setPreviewSection,
-  isShowContent,
-  isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  sectionId,
+  columnId,
 }) => {
+  const { isEditingSection, isAddColumnSection } = useSelector(
+    (state) => state.customLandingPage.multiColumnSection
+  );
+
+  const dispatch = useDispatch();
+
   const [setting, setSetting] = useState({});
 
   const handleAddContent = () => {
@@ -31,7 +45,7 @@ const Video = ({
       title: "Video",
       content: {
         url: "https://www.youtube.com/watch?v=YDhrMwYCtOY",
-        width: 500,
+        width: 250,
         ratio: 16 / 9,
         isAutoPlay: false,
         isLoop: true,
@@ -57,7 +71,8 @@ const Video = ({
       },
     };
 
-    setPreviewSection((prevSections) => [...prevSections, payload]);
+    addSectionMultiColumn(setPreviewSection, sectionId, columnId, payload);
+
     setSetting(payload);
   };
 
@@ -70,18 +85,24 @@ const Video = ({
 
   const handleCancel = () => {
     if (isEditingSection) {
-      isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
+      dispatch(setIsEditingSection(false));
     } else {
-      isShowContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.filter((section) => section.id !== setting.id)
-      );
+      dispatch(setIsAddColumnSection(false));
+      dispatch(setIsEditingColumnSection(false));
+
+      cancelSectionMultiColumn(setPreviewSection, sectionId, columnId, setting);
     }
   };
 
   const handleConfirm = () => {
-    isShowContent(false);
+    if (isAddColumnSection) {
+      dispatch(setIsAddColumnSection(false));
+    } else if (isEditingSection) {
+      dispatch(setIsEditingSection(false));
+    } else {
+      dispatch(setIsEditingColumnSection(false));
+    }
   };
 
   return (
@@ -129,14 +150,18 @@ const Video = ({
               setPreviewSection={setPreviewSection}
               currentSection={isEditingSection ? currentSection : setting}
               isEditingSection={isEditingSection}
+              sectionId={sectionId}
+              columnId={columnId}
             />
           </CTabPane>
 
           <CTabPane className="p-1" data-tab="animation">
-            <AnimationControl
+            <AnimationControlMultiColumn
               label="Teks"
               currentSection={isEditingSection ? currentSection : setting}
               setPreviewSection={setPreviewSection}
+              sectionId={sectionId}
+              columnId={columnId}
             />
           </CTabPane>
 
@@ -145,10 +170,12 @@ const Video = ({
             className="p-1"
             data-tab="background"
           >
-            <BackgroundTab
+            <BackgroundTabMultiColumnContent
               currentSection={isEditingSection ? currentSection : setting}
               setPreviewSection={setPreviewSection}
               type={isEditingSection ? "edit" : "add"}
+              sectionId={sectionId}
+              columnId={columnId}
             />
           </CTabPane>
         </CTabContent>

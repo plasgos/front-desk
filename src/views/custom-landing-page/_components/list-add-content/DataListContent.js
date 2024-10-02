@@ -9,6 +9,7 @@ import {
   PiArrowsDownUpLight,
   PiTargetDuotone,
   PiVideoLight,
+  PiVideoThin,
 } from "react-icons/pi";
 import { RxButton, RxSwitch } from "react-icons/rx";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
@@ -116,5 +117,11 @@ export const dataListContent = [
     title: "Video",
     icon: <PiVideoLight style={{ marginRight: 5 }} size={24} />,
     action: (setAddContent) => setAddContent("video"),
+  },
+  {
+    name: "video-text",
+    title: "Video + Text",
+    icon: <PiVideoThin style={{ marginRight: 5 }} size={24} />,
+    action: (setAddContent) => setAddContent("video-text"),
   },
 ];

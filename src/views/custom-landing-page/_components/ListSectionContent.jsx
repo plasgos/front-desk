@@ -18,6 +18,7 @@ export const ListSectionContent = ({
   editSection,
   removeSection,
   focusContent,
+  isMultiColumn,
 }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
@@ -123,11 +124,13 @@ export const ListSectionContent = ({
               {section.title}
             </div>
 
-            <FaMagnifyingGlass
-              onClick={() => focusContent()}
-              style={{ cursor: "pointer" }}
-              size={14}
-            />
+            {isMultiColumn ? null : (
+              <FaMagnifyingGlass
+                onClick={() => focusContent()}
+                style={{ cursor: "pointer" }}
+                size={14}
+              />
+            )}
             <div style={{ gap: 10 }} className="d-flex ">
               <IoSettingsOutline
                 onClick={() => editSection()}

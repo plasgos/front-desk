@@ -96,6 +96,9 @@ const ViewFloatingButton = forwardRef(
           content.wrapperStyle.flexDirection === "tw-flex-row" && "tw-gap-y-2"
         }   tw-p-1  ${
           content.wrapperStyle.shadow ? content.wrapperStyle.shadow : ""
+        } ${
+          isFocused &&
+          "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20 "
         }`}
       >
         <div style={stylesBg.backgroundImgStyle}></div>

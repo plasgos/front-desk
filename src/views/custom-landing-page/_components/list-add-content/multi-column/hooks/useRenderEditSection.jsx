@@ -13,6 +13,8 @@ import Testimony from "../sections/testimony";
 import Buttons from "../sections/button";
 import FAQ from "../sections/faq";
 import FormCheckout from "../sections/form-checkout";
+import Video from "../sections/video";
+import VideoText from "../sections/video-text";
 
 export function useRenderEditSection({
   previewSection,
@@ -291,6 +293,42 @@ export function useRenderEditSection({
                 ) {
                   return (
                     <FormCheckout
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "video" &&
+                  content.name === "video" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <Video
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "video-text" &&
+                  content.name === "video-text" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <VideoText
                       key={content.id}
                       currentSection={content}
                       previewSection={previewSection}

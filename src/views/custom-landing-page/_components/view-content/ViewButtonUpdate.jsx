@@ -80,7 +80,10 @@ const ViewButtonUpdate = forwardRef(
           content.wrapperStyle.jusctifyContent
         } ${
           content.wrapperStyle.flexDirection === "tw-flex-row" && "tw-gap-y-2"
-        }   tw-p-3`}
+        }   tw-p-3   ${
+          isFocused &&
+          "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20 "
+        }`}
       >
         <div style={stylesBg.backgroundImgStyle}></div>
 

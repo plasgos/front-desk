@@ -90,7 +90,10 @@ const ViewFrosty = forwardRef(
         }}
         className={` tw-flex tw-flex-row tw-flex-wrap  tw-items-center  ${
           content.variant?.group !== "Page" ? "tw-p-0" : "tw-p-4"
-        } `}
+        }  ${
+          isFocused &&
+          "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20 "
+        }`}
       >
         <div style={backgroundImgStyle}></div>
 

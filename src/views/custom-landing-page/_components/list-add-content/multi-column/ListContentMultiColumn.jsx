@@ -21,6 +21,8 @@ import Testimony from "./sections/testimony";
 import Buttons from "./sections/button";
 import FAQ from "./sections/faq";
 import FormCheckout from "./sections/form-checkout";
+import Video from "./sections/video";
+import VideoText from "./sections/video-text";
 
 const ListContentMultiColumn = ({
   previewSection,
@@ -196,6 +198,24 @@ const ListContentMultiColumn = ({
 
       {addContent === "image-text" && (
         <ImageText
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          sectionId={sectionId}
+          columnId={columnId}
+        />
+      )}
+
+      {addContent === "video" && (
+        <Video
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          sectionId={sectionId}
+          columnId={columnId}
+        />
+      )}
+
+      {addContent === "video-text" && (
+        <VideoText
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           sectionId={sectionId}

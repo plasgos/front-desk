@@ -19,6 +19,7 @@ import Testimony from "./testimony";
 import Text from "./text/index";
 import MultiColumn from "./multi-column";
 import Video from "./video";
+import VideoText from "./video-text";
 
 const ListContent = ({
   previewSection,
@@ -211,6 +212,14 @@ const ListContent = ({
 
       {addContent === "video" && (
         <Video
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
+      {addContent === "video-text" && (
+        <VideoText
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}

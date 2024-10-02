@@ -10,9 +10,11 @@ const ViewVideo = forwardRef(
       useAnimatedVisibility(content);
 
     const getYoutubeUrl = (url) => {
-      const urlObj = new URL(url);
-      const videoId = urlObj.searchParams.get("v"); // Mendapatkan parameter 'v' dari URL
-      return videoId;
+      if (url) {
+        const urlObj = new URL(url);
+        const videoId = urlObj.searchParams.get("v"); // Mendapatkan parameter 'v' dari URL
+        return videoId;
+      }
     };
 
     return (
@@ -46,39 +48,33 @@ const ViewVideo = forwardRef(
         ) : null}
 
         <div
+          ref={elementRef}
+          className={`${getClassName()} `}
           style={{
             transform: `rotate(${content.content.rotation}deg)`,
             zIndex: 999,
-            position: "relative",
             overflow: "hidden",
-            height: 0,
-            width: "100%",
-            paddingBottom: `${content.content.ratio}`,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
+            margin: "auto",
+            aspectRatio: content.content.ratio,
+            "--animation-duration": `${duration}s`,
+            width: `${content.content.width}px`,
+            height: `${content.content.width * content.content.ratio}`,
           }}
         >
           <iframe
-            width={content.content.width || 360}
+            width="100%"
             height="100%"
-            // height={content.content.height || 200}
             src={`https://www.youtube.com/embed/${getYoutubeUrl(
               content.content.url
             )}?autoplay=${content.content.isAutoPlay ? 1 : 0}&mute=${
               content.content.isMuted ? 1 : 0
-            }&loop=${content.content.isLoop ? 1 : 0}&controls=${
-              content.content.isControl ? 0 : 1
-            }`}
+            }&playlist=${getYoutubeUrl(content.content.url)}&loop=${
+              content.content.isLoop ? 1 : 0
+            }&controls=${content.content.isControl ? 0 : 1}`}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             title="YouTube Video"
-            style={{
-              position: "absolute", // Posisi absolute agar memenuhi div pembungkus
-              top: 0,
-              left: 0,
-            }}
           />
         </div>
       </div>

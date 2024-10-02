@@ -11,9 +11,11 @@ import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import AnimationControl from "../../common/AnimationControl";
 import BackgroundTab from "../../common/BackgroundTab";
-import VideoControlSetting from "./VideoControlSetting";
+import UpdateContent from "./UpdateContent";
+import VideoControlSetting from "../video/VideoControlSetting";
+import Animation from "./Animation";
 
-const Video = ({
+const VideoText = ({
   previewSection,
   setPreviewSection,
   isShowContent,
@@ -27,17 +29,27 @@ const Video = ({
     let uniqueId = createUniqueID(previewSection);
     let payload = {
       id: uniqueId,
-      name: "video",
-      title: "Video",
+      name: "video-text",
+      title: "Video + Text",
       content: {
         url: "https://www.youtube.com/watch?v=YDhrMwYCtOY",
         width: 500,
-        ratio: 16 / 9,
+        ratio: "56.25%",
         isAutoPlay: false,
         isLoop: true,
         isMuted: false,
         isControls: false,
         rotation: 0,
+        textShadow: undefined,
+        fontSize: "tw-text-sm",
+        textColor: "#151414",
+        textAlign: "tw-text-left",
+        text: "<div><strong>Pepatah Tua Mengatakan</strong></div><div>Kita tidak boleh selalu saja bergantung pada orang lain</div><div><br></div><div>Karena bayangan kita sendiri saja,</div><div><br></div><div>Akan meninggalkan kita saat kita berada di dalam kegelapan.</div>",
+        animation: {
+          type: undefined,
+          duration: 1,
+          isReplay: false,
+        },
       },
       animation: {
         type: undefined,
@@ -103,10 +115,13 @@ const Video = ({
         </div>
       </div>
 
-      <CTabs activeTab="konten">
+      <CTabs activeTab="video">
         <CNav variant="tabs">
           <CNavItem>
-            <CNavLink data-tab="konten">Video</CNavLink>
+            <CNavLink data-tab="video">Video</CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink data-tab="content">Konten</CNavLink>
           </CNavItem>
           <CNavItem>
             <CNavLink data-tab="animation">Animasi</CNavLink>
@@ -124,7 +139,7 @@ const Video = ({
           }}
           className="pt-3"
         >
-          <CTabPane data-tab="konten">
+          <CTabPane data-tab="video">
             <VideoControlSetting
               setPreviewSection={setPreviewSection}
               currentSection={isEditingSection ? currentSection : setting}
@@ -132,9 +147,23 @@ const Video = ({
             />
           </CTabPane>
 
+          <CTabPane className="p-1" data-tab="content">
+            <UpdateContent
+              setPreviewSection={setPreviewSection}
+              currentSection={isEditingSection ? currentSection : setting}
+              isEditingContent={isEditingSection}
+            />
+          </CTabPane>
+
           <CTabPane className="p-1" data-tab="animation">
             <AnimationControl
-              label="Teks"
+              label="Video"
+              currentSection={isEditingSection ? currentSection : setting}
+              setPreviewSection={setPreviewSection}
+            />
+
+            <Animation
+              label="Konten"
               currentSection={isEditingSection ? currentSection : setting}
               setPreviewSection={setPreviewSection}
             />
@@ -157,4 +186,4 @@ const Video = ({
   );
 };
 
-export default Video;
+export default VideoText;

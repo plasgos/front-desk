@@ -15,6 +15,8 @@ import ViewQuote from "../ViewQuote";
 import ViewScrollTraget from "../ViewScrollTraget";
 import ViewTestimony from "../ViewTestimony";
 import ViewText from "../ViewText";
+import ViewVideo from "../ViewVideo";
+import ViewVideoText from "../ViewVideoText";
 
 const ViewMultiColumn = forwardRef(
   (
@@ -47,7 +49,10 @@ const ViewMultiColumn = forwardRef(
             zIndex: 1,
           }}
           // className="tw-flex tw-flex-row tw-justify-center tw-items-center tw-flex-wrap tw-p-3 tw-gap-y-3"
-          className=" tw-flex   "
+          className={` tw-flex    ${
+            isFocused &&
+            "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20 "
+          } `}
         >
           <div style={stylesBg.backgroundImgStyle}></div>
 
@@ -94,6 +99,7 @@ const ViewMultiColumn = forwardRef(
             };
 
             const calculateOpacity = column.background?.opacity / 100;
+
             return (
               <div
                 style={{
@@ -240,6 +246,20 @@ const ViewMultiColumn = forwardRef(
                             sectionId={content.id}
                             columnId={column.id}
                             isMultiColumn={true}
+                          />
+                        )}
+
+                        {contentItem.name === "video" && (
+                          <ViewVideo
+                            content={contentItem}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {contentItem.name === "video-text" && (
+                          <ViewVideoText
+                            content={contentItem}
+                            isResizing={isResizing}
                           />
                         )}
                       </div>
