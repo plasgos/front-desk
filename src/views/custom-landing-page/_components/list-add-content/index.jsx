@@ -31,15 +31,35 @@ const ListContent = ({
   isAddColumnSectionMultiColumn,
   setIsAddColumnSectionMultiColumn,
   columnId,
+  handleColumnFocus,
+  handleSectionContentFocus,
 }) => {
   const [addContent, setAddContent] = useState("");
   const [searchContent, setSearchContent] = useState("");
   const [filteredContents, setFilteredContents] = useState(dataListContent);
   const handleChangeContent = (value) => {
     setSearchContent(value);
-    const filteredContents = dataListContent.filter((content) =>
-      content.title.toLowerCase().includes(value.toLowerCase())
-    );
+    const filteredContents = dataListContent
+      .map((group) => {
+        // Filter sections berdasarkan title
+        const filteredSections = group.sections.filter((section) =>
+          section.title.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+        );
+
+        // Periksa apakah grup.group cocok dengan pencarian
+        const isGroupMatch = group.group
+          .toLocaleLowerCase()
+          .includes(value.toLocaleLowerCase());
+
+        // Kembalikan grup dengan:
+        // - Semua sections jika grup cocok dengan pencarian
+        // - Hanya sections yang difilter jika grup tidak cocok
+        return {
+          ...group,
+          sections: isGroupMatch ? group.sections : filteredSections,
+        };
+      })
+      .filter((group) => group.sections.length > 0); // Hanya simpan grup yang memiliki section
 
     setFilteredContents(filteredContents);
   };
@@ -74,7 +94,6 @@ const ListContent = ({
             value={searchContent}
             onChange={(e) => handleChangeContent(e.target.value)}
           />
-          <div style={{ marginBottom: 10 }}>Konten</div>
         </>
       )}
 
@@ -83,8 +102,6 @@ const ListContent = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
-          isMultiColumn={isMultiColumn}
-          columnId={columnId}
         />
       ) : null}
 
@@ -93,6 +110,7 @@ const ListContent = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          handleSectionContentFocus={handleSectionContentFocus}
         />
       )}
 
@@ -109,6 +127,7 @@ const ListContent = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          handleSectionContentFocus={handleSectionContentFocus}
         />
       )}
 
@@ -125,6 +144,7 @@ const ListContent = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          handleSectionContentFocus={handleSectionContentFocus}
         />
       )}
 
@@ -133,6 +153,7 @@ const ListContent = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          handleSectionContentFocus={handleSectionContentFocus}
         />
       )}
 
@@ -165,6 +186,7 @@ const ListContent = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          handleSectionContentFocus={handleSectionContentFocus}
         />
       )}
 
@@ -173,6 +195,7 @@ const ListContent = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          handleSectionContentFocus={handleSectionContentFocus}
         />
       )}
 
@@ -181,6 +204,7 @@ const ListContent = ({
           previewFloatingSection={previewFloatingSection}
           setPreviewFloatingSection={setPreviewFloatingSection}
           isShowContent={isShowContent}
+          handleSectionContentFocus={handleSectionContentFocus}
         />
       )}
 
@@ -207,6 +231,7 @@ const ListContent = ({
           isShowMultiColumn={isShowContent}
           previewFloatingSection={previewFloatingSection}
           setPreviewFloatingSection={setPreviewFloatingSection}
+          handleColumnFocus={handleColumnFocus}
         />
       )}
 
@@ -234,18 +259,27 @@ const ListContent = ({
         }}
       >
         {!addContent && filteredContents.length > 0 ? (
-          filteredContents.map((item, index) => (
-            <CCard
-              key={index}
-              style={{ marginBottom: 10, cursor: "pointer" }}
-              onClick={() => item.action(setAddContent)}
-            >
-              <div className="d-flex align-items-center py-1 px-2">
-                <div>{item.icon}</div>
-                <div>{item.title}</div>
-              </div>
-            </CCard>
-          ))
+          <div>
+            {filteredContents.map((group, groupIndex) => {
+              return (
+                <div key={groupIndex}>
+                  <div className="mb-2 font-weight-bold">{group.group}</div>
+                  {group.sections.map((section, index) => (
+                    <CCard
+                      key={index}
+                      style={{ marginBottom: 10, cursor: "pointer" }}
+                      onClick={() => section.action(setAddContent)}
+                    >
+                      <div className="d-flex align-items-center py-1 px-2">
+                        <div>{section.icon}</div>
+                        <div>{section.title}</div>
+                      </div>
+                    </CCard>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
         ) : searchContent && filteredContents.length === 0 ? (
           <div className="text-center my-3">Kontent tidak ada !</div>
         ) : null}

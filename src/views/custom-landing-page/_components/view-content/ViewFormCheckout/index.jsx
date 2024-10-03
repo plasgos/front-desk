@@ -25,6 +25,8 @@ const ViewFormCheckout = forwardRef(
       sectionId,
       columnId,
       isMultiColumn,
+      setSectionContentRef,
+      focusedIndexSectionContent,
     },
     ref
   ) => {
@@ -311,6 +313,8 @@ const ViewFormCheckout = forwardRef(
                   control={control}
                   onSetSubdistrict={onSetSubdistrict}
                   index={index}
+                  setSectionContentRef={setSectionContentRef}
+                  focusedIndexSectionContent={focusedIndexSectionContent}
                 />
               </div>
             ))}

@@ -101,18 +101,11 @@ const CustomLandingPage = () => {
   const [sectionFloatingBeforeEdit, setSectionFloatingBeforeEdit] = useState(
     []
   );
+  const containerRef = useRef(null);
+
   const [timers, setTimers] = useState({});
   const setRef = (el, index) => {
     previewRefs.current[index] = el;
-  };
-  const containerRef = useRef(null);
-
-  const previewRefs = useRef([]);
-  const [focusedIndex, setFocusedIndex] = useState(null);
-  const [modal, setModal] = useState(false);
-
-  const toggleModal = () => {
-    setModal(!modal);
   };
 
   const dispatch = useDispatch();
@@ -135,6 +128,80 @@ const CustomLandingPage = () => {
     isDragging: monitor.isDragging(),
     id: monitor.getItem()?.id,
   }));
+
+  const previewRefs = useRef([]);
+  const [focusedIndex, setFocusedIndex] = useState(null);
+  const [focusedIndexColumn, setFocusedIndexColumn] = useState(null);
+  const [focusedIndexSectionContent, setFocusedIndexSectionContent] =
+    useState(null);
+
+  const [modal, setModal] = useState(false);
+
+  const toggleModal = () => {
+    setModal(!modal);
+  };
+
+  const setColumnRef = (el, index) => {
+    columnRefs.current[index] = el;
+  };
+
+  const columnRefs = useRef([]);
+
+  const setSectionContentRef = (el, index) => {
+    sectionContentRefs.current[index] = el;
+  };
+
+  const sectionContentRefs = useRef([]);
+
+  const handleSectionContentFocus = useCallback(
+    (index) => {
+      setFocusedIndexSectionContent(index);
+      // eslint-disable-next-line no-unused-expressions
+      sectionContentRefs.current[index]?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+
+      // Clear any existing timer for this index
+      if (timers[index]) {
+        clearTimeout(timers[index]);
+      }
+
+      // Set a timer to remove focus after 3 seconds
+      const timer = setTimeout(() => {
+        setFocusedIndexSectionContent(null);
+      }, 800);
+
+      setTimers({ ...timers, [index]: timer });
+    },
+    [timers]
+  );
+
+  const handleColumnFocus = useCallback(
+    (index) => {
+      setFocusedIndexColumn(index);
+      // eslint-disable-next-line no-unused-expressions
+      columnRefs.current[index]?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "nearest",
+      });
+
+      // Clear any existing timer for this index
+      if (timers[index]) {
+        clearTimeout(timers[index]);
+      }
+
+      // Set a timer to remove focus after 3 seconds
+      const timer = setTimeout(() => {
+        setFocusedIndexColumn(null);
+      }, 800);
+
+      setTimers({ ...timers, [index]: timer });
+    },
+    [timers]
+  );
 
   const handleContentFocus = useCallback(
     (index) => {
@@ -195,6 +262,8 @@ const CustomLandingPage = () => {
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
             isPreview={isPreview}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
           />
         );
       }
@@ -223,6 +292,8 @@ const CustomLandingPage = () => {
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
             isPreview={isPreview}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
           />
         );
       }
@@ -248,6 +319,8 @@ const CustomLandingPage = () => {
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
           />
         );
       }
@@ -263,6 +336,8 @@ const CustomLandingPage = () => {
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
             isPreview={isPreview}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
           />
         );
       }
@@ -313,6 +388,8 @@ const CustomLandingPage = () => {
             isFocused={focusedIndex === index}
             isPreview={isPreview}
             width={dimensions.width}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
           />
         );
       }
@@ -326,6 +403,8 @@ const CustomLandingPage = () => {
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
             setPreviewSection={setPreviewSection}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
           />
         );
       }
@@ -338,7 +417,9 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={null}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
           />
         );
       }
@@ -381,6 +462,8 @@ const CustomLandingPage = () => {
             width={dimensions.width}
             isPreview={isPreview}
             setPreviewSection={setPreviewSection}
+            setColumnRef={setColumnRef}
+            focusedIndexColumn={focusedIndexColumn}
           />
         );
       }
@@ -413,7 +496,16 @@ const CustomLandingPage = () => {
 
       return null;
     },
-    [dimensions.width, focusedIndex, id, isDragging, isPreview, isResizing]
+    [
+      dimensions.width,
+      focusedIndex,
+      focusedIndexColumn,
+      focusedIndexSectionContent,
+      id,
+      isDragging,
+      isPreview,
+      isResizing,
+    ]
   );
 
   const renderEditSection = useCallback(
@@ -447,6 +539,7 @@ const CustomLandingPage = () => {
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
+            handleSectionContentFocus={handleSectionContentFocus}
           />
         );
       }
@@ -480,6 +573,7 @@ const CustomLandingPage = () => {
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
+            handleSectionContentFocus={handleSectionContentFocus}
           />
         );
       }
@@ -513,6 +607,7 @@ const CustomLandingPage = () => {
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
+            handleSectionContentFocus={handleSectionContentFocus}
           />
         );
       }
@@ -530,6 +625,7 @@ const CustomLandingPage = () => {
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
+            handleSectionContentFocus={handleSectionContentFocus}
           />
         );
       }
@@ -598,6 +694,7 @@ const CustomLandingPage = () => {
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
+            handleSectionContentFocus={handleSectionContentFocus}
           />
         );
       }
@@ -615,6 +712,7 @@ const CustomLandingPage = () => {
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
+            handleSectionContentFocus={handleSectionContentFocus}
           />
         );
       }
@@ -634,6 +732,7 @@ const CustomLandingPage = () => {
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionFloatingBeforeEdit}
             isEditingSection={true}
+            handleSectionContentFocus={handleSectionContentFocus}
           />
         );
       }
@@ -685,6 +784,7 @@ const CustomLandingPage = () => {
             isShowMultiColumn={(value) => setEditing(value)}
             sectionMultiColumnBeforeEdit={sectionBeforeEdit}
             isEditingSectionMultiColumn={true}
+            handleColumnFocus={handleColumnFocus}
           />
         );
       }
@@ -728,6 +828,8 @@ const CustomLandingPage = () => {
     [
       editing.id,
       editing.name,
+      handleColumnFocus,
+      handleSectionContentFocus,
       previewFloatingSection,
       previewSection,
       sectionBeforeEdit,
@@ -1041,6 +1143,8 @@ const CustomLandingPage = () => {
                   isShowContent={(value) => setIsAddContent(value)}
                   previewFloatingSection={previewFloatingSection}
                   setPreviewFloatingSection={setPreviewFloatingSection}
+                  handleColumnFocus={handleColumnFocus}
+                  handleSectionContentFocus={handleSectionContentFocus}
                 />
               )}
             </div>

@@ -11,10 +11,12 @@ const UpdateContent = ({
   isEditingContent,
 }) => {
   const [title, setTitle] = useState(
-    currentContent?.title || "How awesome are you?"
+    isEditingContent ? currentContent?.title : "How awesome are you?"
   );
   const [content, setContent] = useState(
-    currentContent?.desc || "So awesome that you will not believe it"
+    isEditingContent
+      ? currentContent?.desc
+      : "So awesome that you will not believe it"
   );
 
   const [titleValue] = useDebounce(title, 300);
@@ -59,7 +61,7 @@ const UpdateContent = ({
   };
 
   const handleAddContent = () => {
-    let uniqueId = createUniqueID(currentContent);
+    let uniqueId = createUniqueID(currentContent?.content);
     let payload = {
       id: uniqueId,
       title,

@@ -232,7 +232,26 @@ const Testimony = ({
       id: uniqueId,
       name: "testimony",
       title: "Testimoni / Review",
-      content: initialContent,
+      content: [
+        {
+          id: createUniqueID([]),
+          name: "John Smith",
+          image: profilePicture,
+          content: "Super bagus sekali barangnya",
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          name: "Mozart",
+          image: profilePicture,
+          content: "Senang sekali memakai produk ini",
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          name: "Alexander the Great",
+          image: profilePicture,
+          content: "Pasti akan beli lagi",
+        },
+      ],
       shape: [],
       background: {
         bgType: undefined,
@@ -392,6 +411,7 @@ const Testimony = ({
                 contentItem.id
               )
             }
+            hiddenFocus={true}
           />
         </div>
       ));
@@ -443,6 +463,7 @@ const Testimony = ({
                 contentItem.id
               )
             }
+            hiddenFocus={true}
           />
         </div>
       ));
@@ -512,7 +533,7 @@ const Testimony = ({
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
-                    currentContent={initialContent}
+                    currentContent={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                     sectionId={sectionId}
                     columnId={columnId}

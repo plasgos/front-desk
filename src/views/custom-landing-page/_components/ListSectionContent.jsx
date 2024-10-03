@@ -80,12 +80,17 @@ export const ListSectionContent = ({
   drag(drop(ref));
 
   const [icon, setIcon] = useState(undefined);
+
   useEffect(() => {
-    const selectedIcon = dataListContent.find(
-      (icon) => icon.name === section.name
-    );
+    const selectedIcon = dataListContent
+      .map((group) => ({
+        ...group,
+        sections: group.sections.filter((icon) => icon.name === section.name), // Hanya ambil yang sesuai
+      }))
+      .find((group) => group.sections.length > 0); // Cari grup yang memiliki icon yang cocok
+
     if (selectedIcon) {
-      setIcon(selectedIcon);
+      setIcon(selectedIcon.sections[0]); // Set icon yang ditemukan
     }
   }, [section.name]);
 
@@ -124,7 +129,7 @@ export const ListSectionContent = ({
               {section.title}
             </div>
 
-            {isMultiColumn ? null : (
+            {isMultiColumn || section.name.includes("floating") ? null : (
               <FaMagnifyingGlass
                 onClick={() => focusContent()}
                 style={{ cursor: "pointer" }}

@@ -242,6 +242,7 @@ const FAQ = ({
                 contentItem.id
               )
             }
+            hiddenFocus={true}
           />
         </div>
       ));
@@ -358,7 +359,29 @@ const FAQ = ({
       id: uniqueId,
       name: "faq",
       title: "FAQ Buka/Tutup",
-      content: initialContents,
+      content: [
+        {
+          id: createUniqueID([]),
+          title:
+            "Kenyamanan adalah penjara kebebasan dan hambatan untuk berkembang",
+          desc: "Jangan biarkan dirimu terlena pada nikmatnya kenyamanan! Mulailah lagi berkarya hari ini karena kamu tidak tahu siapa yang akan mengalahkanmu esok hari.",
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          title: "Fokus Pada Masa Depan",
+          desc: "Tanpa pernah kamu sadari, hidup berubah dengan cepat secepat kamu mengedipkan mata. Tanpa kamu sadari, ada waktu yang kamu gunakan dengan baik dan waktu yang kamu sia-siakan.",
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          title: "Rahasia untuk maju adalah memulai",
+          desc: "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          title: "Kita lebih menikmati proses ketimbang hasilnya",
+          desc: "Dalam hidup, kamu pasti menuntut hasil yang terbaik nan membanggakan. Hidup bukan hanya terletak pada hasil yang kamu terima, tapi hidup adalah sikap kamu terhadap semua proses kehidupan.",
+        },
+      ],
       background: {
         bgType: undefined,
         bgColor: "",
@@ -504,7 +527,7 @@ const FAQ = ({
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
-                    currentContent={initialContents}
+                    currentContent={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                     sectionId={sectionId}
                     columnId={columnId}

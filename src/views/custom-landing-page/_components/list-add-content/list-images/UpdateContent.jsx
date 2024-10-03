@@ -28,10 +28,12 @@ export const UpdateContent = ({
   );
 
   const [imageUrl, setImageUrl] = useState(
-    currentContent?.content?.image || image
+    isEditingContent ? currentContent?.content?.image : image
   );
 
-  const [alt, setAlt] = useState(currentContent?.content?.alt || "");
+  const [alt, setAlt] = useState(
+    isEditingContent ? currentContent?.content?.alt : ""
+  );
 
   const [altValue] = useDebounce(alt, 300);
 
@@ -294,7 +296,7 @@ export const UpdateContent = ({
   };
 
   const handleAddContent = () => {
-    let uniqueId = createUniqueID(currentContent);
+    let uniqueId = createUniqueID(currentContent?.content);
     let payload = {
       id: uniqueId,
       content: {

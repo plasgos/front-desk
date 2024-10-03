@@ -52,9 +52,11 @@ const UpdateContent = ({
 
   const [previousIcon, setPreviousIcon] = useState("");
 
-  const [icon, setIcon] = useState(currentContent?.content?.icon || "");
+  const [icon, setIcon] = useState(
+    isEditingContent ? currentContent?.content?.icon : ""
+  );
   const [imageUrl, setImageUrl] = useState(
-    currentContent?.content?.image || ""
+    isEditingContent ? currentContent?.content?.image : ""
   );
 
   const { optionsScrollTarget, optionsTarget } = useSelector(
@@ -63,20 +65,20 @@ const UpdateContent = ({
   const [setting, setSetting] = useState({});
 
   const [iconColor, setIconColor] = useState(
-    currentContent?.content?.iconColor || ""
+    isEditingContent ? currentContent?.content?.iconColor : ""
   );
 
   const [title, setTitle] = useState(
-    currentContent?.content?.title || "Click Me"
+    isEditingContent ? currentContent?.content?.title : "Click Me"
   );
 
   const [titleValue] = useDebounce(title, 300);
 
   const [selectedColorButton, setSelectedColorButton] = useState(
-    currentContent?.content?.style?.btnColor || "#2196F3"
+    isEditingContent ? currentContent?.content?.style?.btnColor : "#2196F3"
   );
   const [selectedColorText, setSelectedColorText] = useState(
-    currentContent?.content?.style?.textColor || "#FFFFFF"
+    isEditingContent ? currentContent?.content?.style?.textColor : "#FFFFFF"
   );
 
   const [colorButtonValue] = useDebounce(selectedColorButton, 300);
@@ -503,7 +505,7 @@ const UpdateContent = ({
   };
 
   const handleAddContent = () => {
-    let uniqueId = createUniqueID(currentContent);
+    let uniqueId = createUniqueID(currentContent?.content);
     let payload = {
       id: uniqueId,
       content: {

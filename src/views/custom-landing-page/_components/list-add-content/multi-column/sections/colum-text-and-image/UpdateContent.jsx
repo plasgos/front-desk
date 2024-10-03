@@ -30,14 +30,15 @@ export const UpdateContent = ({
   );
 
   const [imageUrl, setImageUrl] = useState(
-    currentContent?.content?.image || image
+    isEditingContent ? currentContent?.content?.image : image
   );
   const [title, setTitle] = useState(
-    currentContent?.content?.title || "How awesome are you?"
+    isEditingContent ? currentContent?.content?.title : "How awesome are you?"
   );
   const [description, setDescription] = useState(
-    currentContent?.content?.description ||
-      "So awesome that you will not believe it"
+    isEditingContent
+      ? currentContent?.content?.description
+      : "So awesome that you will not believe it"
   );
 
   const [titleValue] = useDebounce(title, 300);
@@ -375,7 +376,7 @@ export const UpdateContent = ({
   };
 
   const handleAddContent = () => {
-    let uniqueId = createUniqueID(currentContent);
+    let uniqueId = createUniqueID(currentContent?.content);
     let payload = {
       id: uniqueId,
       content: {

@@ -12,6 +12,8 @@ const ViewListImages = forwardRef(
       content,
       isFocused,
       isPreview,
+      setSectionContentRef,
+      focusedIndexSectionContent,
     },
     ref
   ) => {
@@ -50,10 +52,20 @@ const ViewListImages = forwardRef(
           ></div>
         ) : null}
 
-        {content.content.map((section) => {
+        {content.content.map((section, indexContent) => {
           return (
             <div
-              style={{ zIndex: 2 }}
+              ref={(el) => {
+                if (setSectionContentRef) {
+                  setSectionContentRef(el, section.id);
+                }
+              }}
+              style={{
+                zIndex: 2,
+                ...(focusedIndexSectionContent === section.id && {
+                  border: "2px solid green",
+                }),
+              }}
               key={section.id}
               className={
                 isPreview
@@ -63,8 +75,21 @@ const ViewListImages = forwardRef(
                         : width > 320 && width < 640
                         ? "tw-w-1/3"
                         : "tw-w-full"
-                    }  `
-                  : `tw-flex tw-w-full sm:tw-w-1/3 md:${content?.wrapperStyle?.maxColumn} `
+                    } ${
+                      focusedIndexSectionContent === section.id
+                        ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+                        : ""
+                    }   `
+                  : `tw-flex tw-w-full sm:tw-w-1/3 md:${
+                      content?.wrapperStyle?.maxColumn
+                    } 
+                  ${
+                    focusedIndexSectionContent === section.id
+                      ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+                      : ""
+                  } 
+
+                  `
               }
             >
               <div

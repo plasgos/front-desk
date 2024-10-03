@@ -12,6 +12,8 @@ const ViewColumnTextAndImage = forwardRef(
       content,
       isFocused,
       isPreview,
+      setSectionContentRef = null,
+      focusedIndexSectionContent = null,
     },
     ref
   ) => {
@@ -51,7 +53,17 @@ const ViewColumnTextAndImage = forwardRef(
 
         {content.content.map((section) => (
           <div
-            style={{ zIndex: 2 }}
+            ref={(el) => {
+              if (setSectionContentRef) {
+                setSectionContentRef(el, section.id);
+              }
+            }}
+            style={{
+              zIndex: 2,
+              ...(focusedIndexSectionContent === section.id && {
+                border: "2px solid green",
+              }),
+            }}
             key={section.id}
             className={
               isPreview
@@ -61,8 +73,18 @@ const ViewColumnTextAndImage = forwardRef(
                       : width > 320 && width < 640
                       ? "tw-w-1/3"
                       : "tw-w-full"
+                  }   ${
+                    focusedIndexSectionContent === section.id
+                      ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+                      : ""
+                  } `
+                : `tw-flex tw-w-full sm:tw-w-1/3 md:${
+                    content?.wrapperStyle?.maxColumn
+                  } ${
+                    focusedIndexSectionContent === section.id
+                      ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+                      : ""
                   }  `
-                : `tw-flex tw-w-full sm:tw-w-1/3 md:${content?.wrapperStyle?.maxColumn} `
             }
           >
             <div

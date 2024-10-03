@@ -25,42 +25,6 @@ import DesignTab from "./DesignTab";
 import { UpdateContent } from "./UpdateContent";
 import BackgroundTab from "../../common/BackgroundTab";
 
-const initialContents = [
-  {
-    id: "adguiwbj",
-
-    content: {
-      title: "Rahasia ",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-    target: {},
-  },
-  {
-    id: "adgdawdw",
-
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-    target: {},
-  },
-  {
-    id: "feqawd",
-
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-    target: {},
-  },
-];
-
 const ColumnTextAndImages = ({
   previewSection,
   setPreviewSection,
@@ -68,6 +32,7 @@ const ColumnTextAndImages = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  handleSectionContentFocus,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -122,11 +87,43 @@ const ColumnTextAndImages = ({
 
   const onAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+
     let payload = {
       id: uniqueId,
       name: "column-text-and-image",
       title: "Column Text And Image",
-      content: initialContents,
+      content: [
+        {
+          id: createUniqueID([]),
+          content: {
+            title: "Rahasia ",
+            description:
+              "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
+            image: image,
+          },
+          target: {},
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          content: {
+            title: "Rahasia untuk maju adalah memulai",
+            description:
+              "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
+            image: image,
+          },
+          target: {},
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          content: {
+            title: "Rahasia untuk maju adalah memulai",
+            description:
+              "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
+            image: image,
+          },
+          target: {},
+        },
+      ],
       wrapperStyle: {
         paddingX: 2,
         maxColumn: "tw-w-1/3",
@@ -187,12 +184,13 @@ const ColumnTextAndImages = ({
               }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
+              handleFocus={() => handleSectionContentFocus(contentItem.id)}
             />
           ))}
         </div>
       );
     },
-    [moveSection, editSection, removeSection]
+    [moveSection, editSection, removeSection, handleSectionContentFocus]
   );
 
   return (
@@ -227,7 +225,7 @@ const ColumnTextAndImages = ({
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
-                    currentContent={initialContents}
+                    currentContent={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                   />
                 </CTabContent>

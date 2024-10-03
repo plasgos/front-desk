@@ -35,42 +35,6 @@ import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn"
 import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 import { cancelSectionContentLastIndex } from "../../helper/cancelSectionContentLastIndex";
 
-const initialContents = [
-  {
-    id: "adguiwbj",
-
-    content: {
-      title: "Rahasia ",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-    target: {},
-  },
-  {
-    id: "adgdawdw",
-
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-    target: {},
-  },
-  {
-    id: "feqawd",
-
-    content: {
-      title: "Rahasia untuk maju adalah memulai",
-      description:
-        "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-      image: image,
-    },
-    target: {},
-  },
-];
-
 const ColumnTextAndImages = ({
   previewSection,
   setPreviewSection,
@@ -137,7 +101,38 @@ const ColumnTextAndImages = ({
       id: uniqueId,
       name: "column-text-and-image",
       title: "Column Text And Image",
-      content: initialContents,
+      content: [
+        {
+          id: createUniqueID([]),
+          content: {
+            title: "Rahasia ",
+            description:
+              "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
+            image: image,
+          },
+          target: {},
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          content: {
+            title: "Rahasia untuk maju adalah memulai",
+            description:
+              "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
+            image: image,
+          },
+          target: {},
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          content: {
+            title: "Rahasia untuk maju adalah memulai",
+            description:
+              "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
+            image: image,
+          },
+          target: {},
+        },
+      ],
       wrapperStyle: {
         paddingX: 2,
         maxColumn: "tw-w-1/3",
@@ -221,6 +216,7 @@ const ColumnTextAndImages = ({
                 contentItem.id
               )
             }
+            hiddenFocus={true}
           />
         </div>
       ));
@@ -267,7 +263,7 @@ const ColumnTextAndImages = ({
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
-                    currentContent={initialContents}
+                    currentContent={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                     sectionId={sectionId}
                     columnId={columnId}

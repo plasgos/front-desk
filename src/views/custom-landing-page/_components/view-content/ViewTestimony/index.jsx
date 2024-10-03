@@ -10,8 +10,19 @@ import Layout1 from "./Layout1";
 import { useBackgroundStyles } from "../../../../../hooks/useBackgroundStyles";
 
 const ViewTestimony = forwardRef(
-  ({ isPreview, width, isDragging, content, isResizing, isFocused }, ref) => {
-    console.log("🚀 ~ content:", content);
+  (
+    {
+      isPreview,
+      width,
+      isDragging,
+      content,
+      isResizing,
+      isFocused,
+      setSectionContentRef,
+      focusedIndexSectionContent,
+    },
+    ref
+  ) => {
     const stylesBg = useBackgroundStyles(content);
 
     return (
@@ -48,8 +59,13 @@ const ViewTestimony = forwardRef(
             }}
           ></div>
         ) : null}
-        {content?.content?.map((item) => (
+        {content?.content?.map((item, indexContent) => (
           <div
+            ref={(el) => {
+              if (setSectionContentRef) {
+                setSectionContentRef(el, item.id);
+              }
+            }}
             style={{
               zIndex: 2,
               paddingLeft: content.wrapperStyle?.paddingX,
@@ -57,6 +73,9 @@ const ViewTestimony = forwardRef(
               paddingBottom: content.wrapperStyle?.paddingX
                 ? `calc(${content.wrapperStyle.paddingX}px * 2)`
                 : "0px",
+              ...(focusedIndexSectionContent === item.id && {
+                border: "2px solid green",
+              }),
             }}
             key={item?.id}
             className={
@@ -65,8 +84,16 @@ const ViewTestimony = forwardRef(
                     width === "100%" || width >= 640
                       ? `${content?.wrapperStyle?.column}`
                       : "tw-w-full"
+                  }  ${
+                    focusedIndexSectionContent === item.id
+                      ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+                      : ""
                   } `
-                : `tw-w-full sm:${content.wrapperStyle?.column}   `
+                : `tw-w-full sm:${content.wrapperStyle?.column}  ${
+                    focusedIndexSectionContent === item.id
+                      ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+                      : ""
+                  }   `
             }
           >
             {content.wrapperStyle?.layout === "1" && (

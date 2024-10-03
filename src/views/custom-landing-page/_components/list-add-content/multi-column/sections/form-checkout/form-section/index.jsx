@@ -84,6 +84,7 @@ const FormSection = ({
                 contentItem.id
               )
             }
+            hiddenFocus={true}
           />
         </div>
       ));

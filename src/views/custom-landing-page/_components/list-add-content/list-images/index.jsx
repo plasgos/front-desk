@@ -29,33 +29,6 @@ import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { UpdateContent } from "./UpdateContent";
 import BackgroundTab from "../../common/BackgroundTab";
 
-const initialContents = [
-  {
-    id: "adguiwbj",
-    content: {
-      image: image,
-      alt: "",
-    },
-    target: {},
-  },
-  {
-    id: "adgdawdw",
-    content: {
-      image: image,
-      alt: "",
-    },
-    target: {},
-  },
-  {
-    id: "feqawd",
-    content: {
-      image: image,
-      alt: "",
-    },
-    target: {},
-  },
-];
-
 const ListImages = ({
   previewSection,
   setPreviewSection,
@@ -63,6 +36,7 @@ const ListImages = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  handleSectionContentFocus,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -180,7 +154,32 @@ const ListImages = ({
       id: uniqueId,
       name: "list-images",
       title: "List Images",
-      content: initialContents,
+      content: [
+        {
+          id: createUniqueID([]),
+          content: {
+            image: image,
+            alt: "",
+          },
+          target: {},
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          content: {
+            image: image,
+            alt: "",
+          },
+          target: {},
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          content: {
+            image: image,
+            alt: "",
+          },
+          target: {},
+        },
+      ],
       wrapperStyle: {
         paddingX: "2",
         maxColumn: "tw-w-1/6",
@@ -232,15 +231,18 @@ const ListImages = ({
               index={contentIndex}
               id={contentItem.id}
               showThumbnail={contentItem?.content?.image}
-              moveSection={moveSection}
+              moveSection={(dragIndex, hoverIndex) =>
+                moveSection(section.id, dragIndex, hoverIndex)
+              }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
+              handleFocus={() => handleSectionContentFocus(contentItem.id)}
             />
           ))}
         </div>
       );
     },
-    [moveSection, editSection, removeSection]
+    [moveSection, handleSectionContentFocus, editSection, removeSection]
   );
 
   return (
@@ -275,7 +277,7 @@ const ListImages = ({
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
-                    currentContent={initialContents}
+                    currentContent={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                   />
                 </CTabContent>

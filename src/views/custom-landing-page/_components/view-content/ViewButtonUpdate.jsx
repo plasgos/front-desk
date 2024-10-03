@@ -5,7 +5,18 @@ import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ViewButtonUpdate = forwardRef(
-  ({ containerRef, isDragging, content, isResizing, isFocused }, ref) => {
+  (
+    {
+      containerRef,
+      isDragging,
+      content,
+      isResizing,
+      isFocused,
+      setSectionContentRef,
+      focusedIndexSectionContent,
+    },
+    ref
+  ) => {
     const iconPack = useFontAwesomeIconPack();
 
     const getIconForSection = (icon) => {
@@ -99,7 +110,7 @@ const ViewButtonUpdate = forwardRef(
           ></div>
         ) : null}
 
-        {content.content.map((section) => {
+        {content.content.map((section, indexContent) => {
           const sizeClasses =
             sizeClassesMap[section.content.style.buttonSize] ||
             sizeClassesMap.default;
@@ -121,7 +132,17 @@ const ViewButtonUpdate = forwardRef(
 
           return (
             <div
-              style={{ zIndex: 2 }}
+              ref={(el) => {
+                if (setSectionContentRef) {
+                  setSectionContentRef(el, section.id);
+                }
+              }}
+              style={{
+                zIndex: 2,
+                ...(focusedIndexSectionContent === section.id && {
+                  border: "2px solid green",
+                }),
+              }}
               key={section.id}
               className={`${
                 content.wrapperStyle.flexDirection === "tw-flex-row" &&
@@ -129,7 +150,13 @@ const ViewButtonUpdate = forwardRef(
               } ${
                 section.target?.scrollTarget?.value === "back-to-top" &&
                 "tw-cursor-pointer"
-              }`}
+              } 
+               ${
+                 focusedIndexSectionContent === section.id
+                   ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+                   : ""
+               }
+              `}
             >
               <div
                 onClick={() =>

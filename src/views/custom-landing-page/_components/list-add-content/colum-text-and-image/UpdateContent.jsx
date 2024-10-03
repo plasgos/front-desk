@@ -27,19 +27,19 @@ export const UpdateContent = ({
   );
 
   const [imageUrl, setImageUrl] = useState(
-    currentContent?.content?.image || image
+    isEditingContent ? currentContent?.content?.image : image
   );
   const [title, setTitle] = useState(
-    currentContent?.content?.title || "How awesome are you?"
+    isEditingContent ? currentContent?.content?.title : "How awesome are you?"
   );
   const [description, setDescription] = useState(
-    currentContent?.content?.description ||
-      "So awesome that you will not believe it"
+    isEditingContent
+      ? currentContent?.content?.description
+      : "So awesome that you will not believe it"
   );
 
   const [titleValue] = useDebounce(title, 1000);
   const [descriptionValue] = useDebounce(description, 1000);
-
   const [setting, setSetting] = useState({});
   const [selectedOption, setSelectedOption] = useState(
     optionsTarget[0].options[0]
@@ -303,7 +303,8 @@ export const UpdateContent = ({
   };
 
   const handleAddContent = () => {
-    let uniqueId = createUniqueID(currentContent);
+    let uniqueId = createUniqueID(currentContent?.content);
+    console.log("🚀 ~ handleAddContent ~ uniqueId:", uniqueId);
     let payload = {
       id: uniqueId,
       content: {

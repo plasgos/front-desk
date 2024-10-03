@@ -44,6 +44,7 @@ const MultiColumn = ({
   isEditingSectionMultiColumn = false,
   sectionMultiColumnBeforeEdit,
   currentSectionMultiColumn,
+  handleColumnFocus,
 }) => {
   const {
     isAddColumnSection,
@@ -334,12 +335,13 @@ const MultiColumn = ({
               }
               editSection={() => editColumn(sectionColumn)}
               removeSection={() => removeColumn(section.id, contentIndex)}
+              handleFocus={() => handleColumnFocus(contentIndex)}
             />
           ))}
         </div>
       );
     },
-    [moveColumn, editColumn, removeColumn]
+    [moveColumn, editColumn, removeColumn, handleColumnFocus]
   );
 
   const moveSection = useCallback(

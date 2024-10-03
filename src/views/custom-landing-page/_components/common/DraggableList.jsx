@@ -2,6 +2,7 @@ import { CCard, CCardBody } from "@coreui/react";
 import React, { useRef } from "react";
 import { IoCloseOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
 import { useDrag, useDrop } from "react-dnd";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 export const ItemTypes = {
   CARD: "card",
@@ -15,6 +16,8 @@ export const DraggableList = ({
   moveSection,
   editSection,
   removeSection,
+  handleFocus,
+  hiddenFocus,
 }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
@@ -125,6 +128,14 @@ export const DraggableList = ({
                   width: 80,
                   fontSize: 14,
                 }}
+              />
+            )}
+
+            {hiddenFocus ? null : (
+              <FaMagnifyingGlass
+                onClick={() => handleFocus()}
+                style={{ cursor: "pointer" }}
+                size={14}
               />
             )}
 

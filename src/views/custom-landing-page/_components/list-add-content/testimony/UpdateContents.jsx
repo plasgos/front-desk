@@ -13,18 +13,21 @@ export const UpdateContents = ({
   isEditingContent,
 }) => {
   const [imageUrl, setImageUrl] = useState(
-    currentContent?.image || defaultImage
+    isEditingContent ? currentContent?.image : defaultImage
   );
 
   const [content, setContent] = useState(
-    currentContent?.content || "Super bagus sekali barangnya. Paling mantab!"
+    isEditingContent
+      ? currentContent?.content
+      : "Super bagus sekali barangnya. Paling mantab!"
   );
 
-  const [name, setName] = useState(currentContent?.name || "John Doe");
+  const [name, setName] = useState(
+    isEditingContent ? currentContent?.name : "John Doe"
+  );
 
   const [nameValue] = useDebounce(name, 300);
   const [contentValue] = useDebounce(content, 300);
-
   useEffect(() => {
     if (nameValue !== currentContent?.name) {
       handleChangeContent("name", nameValue);
@@ -108,7 +111,7 @@ export const UpdateContents = ({
   };
 
   const handleAddContent = () => {
-    let uniqueId = createUniqueID(currentContent);
+    let uniqueId = createUniqueID(currentContent?.content);
     let payload = {
       id: uniqueId,
       name,

@@ -5,7 +5,18 @@ import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ViewFloatingButton = forwardRef(
-  ({ containerRef, isDragging, content, isResizing, isFocused }, ref) => {
+  (
+    {
+      containerRef,
+      isDragging,
+      content,
+      isResizing,
+      isFocused,
+      setSectionContentRef,
+      focusedIndexSectionContent,
+    },
+    ref
+  ) => {
     const iconPack = useFontAwesomeIconPack();
 
     const getIconForSection = (icon) => {
@@ -115,7 +126,7 @@ const ViewFloatingButton = forwardRef(
           ></div>
         ) : null}
 
-        {content.content.map((section) => {
+        {content.content.map((section, indexContent) => {
           const sizeClasses =
             sizeClassesMap[section.content.style.buttonSize] ||
             sizeClassesMap.default;
@@ -137,7 +148,18 @@ const ViewFloatingButton = forwardRef(
           const icon = getIconForSection(section.content.icon);
           return (
             <div
-              style={{ zIndex: 2, flexGrow: 1 }}
+              ref={(el) => {
+                if (setSectionContentRef) {
+                  setSectionContentRef(el, section.id);
+                }
+              }}
+              style={{
+                zIndex: 2,
+                flexGrow: 1,
+                ...(focusedIndexSectionContent === section.id && {
+                  border: "2px solid green",
+                }),
+              }}
               key={section.id}
               className={`${
                 content.wrapperStyle.flexDirection === "tw-flex-row" &&
@@ -145,7 +167,11 @@ const ViewFloatingButton = forwardRef(
               } ${
                 section.target?.scrollTarget?.value === "back-to-top" &&
                 "tw-cursor-pointer"
-              }`}
+              } ${
+                focusedIndexSectionContent === section.id
+                  ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+                  : ""
+              } `}
             >
               <div
                 onClick={() =>

@@ -30,10 +30,6 @@ const ListContentMultiColumn = ({
   sectionId,
   columnId,
 }) => {
-  const { multiColumnSection } = useSelector(
-    (state) => state.customLandingPage
-  );
-
   const dispatch = useDispatch();
 
   const [addContent, setAddContent] = useState("");
@@ -41,9 +37,21 @@ const ListContentMultiColumn = ({
   const [filteredContents, setFilteredContents] = useState(dataListContent);
   const handleChangeContent = (value) => {
     setSearchContent(value);
-    const filteredContents = dataListContent.filter((content) =>
-      content.title.toLowerCase().includes(value.toLowerCase())
-    );
+    const filteredContents = dataListContent
+      .map((group) => ({
+        ...group,
+        sections: group.sections
+          .filter(
+            (item) =>
+              !item.name.includes("floating") && item.name !== "multi-column"
+          )
+          .filter((section) =>
+            section.title
+              .toLocaleLowerCase()
+              .includes(value.toLocaleLowerCase())
+          ),
+      }))
+      .filter((group) => group.sections.length > 0); // Hapus grup yang tidak punya section yang lolos filter
 
     setFilteredContents(filteredContents);
   };
@@ -75,7 +83,6 @@ const ListContentMultiColumn = ({
             value={searchContent}
             onChange={(e) => handleChangeContent(e.target.value)}
           />
-          <div style={{ marginBottom: 10 }}>Konten</div>
         </>
       )}
 
@@ -232,23 +239,33 @@ const ListContentMultiColumn = ({
         }}
       >
         {!addContent && filteredContents.length > 0 ? (
-          filteredContents
-            .filter(
-              (item) =>
-                !item.name.includes("floating") && item.name !== "multi-column"
-            )
-            .map((section, index) => (
-              <CCard
-                key={index}
-                style={{ marginBottom: 10, cursor: "pointer" }}
-                onClick={() => section.action(setAddContent)}
-              >
-                <div className="d-flex align-items-center py-1 px-2">
-                  <div>{section.icon}</div>
-                  <div>{section.title}</div>
+          <div>
+            {filteredContents.map((group, groupIndex) => {
+              return (
+                <div key={groupIndex}>
+                  <div className="mb-2 font-weight-bold">{group.group}</div>
+                  {group.sections
+                    .filter(
+                      (item) =>
+                        !item.name.includes("floating") &&
+                        item.name !== "multi-column"
+                    )
+                    .map((section, index) => (
+                      <CCard
+                        key={index}
+                        style={{ marginBottom: 10, cursor: "pointer" }}
+                        onClick={() => section.action(setAddContent)}
+                      >
+                        <div className="d-flex align-items-center py-1 px-2">
+                          <div>{section.icon}</div>
+                          <div>{section.title}</div>
+                        </div>
+                      </CCard>
+                    ))}
                 </div>
-              </CCard>
-            ))
+              );
+            })}
+          </div>
         ) : searchContent && filteredContents.length === 0 ? (
           <div className="text-center my-3">Kontent tidak ada !</div>
         ) : null}

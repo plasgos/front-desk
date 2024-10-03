@@ -22,43 +22,6 @@ import { createUniqueID } from "../../../../../lib/unique-id";
 import UpdateContent from "./UpdateContent";
 import { shadowOptions } from "../../SelectOptions";
 
-const initialContents = [
-  {
-    id: "btn01",
-    content: {
-      title: "Please Click Me",
-      style: {
-        btnColor: "#2196F3",
-        textColor: "#FFFFFF",
-        variant: "fill",
-        rounded: "tw-rounded",
-        buttonSize: "md",
-        shadow: "tw-shadow",
-        icon: {},
-        image: "",
-      },
-    },
-    target: {},
-  },
-  {
-    id: "btn02",
-    content: {
-      title: "Dont't Click Me",
-      style: {
-        btnColor: "#EF5350",
-        textColor: "#FFFFFF",
-        variant: "fill",
-        rounded: "tw-rounded",
-        buttonSize: "md",
-        shadow: "tw-shadow",
-        icon: {},
-        image: "",
-      },
-    },
-    target: {},
-  },
-];
-
 export const distanceOptions = [
   { value: "0", label: "0" },
   { value: "1", label: "1" },
@@ -79,6 +42,7 @@ const FloatingButton = ({
   sectionBeforeEdit,
   previewFloatingSection,
   setPreviewFloatingSection,
+  handleSectionContentFocus,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -188,12 +152,13 @@ const FloatingButton = ({
               }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
+              handleFocus={() => handleSectionContentFocus(contentItem.id)}
             />
           ))}
         </div>
       );
     },
-    [moveSection, editSection, removeSection]
+    [moveSection, editSection, removeSection, handleSectionContentFocus]
   );
 
   const onAddContent = () => {
@@ -202,7 +167,42 @@ const FloatingButton = ({
       id: uniqueId,
       name: "floating-button",
       title: "Floating Button",
-      content: initialContents,
+      content: [
+        {
+          id: createUniqueID([]),
+          content: {
+            title: "Please Click Me",
+            style: {
+              btnColor: "#2196F3",
+              textColor: "#FFFFFF",
+              variant: "fill",
+              rounded: "tw-rounded",
+              buttonSize: "md",
+              shadow: "tw-shadow",
+              icon: {},
+              image: "",
+            },
+          },
+          target: {},
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          content: {
+            title: "Dont't Click Me",
+            style: {
+              btnColor: "#EF5350",
+              textColor: "#FFFFFF",
+              variant: "fill",
+              rounded: "tw-rounded",
+              buttonSize: "md",
+              shadow: "tw-shadow",
+              icon: {},
+              image: "",
+            },
+          },
+          target: {},
+        },
+      ],
       wrapperStyle: {
         flexDirection: "tw-flex-row",
         marginX: "2",
@@ -266,7 +266,7 @@ const FloatingButton = ({
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
-                    currentContent={initialContents}
+                    currentContent={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewFloatingSection}
                     isListIconVisible={isListIconVisible}
                     setIsListIconVisible={setIsListIconVisible}

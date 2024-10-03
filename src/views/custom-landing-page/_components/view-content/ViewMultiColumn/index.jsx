@@ -29,6 +29,8 @@ const ViewMultiColumn = forwardRef(
       width,
       isPreview,
       setPreviewSection,
+      setColumnRef,
+      focusedIndexColumn,
     },
     ref
   ) => {
@@ -68,7 +70,7 @@ const ViewMultiColumn = forwardRef(
             ></div>
           ) : null}
 
-          {content?.column.map((column) => {
+          {content?.column.map((column, columnIndex) => {
             const paddingTop = column.background?.paddingTop
               ? `calc(16px + ${column.background.paddingTop}px)`
               : column.background?.paddingY
@@ -102,14 +104,22 @@ const ViewMultiColumn = forwardRef(
 
             return (
               <div
+                ref={(el) => setColumnRef(el, columnIndex)}
                 style={{
                   ...(content?.wrapperStyle?.isWidthCustom === "equal"
                     ? { flex: "1 1 0%" }
                     : { flex: `${column.width} 1 0% ` }),
+                  ...(focusedIndexColumn === columnIndex && {
+                    border: "2px solid green",
+                  }),
                 }}
                 className={`${
                   content?.wrapperStyle?.isWidthCustom === "equal"
                     ? "tw-flex-1"
+                    : ""
+                } ${
+                  focusedIndexColumn === columnIndex
+                    ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20  "
                     : ""
                 }`}
                 key={column.id}

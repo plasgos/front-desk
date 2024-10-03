@@ -33,39 +33,6 @@ import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 import { changeWrapperStyleMultiColumn } from "../../helper/changeWrapperStyleMultiColumn";
 import UpdateContent from "./UpdateContent";
 
-const initialContents = [
-  {
-    id: "btn01",
-    content: {
-      title: "Please Click Me",
-      style: {
-        btnColor: "#2196F3",
-        textColor: "#FFFFFF",
-        variant: "fill",
-        rounded: "tw-rounded",
-        buttonSize: "md",
-        shadow: "tw-shadow",
-      },
-    },
-    target: {},
-  },
-  {
-    id: "btn02",
-    content: {
-      title: "Dont't Click Me",
-      style: {
-        btnColor: "#EF5350",
-        textColor: "#FFFFFF",
-        variant: "fill",
-        rounded: "tw-rounded",
-        buttonSize: "md",
-        shadow: "tw-shadow",
-      },
-    },
-    target: {},
-  },
-];
-
 export const distanceOptions = [
   { value: "0", label: "0" },
   { value: "1", label: "1" },
@@ -196,7 +163,38 @@ const Buttons = ({
       id: uniqueId,
       name: "button",
       title: "Tombol",
-      content: initialContents,
+      content: [
+        {
+          id: createUniqueID([]),
+          content: {
+            title: "Please Click Me",
+            style: {
+              btnColor: "#2196F3",
+              textColor: "#FFFFFF",
+              variant: "fill",
+              rounded: "tw-rounded",
+              buttonSize: "md",
+              shadow: "tw-shadow",
+            },
+          },
+          target: {},
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          content: {
+            title: "Dont't Click Me",
+            style: {
+              btnColor: "#EF5350",
+              textColor: "#FFFFFF",
+              variant: "fill",
+              rounded: "tw-rounded",
+              buttonSize: "md",
+              shadow: "tw-shadow",
+            },
+          },
+          target: {},
+        },
+      ],
       wrapperStyle: {
         jusctifyContent: "tw-justify-center",
         flexDirection: "tw-flex-row",
@@ -274,6 +272,7 @@ const Buttons = ({
                 contentItem.id
               )
             }
+            hiddenFocus={true}
           />
         </div>
       ));
@@ -322,7 +321,7 @@ const Buttons = ({
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
-                    currentContent={initialContents}
+                    currentContent={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                     isListIconVisible={isListIconVisible}
                     setIsListIconVisible={setIsListIconVisible}

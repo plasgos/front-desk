@@ -28,27 +28,6 @@ import BackgroundTab from "../../common/BackgroundTab";
 import { UpdateContents } from "./UpdateContents";
 import { UpdateShapes } from "./UpdateShapes";
 
-const initialContent = [
-  {
-    id: "testi-1",
-    name: "John Smith",
-    image: profilePicture,
-    content: "Super bagus sekali barangnya",
-  },
-  {
-    id: "testi-2",
-    name: "Mozart",
-    image: profilePicture,
-    content: "Senang sekali memakai produk ini",
-  },
-  {
-    id: "testi-3",
-    name: "Alexander the Great",
-    image: profilePicture,
-    content: "Pasti akan beli lagi",
-  },
-];
-
 const Testimony = ({
   previewSection,
   setPreviewSection,
@@ -56,6 +35,7 @@ const Testimony = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  handleSectionContentFocus,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -197,7 +177,26 @@ const Testimony = ({
       id: uniqueId,
       name: "testimony",
       title: "Testimoni / Review",
-      content: initialContent,
+      content: [
+        {
+          id: createUniqueID([]),
+          name: "John Smith",
+          image: profilePicture,
+          content: "Super bagus sekali barangnya",
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          name: "Mozart",
+          image: profilePicture,
+          content: "Senang sekali memakai produk ini",
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          name: "Alexander the Great",
+          image: profilePicture,
+          content: "Pasti akan beli lagi",
+        },
+      ],
       shape: [],
       background: {
         bgType: undefined,
@@ -318,12 +317,13 @@ const Testimony = ({
               }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
+              handleFocus={() => handleSectionContentFocus(contentItem.id)}
             />
           ))}
         </div>
       );
     },
-    [moveSection, editSection, removeSection]
+    [moveSection, editSection, removeSection, handleSectionContentFocus]
   );
 
   const renderSectionShape = useCallback(
@@ -339,6 +339,7 @@ const Testimony = ({
               moveSection={moveSectionShape}
               editSection={() => editSectionShape(contentItem)}
               removeSection={() => removeSectionShape(section.id, contentIndex)}
+              hiddenFocus={true}
             />
           ))}
         </div>
@@ -408,7 +409,7 @@ const Testimony = ({
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
-                    currentContent={initialContent}
+                    currentContent={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                   />
                 </CTabContent>

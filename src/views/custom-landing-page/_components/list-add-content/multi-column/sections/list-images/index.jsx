@@ -208,7 +208,32 @@ const ListImages = ({
       id: uniqueId,
       name: "list-images",
       title: "List Images",
-      content: initialContents,
+      content: [
+        {
+          id: createUniqueID([]),
+          content: {
+            image: image,
+            alt: "",
+          },
+          target: {},
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          content: {
+            image: image,
+            alt: "",
+          },
+          target: {},
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          content: {
+            image: image,
+            alt: "",
+          },
+          target: {},
+        },
+      ],
       wrapperStyle: {
         paddingX: "2",
         maxColumn: "tw-w-1/6",
@@ -289,6 +314,7 @@ const ListImages = ({
                 contentItem.id
               )
             }
+            hiddenFocus={true}
           />
         </div>
       ));
@@ -335,7 +361,7 @@ const ListImages = ({
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
-                    currentContent={initialContents}
+                    currentContent={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                     sectionId={sectionId}
                     columnId={columnId}

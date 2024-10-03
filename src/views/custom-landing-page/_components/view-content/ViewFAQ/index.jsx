@@ -6,7 +6,19 @@ import KapsulSimple from "./KapsulSimple";
 import Accordion from "./Accordion";
 
 const ViewFAQ = forwardRef(
-  ({ isDragging, content, isResizing, isFocused, isPreview, width }, ref) => {
+  (
+    {
+      isDragging,
+      content,
+      isResizing,
+      isFocused,
+      isPreview,
+      width,
+      setSectionContentRef,
+      focusedIndexSectionContent,
+    },
+    ref
+  ) => {
     const stylesBg = useBackgroundStyles(content);
 
     const iconPack = useFontAwesomeIconPack();
@@ -70,7 +82,7 @@ const ViewFAQ = forwardRef(
           ></div>
         ) : null}
 
-        {content.content.map((item) => {
+        {content.content.map((item, indexContent) => {
           let wrapperStyle = {};
 
           if (content?.variant?.id === "1" || content?.variant?.id === "2") {
@@ -79,14 +91,39 @@ const ViewFAQ = forwardRef(
                   width === "100%" || width >= 640
                     ? `${content?.variant?.style?.maxColumn}`
                     : "tw-w-full"
+                }   ${
+                  focusedIndexSectionContent === item.id
+                    ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+                    : ""
                 } `
-              : `tw-w-full sm:${content?.variant?.style?.maxColumn}`;
+              : `tw-w-full sm:${content?.variant?.style?.maxColumn}  ${
+                  focusedIndexSectionContent === item.id
+                    ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+                    : ""
+                }`;
           } else {
-            wrapperStyle.className = "tw-w-full";
+            wrapperStyle.className = `tw-w-full  ${
+              focusedIndexSectionContent === item.id
+                ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+                : ""
+            }`;
           }
 
           return (
-            <div key={item.id} className={wrapperStyle.className}>
+            <div
+              ref={(el) => {
+                if (setSectionContentRef) {
+                  setSectionContentRef(el, item.id);
+                }
+              }}
+              style={{
+                ...(focusedIndexSectionContent === item.id && {
+                  border: "2px solid green",
+                }),
+              }}
+              key={item.id}
+              className={wrapperStyle.className}
+            >
               {content.variant?.id === "1" && (
                 <PlainSimple content={item} contentVariant={content.variant} />
               )}

@@ -31,6 +31,7 @@ const FormCheckout = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  handleSectionContentFocus,
 }) => {
   const [activeTab, setActiveTab] = useState("form");
   const [isAddContent, setIsAddContent] = useState(false);
@@ -347,6 +348,7 @@ const FormCheckout = ({
                     isEditingContent={isEditingContent}
                     setIsEditingContent={setIsEditingContent}
                     isEditingSection={isEditingSection}
+                    handleSectionContentFocus={handleSectionContentFocus}
                   />
                 </CTabPane>
                 <CTabPane

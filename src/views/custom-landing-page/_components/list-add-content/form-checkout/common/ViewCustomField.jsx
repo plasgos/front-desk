@@ -19,9 +19,27 @@ const ViewCustomField = ({
   control,
   onSetSubdistrict,
   index,
+  setSectionContentRef,
+  focusedIndexSectionContent,
 }) => {
   return (
-    <div>
+    <div
+      className={`${
+        focusedIndexSectionContent === section.id
+          ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20"
+          : ""
+      }`}
+      style={{
+        ...(focusedIndexSectionContent === section.id && {
+          border: "2px solid green",
+        }),
+      }}
+      ref={(el) => {
+        if (setSectionContentRef) {
+          setSectionContentRef(el, section.id);
+        }
+      }}
+    >
       {(section.type === "text" ||
         section.type === "postalCode" ||
         section.type === "firstName" ||

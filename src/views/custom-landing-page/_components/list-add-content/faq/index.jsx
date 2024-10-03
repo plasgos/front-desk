@@ -22,29 +22,6 @@ import SelectVariant from "../../common/SelectVariant";
 import UpdateContent from "./UpdateContent";
 import DesignTab from "./DesignTab";
 
-const initialContents = [
-  {
-    id: "faq-1",
-    title: "Kenyamanan adalah penjara kebebasan dan hambatan untuk berkembang",
-    desc: "Jangan biarkan dirimu terlena pada nikmatnya kenyamanan! Mulailah lagi berkarya hari ini karena kamu tidak tahu siapa yang akan mengalahkanmu esok hari.",
-  },
-  {
-    id: "faq-2",
-    title: "Fokus Pada Masa Depan",
-    desc: "Tanpa pernah kamu sadari, hidup berubah dengan cepat secepat kamu mengedipkan mata. Tanpa kamu sadari, ada waktu yang kamu gunakan dengan baik dan waktu yang kamu sia-siakan.",
-  },
-  {
-    id: "faq-3",
-    title: "Rahasia untuk maju adalah memulai",
-    desc: "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
-  },
-  {
-    id: "faq-4",
-    title: "Kita lebih menikmati proses ketimbang hasilnya",
-    desc: "Dalam hidup, kamu pasti menuntut hasil yang terbaik nan membanggakan. Hidup bukan hanya terletak pada hasil yang kamu terima, tapi hidup adalah sikap kamu terhadap semua proses kehidupan.",
-  },
-];
-
 const optionVariant = [
   { group: "Plain", options: [{ id: "1", value: "simple", label: "Simple" }] },
   { group: "Kapsul", options: [{ id: "2", value: "simple", label: "Simple" }] },
@@ -132,6 +109,7 @@ const FAQ = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  handleSectionContentFocus,
 }) => {
   const [activeTab, setActiveTab] = useState("faqs");
   const [isAddContent, setIsAddContent] = useState(false);
@@ -197,12 +175,13 @@ const FAQ = ({
               }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
+              handleFocus={() => handleSectionContentFocus(contentItem.id)}
             />
           ))}
         </div>
       );
     },
-    [moveSection, editSection, removeSection]
+    [moveSection, editSection, removeSection, handleSectionContentFocus]
   );
 
   const handleCancel = () => {
@@ -303,7 +282,29 @@ const FAQ = ({
       id: uniqueId,
       name: "faq",
       title: "FAQ Buka/Tutup",
-      content: initialContents,
+      content: [
+        {
+          id: createUniqueID([]),
+          title:
+            "Kenyamanan adalah penjara kebebasan dan hambatan untuk berkembang",
+          desc: "Jangan biarkan dirimu terlena pada nikmatnya kenyamanan! Mulailah lagi berkarya hari ini karena kamu tidak tahu siapa yang akan mengalahkanmu esok hari.",
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          title: "Fokus Pada Masa Depan",
+          desc: "Tanpa pernah kamu sadari, hidup berubah dengan cepat secepat kamu mengedipkan mata. Tanpa kamu sadari, ada waktu yang kamu gunakan dengan baik dan waktu yang kamu sia-siakan.",
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          title: "Rahasia untuk maju adalah memulai",
+          desc: "Kamu tidak akan pernah sukses jika kamu hanya duduk dan berangan-angan untuk sukses. Bangkitlah dari tempat dudukmu dan mulailah lakukan sesuatu!",
+        },
+        {
+          id: createUniqueID([{ id: createUniqueID([]) }]),
+          title: "Kita lebih menikmati proses ketimbang hasilnya",
+          desc: "Dalam hidup, kamu pasti menuntut hasil yang terbaik nan membanggakan. Hidup bukan hanya terletak pada hasil yang kamu terima, tapi hidup adalah sikap kamu terhadap semua proses kehidupan.",
+        },
+      ],
       background: {
         bgType: undefined,
         bgColor: "",
@@ -438,7 +439,7 @@ const FAQ = ({
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
                     }
-                    currentContent={initialContents}
+                    currentContent={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                   />
                 </CTabContent>
