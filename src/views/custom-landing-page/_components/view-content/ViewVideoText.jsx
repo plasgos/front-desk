@@ -3,7 +3,7 @@ import useAnimatedVisibility from "../../../../hooks/useAnimatedVisibility";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 
 const ViewVideoText = forwardRef(
-  ({ isDragging, isResizing, content, isFocused }, ref) => {
+  ({ isDragging, isResizing, content, isFocused, isPreview, width }, ref) => {
     const stylesBg = useBackgroundStyles(content);
 
     const { elementRef, getClassName, duration } =
@@ -57,10 +57,23 @@ const ViewVideoText = forwardRef(
           ></div>
         ) : null}
 
-        <div style={{ gap: 10 }} className="tw-flex  ">
+        <div
+          style={{ gap: 10 }}
+          className={` ${
+            isPreview
+              ? `tw-flex tw-max-w-full ${
+                  width === "100%"
+                    ? "tw-flex-nowrap"
+                    : width < 420
+                    ? "tw-flex-wrap"
+                    : ""
+                }`
+              : "parent-container-video-text-view"
+          }`}
+        >
           <div
             ref={elementRef}
-            className={`${getClassName()} `}
+            className={`${getClassName()}   `}
             style={{
               transform: `rotate(${content.content.rotation}deg)`,
               zIndex: 999,
@@ -91,7 +104,7 @@ const ViewVideoText = forwardRef(
 
           <div
             ref={elementRefContent}
-            className={getClassNameContent()}
+            className={`${getClassNameContent()} tw-w-full  `}
             style={{
               "--animation-duration": `${durationContent}s`,
             }}

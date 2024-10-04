@@ -5,18 +5,14 @@ import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ViewFloatingButton = forwardRef(
-  (
-    {
-      containerRef,
-      isDragging,
-      content,
-      isResizing,
-      isFocused,
-      setSectionContentRef,
-      focusedIndexSectionContent,
-    },
-    ref
-  ) => {
+  ({
+    containerRef,
+
+    content,
+    isResizing,
+    setSectionContentRef,
+    focusedIndexSectionContent,
+  }) => {
     const iconPack = useFontAwesomeIconPack();
 
     const getIconForSection = (icon) => {
@@ -86,11 +82,8 @@ const ViewFloatingButton = forwardRef(
 
     return (
       <div
-        ref={ref}
         style={{
           ...(isResizing ? { cursor: "not-allowed" } : {}),
-          ...(isDragging ? { border: "2px solid green" } : {}),
-          ...(isFocused && { border: "2px solid green" }),
           paddingTop,
           paddingBottom,
           backgroundColor: content.background.bgColor || "",
@@ -107,10 +100,7 @@ const ViewFloatingButton = forwardRef(
           content.wrapperStyle.flexDirection === "tw-flex-row" && "tw-gap-y-2"
         }   tw-p-1  ${
           content.wrapperStyle.shadow ? content.wrapperStyle.shadow : ""
-        } ${
-          isFocused &&
-          "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20 "
-        }`}
+        } `}
       >
         <div style={stylesBg.backgroundImgStyle}></div>
 

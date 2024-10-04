@@ -1,8 +1,10 @@
 import { CCard, CCardBody } from "@coreui/react";
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoCloseOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
 import { useDrag, useDrop } from "react-dnd";
 import { FaMagnifyingGlass } from "react-icons/fa6";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
 
 export const ItemTypes = {
   CARD: "card",
@@ -13,12 +15,32 @@ export const DraggableList = ({
   id,
   showInfoText,
   showThumbnail,
+  showIcon,
   moveSection,
   editSection,
   removeSection,
   handleFocus,
   hiddenFocus,
 }) => {
+  const [icon, setIcon] = useState(showIcon);
+  const iconPack = useFontAwesomeIconPack();
+
+  useEffect(() => {
+    if (showIcon && iconPack && iconPack.length > 0) {
+      const iconToSet = showIcon;
+
+      if (iconToSet && Object.keys(iconToSet).length > 0) {
+        const iconExists = iconPack.some(
+          (icon) => icon.iconName === iconToSet.iconName
+        );
+
+        setIcon(iconExists ? iconToSet : {});
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [iconPack, showIcon]);
+
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
     accept: ItemTypes.CARD,
@@ -84,6 +106,16 @@ export const DraggableList = ({
         <CCardBody className="p-1">
           <div style={{ gap: 10 }} className="d-flex align-items-center">
             <IoMenu style={{ cursor: "move" }} size={18} />
+
+            {iconPack &&
+              iconPack.length > 0 &&
+              showIcon &&
+              Object.keys(showIcon).length > 0 && (
+                <FontAwesomeIcon
+                  size="lg"
+                  icon={[`${icon.prefix}`, icon.iconName]}
+                />
+              )}
 
             {showThumbnail && (
               <div

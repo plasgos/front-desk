@@ -15,6 +15,7 @@ import FAQ from "../sections/faq";
 import FormCheckout from "../sections/form-checkout";
 import Video from "../sections/video";
 import VideoText from "../sections/video-text";
+import CallToAction from "../sections/call-to-action";
 
 export function useRenderEditSection({
   previewSection,
@@ -329,6 +330,24 @@ export function useRenderEditSection({
                 ) {
                   return (
                     <VideoText
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "call-to-action" &&
+                  content.name === "call-to-action" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <CallToAction
                       key={content.id}
                       currentSection={content}
                       previewSection={previewSection}

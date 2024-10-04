@@ -17,6 +17,7 @@ import ViewTestimony from "../ViewTestimony";
 import ViewText from "../ViewText";
 import ViewVideo from "../ViewVideo";
 import ViewVideoText from "../ViewVideoText";
+import ViewCallToAction from "../ViewCallToAction";
 
 const ViewMultiColumn = forwardRef(
   (
@@ -268,6 +269,13 @@ const ViewMultiColumn = forwardRef(
 
                         {contentItem.name === "video-text" && (
                           <ViewVideoText
+                            content={contentItem}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {contentItem.name === "call-to-action" && (
+                          <ViewCallToAction
                             content={contentItem}
                             isResizing={isResizing}
                           />

@@ -23,6 +23,7 @@ import FAQ from "./sections/faq";
 import FormCheckout from "./sections/form-checkout";
 import Video from "./sections/video";
 import VideoText from "./sections/video-text";
+import CallToAction from "./sections/call-to-action";
 
 const ListContentMultiColumn = ({
   previewSection,
@@ -223,6 +224,15 @@ const ListContentMultiColumn = ({
 
       {addContent === "video-text" && (
         <VideoText
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          sectionId={sectionId}
+          columnId={columnId}
+        />
+      )}
+
+      {addContent === "call-to-action" && (
+        <CallToAction
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           sectionId={sectionId}

@@ -32,6 +32,11 @@ export const ListSectionContent = ({
       if (!ref.current) {
         return;
       }
+
+      if (section.name.includes("floating")) {
+        return;
+      }
+
       const dragIndex = item.index;
       const hoverIndex = index;
       // Don't replace items with themselves
@@ -67,6 +72,7 @@ export const ListSectionContent = ({
       item.index = hoverIndex;
     },
   });
+
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.CARD,
     item: () => {

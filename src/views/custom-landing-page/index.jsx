@@ -64,6 +64,10 @@ import ViewVideo from "./_components/view-content/ViewVideo";
 import Video from "./_components/list-add-content/video";
 import VideoText from "./_components/list-add-content/video-text";
 import ViewVideoText from "./_components/view-content/ViewVideoText";
+import { UnDraggabelList } from "./_components/common/UnDraggabaleList";
+import CallToAction from "./_components/list-add-content/call-to-action";
+import ViewCallToAction from "./_components/view-content/ViewCallToAction";
+import FloatingButtonCircle from "./_components/list-add-content/floating-button-circle";
 
 const landingPage = {
   detail: {
@@ -255,13 +259,13 @@ const CustomLandingPage = () => {
         return (
           <ViewColumnTextAndImage
             containerRef={containerRef}
-            width={dimensions.width}
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
             isPreview={isPreview}
+            width={dimensions.width}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
           />
@@ -413,11 +417,8 @@ const CustomLandingPage = () => {
         return (
           <ViewFloatingButton
             containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
-            isFocused={null}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
           />
@@ -484,6 +485,21 @@ const CustomLandingPage = () => {
       if (section.name === "video-text") {
         return (
           <ViewVideoText
+            containerRef={containerRef}
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+            isPreview={isPreview}
+            width={dimensions.width}
+          />
+        );
+      }
+
+      if (section.name === "call-to-action") {
+        return (
+          <ViewCallToAction
             containerRef={containerRef}
             isDragging={isDragging && section.id === id}
             content={section}
@@ -823,6 +839,43 @@ const CustomLandingPage = () => {
         );
       }
 
+      if (
+        editing.name === "call-to-action" &&
+        section.name === "call-to-action" &&
+        editing.id === section.id
+      ) {
+        return (
+          <CallToAction
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "floating-button-circle" &&
+        section.name === "floating-button-circle" &&
+        editing.id === section.id
+      ) {
+        return (
+          <FloatingButtonCircle
+            currentSection={section}
+            previewFloatingSection={previewFloatingSection}
+            setPreviewFloatingSection={(value) =>
+              setPreviewFloatingSection(value)
+            }
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionFloatingBeforeEdit}
+            isEditingSection={true}
+            handleSectionContentFocus={handleSectionContentFocus}
+          />
+        );
+      }
+
       return null;
     },
     [
@@ -980,6 +1033,22 @@ const CustomLandingPage = () => {
     });
   }, []);
 
+  const renderListSectionFloating = useCallback(
+    (section, index) => {
+      return (
+        <UnDraggabelList
+          key={section.id}
+          index={index}
+          section={section}
+          editSection={() => editSectionFlaoting(section)}
+          removeSection={removeSectionFloating}
+          focusContent={() => handleContentFocus(index)}
+        />
+      );
+    },
+    [editSectionFlaoting, handleContentFocus, removeSectionFloating]
+  );
+
   const renderListContent = useCallback(
     (section, index) => {
       return (
@@ -1106,7 +1175,7 @@ const CustomLandingPage = () => {
                       </CCard>
 
                       {previewFloatingSection.map((section, index) =>
-                        renderListContent(section, index)
+                        renderListSectionFloating(section, index)
                       )}
                     </CTabPane>
                     <CTabPane data-tab="desain">

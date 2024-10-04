@@ -34,7 +34,6 @@ const ListFeature = ({
       iconName: "hand-point-right",
     }
   );
-  console.log("🚀 ~ iconName:", iconName);
   const [imageUrl, setImageUrl] = useState(
     currentSection?.iconStyle?.image || ""
   );

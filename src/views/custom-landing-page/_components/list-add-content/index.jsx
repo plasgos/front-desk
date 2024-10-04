@@ -20,6 +20,8 @@ import Text from "./text/index";
 import MultiColumn from "./multi-column";
 import Video from "./video";
 import VideoText from "./video-text";
+import CallToAction from "./call-to-action";
+import FloatingButtonCircle from "./floating-button-circle";
 
 const ListContent = ({
   previewSection,
@@ -248,6 +250,23 @@ const ListContent = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+        />
+      )}
+
+      {addContent === "call-to-action" && (
+        <CallToAction
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
+      {addContent === "floating-button-circle" && (
+        <FloatingButtonCircle
+          previewFloatingSection={previewFloatingSection}
+          setPreviewFloatingSection={setPreviewFloatingSection}
+          isShowContent={isShowContent}
+          handleSectionContentFocus={handleSectionContentFocus}
         />
       )}
 

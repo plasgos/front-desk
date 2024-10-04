@@ -24,25 +24,21 @@ const ViewFAQ = forwardRef(
     const iconPack = useFontAwesomeIconPack();
     const [iconName, setIconName] = useState(null);
 
-    const defaultIcon = {
-      prefix: "fas",
-      iconName: "plus",
-    };
-
     useEffect(() => {
-      if (iconPack && content.variant?.style?.icon) {
-        const iconToSet = content.variant?.style?.icon || defaultIcon;
-        const iconExists = iconPack.some(
-          (icon) => icon.iconName === iconToSet?.iconName
-        );
+      if (iconPack && iconPack.length > 0) {
+        const iconToSet = content.variant?.style?.icon;
 
-        setIconName(iconExists ? iconToSet : defaultIcon);
-      } else {
-        setIconName(defaultIcon);
+        if (iconToSet && Object.keys(iconToSet).length > 0) {
+          const iconExists = iconPack.some(
+            (icon) => icon.iconName === iconToSet.iconName
+          );
+
+          setIconName(iconExists ? iconToSet : {});
+        }
       }
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [content.variant.style.icon, iconPack]);
+    }, [content, iconPack]);
 
     useEffect(() => {
       if (content.variant?.style?.image) {
