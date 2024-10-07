@@ -1,27 +1,28 @@
 import { CButton, CCard, CTabContent } from "@coreui/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SearchForm } from "../common/SearchForm";
 import Buttons from "./button";
+import CallToAction from "./call-to-action";
 import ColumnTextAndImages from "./colum-text-and-image";
 import { dataListContent } from "./DataListContent";
 import EmptySpace from "./empty-space/index";
 import FAQ from "./faq";
 import FloatingButton from "./floating-button";
+import FloatingButtonCircle from "./floating-button-circle";
 import FormCheckout from "./form-checkout";
 import Image from "./image";
 import ImageText from "./image-text";
 import Line from "./line/index";
 import ListFeature from "./list-feature";
 import ListImagesControl from "./list-images/index";
+import MultiColumn from "./multi-column";
 import Quote from "./quote";
 import ScrollTarget from "./scroll-target/index";
 import Testimony from "./testimony";
 import Text from "./text/index";
-import MultiColumn from "./multi-column";
 import Video from "./video";
 import VideoText from "./video-text";
-import CallToAction from "./call-to-action";
-import FloatingButtonCircle from "./floating-button-circle";
+import FormActivity from "./form-activity";
 
 const ListContent = ({
   previewSection,
@@ -72,6 +73,14 @@ const ListContent = ({
     } else {
       isShowContent(false);
       setAddContent("");
+    }
+  };
+
+  const handleSelectSection = (existSection, action) => {
+    if (existSection) {
+      return;
+    } else {
+      action(setAddContent);
     }
   };
 
@@ -270,6 +279,14 @@ const ListContent = ({
         />
       )}
 
+      {addContent === "form-activity" && (
+        <FormActivity
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
       <CTabContent
         style={{
           height: addContent ? 0 : 280,
@@ -283,18 +300,46 @@ const ListContent = ({
               return (
                 <div key={groupIndex}>
                   <div className="mb-2 font-weight-bold">{group.group}</div>
-                  {group.sections.map((section, index) => (
-                    <CCard
-                      key={index}
-                      style={{ marginBottom: 10, cursor: "pointer" }}
-                      onClick={() => section.action(setAddContent)}
-                    >
-                      <div className="d-flex align-items-center py-1 px-2">
-                        <div>{section.icon}</div>
-                        <div>{section.title}</div>
-                      </div>
-                    </CCard>
-                  ))}
+                  {group.sections.map((section, index) => {
+                    const existFloatingSectionSelected = previewFloatingSection
+                      .map((prevSection) => prevSection)
+                      .some((prevSection) => prevSection.name === section.name);
+
+                    return (
+                      <CCard
+                        key={index}
+                        style={{
+                          marginBottom: 10,
+                          cursor: existFloatingSectionSelected
+                            ? "not-allowed"
+                            : "pointer",
+                        }}
+                        onClick={() =>
+                          handleSelectSection(
+                            existFloatingSectionSelected,
+                            section.action
+                          )
+                        }
+                      >
+                        <div className="d-flex align-items-center py-1 px-2">
+                          <div
+                            className={`${
+                              existFloatingSectionSelected && "text-secondary"
+                            }`}
+                          >
+                            {section.icon}
+                          </div>
+                          <div
+                            className={`${
+                              existFloatingSectionSelected && "text-secondary"
+                            }`}
+                          >
+                            {section.title}
+                          </div>
+                        </div>
+                      </CCard>
+                    );
+                  })}
                 </div>
               );
             })}

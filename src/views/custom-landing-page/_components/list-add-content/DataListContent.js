@@ -19,6 +19,7 @@ import { RxButton, RxSwitch } from "react-icons/rx";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 import { PiColumnsPlusRightThin } from "react-icons/pi";
 import { AiOutlineUserSwitch } from "react-icons/ai";
+import { CgFileDocument } from "react-icons/cg";
 
 export const dataListContent = [
   {
@@ -173,6 +174,12 @@ export const dataListContent = [
         title: "Call To Action",
         icon: <AiOutlineUserSwitch style={{ marginRight: 5 }} size={24} />,
         action: (setAddContent) => setAddContent("call-to-action"),
+      },
+      {
+        name: "form-activity",
+        title: "Formulir Kegiatan",
+        icon: <CgFileDocument style={{ marginRight: 5 }} size={24} />,
+        action: (setAddContent) => setAddContent("form-activity"),
       },
     ],
   },

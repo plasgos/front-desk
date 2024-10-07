@@ -34,7 +34,6 @@ const FloatingButtonCircle = ({
   setPreviewFloatingSection,
   handleSectionContentFocus,
 }) => {
-  console.log("🚀 ~ currentSection:", currentSection);
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
   const [selectedContent, setSelectedContent] = useState({});

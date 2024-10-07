@@ -68,6 +68,7 @@ import { UnDraggabelList } from "./_components/common/UnDraggabaleList";
 import CallToAction from "./_components/list-add-content/call-to-action";
 import ViewCallToAction from "./_components/view-content/ViewCallToAction";
 import FloatingButtonCircle from "./_components/list-add-content/floating-button-circle";
+import ViewFloatingButtonCircle from "./_components/view-content/ViewFloatingButtonCircle";
 
 const landingPage = {
   detail: {
@@ -416,6 +417,18 @@ const CustomLandingPage = () => {
       if (section.name === "floating-button") {
         return (
           <ViewFloatingButton
+            containerRef={containerRef}
+            content={section}
+            isResizing={isResizing}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
+          />
+        );
+      }
+
+      if (section.name === "floating-button-circle") {
+        return (
+          <ViewFloatingButtonCircle
             containerRef={containerRef}
             content={section}
             isResizing={isResizing}

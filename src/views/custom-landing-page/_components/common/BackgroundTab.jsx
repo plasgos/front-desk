@@ -51,6 +51,12 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
       setSelectedPadding(currentPaddingTypeOption);
     }
 
+    const currentPaddingY = currentSection.background?.paddingY;
+
+    if (currentPaddingY) {
+      setPaddingY(currentPaddingY);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, backgroundType, PaddingYOptions, currentSection.background]);
 
@@ -138,7 +144,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
                 ...item,
                 background: {
                   ...item.background,
-                  paddingY: 0,
+                  paddingY,
                   paddingType: selectedOption.value,
                 },
               }

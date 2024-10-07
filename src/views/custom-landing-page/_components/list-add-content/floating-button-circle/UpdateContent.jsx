@@ -80,7 +80,7 @@ const UpdateContent = ({
     ButtonSizeOptions[1]
   );
   const [selectedButtonShadow, setSelectedButtonShadow] = useState(
-    shadowOptions[0]
+    shadowOptions[2]
   );
 
   const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChange(
