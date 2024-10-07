@@ -508,3 +508,14 @@ div.horizontal-scrolling-menu::-webkit-scrollbar-thumb:hover {
     flex-wrap: nowrap;
   }
 }
+
+.tooltip-arrow {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #ef4444; /* Sesuaikan warna panah dengan background tooltip */
+  bottom: -6px; /* Posisi panah di bawah tooltip */
+  right: 10px; /* Posisi panah di sisi kanan */
+}

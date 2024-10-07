@@ -24,21 +24,24 @@ const UpdateTitle = ({
     ? currentSection?.collected?.isCollected
     : currentSection?.titleHeader?.isCollected;
 
-  const {} = currentSection?.isCollectedTab;
+  const {
+    text,
+    textAlign,
+    textColor: textColorProps,
+    textShadow: textShadowProps,
+    fontSize: fontSizeProps,
+  } = isCollectedTab
+    ? currentSection?.collected || {} // Pastikan collected ada
+    : currentSection?.titleHeader || {};
 
   const [textShadow, setTextShadow] = useState(textShadowOptions[0]);
   const [fontSize, setFontSize] = useState(fontSizeOptions[2]);
   const [editorHtml, setEditorHtml] = useState(
-    currentSection?.titleHeader?.text ||
-      "<h2>Ayo Daftar Sekarang !</h2><p>Jangan Sampai Ketinggalan</p>"
+    text || "<h2>Ayo Daftar Sekarang !</h2><p>Jangan Sampai Ketinggalan</p>"
   );
-  const [selectAlign, setSelectAlign] = useState(
-    currentSection?.titleHeader?.textAlign || "tw-text-center"
-  );
+  const [selectAlign, setSelectAlign] = useState(textAlign || "tw-text-center");
 
-  const [textColor, setTextColor] = useState(
-    currentSection?.titleHeader?.textColor || "#000000"
-  );
+  const [textColor, setTextColor] = useState(textColorProps || "#000000");
 
   const [editorHtmlValue] = useDebounce(editorHtml, 300);
 
@@ -61,29 +64,37 @@ const UpdateTitle = ({
   }, [initialIsCollected, isCollectedTab]);
 
   useEffect(() => {
-    if (isEditingContent) {
-      const currentTextShadowOption = textShadowOptions.find(
-        (opt) => opt.value === currentSection?.titleHeader?.textShadow
-      );
+    // if (isEditingContent) {
+    // }
+    const currentTextShadowOption = textShadowOptions.find(
+      (opt) => opt.value === textShadowProps
+    );
 
-      if (currentTextShadowOption) {
-        setTextShadow(currentTextShadowOption);
-      }
-
-      const currentFontSizeOption = fontSizeOptions.find(
-        (opt) => opt.value === currentSection?.titleHeader?.fontSize
-      );
-      if (currentFontSizeOption) {
-        setFontSize(currentFontSizeOption);
-      }
-
-      const currentSectionText = currentSection?.titleHeader?.text;
-
-      if (currentSectionText) {
-        setEditorHtml(currentSectionText);
-      }
+    if (currentTextShadowOption) {
+      setTextShadow(currentTextShadowOption);
     }
-  }, [currentSection, isEditingContent]);
+
+    const currentFontSizeOption = fontSizeOptions.find(
+      (opt) => opt.value === fontSizeProps
+    );
+    if (currentFontSizeOption) {
+      setFontSize(currentFontSizeOption);
+    }
+
+    const currentSectionText = text;
+
+    if (currentSectionText) {
+      setEditorHtml(currentSectionText);
+    }
+  }, [
+    currentSection,
+    fontSize,
+    fontSizeProps,
+    isEditingContent,
+    text,
+    textShadow,
+    textShadowProps,
+  ]);
 
   const handleChangeTitle = (key, value) => {
     if (isCollectedTab) {

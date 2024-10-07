@@ -47,6 +47,7 @@ const FormActivity = ({
     ) || flattenedOptions[0]
   );
   const [currentVariant, setCurrentVariant] = useState({});
+  console.log("🚀 ~ currentVariant:", currentVariant);
   const [isSelectVariant, setIsSelectVariant] = useState(false);
   const [setting, setSetting] = useState({});
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
@@ -99,7 +100,6 @@ const FormActivity = ({
         textBtn: "Daftar",
         placeholder: "Masukan alamat email kamu di sini",
         btnColor: "#2196F3",
-        isCollected: false,
       },
       titleHeader: {
         textColor: "#000000",
@@ -110,10 +110,11 @@ const FormActivity = ({
       },
       collected: {
         textColor: "#000000",
+        textAlign: "tw-text-center",
         textShadow: undefined,
         fontSize: "tw-text-base",
-        text: "<h2>Ayo Daftar Sekarang !</h2><p>Jangan Sampai Ketinggalan</p>",
-        isCollected: true,
+        text: "<p>Terima kasih telah mengisi formulir kami</p>",
+        isCollected: false,
       },
       variant: "basic",
       background: {
@@ -153,7 +154,7 @@ const FormActivity = ({
           return String(item.id) === contentIdToCheck
             ? {
                 ...item,
-                variant: currentVariant,
+                variant: currentVariant.value,
               }
             : item;
         })

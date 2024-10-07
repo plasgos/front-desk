@@ -69,6 +69,8 @@ import CallToAction from "./_components/list-add-content/call-to-action";
 import ViewCallToAction from "./_components/view-content/ViewCallToAction";
 import FloatingButtonCircle from "./_components/list-add-content/floating-button-circle";
 import ViewFloatingButtonCircle from "./_components/view-content/ViewFloatingButtonCircle";
+import FormActivity from "./_components/list-add-content/form-activity";
+import ViewFormActivity from "./_components/view-content/ViewFormActivity";
 
 const landingPage = {
   detail: {
@@ -523,6 +525,19 @@ const CustomLandingPage = () => {
         );
       }
 
+      if (section.name === "form-activity") {
+        return (
+          <ViewFormActivity
+            containerRef={containerRef}
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
+
       return null;
     },
     [
@@ -885,6 +900,23 @@ const CustomLandingPage = () => {
             sectionBeforeEdit={sectionFloatingBeforeEdit}
             isEditingSection={true}
             handleSectionContentFocus={handleSectionContentFocus}
+          />
+        );
+      }
+
+      if (
+        editing.name === "form-activity" &&
+        section.name === "form-activity" &&
+        editing.id === section.id
+      ) {
+        return (
+          <FormActivity
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }
