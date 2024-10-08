@@ -108,6 +108,9 @@ const MultiColumn = ({
         })
       );
     } else if (isEditingColumn) {
+      if (activeTab === "background") {
+        setActiveTab("column");
+      }
       setPreviewSection([...currentColumnBeforeEdit]);
       dispatch(setIsAddColumn(false));
       dispatch(setIsEditingColumn(false));
@@ -158,6 +161,11 @@ const MultiColumn = ({
     paddingTop: 0,
     paddingBottom: 0,
     paddingType: "equal",
+    direction: "to right",
+    fromColor: "",
+    toColor: "",
+    isRevert: false,
+    pattern: "",
   };
 
   const newId = () => Math.random().toString(36).substr(2, 9);

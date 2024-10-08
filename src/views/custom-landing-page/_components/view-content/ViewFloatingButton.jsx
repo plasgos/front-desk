@@ -102,7 +102,13 @@ const ViewFloatingButton = forwardRef(
           content.wrapperStyle.shadow ? content.wrapperStyle.shadow : ""
         } `}
       >
-        <div style={stylesBg.backgroundImgStyle}></div>
+        {content?.background?.bgImage ? (
+          <div style={stylesBg.backgroundImgStyle}></div>
+        ) : content?.background?.bgType === "gradient" ? (
+          <div style={stylesBg.gradientStyle}></div>
+        ) : content?.background?.bgType === "pattern" ? (
+          <div style={stylesBg.backgroundPatternStyle}></div>
+        ) : null}
 
         {content.background?.opacity ? (
           <div

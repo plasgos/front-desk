@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import {
   CButton,
   CFormGroup,
@@ -10,18 +9,19 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
+import React, { useEffect, useState } from "react";
 import {
   FaAlignCenter,
   FaAlignJustify,
   FaAlignLeft,
   FaAlignRight,
 } from "react-icons/fa6";
-import { createUniqueID } from "../../../../../lib/unique-id";
-import ColorPicker from "../../common/ColorPicker";
-import { CustomReactQuill } from "../../common/ReactQuill";
 import { useDebounce } from "use-debounce";
+import { createUniqueID } from "../../../../../lib/unique-id";
 import AnimationControl from "../../common/AnimationControl";
 import BackgroundTab from "../../common/BackgroundTab";
+import ColorPicker from "../../common/ColorPicker";
+import { CustomReactQuill } from "../../common/ReactQuill";
 
 const Text = ({
   previewSection,
@@ -130,6 +130,11 @@ const Text = ({
         paddingTop: 0,
         paddingBottom: 0,
         paddingType: "equal",
+        direction: "to right",
+        fromColor: "",
+        toColor: "",
+        isRevert: false,
+        pattern: "",
       },
     };
 

@@ -1,107 +1,132 @@
 import React, { useEffect, useState } from "react";
-import imageDefault from "../../../../../../assets/bg.jpg";
+import imageDefault from "../../../../assets/bg.jpg";
 import { CButton } from "@coreui/react";
-import { backgroundType, PaddingYOptions } from "../../../SelectOptions";
-import SelectOptions from "../../../common/SelectOptions";
-import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
-import ColorPicker from "../../../common/ColorPicker";
-import {
-  directionGradientOptions,
-  gradients,
-  patterns,
-} from "../../../common/BackgroundTab";
-import pattern1 from "../../../../../../assets/pattern/26669.jpg";
-import PatternBox from "../../../common/PatternBox";
-import GradientBox from "../../../common/GradientBox";
-import Checkbox from "../../../common/Checkbox";
+import { backgroundType, PaddingYOptions } from "../SelectOptions";
+import InputRangeWithNumber from "./InputRangeWithNumber";
+import ColorPicker from "./ColorPicker";
+import SelectOptions from "./SelectOptions";
+import Checkbox from "./Checkbox";
+import GradientBox from "./GradientBox";
 
-const BackgroundTabMultiColumnContent = ({
-  currentSection: currentContent,
-  setPreviewSection,
-  type,
-  sectionId,
-  columnId,
-}) => {
+import pattern1 from "../../../../assets/pattern/26669.jpg";
+import pattern2 from "../../../../assets/pattern/5570863.jpg";
+import pattern3 from "../../../../assets/pattern/geometric-blue-line-pattern.jpg";
+import pattern4 from "../../../../assets/pattern/gray_line_drawings_of_organic_shapes_background.jpg";
+import pattern5 from "../../../../assets/pattern/sl_022120_28320_22.jpg";
+import pattern6 from "../../../../assets/pattern/vecteezy_geometric-line-circles-pattern-background-design-perfect_7167520.jpg";
+import PatternBox from "./PatternBox";
+
+const patterns = [
+  { id: "1", img: pattern1 },
+  { id: "2", img: pattern2 },
+  { id: "3", img: pattern3 },
+  { id: "4", img: pattern4 },
+  { id: "5", img: pattern5 },
+  { id: "6", img: pattern6 },
+];
+
+const directionGradientOptions = [
+  { value: "to bottom", label: "Ke Bawah" },
+  { value: "to right", label: "Ke Kanan" },
+  { value: "to right bottom", label: "Ke Kanan Bawah" },
+  { value: "to right top", label: "Ke Kanan Atas" },
+];
+const gradients = [
+  { from: "#FF6F61", to: "#6B5B95" },
+  { from: "#88B04B", to: "#F7CAC9" },
+  { from: "#92A8D1", to: "#81F3FD" },
+  { from: "#FFF176", to: "#66BB6A" },
+  { from: "#98B4D4", to: "#FFDDC1" },
+  { from: "#D4A5A5", to: "#B565A7" },
+  { from: "#DECD63", to: "#FF6F61" },
+  { from: "#2E4057", to: "#FFD662" },
+  { from: "#45B8AC", to: "#EFC050" },
+  { from: "#F5F5F5", to: "#37474F" },
+  { from: "#6B5B95", to: "#BC70A4" },
+  { from: "#92A8D1", to: "#F7CAC9" },
+];
+
+const BackgroundTabUpdate = ({ currentSection, setPreviewSection, type }) => {
   const [selectedBackgroundType, setSelectedBackgroundType] = useState(
-    type === "edit" ? undefined : backgroundType[0]
+    backgroundType[0]
   );
 
-  const [selectedPadding, setSelectedPadding] = useState(
-    type === "edit" ? undefined : PaddingYOptions[0]
-  );
+  const [selectedPadding, setSelectedPadding] = useState(PaddingYOptions[0]);
+
   const [paddingY, setPaddingY] = useState(
-    currentContent.background?.paddingY || 0
+    currentSection.background?.paddingY || 0
   );
   const [paddingTop, setPaddingTop] = useState(
-    currentContent.background?.paddingTop || 0
+    currentSection.background?.paddingTop || 0
   );
   const [paddingBottom, setPaddingBottom] = useState(
-    currentContent.background?.paddingBottom || 0
+    currentSection.background?.paddingBottom || 0
   );
 
   const [selectedBgColor, setSelectedBgColor] = useState(
-    currentContent.background?.bgColor || "#EEEEEE"
+    currentSection.background?.bgColor || "#EEEEEE"
   );
 
   const [imageUrl, setImageUrl] = useState(
-    currentContent.background?.bgImage || imageDefault
+    currentSection.background?.bgImage || imageDefault
   );
-  const [blur, setBlur] = useState(currentContent.background?.blur || 0);
+  const [blur, setBlur] = useState(currentSection.background?.blur || 0);
   const [opacity, setOpacity] = useState(
-    currentContent.background?.opacity || 0
+    currentSection.background?.opacity || 0
   );
 
   const [fromColor, setFromColor] = useState(
-    currentContent?.background?.fromColor || "#FF6F61"
+    currentSection?.background?.fromColor || "#FF6F61"
   );
 
   const [toColor, setToColor] = useState(
-    currentContent?.background?.toColor || "#6B5B95"
+    currentSection?.background?.toColor || "#6B5B95"
   );
 
   const [direction, setDirection] = useState(
     directionGradientOptions.find(
-      (opt) => opt.value === currentContent?.background?.direction
+      (opt) => opt.value === currentSection?.background?.direction
     ) || directionGradientOptions[1]
   );
 
   const [isRevert, setIsRevert] = useState(
-    currentContent?.background?.isRevert || false
+    currentSection?.background?.isRevert || false
   );
 
   const [selectedPattern, setSelectedPattern] = useState(
-    currentContent?.background?.pattern || pattern1
+    currentSection?.background?.pattern || pattern1
   );
 
   useEffect(() => {
     const currentBgTypeOption = backgroundType.find(
-      (opt) => opt.value === currentContent.background?.bgType
+      (opt) => opt.value === currentSection.background?.bgType
     );
     if (currentBgTypeOption) {
       setSelectedBackgroundType(currentBgTypeOption);
     }
 
     const currentPaddingTypeOption = PaddingYOptions.find(
-      (opt) => opt.value === currentContent.background?.paddingType
+      (opt) => opt.value === currentSection.background?.paddingType
     );
 
     if (currentPaddingTypeOption) {
       setSelectedPadding(currentPaddingTypeOption);
     }
 
-    const currentPaddingY = currentContent.background?.paddingY;
+    const currentPaddingY = currentSection.background?.paddingY;
+
     if (currentPaddingY) {
       setPaddingY(currentPaddingY);
     }
 
-    const currentPattern = currentContent.background?.pattern;
+    const currentPattern = currentSection.background?.pattern;
 
     if (currentPattern) {
       setSelectedPattern(currentPattern);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type, backgroundType, PaddingYOptions, currentContent.background]);
+  }, [type, backgroundType, PaddingYOptions, currentSection.background]);
 
   const defaultBgValues = {
     bgType: undefined,
@@ -127,185 +152,102 @@ const BackgroundTabMultiColumnContent = ({
     isRevert: false,
   };
 
-  const handleChangeValueOptions = (key, value) => {
-    if (!value) {
+  const handleChangeValueOptions = (selectedOption, key) => {
+    if (!selectedOption.value) {
       setPreviewSection((arr) =>
-        arr.map((section) => {
-          return String(section.id) === sectionId
+        arr.map((item) =>
+          String(item.id) === currentSection.id
             ? {
-                ...section,
-                column: section.column.map((column) =>
-                  column.id === columnId
-                    ? {
-                        ...column,
-                        content: column.content.map((content) => {
-                          return content.id === currentContent.id
-                            ? {
-                                ...content,
-                                background: defaultBgValues,
-                              }
-                            : content;
-                        }),
-                      }
-                    : column
-                ),
+                ...item,
+                background: defaultBgValues,
               }
-            : section;
-        })
+            : item
+        )
       );
-    } else if (value !== "image") {
+    } else if (selectedOption !== "image") {
       setPreviewSection((arr) =>
-        arr.map((section) => {
-          return String(section.id) === sectionId
+        arr.map((item) =>
+          String(item.id) === currentSection.id
             ? {
-                ...section,
-                column: section.column.map((column) =>
-                  column.id === columnId
-                    ? {
-                        ...column,
-                        content: column.content.map((content) => {
-                          return content.id === currentContent.id
-                            ? {
-                                ...content,
-                                background: {
-                                  ...content.background,
-                                  bgImage: "",
-                                },
-                              }
-                            : content;
-                        }),
-                      }
-                    : column
-                ),
+                ...item,
+                background: {
+                  ...item.background,
+                  bgImage: "",
+                },
               }
-            : section;
-        })
+            : item
+        )
       );
     }
 
     setPreviewSection((arr) =>
-      arr.map((section) => {
-        return String(section.id) === sectionId
+      arr.map((item) =>
+        String(item.id) === currentSection.id
           ? {
-              ...section,
-              column: section.column.map((column) =>
-                column.id === columnId
-                  ? {
-                      ...column,
-                      content: column.content.map((content) => {
-                        return content.id === currentContent.id
-                          ? {
-                              ...content,
-                              background: {
-                                ...content.background,
-                                [key]: value,
-                              },
-                            }
-                          : content;
-                      }),
-                    }
-                  : column
-              ),
+              ...item,
+              background: {
+                ...item.background,
+                [key]: selectedOption.value,
+              },
             }
-          : section;
-      })
+          : item
+      )
     );
   };
 
   const handleChangePaddingOptions = (selectedOption) => {
     setSelectedPadding(selectedOption);
+
     if (selectedOption.value !== "equal") {
       setPaddingY(0);
       setPreviewSection((arr) =>
-        arr.map((section) => {
-          return String(section.id) === sectionId
+        arr.map((item) =>
+          String(item.id) === currentSection.id
             ? {
-                ...section,
-                column: section.column.map((column) =>
-                  column.id === columnId
-                    ? {
-                        ...column,
-                        content: column.content.map((content) => {
-                          return content.id === currentContent.id
-                            ? {
-                                ...content,
-                                background: {
-                                  ...content.background,
-                                  paddingY: 0,
-                                  paddingType: selectedOption.value,
-                                },
-                              }
-                            : content;
-                        }),
-                      }
-                    : column
-                ),
+                ...item,
+                background: {
+                  ...item.background,
+                  paddingY: 0,
+                  paddingType: selectedOption.value,
+                },
               }
-            : section;
-        })
+            : item
+        )
       );
     } else {
       setPaddingTop(0);
       setPaddingBottom(0);
       setPreviewSection((arr) =>
-        arr.map((section) => {
-          return String(section.id) === sectionId
+        arr.map((item) =>
+          String(item.id) === currentSection.id
             ? {
-                ...section,
-                column: section.column.map((column) =>
-                  column.id === columnId
-                    ? {
-                        ...column,
-                        content: column.content.map((content) => {
-                          return content.id === currentContent.id
-                            ? {
-                                ...content,
-                                background: {
-                                  ...content.background,
-                                  paddingTop: 0,
-                                  paddingBottom: 0,
-                                  paddingType: selectedOption.value,
-                                },
-                              }
-                            : content;
-                        }),
-                      }
-                    : column
-                ),
+                ...item,
+                background: {
+                  ...item.background,
+                  paddingTop: 0,
+                  paddingBottom: 0,
+                  paddingType: selectedOption.value,
+                },
               }
-            : section;
-        })
+            : item
+        )
       );
     }
   };
 
   const handleUpdateBackground = (key, value) => {
     setPreviewSection((arr) =>
-      arr.map((section) => {
-        return String(section.id) === sectionId
+      arr.map((item) =>
+        String(item.id) === currentSection.id
           ? {
-              ...section,
-              column: section.column.map((column) =>
-                column.id === columnId
-                  ? {
-                      ...column,
-                      content: column.content.map((content) => {
-                        return content.id === currentContent.id
-                          ? {
-                              ...content,
-                              background: {
-                                ...content.background,
-                                [key]: value,
-                              },
-                            }
-                          : content;
-                      }),
-                    }
-                  : column
-              ),
+              ...item,
+              background: {
+                ...item.background,
+                [key]: value,
+              },
             }
-          : section;
-      })
+          : item
+      )
     );
   };
 
@@ -348,144 +290,87 @@ const BackgroundTabMultiColumnContent = ({
 
     if (selectedBackgroundType?.value === "image") {
       setPreviewSection((arr) =>
-        arr.map((section) => {
-          return String(section.id) === sectionId
+        arr.map((item) =>
+          String(item.id) === currentSection.id
             ? {
-                ...section,
-                column: section.column.map((column) =>
-                  column.id === columnId
-                    ? {
-                        ...column,
-                        content: column.content.map((content) => {
-                          return content.id === currentContent.id
-                            ? {
-                                ...content,
-                                background: {
-                                  ...content.background,
-                                  bgImage: imageUrl,
-                                  bgColor: "",
-                                  ...resetGradient,
-                                  pattern: "",
-                                },
-                              }
-                            : content;
-                        }),
-                      }
-                    : column
-                ),
+                ...item,
+                background: {
+                  ...item.background,
+                  bgImage: imageUrl,
+                  bgColor: "",
+                  ...resetGradient,
+                  pattern: "",
+                },
               }
-            : section;
-        })
+            : item
+        )
       );
     } else if (selectedBackgroundType?.value === "color") {
       setPreviewSection((arr) =>
-        arr.map((section) => {
-          return String(section.id) === sectionId
+        arr.map((item) =>
+          String(item.id) === currentSection.id
             ? {
-                ...section,
-                column: section.column.map((column) =>
-                  column.id === columnId
-                    ? {
-                        ...column,
-                        content: column.content.map((content) => {
-                          return content.id === currentContent.id
-                            ? {
-                                ...content,
-                                background: {
-                                  ...content.background,
-                                  bgImage: "",
-                                  bgColor: selectedBgColor,
-                                  ...resetGradient,
-                                  pattern: "",
-                                },
-                              }
-                            : content;
-                        }),
-                      }
-                    : column
-                ),
+                ...item,
+                background: {
+                  ...item.background,
+                  bgColor: selectedBgColor,
+                  ...resetGradient,
+                  pattern: "",
+                },
               }
-            : section;
-        })
+            : item
+        )
       );
     } else if (selectedBackgroundType?.value === "gradient") {
       setPreviewSection((arr) =>
-        arr.map((section) => {
-          return String(section.id) === sectionId
+        arr.map((item) =>
+          String(item.id) === currentSection.id
             ? {
-                ...section,
-                column: section.column.map((column) =>
-                  column.id === columnId
-                    ? {
-                        ...column,
-                        content: column.content.map((content) => {
-                          return content.id === currentContent.id
-                            ? {
-                                ...content,
-                                background: {
-                                  ...content.background,
-                                  bgColor: "",
-                                  bgImage: "",
-                                  direction: direction.value,
-                                  fromColor,
-                                  toColor,
-                                  isRevert,
-                                  pattern: "",
-                                },
-                              }
-                            : content;
-                        }),
-                      }
-                    : column
-                ),
+                ...item,
+                background: {
+                  ...item.background,
+                  bgColor: "",
+                  bgImage: "",
+                  direction: direction.value,
+                  fromColor,
+                  toColor,
+                  isRevert,
+                  pattern: "",
+                },
               }
-            : section;
-        })
+            : item
+        )
       );
     } else if (selectedBackgroundType?.value === "pattern") {
       setPreviewSection((arr) =>
-        arr.map((section) => {
-          return String(section.id) === sectionId
+        arr.map((item) =>
+          String(item.id) === currentSection.id
             ? {
-                ...section,
-                column: section.column.map((column) =>
-                  column.id === columnId
-                    ? {
-                        ...column,
-                        content: column.content.map((content) => {
-                          return content.id === currentContent.id
-                            ? {
-                                ...content,
-                                background: {
-                                  ...content.background,
-                                  bgColor: "",
-                                  bgImage: "",
-                                  ...resetGradient,
-                                  pattern: selectedPattern,
-                                },
-                              }
-                            : content;
-                        }),
-                      }
-                    : column
-                ),
+                ...item,
+                background: {
+                  ...item.background,
+                  bgColor: "",
+                  bgImage: "",
+                  ...resetGradient,
+                  pattern: selectedPattern,
+                },
               }
-            : section;
-        })
+            : item
+        )
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl, selectedBackgroundType, selectedBgColor]);
 
   return (
-    <div className="pb-4">
+    <div className="pb-3">
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
         <SelectOptions
           label="Tipe Background"
           options={backgroundType}
           onChange={(selectedOption) => {
+            handleChangeValueOptions(selectedOption, "bgType");
             setSelectedBackgroundType(selectedOption);
-            handleChangeValueOptions("bgType", selectedOption.value);
           }}
           value={selectedBackgroundType}
           width="50"
@@ -494,10 +379,7 @@ const BackgroundTabMultiColumnContent = ({
         <SelectOptions
           label="Pengisi Atas dan Bawah"
           options={PaddingYOptions}
-          onChange={(selectedOption) => {
-            setSelectedPadding(selectedOption);
-            handleChangePaddingOptions(selectedOption);
-          }}
+          onChange={handleChangePaddingOptions}
           value={selectedPadding}
           width="50"
         />
@@ -748,4 +630,4 @@ const BackgroundTabMultiColumnContent = ({
   );
 };
 
-export default BackgroundTabMultiColumnContent;
+export default BackgroundTabUpdate;

@@ -156,6 +156,11 @@ const ImageText = ({
         paddingTop: 0,
         paddingBottom: 0,
         paddingType: "equal",
+        direction: "to right",
+        fromColor: "",
+        toColor: "",
+        isRevert: false,
+        pattern: "",
       },
       variant: {
         id: "1",

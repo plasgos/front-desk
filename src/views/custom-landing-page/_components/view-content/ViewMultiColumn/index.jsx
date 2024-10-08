@@ -57,7 +57,13 @@ const ViewMultiColumn = forwardRef(
             "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20 "
           } `}
         >
-          <div style={stylesBg.backgroundImgStyle}></div>
+          {content?.background?.bgImage ? (
+            <div style={stylesBg.backgroundImgStyle}></div>
+          ) : content?.background?.bgType === "gradient" ? (
+            <div style={stylesBg.gradientStyle}></div>
+          ) : content?.background?.bgType === "pattern" ? (
+            <div style={stylesBg.backgroundPatternStyle}></div>
+          ) : null}
 
           {content.background?.opacity ? (
             <div
@@ -103,6 +109,43 @@ const ViewMultiColumn = forwardRef(
 
             const calculateOpacity = column.background?.opacity / 100;
 
+            const gradientStyle = {
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              overflow: "hidden",
+              zIndex: -1,
+              backgroundImage: `linear-gradient(${
+                column.background?.direction
+              }, ${
+                column.background?.isRevert
+                  ? column.background?.toColor
+                  : column.background?.fromColor
+              }, ${
+                column.background?.isRevert
+                  ? column.background?.fromColor
+                  : column.background?.toColor
+              })`,
+            };
+
+            const backgroundPatternStyle = {
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundImage: column.background?.pattern
+                ? `url(${column.background.pattern})`
+                : "",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              zIndex: -1,
+              overflow: "hidden",
+            };
+
             return (
               <div
                 ref={(el) => setColumnRef(el, columnIndex)}
@@ -136,6 +179,14 @@ const ViewMultiColumn = forwardRef(
                   className="tw-flex tw-flex-col "
                 >
                   <div style={backgroundImgStyle}></div>
+
+                  {column?.background?.bgImage ? (
+                    <div style={backgroundImgStyle}></div>
+                  ) : column?.background?.bgType === "gradient" ? (
+                    <div style={gradientStyle}></div>
+                  ) : column?.background?.bgType === "pattern" ? (
+                    <div style={backgroundPatternStyle}></div>
+                  ) : null}
 
                   {column.background?.opacity ? (
                     <div

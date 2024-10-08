@@ -519,3 +519,12 @@ div.horizontal-scrolling-menu::-webkit-scrollbar-thumb:hover {
   bottom: -6px; /* Posisi panah di bawah tooltip */
   right: 10px; /* Posisi panah di sisi kanan */
 }
+
+.gradient-box {
+  cursor: pointer;
+}
+
+.gradient-box:hover {
+  transform: scale(1.1); /* Membuat elemen membesar saat di-hover */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Menambah bayangan yang lebih besar saat hover */
+}

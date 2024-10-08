@@ -30,7 +30,13 @@ const ViewText = forwardRef(
           "animate__animated  animate__headShake animate__fast tw-bg-green-300/20"
         } `}
       >
-        <div style={stylesBg.backgroundImgStyle}></div>
+        {section?.background?.bgImage ? (
+          <div style={stylesBg.backgroundImgStyle}></div>
+        ) : section?.background?.bgType === "gradient" ? (
+          <div style={stylesBg.gradientStyle}></div>
+        ) : section?.background?.bgType === "pattern" ? (
+          <div style={stylesBg.backgroundPatternStyle}></div>
+        ) : null}
 
         {section.background?.opacity ? (
           <div

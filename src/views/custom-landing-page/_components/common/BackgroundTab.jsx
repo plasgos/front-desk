@@ -5,6 +5,46 @@ import { backgroundType, PaddingYOptions } from "../SelectOptions";
 import InputRangeWithNumber from "./InputRangeWithNumber";
 import ColorPicker from "./ColorPicker";
 import SelectOptions from "./SelectOptions";
+import Checkbox from "./Checkbox";
+import GradientBox from "./GradientBox";
+
+import pattern1 from "../../../../assets/pattern/26669.jpg";
+import pattern2 from "../../../../assets/pattern/5570863.jpg";
+import pattern3 from "../../../../assets/pattern/geometric-blue-line-pattern.jpg";
+import pattern4 from "../../../../assets/pattern/gray_line_drawings_of_organic_shapes_background.jpg";
+import pattern5 from "../../../../assets/pattern/sl_022120_28320_22.jpg";
+import pattern6 from "../../../../assets/pattern/vecteezy_geometric-line-circles-pattern-background-design-perfect_7167520.jpg";
+import PatternBox from "./PatternBox";
+
+export const patterns = [
+  { id: "1", img: pattern1 },
+  { id: "2", img: pattern2 },
+  { id: "3", img: pattern3 },
+  { id: "4", img: pattern4 },
+  { id: "5", img: pattern5 },
+  { id: "6", img: pattern6 },
+];
+
+export const directionGradientOptions = [
+  { value: "to bottom", label: "Ke Bawah" },
+  { value: "to right", label: "Ke Kanan" },
+  { value: "to right bottom", label: "Ke Kanan Bawah" },
+  { value: "to right top", label: "Ke Kanan Atas" },
+];
+export const gradients = [
+  { from: "#FF6F61", to: "#6B5B95" },
+  { from: "#88B04B", to: "#F7CAC9" },
+  { from: "#92A8D1", to: "#81F3FD" },
+  { from: "#FFF176", to: "#66BB6A" },
+  { from: "#98B4D4", to: "#FFDDC1" },
+  { from: "#D4A5A5", to: "#B565A7" },
+  { from: "#DECD63", to: "#FF6F61" },
+  { from: "#2E4057", to: "#FFD662" },
+  { from: "#45B8AC", to: "#EFC050" },
+  { from: "#F5F5F5", to: "#37474F" },
+  { from: "#6B5B95", to: "#BC70A4" },
+  { from: "#92A8D1", to: "#F7CAC9" },
+];
 
 const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
   const [selectedBackgroundType, setSelectedBackgroundType] = useState(
@@ -35,6 +75,28 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
     currentSection.background?.opacity || 0
   );
 
+  const [fromColor, setFromColor] = useState(
+    currentSection?.background?.fromColor || "#FF6F61"
+  );
+
+  const [toColor, setToColor] = useState(
+    currentSection?.background?.toColor || "#6B5B95"
+  );
+
+  const [direction, setDirection] = useState(
+    directionGradientOptions.find(
+      (opt) => opt.value === currentSection?.background?.direction
+    ) || directionGradientOptions[1]
+  );
+
+  const [isRevert, setIsRevert] = useState(
+    currentSection?.background?.isRevert || false
+  );
+
+  const [selectedPattern, setSelectedPattern] = useState(
+    currentSection?.background?.pattern || pattern1
+  );
+
   useEffect(() => {
     const currentBgTypeOption = backgroundType.find(
       (opt) => opt.value === currentSection.background?.bgType
@@ -57,6 +119,12 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
       setPaddingY(currentPaddingY);
     }
 
+    const currentPattern = currentSection.background?.pattern;
+
+    if (currentPattern) {
+      setSelectedPattern(currentPattern);
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, backgroundType, PaddingYOptions, currentSection.background]);
 
@@ -70,6 +138,18 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
     paddingTop: 0,
     paddingBottom: 0,
     paddingType: "equal",
+    direction: "",
+    fromColor: "",
+    toColor: "",
+    isRevert: false,
+    pattern: "",
+  };
+
+  const resetGradient = {
+    direction: "",
+    fromColor: "",
+    toColor: "",
+    isRevert: false,
   };
 
   const handleChangeValueOptions = (selectedOption, key) => {
@@ -115,23 +195,6 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
     );
   };
 
-  const handleChangeBgColor = (color) => {
-    setSelectedBgColor(color);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              background: {
-                ...item.background,
-                bgColor: color,
-              },
-            }
-          : item
-      )
-    );
-  };
-
   const handleChangePaddingOptions = (selectedOption) => {
     setSelectedPadding(selectedOption);
 
@@ -144,7 +207,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
                 ...item,
                 background: {
                   ...item.background,
-                  paddingY,
+                  paddingY: 0,
                   paddingType: selectedOption.value,
                 },
               }
@@ -235,6 +298,8 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
                   ...item.background,
                   bgImage: imageUrl,
                   bgColor: "",
+                  ...resetGradient,
+                  pattern: "",
                 },
               }
             : item
@@ -249,6 +314,45 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
                 background: {
                   ...item.background,
                   bgColor: selectedBgColor,
+                  ...resetGradient,
+                  pattern: "",
+                },
+              }
+            : item
+        )
+      );
+    } else if (selectedBackgroundType?.value === "gradient") {
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === currentSection.id
+            ? {
+                ...item,
+                background: {
+                  ...item.background,
+                  bgColor: "",
+                  bgImage: "",
+                  direction: direction.value,
+                  fromColor,
+                  toColor,
+                  isRevert,
+                  pattern: "",
+                },
+              }
+            : item
+        )
+      );
+    } else if (selectedBackgroundType?.value === "pattern") {
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === currentSection.id
+            ? {
+                ...item,
+                background: {
+                  ...item.background,
+                  bgColor: "",
+                  bgImage: "",
+                  ...resetGradient,
+                  pattern: selectedPattern,
                 },
               }
             : item
@@ -336,7 +440,10 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
           <ColorPicker
             initialColor={selectedBgColor}
             label="Warna"
-            onChange={handleChangeBgColor}
+            onChange={(color) => {
+              setSelectedBgColor(color);
+              handleUpdateBackground("bgColor", color);
+            }}
             top={"0"}
             right={"34px"}
             type="rgba"
@@ -398,6 +505,126 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
             }
           />
         </>
+      )}
+
+      {selectedBackgroundType?.value === "gradient" && (
+        <>
+          <div style={{ gap: 10 }} className="d-flex align-items-center mb-2">
+            <ColorPicker
+              initialColor={fromColor}
+              label="Warna 1"
+              onChange={(color) => {
+                setFromColor(color);
+                handleUpdateBackground("fromColor", color);
+              }}
+              top={"0"}
+              right={"34px"}
+              type="rgba"
+            />
+
+            <ColorPicker
+              initialColor={toColor}
+              label="Warna 2"
+              onChange={(color) => {
+                setToColor(color);
+                handleUpdateBackground("toColor", color);
+              }}
+              top={"0"}
+              right={"34px"}
+              type="rgba"
+            />
+          </div>
+
+          <div style={{ gap: 10 }} className="d-flex align-items-center mb-2">
+            <SelectOptions
+              label="Arah"
+              options={directionGradientOptions}
+              onChange={(selectedOption) => {
+                setDirection(selectedOption);
+                handleUpdateBackground("direction", selectedOption.value);
+              }}
+              value={direction}
+              width="50"
+            />
+
+            <Checkbox
+              id="isRevert"
+              label="Terbalik"
+              checked={isRevert}
+              onChange={(e) => {
+                const { checked } = e.target;
+                setIsRevert(checked);
+                handleUpdateBackground("isRevert", checked);
+              }}
+            />
+          </div>
+
+          <div
+            style={{ gap: 10 }}
+            className="d-flex align-items-center mb-5 flex-wrap"
+          >
+            {gradients.map((gradient, index) => {
+              const handleClick = () => {
+                setFromColor(gradient.from);
+                handleUpdateBackground("fromColor", gradient.from);
+                setToColor(gradient.to);
+                handleUpdateBackground("toColor", gradient.to);
+              };
+
+              const isSelected =
+                gradient.from === fromColor && gradient.to === toColor;
+
+              return (
+                <div
+                  key={index}
+                  style={{
+                    flex: "1 1 calc(25% - 10px)",
+                    maxWidth: "calc(25% - 10px)",
+                  }}
+                >
+                  <GradientBox
+                    isSelected={isSelected}
+                    onClick={handleClick}
+                    key={index}
+                    fromColor={gradient.from}
+                    toColor={gradient.to}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
+
+      {selectedBackgroundType?.value === "pattern" && (
+        <div
+          style={{ gap: 10 }}
+          className="d-flex align-items-center mb-5 flex-wrap px-1"
+        >
+          {patterns.map((pattern) => {
+            const handleSelectPattern = () => {
+              setSelectedPattern(pattern.img);
+              handleUpdateBackground("pattern", pattern.img);
+            };
+
+            const isSelected = pattern.img === selectedPattern;
+
+            return (
+              <div
+                style={{
+                  flex: "1 1 calc(50% - 10px)",
+                  maxWidth: "calc(50% - 10px)",
+                }}
+              >
+                <PatternBox
+                  img={pattern.img}
+                  isSelected={isSelected}
+                  onClick={handleSelectPattern}
+                />
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );

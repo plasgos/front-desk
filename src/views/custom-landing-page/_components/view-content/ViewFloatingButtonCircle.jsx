@@ -79,7 +79,13 @@ const ViewFloatingButtonCircle = forwardRef(
         }}
         className={`  tw-p-1 tw-flex tw-flex-col tw-items-center  `}
       >
-        <div style={stylesBg.backgroundImgStyle}></div>
+        {content?.background?.bgImage ? (
+          <div style={stylesBg.backgroundImgStyle}></div>
+        ) : content?.background?.bgType === "gradient" ? (
+          <div style={stylesBg.gradientStyle}></div>
+        ) : content?.background?.bgType === "pattern" ? (
+          <div style={stylesBg.backgroundPatternStyle}></div>
+        ) : null}
 
         {content.background?.opacity ? (
           <div

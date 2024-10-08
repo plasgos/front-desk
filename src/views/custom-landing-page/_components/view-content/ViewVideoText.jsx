@@ -43,7 +43,13 @@ const ViewVideoText = forwardRef(
         }}
         className=" tw-flex tw-flex-row tw-flex-wrap  tw-items-center  tw-px-3 "
       >
-        <div style={stylesBg.backgroundImgStyle}></div>
+        {content?.background?.bgImage ? (
+          <div style={stylesBg.backgroundImgStyle}></div>
+        ) : content?.background?.bgType === "gradient" ? (
+          <div style={stylesBg.gradientStyle}></div>
+        ) : content?.background?.bgType === "pattern" ? (
+          <div style={stylesBg.backgroundPatternStyle}></div>
+        ) : null}
 
         {content.background?.opacity ? (
           <div

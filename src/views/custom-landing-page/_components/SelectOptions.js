@@ -71,6 +71,8 @@ export const backgroundType = [
   { value: undefined, label: "Tidak Ada" },
   { value: "color", label: "Warna" },
   { value: "image", label: "Gambar" },
+  { value: "gradient", label: "Gradasi" },
+  { value: "pattern", label: "Pola" },
 ];
 
 export const widthPageOptions = [
