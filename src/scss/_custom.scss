@@ -528,3 +528,35 @@ div.horizontal-scrolling-menu::-webkit-scrollbar-thumb:hover {
   transform: scale(1.1); /* Membuat elemen membesar saat di-hover */
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Menambah bayangan yang lebih besar saat hover */
 }
+
+.SingleDatePickerInput__withBorder {
+  border: 0;
+  border-radius: 10px;
+}
+
+// .DateInput {
+
+// }
+
+.DateInput_input {
+  border-radius: 10px !important; /* Border-radius untuk input */
+  padding: 10px; /* Padding untuk tampilan yang lebih baik */
+  font-size: 14px; /* Ukuran font lebih kecil */
+  border: 1px solid #ccc; /* Border standar */
+  width: 100%; /* Pastikan input sesuai dengan container */
+  font-size: 12;
+}
+
+/* Memperkecil ukuran kalender (DayPicker) */
+.DayPicker {
+  transform: scale(0.7); /* Mengurangi ukuran kalender */
+  transform-origin: top left; /* Memastikan skala dimulai dari kiri atas */
+}
+
+/* Memastikan tampilan floating dan mengatur z-index */
+.SingleDatePicker_picker {
+  position: absolute;
+  z-index: 999; /* Memastikan tampil di atas elemen lain */
+  top: 100%; /* Mengatur posisi di bawah input */
+  left: 0;
+}

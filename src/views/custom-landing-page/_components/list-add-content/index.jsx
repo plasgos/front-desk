@@ -23,6 +23,7 @@ import Text from "./text/index";
 import Video from "./video";
 import VideoText from "./video-text";
 import FormActivity from "./form-activity";
+import CountDown from "./countdown";
 
 const ListContent = ({
   previewSection,
@@ -281,6 +282,14 @@ const ListContent = ({
 
       {addContent === "form-activity" && (
         <FormActivity
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
+      {addContent === "countdown" && (
+        <CountDown
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}

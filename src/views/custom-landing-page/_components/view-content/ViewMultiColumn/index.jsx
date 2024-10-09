@@ -18,6 +18,7 @@ import ViewText from "../ViewText";
 import ViewVideo from "../ViewVideo";
 import ViewVideoText from "../ViewVideoText";
 import ViewCallToAction from "../ViewCallToAction";
+import ViewFormActivity from "../ViewFormActivity";
 
 const ViewMultiColumn = forwardRef(
   (
@@ -327,6 +328,13 @@ const ViewMultiColumn = forwardRef(
 
                         {contentItem.name === "call-to-action" && (
                           <ViewCallToAction
+                            content={contentItem}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {contentItem.name === "form-activity" && (
+                          <ViewFormActivity
                             content={contentItem}
                             isResizing={isResizing}
                           />

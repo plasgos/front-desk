@@ -27,6 +27,7 @@ const SelectOptions = ({
   getOptionValue,
   placeholder,
   isOptionDisabled,
+  isDisabled,
 }) => {
   return (
     <div style={{ marginBottom: 16 }} className={`w-${width} `}>
@@ -55,6 +56,7 @@ const SelectOptions = ({
         menuPlacement={positionShown ? positionShown : "auto"}
         getOptionLabel={getOptionLabel}
         getOptionValue={getOptionValue}
+        isDisabled={isDisabled}
       />
     </div>
   );

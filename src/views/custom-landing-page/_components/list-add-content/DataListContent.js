@@ -15,7 +15,7 @@ import {
   PiVideoLight,
   PiVideoThin,
 } from "react-icons/pi";
-import { RxButton, RxSwitch } from "react-icons/rx";
+import { RxButton, RxSwitch, RxTimer } from "react-icons/rx";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 import { PiColumnsPlusRightThin } from "react-icons/pi";
 import { AiOutlineUserSwitch } from "react-icons/ai";
@@ -191,6 +191,12 @@ export const dataListContent = [
         title: "Scroll Target",
         icon: <PiTargetDuotone style={{ marginRight: 5 }} size={24} />,
         action: (setAddContent) => setAddContent("scroll-target"),
+      },
+      {
+        name: "countdown",
+        title: "Countdown",
+        icon: <RxTimer style={{ marginRight: 5 }} size={24} />,
+        action: (setAddContent) => setAddContent("countdown"),
       },
     ],
   },

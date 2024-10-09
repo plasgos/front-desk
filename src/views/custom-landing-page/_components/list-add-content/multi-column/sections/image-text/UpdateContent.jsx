@@ -90,37 +90,6 @@ const UpdateContent = ({
       key,
       value
     );
-
-    // setPreviewSection((arr) =>
-    //   arr.map((section) =>
-    //     section.id === sectionId
-    //       ? {
-    //           ...section,
-    //           column: section.column.map((column) =>
-    //             column.id === columnId
-    //               ? {
-    //                   ...column,
-    //                   content: column.content.map((content) =>
-    //                     content.id === currentSection.id
-    //                       ? {
-    //                           ...content,
-    //                           variant: {
-    //                             ...content.variant,
-    //                             style: {
-    //                               ...content.variant.style,
-    //                               [key]: value,
-    //                             },
-    //                           },
-    //                         }
-    //                       : content
-    //                   ),
-    //                 }
-    //               : column
-    //           ),
-    //         }
-    //       : section
-    //   )
-    // );
   };
 
   return (

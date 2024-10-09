@@ -16,6 +16,7 @@ import FormCheckout from "../sections/form-checkout";
 import Video from "../sections/video";
 import VideoText from "../sections/video-text";
 import CallToAction from "../sections/call-to-action";
+import FormActivity from "../sections/form-activity";
 
 export function useRenderEditSection({
   previewSection,
@@ -348,6 +349,24 @@ export function useRenderEditSection({
                 ) {
                   return (
                     <CallToAction
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "form-activity" &&
+                  content.name === "form-activity" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <FormActivity
                       key={content.id}
                       currentSection={content}
                       previewSection={previewSection}

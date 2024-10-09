@@ -71,6 +71,7 @@ import FloatingButtonCircle from "./_components/list-add-content/floating-button
 import ViewFloatingButtonCircle from "./_components/view-content/ViewFloatingButtonCircle";
 import FormActivity from "./_components/list-add-content/form-activity";
 import ViewFormActivity from "./_components/view-content/ViewFormActivity";
+import ViewCountDown from "./_components/view-content/ViewCountdown";
 
 const landingPage = {
   detail: {
@@ -528,6 +529,19 @@ const CustomLandingPage = () => {
       if (section.name === "form-activity") {
         return (
           <ViewFormActivity
+            containerRef={containerRef}
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, index)}
+            isFocused={focusedIndex === index}
+          />
+        );
+      }
+
+      if (section.name === "countdown") {
+        return (
+          <ViewCountDown
             containerRef={containerRef}
             isDragging={isDragging && section.id === id}
             content={section}

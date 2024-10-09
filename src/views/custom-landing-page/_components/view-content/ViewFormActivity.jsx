@@ -99,7 +99,7 @@ const ViewFormActivity = forwardRef(
             <>
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div
-                  style={{ width: "80%" }}
+                  style={{ width: "100%" }}
                   className="tw-relative tw-inline-block"
                 >
                   <Controller
@@ -154,7 +154,7 @@ const ViewFormActivity = forwardRef(
                 </div>
 
                 <div
-                  style={{ width: "80%" }}
+                  style={{ width: "100%" }}
                   className="tw-relative tw-inline-block"
                 >
                   <Controller
@@ -205,7 +205,7 @@ const ViewFormActivity = forwardRef(
                   onClick={handleSubmit(onSubmit)}
                   disabled={collected}
                   style={{
-                    width: "80%",
+                    width: "100%",
                     backgroundColor: collected
                       ? "#d9d9d9"
                       : content?.content?.btnColor,
