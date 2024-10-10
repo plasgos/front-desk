@@ -15,7 +15,7 @@ const textShadowOptions = [
 ];
 
 const Finish = ({ setPreviewSection, currentSection }) => {
-  const initialIsFinished = currentSection?.finish?.isFinish;
+  const initialIsFinished = currentSection?.finish?.isFinished;
 
   const {
     text,
@@ -106,7 +106,7 @@ const Finish = ({ setPreviewSection, currentSection }) => {
             onClick={() => {
               setIsCountDown(true);
               setIsFinished(false);
-              handleChangeTitle("isFinish", false);
+              handleChangeTitle("isFinished", false);
             }}
             color="primary"
             variant={isCountDown ? "" : "outline"}
@@ -117,7 +117,7 @@ const Finish = ({ setPreviewSection, currentSection }) => {
             onClick={() => {
               setIsFinished(true);
               setIsCountDown(false);
-              handleChangeTitle("isFinish", true);
+              handleChangeTitle("isFinished", true);
             }}
             color="primary"
             variant={isFinished ? "" : "outline"}

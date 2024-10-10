@@ -15,6 +15,7 @@ import BackgroundTab from "../../common/BackgroundTab";
 import SelectVariant from "../../common/SelectVariant";
 import Finish from "./finish,";
 import UpdateContent from "./UpdateContent";
+import moment from "moment";
 
 const optionVariant = [
   {
@@ -105,6 +106,11 @@ const CountDown = ({
   }, [previewSection, setting.id]);
 
   const handleAddContent = () => {
+    const date = moment().add(7, "days");
+    const now = moment(); // Tanggal saat ini
+    const differenceInSeconds = date.diff(now, "seconds");
+    const differenceInDays = Math.floor(differenceInSeconds / (24 * 3600));
+
     let uniqueId = createUniqueID(previewSection);
     let payload = {
       id: uniqueId,
@@ -112,15 +118,24 @@ const CountDown = ({
       title: "Countdown",
       content: {
         typeTarget: "date",
-        days: 595043,
-        hours: 28800,
-        minutes: 600,
+        days: differenceInDays,
+        hours: 8,
+        minutes: 10,
         seconds: 0,
         size: 10,
+        duration: {
+          hours: 2,
+          minutes: 30,
+          daysColor: "#7E2E84",
+          hoursColor: "#D14081",
+          minutesColor: "#EF798A",
+          secondsColor: "#218380",
+        },
       },
       finish: {
-        isFinish: false,
+        isFinished: false,
         text: "<p>Sudah Selesai</p>",
+        textColor: "#00000",
         textAlign: "tw-text-center",
         textShadow: undefined,
         fontSize: "tw-text-base",

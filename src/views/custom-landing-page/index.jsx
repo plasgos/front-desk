@@ -71,7 +71,8 @@ import FloatingButtonCircle from "./_components/list-add-content/floating-button
 import ViewFloatingButtonCircle from "./_components/view-content/ViewFloatingButtonCircle";
 import FormActivity from "./_components/list-add-content/form-activity";
 import ViewFormActivity from "./_components/view-content/ViewFormActivity";
-import ViewCountDown from "./_components/view-content/ViewCountdown";
+import ViewCountDown from "./_components/view-content/ViewCountdown/index";
+import CountDown from "./_components/list-add-content/countdown";
 
 const landingPage = {
   detail: {
@@ -925,6 +926,23 @@ const CustomLandingPage = () => {
       ) {
         return (
           <FormActivity
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "countdown" &&
+        section.name === "countdown" &&
+        editing.id === section.id
+      ) {
+        return (
+          <CountDown
             currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
