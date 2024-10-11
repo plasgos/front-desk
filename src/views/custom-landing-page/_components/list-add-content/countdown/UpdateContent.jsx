@@ -140,15 +140,23 @@ const UpdateContent = ({
   //   }
   // }, [currentSection, date, handelUpdateContent]);
 
+  // const differenceInDays = newDate.diff(now, "days"); // Mendapatkan selisih hari
   const handleDateChange = (newDate) => {
     setDate(newDate);
 
     const now = moment(); // Tanggal saat ini
-    const differenceInSeconds = newDate.diff(now, "seconds");
 
-    const differenceInDays = Math.floor(differenceInSeconds / (24 * 3600));
+    // const selectedDate = newDate.date();
 
-    handelUpdateContent("days", differenceInDays);
+    const selectedDay = newDate.date(); // Hari
+    const selectedMonth = newDate.month() + 1; // Bulan (0-indexed)
+    const selectedYear = newDate.year(); // Tahun
+
+    handelUpdateContent("days", {
+      date: selectedDay,
+      month: selectedMonth,
+      years: selectedYear,
+    });
     handelUpdateContent("date", newDate);
   };
 

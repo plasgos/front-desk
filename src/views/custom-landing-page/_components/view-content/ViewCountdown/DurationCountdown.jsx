@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CountdownCircleTimer } from "react-countdown-circle-timer";
 
 const minuteSeconds = 60;
@@ -25,27 +25,71 @@ const DurationCountdown = ({ content }) => {
   const daysDuration =
     daySeconds + hours * hourSeconds + minutes * minuteSeconds;
 
+  // Menghitung ulang remaining time saat props berubah
+
   const timerProps = {
     isPlaying: true,
     size: content?.content?.size * 10,
     strokeWidth: 6,
   };
 
+  useEffect(() => {
+    if (hours === 0) {
+      setIsFinishedCount((prev) => ({ ...prev, hours: true }));
+    } else {
+      setIsFinishedCount((prev) => ({ ...prev, hours: false }));
+    }
+  }, [hours]);
+
   const renderTime = (dimension, time) => {
+    let label;
+    switch (dimension) {
+      case "days":
+        label = "Hari";
+        break;
+      case "hours":
+        label = "Jam";
+        break;
+      case "minutes":
+        label = "Menit";
+        break;
+      case "seconds":
+        label = "Detik";
+        break;
+      default:
+        label = dimension; // Jika dimension tidak dikenal, tampilkan nama aslinya
+        break;
+    }
     return (
       <div className="tw-flex tw-flex-col tw-items-center">
         <div style={{ fontSize: 32 }} className="tw-font-semibold">
           {time}
         </div>
-        <div>{dimension}</div>
+        <div>{label}</div>
       </div>
     );
   };
 
+  const [isFinishedCount, setIsFinishedCount] = useState({
+    days: true,
+    hours: false,
+    minutes: false,
+    seconds: false,
+  });
+
+  console.log("🚀 ~ DurationCountdown ~ isFinishedCount:", isFinishedCount);
+  const allFinished = Object.values(isFinishedCount).every(
+    (status) => status === true
+  );
+  console.log("🚀 ~ DurationCountdown ~ allFinished:", allFinished);
+
   return (
     <>
       <div
-        style={{ display: isFinished || remainingTime <= 0 ? "" : "none" }}
+        style={{
+          display:
+            isFinished || remainingTime <= 0 || allFinished ? "" : "none",
+        }}
         className="tw-flex tw-flex-1 tw-justify-center tw-items-center  tw-font-semibold tw-text-lg"
       >
         <div
@@ -60,12 +104,16 @@ const DurationCountdown = ({ content }) => {
       </div>
 
       <div
-        style={{ display: isFinished || remainingTime <= 0 ? "none" : "" }}
+        style={{
+          display:
+            isFinished || remainingTime <= 0 || allFinished ? "none" : "",
+        }}
         className="tw-flex tw-flex-wrap tw-justify-center tw-items-center tw-gap-3"
       >
         <>
-          {hours > 24 && (
+          {hours >= 24 && (
             <CountdownCircleTimer
+              key={`days-${hours}-${minutes}`}
               {...timerProps}
               colors={daysColor}
               duration={daysDuration}
@@ -84,9 +132,13 @@ const DurationCountdown = ({ content }) => {
             colors={hoursColor}
             duration={daySeconds}
             initialRemainingTime={remainingTime % daySeconds}
-            onComplete={(totalElapsedTime) => ({
-              shouldRepeat: remainingTime - totalElapsedTime > hourSeconds,
-            })}
+            onComplete={(totalElapsedTime) => {
+              const finish = remainingTime - totalElapsedTime <= hourSeconds;
+              if (finish) {
+                setIsFinishedCount((prev) => ({ ...prev, hours: true })); // Set status selesai untuk jam
+              }
+              return { shouldRepeat: !finish }; // Jangan ulang jika sudah selesai
+            }}
           >
             {({ elapsedTime, color }) => (
               <span style={{ color }}>
@@ -100,9 +152,13 @@ const DurationCountdown = ({ content }) => {
             colors={minutesColor}
             duration={hourSeconds}
             initialRemainingTime={remainingTime % hourSeconds}
-            onComplete={(totalElapsedTime) => ({
-              shouldRepeat: remainingTime - totalElapsedTime > minuteSeconds,
-            })}
+            onComplete={(totalElapsedTime) => {
+              const finish = remainingTime - totalElapsedTime <= minuteSeconds;
+              if (finish) {
+                setIsFinishedCount((prev) => ({ ...prev, minutes: true })); // Set status selesai untuk menit
+              }
+              return { shouldRepeat: !finish }; // Jangan ulang jika sudah selesai
+            }}
           >
             {({ elapsedTime, color }) => (
               <span style={{ color }}>
@@ -119,13 +175,15 @@ const DurationCountdown = ({ content }) => {
             colors={secondsColor}
             duration={minuteSeconds}
             initialRemainingTime={remainingTime % minuteSeconds}
-            onComplete={(totalElapsedTime) => ({
-              shouldRepeat: remainingTime - totalElapsedTime > 0,
-            })}
+            onComplete={(totalElapsedTime) => {
+              const finish = remainingTime - totalElapsedTime <= 0; // Cek apakah waktu sudah habis
+              if (finish) {
+                setIsFinishedCount((prev) => ({ ...prev, seconds: true })); // Set status selesai untuk detik
+              }
+              return { shouldRepeat: !finish }; // Jangan ulang jika sudah selesai
+            }}
           >
             {({ elapsedTime, color }) => {
-              // Update elapsedSeconds setiap kali timer berjalan
-
               return (
                 <span style={{ color }}>
                   {renderTime("seconds", getTimeSeconds(elapsedTime))}
