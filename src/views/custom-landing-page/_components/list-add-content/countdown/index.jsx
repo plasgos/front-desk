@@ -36,47 +36,21 @@ const flattenedOptions = optionVariant.flatMap((group) =>
 );
 
 //styles template
-
-const pageLeft = {
-  imagePosition: "left",
+const basicStyle = {
+  daysColor: "#000000",
+  hoursColor: "#000000",
+  minutesColor: "#000000",
+  secondsColor: "#000000",
+  size: 18,
+  dividerColor: "#000000",
 };
 
-const pageRight = {
-  imagePosition: "right",
-};
-
-const frostyLight = {
-  backgroundColor: "#FFF5F5",
-  borderColor: "#CBCACA",
-  contentPosition: "tw-justify-start",
-  paddingY: 40,
-  blur: 0,
-  widthContent: 380,
-  roundedContent: 8,
-  paddingContentY: 10,
-  paddingContentX: 10,
-  borderWidth: 1,
-  rotationContent: "",
-  textShadow: undefined,
-  fontSize: "tw-text-sm",
-  textColor: "#151414",
-  textAlign: "tw-text-right",
-};
-
-const frostyDark = {
-  ...frostyLight,
-  textAlign: "tw-text-left",
-  textColor: "#ffffff",
-  backgroundColor: "#000000",
-  contentPosition: "tw-justify-end",
-};
-
-const frostyWarm = {
-  ...frostyLight,
-  textAlign: "tw-text-center",
-  textColor: "#000000",
-  backgroundColor: "#FFCC80",
-  contentPosition: "tw-justify-center",
+const circleStyle = {
+  daysColor: "#7E2E84",
+  hoursColor: "#D14081",
+  minutesColor: "#EF798A",
+  secondsColor: "#218380",
+  size: 20,
 };
 
 const CountDown = ({
@@ -91,7 +65,7 @@ const CountDown = ({
   const [selectedVariant, setSelectedVariant] = useState(
     flattenedOptions.find(
       (option) => option.id === currentSection?.variant?.id
-    ) || flattenedOptions[0]
+    ) || flattenedOptions[1]
   );
   const [setting, setSetting] = useState({});
   const [currentVariant, setCurrentVariant] = useState({});
@@ -106,10 +80,12 @@ const CountDown = ({
   }, [previewSection, setting.id]);
 
   const handleAddContent = () => {
-    const date = moment().add(7, "days");
-    const now = moment(); // Tanggal saat ini
-    const differenceInSeconds = date.diff(now, "seconds");
-    const differenceInDays = Math.floor(differenceInSeconds / (24 * 3600));
+    const today = moment();
+    const futureDate = today.clone().add(7, "days"); // Duplikasi untuk menghindari mutasi
+
+    const date = futureDate.date(); // Tanggal
+    const month = futureDate.month() + 1; // Bulan (0-indexed, jadi tambahkan 1)
+    const years = futureDate.year(); // Tahun
 
     let uniqueId = createUniqueID(previewSection);
     let payload = {
@@ -118,25 +94,24 @@ const CountDown = ({
       title: "Countdown",
       content: {
         typeTarget: "date",
-        days: differenceInDays,
-        hours: 8,
-        minutes: 10,
-        seconds: 0,
-        size: 10,
+        datePicked: {
+          date,
+          month,
+          years,
+          hours: 8,
+          minutes: 0,
+          dateView: "",
+        },
         duration: {
           hours: 2,
           minutes: 30,
-          daysColor: "#7E2E84",
-          hoursColor: "#D14081",
-          minutesColor: "#EF798A",
-          secondsColor: "#218380",
         },
       },
       finish: {
         isFinished: false,
         text: "<p>Sudah Selesai</p>",
-        textColor: "#00000",
-        textAlign: "tw-text-center",
+        textColor: "#000000",
+        textAlign: "tw-justify-center",
         textShadow: undefined,
         fontSize: "tw-text-base",
       },
@@ -157,10 +132,12 @@ const CountDown = ({
         pattern: "",
       },
       variant: {
-        id: "1",
+        id: "2",
         group: "Circle",
         name: "colorful",
-        style: {},
+        style: {
+          ...circleStyle,
+        },
       },
     };
 
@@ -181,13 +158,8 @@ const CountDown = ({
   };
 
   const styleMap = {
-    1: pageLeft,
-    2: pageRight,
-    3: frostyLight,
-    4: frostyDark,
-    5: frostyWarm,
-    6: pageLeft,
-    7: pageRight,
+    1: basicStyle,
+    2: circleStyle,
   };
 
   const handleVariantChange = (group, option) => {
@@ -237,7 +209,6 @@ const CountDown = ({
   const handleCancel = () => {
     if (isSelectVariant) {
       setSelectedVariant(currentVariant);
-
       const style = styleMap[currentVariant.id] || {};
 
       setIsSelectVariant(false);

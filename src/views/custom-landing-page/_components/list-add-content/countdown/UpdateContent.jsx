@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
 import SelectOptions from "../../common/SelectOptions";
 
+import moment from "moment";
+import { SingleDatePicker } from "react-dates";
 import "react-dates/initialize"; // Inisialisasi untuk react-dates
 import "react-dates/lib/css/_datepicker.css";
-import { SingleDatePicker } from "react-dates";
-import moment from "moment";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
-import Input from "../../common/Input";
+import DurationControl from "./DurationControl";
 import ColorPicker from "../../common/ColorPicker";
 
 const typeTargetOptions = [
@@ -14,13 +14,13 @@ const typeTargetOptions = [
   { value: "date", label: "Tanggal" },
 ];
 
-const minuteOptions = Array.from({ length: 60 }, (_, i) => {
+export const minuteOptions = Array.from({ length: 60 }, (_, i) => {
   const value = i; // Menyimpan nilai menit langsung (0-59)
   const label = i < 10 ? `0${i}` : `${i}`; // Format label untuk menit
   return { value, label };
 });
 
-const hoursOptions = Array.from({ length: 24 }, (_, i) => {
+export const hoursOptions = Array.from({ length: 24 }, (_, i) => {
   const value = i; // Menyimpan nilai jam langsung (0-23)
   const label = i < 10 ? `0${i}` : `${i}`; // Format label untuk jam
   return { value, label };
@@ -31,9 +31,6 @@ const UpdateContent = ({
   currentSection,
   isEditingContent,
 }) => {
-  // console.log("🚀 ~ minuteOptions ~ minuteOptions:", minuteOptions);
-  // console.log("🚀 ~ hoursOptions ~ hoursOptions:", hoursOptions);
-
   const [typeTarget, setTypeTarget] = useState(
     typeTargetOptions.find(
       (opt) => opt.value === currentSection?.content?.typeTarget
@@ -41,50 +38,69 @@ const UpdateContent = ({
   );
 
   const [hours, setHours] = useState(
-    hoursOptions.find((opt) => opt.value === currentSection?.content?.hours) ||
-      minuteOptions[8]
+    hoursOptions.find(
+      (opt) => opt.value === currentSection?.content?.datePicked?.hours
+    ) || minuteOptions[8]
   );
 
   const [minutes, setMinutes] = useState(
     minuteOptions.find(
-      (opt) => opt.value === currentSection?.content?.minutes
+      (opt) => opt.value === currentSection?.content?.datePicked?.minutes
     ) || hoursOptions[10]
   );
 
-  const [size, setSize] = useState(currentSection?.content?.size || 10);
+  const [size, setSize] = useState(currentSection?.content?.size || 20);
 
   const [date, setDate] = useState(
-    currentSection?.content?.date || moment().add(7, "days")
+    currentSection?.content?.datePicked?.dateView || moment().add(7, "days")
   );
   const [focused, setFocused] = useState(false);
 
-  const [hoursDuration, setHoursDuration] = useState(
-    currentSection?.content?.duration.hours || 2
-  );
-
-  const [minutesDuration, setMinutesDuration] = useState(
-    minuteOptions.find(
-      (opt) => opt.value === currentSection?.content?.duration?.minutes
-    ) || minuteOptions[30]
-  );
-
   const [daysColor, setDaysColor] = useState(
-    currentSection?.content?.duration.daysColor || "#7E2E84"
+    currentSection?.variant?.style?.daysColor || "#7E2E84"
   );
 
   const [hoursColor, setHoursColor] = useState(
-    currentSection?.content?.duration.hoursColor || "#D14081"
+    currentSection?.variant?.style?.hoursColor || "#D14081"
   );
 
   const [minutesColor, setMinutesColor] = useState(
-    currentSection?.content?.duration.minutesColor || "#EF798A"
+    currentSection?.variant?.style?.minutesColor || "#EF798A"
   );
 
   const [secondsColor, setSecondsColor] = useState(
-    currentSection?.content?.duration.secondsColor || "#218380"
+    currentSection?.variant?.style?.secondsColor || "#218380"
   );
 
-  const handelUpdateContent = useCallback(
+  const [dividerColor, setDividerColor] = useState(
+    currentSection?.variant?.style?.dividerColor || "#00000"
+  );
+
+  useEffect(() => {
+    const currentdaysColor = currentSection?.variant?.style?.daysColor;
+    const currenthoursColor = currentSection?.variant?.style?.hoursColor;
+    const currentminutesColor = currentSection?.variant?.style?.minutesColor;
+    const currentsecondsColor = currentSection?.variant?.style?.secondsColor;
+    const currentdividerColor = currentSection?.variant?.style?.dividerColor;
+
+    if (currentdaysColor) {
+      setDaysColor(currentdaysColor);
+    }
+    if (currenthoursColor) {
+      setHoursColor(currenthoursColor);
+    }
+    if (currentminutesColor) {
+      setMinutesColor(currentminutesColor);
+    }
+    if (currentsecondsColor) {
+      setSecondsColor(currentsecondsColor);
+    }
+    if (currentdividerColor) {
+      setDividerColor(currentdividerColor);
+    }
+  }, [currentSection]);
+
+  const handleUpdateDatePicker = useCallback(
     (key, value) => {
       setPreviewSection((prevSection) =>
         prevSection.map((section) =>
@@ -93,7 +109,10 @@ const UpdateContent = ({
                 ...section,
                 content: {
                   ...section.content,
-                  [key]: value,
+                  datePicked: {
+                    ...section.content.datePicked,
+                    [key]: value,
+                  },
                 },
               }
             : section
@@ -125,39 +144,60 @@ const UpdateContent = ({
     [currentSection.id, setPreviewSection]
   );
 
+  const handelUpdateStyle = useCallback(
+    (key, value) => {
+      setPreviewSection((prevSection) =>
+        prevSection.map((section) =>
+          section.id === currentSection?.id
+            ? {
+                ...section,
+                variant: {
+                  ...section.variant,
+                  style: {
+                    ...section.variant.style,
+                    [key]: value,
+                  },
+                },
+              }
+            : section
+        )
+      );
+    },
+    [currentSection.id, setPreviewSection]
+  );
+
   useEffect(() => {
     if (currentSection?.content?.date) {
       setDate(currentSection.content.date);
     }
   }, [currentSection]);
 
-  // useEffect(() => {
-  //   if (!currentSection?.content?.days) {
-  //     const now = moment(); // Tanggal saat ini
-  //     const differenceInSeconds = date.diff(now, "seconds");
-  //     const differenceInDays = Math.floor(differenceInSeconds / (24 * 3600));
-  //     handelUpdateContent("days", differenceInDays);
-  //   }
-  // }, [currentSection, date, handelUpdateContent]);
-
-  // const differenceInDays = newDate.diff(now, "days"); // Mendapatkan selisih hari
   const handleDateChange = (newDate) => {
     setDate(newDate);
-
-    const now = moment(); // Tanggal saat ini
-
-    // const selectedDate = newDate.date();
 
     const selectedDay = newDate.date(); // Hari
     const selectedMonth = newDate.month() + 1; // Bulan (0-indexed)
     const selectedYear = newDate.year(); // Tahun
 
-    handelUpdateContent("days", {
-      date: selectedDay,
-      month: selectedMonth,
-      years: selectedYear,
-    });
-    handelUpdateContent("date", newDate);
+    setPreviewSection((prevSection) =>
+      prevSection.map((section) =>
+        section.id === currentSection?.id
+          ? {
+              ...section,
+              content: {
+                ...section.content,
+                datePicked: {
+                  ...section.content.datePicked,
+                  date: selectedDay,
+                  month: selectedMonth,
+                  years: selectedYear,
+                },
+              },
+            }
+          : section
+      )
+    );
+    handleUpdateDatePicker("dateView", newDate);
   };
 
   const handleChangeContentWhenBlur = (value, min, max, key) => {
@@ -165,9 +205,27 @@ const UpdateContent = ({
     if (key === "size") {
       setSize(newValue);
     }
-    handelUpdateContent(key, newValue);
+    handleUpdateDatePicker(key, newValue);
   };
 
+  const handleUpdateTypeTarget = useCallback(
+    (key, value) => {
+      setPreviewSection((prevSection) =>
+        prevSection.map((section) =>
+          section.id === currentSection?.id
+            ? {
+                ...section,
+                content: {
+                  ...section.content,
+                  [key]: value,
+                },
+              }
+            : section
+        )
+      );
+    },
+    [currentSection.id, setPreviewSection]
+  );
   return (
     <div>
       <div style={{ gap: 10 }} className="d-flex align-items-center">
@@ -176,7 +234,7 @@ const UpdateContent = ({
           options={typeTargetOptions}
           onChange={(selectedOption) => {
             setTypeTarget(selectedOption);
-            handelUpdateContent("typeTarget", selectedOption.value);
+            handleUpdateTypeTarget("typeTarget", selectedOption.value);
           }}
           value={typeTarget}
         />
@@ -203,7 +261,7 @@ const UpdateContent = ({
               options={hoursOptions}
               onChange={(selectedOption) => {
                 setHours(selectedOption);
-                handelUpdateContent("hours", selectedOption.value);
+                handleUpdateDatePicker("hours", selectedOption.value);
               }}
               value={hours}
               width="w-25"
@@ -216,7 +274,7 @@ const UpdateContent = ({
               options={minuteOptions}
               onChange={(selectedOption) => {
                 setMinutes(selectedOption);
-                handelUpdateContent("minutes", selectedOption.value);
+                handleUpdateDatePicker("minutes", selectedOption.value);
               }}
               value={minutes}
               width="w-25"
@@ -226,83 +284,80 @@ const UpdateContent = ({
       )}
 
       {currentSection?.content?.typeTarget === "duration" && (
-        <div>
-          <div style={{ gap: 10 }} className="d-flex align-items-center">
-            <Input
-              type="number"
-              label="Jam"
-              value={hoursDuration || 0}
-              onChange={(e) => {
-                const { value } = e.target;
-                setHoursDuration(+value);
-                handelUpdateDuration("hours", +value);
-              }}
-            />
+        <DurationControl
+          setPreviewSection={setPreviewSection}
+          currentSection={currentSection}
+          handelUpdateDuration={handelUpdateDuration}
+        />
+      )}
 
-            <SelectOptions
-              label="Menit"
-              options={minuteOptions}
-              onChange={(selectedOption) => {
-                setMinutesDuration(selectedOption);
-                handelUpdateDuration("minutes", selectedOption.value);
-              }}
-              value={minutesDuration || 0}
-            />
-          </div>
+      <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
+        {/* {hoursDuration > 24 && (
+        )} */}
+        <ColorPicker
+          initialColor={daysColor}
+          label="Hari"
+          onChange={(color) => {
+            setDaysColor(color);
+            handelUpdateStyle("daysColor", color);
+          }}
+          top={"0"}
+          right={"34px"}
+          type="rgba"
+        />
 
-          <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
-            {hoursDuration > 24 && (
-              <ColorPicker
-                initialColor={daysColor}
-                label="Hari"
-                onChange={(color) => {
-                  setDaysColor(color);
-                  handelUpdateDuration("daysColor", color);
-                }}
-                top={"0"}
-                right={"34px"}
-                type="rgba"
-              />
-            )}
+        <ColorPicker
+          initialColor={hoursColor}
+          label="Jam"
+          onChange={(color) => {
+            setHoursColor(color);
+            handelUpdateStyle("hoursColor", color);
+          }}
+          top={"0"}
+          right={"34px"}
+          type="rgba"
+        />
+      </div>
 
-            <ColorPicker
-              initialColor={hoursColor}
-              label="Jam"
-              onChange={(color) => {
-                setHoursColor(color);
-                handelUpdateDuration("hoursColor", color);
-              }}
-              top={"0"}
-              right={"34px"}
-              type="rgba"
-            />
-          </div>
+      <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
+        <ColorPicker
+          initialColor={minutesColor}
+          label="Menit "
+          onChange={(color) => {
+            setMinutesColor(color);
+            handelUpdateStyle("minutesColor", color);
+          }}
+          top={"0"}
+          right={"34px"}
+          type="rgba"
+        />
 
-          <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
-            <ColorPicker
-              initialColor={minutesColor}
-              label="Menit "
-              onChange={(color) => {
-                setMinutesColor(color);
-                handelUpdateDuration("minutesColor", color);
-              }}
-              top={"0"}
-              right={"34px"}
-              type="rgba"
-            />
+        <ColorPicker
+          initialColor={secondsColor}
+          label="Detik"
+          onChange={(color) => {
+            setSecondsColor(color);
+            handelUpdateStyle("secondsColor", color);
+          }}
+          top={"0"}
+          right={"34px"}
+          type="rgba"
+        />
+      </div>
 
-            <ColorPicker
-              initialColor={secondsColor}
-              label="Detik"
-              onChange={(color) => {
-                setSecondsColor(color);
-                handelUpdateDuration("secondsColor", color);
-              }}
-              top={"0"}
-              right={"34px"}
-              type="rgba"
-            />
-          </div>
+      {currentSection?.variant?.name === "basic" && (
+        <div className="my-2">
+          <ColorPicker
+            initialColor={dividerColor}
+            label="Pemisah"
+            onChange={(color) => {
+              setDividerColor(color);
+              handelUpdateStyle("dividerColor", color);
+            }}
+            top={"0"}
+            right={"34px"}
+            type="rgba"
+          />
         </div>
       )}
 
@@ -311,11 +366,11 @@ const UpdateContent = ({
         value={size}
         onChange={(newValue) => {
           setSize(newValue);
-          handelUpdateContent("size", newValue);
+          handelUpdateStyle("size", newValue);
         }}
-        min={5}
+        min={10}
         max={50}
-        onBlur={() => handleChangeContentWhenBlur(size, 5, 50, "size")}
+        onBlur={() => handleChangeContentWhenBlur(size, 10, 50, "size")}
       />
     </div>
   );

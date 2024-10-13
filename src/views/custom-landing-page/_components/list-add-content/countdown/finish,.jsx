@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
-import SelectOptions from "../../common/SelectOptions";
-import { fontSizeOptions } from "../../SelectOptions";
-import { CustomReactQuill } from "../../common/ReactQuill";
-import { useDebounce } from "use-debounce";
-import TextAlignSelect from "../../common/TextAlignSelect";
-import ColorPicker from "../../common/ColorPicker";
 import { CButton } from "@coreui/react";
+import React, { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
+import ColorPicker from "../../common/ColorPicker";
+import { CustomReactQuill } from "../../common/ReactQuill";
+import SelectOptions from "../../common/SelectOptions";
+import { alignOptions, fontSizeOptions } from "../../SelectOptions";
 
 const textShadowOptions = [
   { value: undefined, label: "Tidak Ada" },
@@ -28,7 +27,7 @@ const Finish = ({ setPreviewSection, currentSection }) => {
   const [textShadow, setTextShadow] = useState(textShadowOptions[0]);
   const [fontSize, setFontSize] = useState(fontSizeOptions[2]);
   const [editorHtml, setEditorHtml] = useState(text || "<p>Sudah Selesai</p>");
-  const [selectAlign, setSelectAlign] = useState(textAlign || "tw-text-center");
+  const [selectAlign, setSelectAlign] = useState(alignOptions[1]);
 
   const [textColor, setTextColor] = useState(textColorProps || "#000000");
 
@@ -72,11 +71,27 @@ const Finish = ({ setPreviewSection, currentSection }) => {
     if (currentSectionText) {
       setEditorHtml(currentSectionText);
     }
+
+    const currentTextAlign = alignOptions.find(
+      (opt) => opt.value === textAlign
+    );
+
+    if (currentTextAlign) {
+      setSelectAlign(currentTextAlign);
+    }
+
+    const currentTextColor = textColorProps;
+
+    if (currentTextColor) {
+      setTextColor(currentTextColor);
+    }
   }, [
     currentSection,
     fontSize,
     fontSizeProps,
     text,
+    textAlign,
+    textColorProps,
     textShadow,
     textShadowProps,
   ]);
@@ -127,13 +142,17 @@ const Finish = ({ setPreviewSection, currentSection }) => {
         </div>
       </div>
       <div style={{ gap: 10 }} className="d-flex align-items-center">
-        <TextAlignSelect
-          initialValue={selectAlign}
-          onChange={(key, value) => {
-            setSelectAlign(value);
-            handleChangeTitle(key, value);
+        <SelectOptions
+          label="Align"
+          options={alignOptions}
+          onChange={(selectedOption) => {
+            setSelectAlign(selectedOption);
+            handleChangeTitle("textAlign", selectedOption.value);
           }}
+          value={selectAlign}
+          width="50"
         />
+
         <ColorPicker
           initialColor={textColor}
           label="Warna Teks"

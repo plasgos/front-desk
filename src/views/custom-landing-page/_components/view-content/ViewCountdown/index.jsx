@@ -7,6 +7,8 @@ const ViewCountDown = forwardRef(
   ({ containerRef, isDragging, isResizing, content, isFocused }, ref) => {
     const stylesBg = useBackgroundStyles(content);
 
+    const { textAlign } = content?.finish;
+
     return (
       <div
         key={content.id}
@@ -21,7 +23,7 @@ const ViewCountDown = forwardRef(
           position: "relative",
           zIndex: 1,
         }}
-        className={` tw-flex tw-flex-row tw-flex-wrap tw-justify-center tw-items-center ${
+        className={` tw-flex tw-flex-row tw-flex-wrap ${textAlign} tw-px-3 tw-items-center ${
           isFocused &&
           "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20 "
         }  `}

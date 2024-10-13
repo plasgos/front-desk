@@ -12,54 +12,31 @@ const getTimeHours = (time) => ((time % daySeconds) / hourSeconds) | 0;
 const getTimeDays = (time) => (time / daySeconds) | 0;
 
 const DateCountDown = ({ content }) => {
-  const [isFinished, setIsFinished] = useState(false);
+  const { group } = content?.variant;
+  const {
+    daysColor,
+    hoursColor,
+    minutesColor,
+    secondsColor,
+    size,
+    dividerColor,
+  } = content?.variant?.style || {};
 
-  const daysProps = content.content.days;
-  const hoursProps = content.content.hours;
-  const minutesProps = content.content.minutes;
+  const { isFinished, text, textShadow, fontSize, textColor } = content?.finish;
 
-  // const startTime = Date.now() / 1000;
-  // const endTime =
-  //   startTime +
-  //   days * daySeconds +
-  //   hours * hourSeconds +
-  //   minutes * minuteSeconds;
-
-  // const remainingTime = endTime - startTime;
-  // console.log("🚀 ~ remainingTime:", remainingTime);
-  // const daysDuration = days * daySeconds;
-  // const stratTime = Date.now() / 1000; // use UNIX timestamp in seconds
-  // const now = moment();
-  // const targetDate = moment()
-  //   .add(days, "days")
-  //   .add(hours, "hours")
-  //   .add(minutes, "minutes");
-
-  // const differenceInSeconds = targetDate.diff(now, "seconds");
-  // console.log("🚀 ~ DateCountDown ~ differenceInSeconds:", differenceInSeconds);
-
-  // const endTime = stratTime + differenceInSeconds; // use UNIX timestamp in seconds
-
-  // const remainingTime = endTime - stratTime;
-  // const daysCount = Math.ceil(remainingTime / daySeconds);
-  // const daysDuration = daysCount * daySeconds;
+  const { date, month, years, hours, minutes } = content?.content?.datePicked;
 
   const [remainingTime, setRemainingTime] = useState(0);
+  console.log("🚀 ~ DateCountDown ~ remainingTime:", remainingTime);
 
   useEffect(() => {
-    const days = content.content.days?.date; // Dapatkan hari dari props
-    const hours = content.content.hours; // Dapatkan jam dari props
-    const minutes = content.content.minutes; // Dapatkan menit dari props
-    const month = content.content.days?.month; // Dapatkan bulan dari props
-    const year = content.content.days?.years; // Dapatkan tahun dari props
-
     const now = moment(); // Waktu sekarang
 
     // Membuat target waktu berdasarkan input
     let targetDate = moment().set({
-      date: days, // Menetapkan tanggal
+      date: date, // Menetapkan tanggal
       month: month - 1, // Menetapkan bulan (0-indexed)
-      year: year, // Menetapkan tahun
+      year: years, // Menetapkan tahun
       hour: hours, // Menetapkan jam
       minute: minutes, // Menetapkan menit
       second: 0, // Menetapkan detik
@@ -70,9 +47,9 @@ const DateCountDown = ({ content }) => {
       targetDate = moment()
         .add(1, "month")
         .set({
-          date: days,
+          date: date,
           month: month - 1, // Menetapkan bulan (0-indexed)
-          year: year, // Menetapkan tahun
+          year: years, // Menetapkan tahun
           hour: hours,
           minute: minutes,
           second: 0,
@@ -84,54 +61,42 @@ const DateCountDown = ({ content }) => {
 
     // Set remaining time, pastikan tidak negatif
     setRemainingTime(differenceInSeconds > 0 ? differenceInSeconds : 0);
-  }, [content]);
 
-  // useEffect(() => {
-  //   const days = content.content.days; // Ubah sesuai input
-  //   const hours = content.content.hours; // Ubah sesuai input
-  //   const minutes = content.content.minutes; // Ubah sesuai input
+    const interval = setInterval(() => {
+      setRemainingTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+    }, 1000);
 
-  //   const now = moment(); // Waktu sekarang
+    // Cleanup interval ketika komponen di-unmount
+    return () => clearInterval(interval);
+  }, [content, date, hours, minutes, month, years]);
 
-  //   // Membuat target waktu berdasarkan input
-  //   let targetDate = moment().set({
-  //     year: now.year(), // Tahun saat ini
-  //     month: now.month(), // Bulan saat ini
-  //     date: days, // Menetapkan tanggal
-  //     hour: hours, // Menetapkan jam
-  //     minute: minutes, // Menetapkan menit
-  //     second: 0, // Menetapkan detik
-  //   });
-
-  //   // Validasi: Jika target waktu kurang dari waktu sekarang
-  //   if (targetDate.isBefore(now)) {
-  //     // Jika target waktu sudah lewat, tampilkan countdown selesai
-  //     setRemainingTime(0);
-  //     return; // Hentikan eksekusi jika sudah lewat
-  //   }
-
-  //   // Jika target waktu belum lewat, hitung selisih
-  //   const differenceInSeconds = targetDate.diff(now, "seconds");
-  //   setRemainingTime(differenceInSeconds > 0 ? differenceInSeconds : 0);
-  // }, [content]);
+  const daysDuration =
+    daySeconds + hours * hourSeconds + minutes * minuteSeconds;
+  console.log("🚀 ~ DateCountDown ~ daysDuration:", daysDuration);
 
   // Fungsi untuk menghitung waktu
   const formatTime = (totalSeconds) => {
-    const days = Math.floor(totalSeconds / (24 * 3600));
-    const hours = Math.floor((totalSeconds % (24 * 3600)) / 3600);
-    const minutes = Math.floor((totalSeconds % 3600) / 60);
-    const seconds = totalSeconds % 60;
+    const daysView = Math.floor(totalSeconds / (24 * 3600));
+    const hoursView = Math.floor((totalSeconds % (24 * 3600)) / 3600);
+    const minutesView = Math.floor((totalSeconds % 3600) / 60);
+    const secondsView = totalSeconds % 60;
 
-    return { days, hours, minutes, seconds };
+    return { daysView, hoursView, minutesView, secondsView };
   };
 
-  const { days, hours, minutes, seconds } = formatTime(remainingTime);
+  const { daysView, hoursView, minutesView, secondsView } =
+    formatTime(remainingTime);
+
+  const initialSize = 20; // size awal
+  const initialFontSize = 32; // fontSize awal
 
   const timerProps = {
     isPlaying: true,
-    size: content?.content?.size * 10,
+    size: size * 5,
     strokeWidth: 6,
   };
+
+  const dynamicFontSize = (size / initialSize) * initialFontSize * 0.6;
 
   const renderTime = (dimension, time) => {
     let label;
@@ -154,98 +119,198 @@ const DateCountDown = ({ content }) => {
     }
     return (
       <div className="tw-flex tw-flex-col tw-items-center">
-        <div style={{ fontSize: 32 }} className="tw-font-semibold">
+        <div style={{ fontSize: dynamicFontSize }} className="tw-font-semibold">
           {time}
         </div>
-        <div>{label}</div>
+        <div style={{ fontSize: dynamicFontSize }}>{label}</div>
       </div>
     );
   };
-  // Hitung durasi untuk setiap bagian waktu
-  const daysDuration = getTimeDays(remainingTime) * daySeconds;
-  const hoursDuration = getTimeHours(remainingTime % daySeconds) * hourSeconds;
-  const minutesDuration =
-    getTimeMinutes(remainingTime % hourSeconds) * minuteSeconds;
-  const secondsDuration = remainingTime % minuteSeconds;
 
   return (
     <div>
-      {isFinished ? (
-        <div className="tw-flex tw-flex-1 tw-justify-center tw-items-center  tw-font-semibold tw-text-lg">
-          Sudah Selesai
-        </div>
-      ) : (
+      {group === "Full Text" && (
         <div className="tw-flex tw-flex-wrap tw-justify-center tw-items-center tw-gap-3">
-          {/* {remainingTime > 0 ? (
-            <>
-              <CountdownCircleTimer
-                {...timerProps}
-                colors="#7E2E84"
-                duration={daysDuration / daySeconds}
-                initialRemainingTime={remainingTime}
+          {remainingTime > 0 && !isFinished ? (
+            <div className="tw-flex tw-flex-wrap tw-justify-center tw-items-center tw-gap-3">
+              <div
+                style={{
+                  fontSize: size,
+                  color: dividerColor,
+                }}
+                className="tw-flex tw-items-center tw-gap-2"
               >
-                {({ elapsedTime }) =>
-                  renderTime("Hari", getTimeDays(daysDuration - elapsedTime))
-                }
-              </CountdownCircleTimer>
-              <CountdownCircleTimer
-                {...timerProps}
-                colors="#D14081"
-                duration={daySeconds}
-                initialRemainingTime={remainingTime % daySeconds}
-                onComplete={(totalElapsedTime) => ({
-                  shouldRepeat: remainingTime - totalElapsedTime > hourSeconds,
-                })}
-              >
-                {({ elapsedTime }) =>
-                  renderTime("Jam", getTimeHours(hoursDuration - elapsedTime))
-                }
-              </CountdownCircleTimer>
-              <CountdownCircleTimer
-                {...timerProps}
-                colors="#EF798A"
-                duration={hourSeconds}
-                initialRemainingTime={remainingTime % hourSeconds}
-                onComplete={(totalElapsedTime) => ({
-                  shouldRepeat:
-                    remainingTime - totalElapsedTime > minuteSeconds,
-                })}
-              >
-                {({ elapsedTime }) =>
-                  renderTime(
-                    "Menit",
-                    getTimeMinutes(minutesDuration - elapsedTime)
-                  )
-                }
-              </CountdownCircleTimer>
-              <CountdownCircleTimer
-                {...timerProps}
-                colors="#218380"
-                duration={minuteSeconds}
-                initialRemainingTime={remainingTime % minuteSeconds}
-                onComplete={(totalElapsedTime) => ({
-                  shouldRepeat: remainingTime - totalElapsedTime > 0,
-                })}
-              >
-                {({ elapsedTime }) =>
-                  renderTime("Detik", getTimeSeconds(elapsedTime))
-                }
-              </CountdownCircleTimer>
-            </>
-          ) : (
-            <div>Countdown Selesai!</div>
-          )} */}
-          {remainingTime > 0 ? (
-            <div>
-              <div>
-                <span>{days} Hari</span> <br />
-                <span>{hours} Jam</span> <br />
-                <span>{minutes} Menit</span> <br />
-                <span>{seconds} Detik</span>
+                {daysView > 0 && (
+                  <div>
+                    <span
+                      style={{
+                        fontSize: size,
+                        color: daysColor,
+                      }}
+                      className={`tw-font-bold `}
+                    >
+                      {daysView} Hari
+                    </span>{" "}
+                    - <br />
+                  </div>
+                )}
+                {hoursView > 0 && (
+                  <div>
+                    <span
+                      style={{
+                        fontSize: size,
+                        color: hoursColor,
+                      }}
+                      className={`tw-font-bold `}
+                    >
+                      {hoursView} Jam
+                    </span>{" "}
+                    - <br />
+                  </div>
+                )}
+                <span
+                  style={{
+                    fontSize: size,
+                    color: minutesColor,
+                  }}
+                  className={`tw-font-bold `}
+                >
+                  {minutesView} Menit
+                </span>{" "}
+                - <br />
+                <span
+                  style={{
+                    fontSize: size,
+                    color: secondsColor,
+                  }}
+                  className={`tw-font-bold `}
+                >
+                  {secondsView} Detik
+                </span>
               </div>
             </div>
           ) : (
-            <div>Countdown Selesai!</div>
+            <div
+              className={`tw-w-full tw-flex tw-items-center  tw-font-semibold tw-text-lg`}
+            >
+              <div
+                className={`${fontSize} `}
+                style={{
+                  color: textColor,
+                  textShadow: textShadow,
+                }}
+                dangerouslySetInnerHTML={{ __html: text }}
+              />
+            </div>
+          )}
+        </div>
+      )}
+
+      {group === "Circle" && (
+        <div>
+          {remainingTime > 0 && !isFinished ? (
+            <div className="tw-flex tw-flex-wrap tw-justify-center tw-items-center tw-gap-3">
+              <>
+                {remainingTime >= daySeconds && (
+                  <CountdownCircleTimer
+                    key={`days-${hours}-${minutes}-${remainingTime}`}
+                    {...timerProps}
+                    colors={daysColor}
+                    duration={daysDuration}
+                    initialRemainingTime={remainingTime}
+                  >
+                    {({ elapsedTime, color }) => (
+                      <span style={{ color }}>
+                        {renderTime(
+                          "days",
+                          getTimeDays(daysDuration - elapsedTime)
+                        )}
+                      </span>
+                    )}
+                  </CountdownCircleTimer>
+                )}
+
+                {remainingTime >= hourSeconds && (
+                  <CountdownCircleTimer
+                    key={`hours-${hours}-${minutes}-${remainingTime}`}
+                    {...timerProps}
+                    colors={hoursColor}
+                    duration={daySeconds}
+                    initialRemainingTime={remainingTime % daySeconds}
+                    onComplete={(totalElapsedTime) => {
+                      const finish =
+                        remainingTime - totalElapsedTime <= hourSeconds;
+
+                      return { shouldRepeat: !finish }; // Jangan ulang jika sudah selesai
+                    }}
+                  >
+                    {({ elapsedTime, color }) => (
+                      <span style={{ color }}>
+                        {renderTime(
+                          "hours",
+                          getTimeHours(daySeconds - elapsedTime)
+                        )}
+                      </span>
+                    )}
+                  </CountdownCircleTimer>
+                )}
+                <CountdownCircleTimer
+                  key={`minutes-${hours}-${minutes}-${remainingTime}`}
+                  {...timerProps}
+                  colors={minutesColor}
+                  duration={hourSeconds}
+                  initialRemainingTime={remainingTime % hourSeconds}
+                  onComplete={(totalElapsedTime) => {
+                    const finish =
+                      remainingTime - totalElapsedTime <= minuteSeconds;
+
+                    return { shouldRepeat: !finish }; // Jangan ulang jika sudah selesai
+                  }}
+                >
+                  {({ elapsedTime, color }) => (
+                    <span style={{ color }}>
+                      {renderTime(
+                        "minutes",
+                        getTimeMinutes(hourSeconds - elapsedTime)
+                      )}
+                    </span>
+                  )}
+                </CountdownCircleTimer>
+                <CountdownCircleTimer
+                  key={`seconds-${hours}-${minutes}-${remainingTime}`}
+                  {...timerProps}
+                  colors={secondsColor}
+                  duration={minuteSeconds}
+                  initialRemainingTime={remainingTime % minuteSeconds}
+                  onComplete={(totalElapsedTime) => {
+                    const finish = remainingTime - totalElapsedTime <= 0; // Cek apakah waktu sudah habis
+
+                    return { shouldRepeat: !finish }; // Jangan ulang jika sudah selesai
+                  }}
+                >
+                  {({ elapsedTime, color }) => {
+                    return (
+                      <span style={{ color }}>
+                        {renderTime("seconds", getTimeSeconds(elapsedTime))}
+                      </span>
+                    );
+                  }}
+                </CountdownCircleTimer>
+              </>
+            </div>
+          ) : (
+            <div
+              className={`tw-w-full tw-flex tw-items-center  tw-font-semibold tw-text-lg`}
+            >
+              <div
+                className={`${fontSize} `}
+                style={{
+                  color: textColor,
+                  textShadow: textShadow,
+                }}
+                dangerouslySetInnerHTML={{ __html: text }}
+              />
+            </div>
           )}
         </div>
       )}
