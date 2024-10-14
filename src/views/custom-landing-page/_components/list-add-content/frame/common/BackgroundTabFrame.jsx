@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from "react";
-import imageDefault from "../../../../../assets/bg.jpg";
+import imageDefault from "../../../../../../assets/bg.jpg";
 import { CButton } from "@coreui/react";
 
-import pattern1 from "../../../../../assets/pattern/26669.jpg";
-import pattern2 from "../../../../../assets/pattern/5570863.jpg";
-import pattern3 from "../../../../../assets/pattern/geometric-blue-line-pattern.jpg";
-import pattern4 from "../../../../../assets/pattern/gray_line_drawings_of_organic_shapes_background.jpg";
-import pattern5 from "../../../../../assets/pattern/sl_022120_28320_22.jpg";
-import pattern6 from "../../../../../assets/pattern/vecteezy_geometric-line-circles-pattern-background-design-perfect_7167520.jpg";
-import {
-  backgroundType,
-  PaddingYOptions,
-  shadowOptions,
-} from "../../SelectOptions";
-import SelectOptions from "../../common/SelectOptions";
-import ColorPicker from "../../common/ColorPicker";
-import InputRangeWithNumber from "../../common/InputRangeWithNumber";
-import GradientBox from "../../common/GradientBox";
-import Checkbox from "../../common/Checkbox";
-import PatternBox from "../../common/PatternBox";
+import pattern1 from "../../../../../../assets/pattern/26669.jpg";
+import pattern2 from "../../../../../../assets/pattern/5570863.jpg";
+import pattern3 from "../../../../../../assets/pattern/geometric-blue-line-pattern.jpg";
+import pattern4 from "../../../../../../assets/pattern/gray_line_drawings_of_organic_shapes_background.jpg";
+import pattern5 from "../../../../../../assets/pattern/sl_022120_28320_22.jpg";
+import pattern6 from "../../../../../../assets/pattern/vecteezy_geometric-line-circles-pattern-background-design-perfect_7167520.jpg";
+import { backgroundType, PaddingYOptions } from "../../../SelectOptions";
+import SelectOptions from "../../../common/SelectOptions";
+import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
+import ColorPicker from "../../../common/ColorPicker";
+import Checkbox from "../../../common/Checkbox";
+import GradientBox from "../../../common/GradientBox";
+import PatternBox from "../../../common/PatternBox";
 
 export const patterns = [
   { id: "1", img: pattern1 },
@@ -50,112 +46,92 @@ export const gradients = [
   { from: "#92A8D1", to: "#F7CAC9" },
 ];
 
-const FrameControl = ({ currentSection, setPreviewSection, type }) => {
+const BackgroundTabFrame = ({
+  sectionId,
+  currentSection,
+  setPreviewSection,
+  type,
+}) => {
   const [selectedBackgroundType, setSelectedBackgroundType] = useState(
     backgroundType[0]
   );
 
-  const [width, setWidth] = useState(
-    currentSection?.wrapperStyle?.width || 600
-  );
-
-  const [rotation, setRotation] = useState(
-    currentSection?.wrapperStyle?.rotation || 0
-  );
-
-  const [rounded, setRounded] = useState(
-    currentSection?.wrapperStyle?.rounded || 40
-  );
-
   const [selectedPadding, setSelectedPadding] = useState(PaddingYOptions[0]);
 
-  const [shadow, setShadow] = useState(
-    shadowOptions.find(
-      (opt) => opt.value === currentSection?.wrapperStyle?.shadow
-    ) || shadowOptions[4]
-  );
-
   const [paddingY, setPaddingY] = useState(
-    currentSection?.wrapperStyle?.paddingY || 0
+    currentSection.background?.paddingY || 0
   );
   const [paddingTop, setPaddingTop] = useState(
-    currentSection?.wrapperStyle?.paddingTop || 0
+    currentSection.background?.paddingTop || 0
   );
   const [paddingBottom, setPaddingBottom] = useState(
-    currentSection?.wrapperStyle?.paddingBottom || 0
+    currentSection.background?.paddingBottom || 0
   );
 
   const [selectedBgColor, setSelectedBgColor] = useState(
-    currentSection?.wrapperStyle?.bgColor || "#EEEEEE"
+    currentSection.background?.bgColor || "#EEEEEE"
   );
 
   const [imageUrl, setImageUrl] = useState(
-    currentSection?.wrapperStyle?.bgImage || imageDefault
+    currentSection.background?.bgImage || imageDefault
   );
-  const [blur, setBlur] = useState(currentSection?.wrapperStyle?.blur || 0);
+  const [blur, setBlur] = useState(currentSection.background?.blur || 0);
   const [opacity, setOpacity] = useState(
-    currentSection?.wrapperStyle?.opacity || 0
+    currentSection.background?.opacity || 0
   );
 
   const [fromColor, setFromColor] = useState(
-    currentSection?.wrapperStyle?.fromColor || "#FF6F61"
+    currentSection?.background?.fromColor || "#FF6F61"
   );
 
   const [toColor, setToColor] = useState(
-    currentSection?.wrapperStyle?.toColor || "#6B5B95"
+    currentSection?.background?.toColor || "#6B5B95"
   );
 
   const [direction, setDirection] = useState(
     directionGradientOptions.find(
-      (opt) => opt.value === currentSection?.wrapperStyle?.direction
+      (opt) => opt.value === currentSection?.background?.direction
     ) || directionGradientOptions[1]
   );
 
   const [isRevert, setIsRevert] = useState(
-    currentSection?.wrapperStyle?.isRevert || false
+    currentSection?.background?.isRevert || false
   );
 
   const [selectedPattern, setSelectedPattern] = useState(
-    currentSection?.wrapperStyle?.pattern || pattern1
+    currentSection?.background?.pattern || pattern1
   );
 
   useEffect(() => {
     const currentBgTypeOption = backgroundType.find(
-      (opt) => opt.value === currentSection?.wrapperStyle?.bgType
+      (opt) => opt.value === currentSection.background?.bgType
     );
     if (currentBgTypeOption) {
       setSelectedBackgroundType(currentBgTypeOption);
     }
 
     const currentPaddingTypeOption = PaddingYOptions.find(
-      (opt) => opt.value === currentSection?.wrapperStyle?.paddingType
+      (opt) => opt.value === currentSection.background?.paddingType
     );
 
     if (currentPaddingTypeOption) {
       setSelectedPadding(currentPaddingTypeOption);
     }
 
-    const currentPaddingY = currentSection?.wrapperStyle?.paddingY;
+    const currentPaddingY = currentSection.background?.paddingY;
 
     if (currentPaddingY) {
       setPaddingY(currentPaddingY);
     }
 
-    const currentPattern = currentSection?.wrapperStyle?.pattern;
+    const currentPattern = currentSection.background?.pattern;
 
     if (currentPattern) {
       setSelectedPattern(currentPattern);
     }
 
-    const currentShadow = shadowOptions.find(
-      (opt) => opt.value === currentSection?.wrapperStyle?.shadow
-    );
-    if (currentShadow) {
-      setShadow(currentShadow);
-    }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [type, backgroundType, PaddingYOptions, currentSection]);
+  }, [type, backgroundType, PaddingYOptions, currentSection.background]);
 
   const defaultBgValues = {
     bgType: undefined,
@@ -184,13 +160,20 @@ const FrameControl = ({ currentSection, setPreviewSection, type }) => {
   const setValueBackground = (newValue) => {
     setPreviewSection((arr) =>
       arr.map((section) =>
-        section.id === currentSection.id
+        section.id === sectionId
           ? {
               ...section,
-              wrapperStyle: {
-                ...section.wrapperStyle,
-                ...newValue,
-              },
+              content: section.content.map((content) =>
+                content.id === currentSection.id
+                  ? {
+                      ...content,
+                      background: {
+                        ...content.background,
+                        ...newValue,
+                      },
+                    }
+                  : content
+              ),
             }
           : section
       )
@@ -265,12 +248,6 @@ const FrameControl = ({ currentSection, setPreviewSection, type }) => {
       setBlur(newValue);
     } else if (key === "opacity") {
       setOpacity(newValue);
-    } else if (key === "width") {
-      setWidth(newValue);
-    } else if (key === "rotation") {
-      setRotation(newValue);
-    } else if (key === "rounded") {
-      setRounded(newValue);
     }
     handleUpdateBackground(key, newValue);
   };
@@ -340,59 +317,6 @@ const FrameControl = ({ currentSection, setPreviewSection, type }) => {
 
   return (
     <div className="pb-3">
-      <InputRangeWithNumber
-        label="Lebar"
-        value={width}
-        onChange={(newValue) => {
-          setWidth(newValue);
-          handleUpdateBackground("width", newValue);
-        }}
-        min={100}
-        max={1200}
-        onBlur={() =>
-          handleSetValueWhenBlurBackground(width, 100, 1200, "width")
-        }
-      />
-
-      <InputRangeWithNumber
-        label="Melingkar"
-        value={rounded}
-        onChange={(newValue) => {
-          setRounded(newValue);
-          handleUpdateBackground("rounded", newValue);
-        }}
-        min={0}
-        max={100}
-        onBlur={() =>
-          handleSetValueWhenBlurBackground(rounded, 0, 100, "rounded")
-        }
-      />
-
-      <InputRangeWithNumber
-        label="Rotasi"
-        value={rotation}
-        onChange={(newValue) => {
-          setRotation(newValue);
-          handleUpdateBackground("rotation", newValue);
-        }}
-        min={-90}
-        max={90}
-        onBlur={() =>
-          handleSetValueWhenBlurBackground(rotation, -90, 90, "rotation")
-        }
-      />
-
-      <SelectOptions
-        label="Bayangan"
-        options={shadowOptions}
-        onChange={(selectedOption) => {
-          setShadow(selectedOption);
-          handleUpdateBackground("shadow", selectedOption.value);
-        }}
-        value={shadow}
-        width="50"
-      />
-
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
         <SelectOptions
           label="Tipe Background"
@@ -659,4 +583,4 @@ const FrameControl = ({ currentSection, setPreviewSection, type }) => {
   );
 };
 
-export default FrameControl;
+export default BackgroundTabFrame;

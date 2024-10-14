@@ -24,6 +24,7 @@ import { dataListContent } from "../DataListContent";
 import Text from "./sections/text";
 
 const ListSections = ({
+  sectionId,
   previewSection,
   setPreviewSection,
   isShowContent,
@@ -97,6 +98,7 @@ const ListSections = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
       ) : null}
       {/* 

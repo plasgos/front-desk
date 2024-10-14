@@ -19,9 +19,11 @@ import {
 import { useDebounce } from "use-debounce";
 import { createUniqueID } from "../../../../../../../lib/unique-id";
 import ColorPicker from "../../../../common/ColorPicker";
-import AnimationControl from "../../../../common/AnimationControl";
 import { CustomReactQuill } from "../../../../common/ReactQuill";
-import BackgroundTab from "../../../../common/BackgroundTab";
+import AnimationControlFrame from "../../common/AnimationControlFrame";
+import BackgroundTabFrame from "../../common/BackgroundTabFrame";
+import { addNewSection } from "../../helper/addNewSection";
+import { cancelNewSection } from "../../helper/cancelNewSection";
 
 const Text = ({
   previewSection,
@@ -30,6 +32,7 @@ const Text = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  sectionId,
 }) => {
   const [editorHtml, setEditorHtml] = useState(
     currentSection?.content?.editorHtml || "Type your text here"
@@ -47,6 +50,10 @@ const Text = ({
 
   const [settingText, setSettingText] = useState({});
 
+  const contentIdToCheck = isEditingSection
+    ? currentSection.id
+    : settingText.id;
+
   useEffect(() => {
     if (editorHtmlValue) {
       handleEditorChange(editorHtmlValue);
@@ -61,44 +68,50 @@ const Text = ({
 
   const handleChangeContentStyle = (key, value) => {
     setPreviewSection((arr) =>
-      arr.map((item) => {
-        const contentIdToCheck = isEditingSection
-          ? currentSection.id
-          : settingText.id;
-
-        return String(item.id) === contentIdToCheck
+      arr.map((section) =>
+        section.id === sectionId
           ? {
-              ...item,
-              content: {
-                ...item.content,
-                style: {
-                  ...item.content.style,
-                  [key]: value,
-                },
-              },
+              ...section,
+              content: section.content.map((content) =>
+                content.id === contentIdToCheck
+                  ? {
+                      ...content,
+                      content: {
+                        ...content.content,
+                        style: {
+                          ...content.content.style,
+                          [key]: value,
+                        },
+                      },
+                    }
+                  : content
+              ),
             }
-          : item;
-      })
+          : section
+      )
     );
   };
 
   const handleEditorChange = (html) => {
     setPreviewSection((arr) =>
-      arr.map((item) => {
-        const contentIdToCheck = isEditingSection
-          ? currentSection.id
-          : settingText.id;
-
-        return String(item.id) === contentIdToCheck
+      arr.map((section) =>
+        section.id === sectionId
           ? {
-              ...item,
-              content: {
-                ...item.content,
-                editorHtml: html,
-              },
+              ...section,
+              content: section.content.map((content) =>
+                content.id === contentIdToCheck
+                  ? {
+                      ...content,
+                      content: {
+                        ...content.content,
+                        editorHtml: html,
+                      },
+                    }
+                  : content
+              ),
             }
-          : item;
-      })
+          : section
+      )
     );
   };
 
@@ -138,7 +151,8 @@ const Text = ({
       },
     };
 
-    setPreviewSection((prevSections) => [...prevSections, payload]);
+    addNewSection(setPreviewSection, sectionId, payload);
+
     setSettingText(payload);
   };
 
@@ -155,9 +169,8 @@ const Text = ({
       setPreviewSection([...sectionBeforeEdit]);
     } else {
       isShowContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.filter((section) => section.id !== settingText.id)
-      );
+
+      cancelNewSection(setPreviewSection, sectionId, settingText.id);
     }
   };
 
@@ -198,7 +211,7 @@ const Text = ({
         </CNav>
         <CTabContent
           style={{
-            height: "auto",
+            height: "340px",
             paddingRight: 5,
             overflowY: "auto",
             paddingBottom: 50,
@@ -298,8 +311,9 @@ const Text = ({
           </CTabPane>
 
           <CTabPane className="p-1" data-tab="animation">
-            <AnimationControl
-              label="Teks"
+            <AnimationControlFrame
+              sectionId={sectionId}
+              label=""
               currentSection={isEditingSection ? currentSection : settingText}
               setPreviewSection={setPreviewSection}
             />
@@ -310,7 +324,8 @@ const Text = ({
             className="p-1"
             data-tab="background"
           >
-            <BackgroundTab
+            <BackgroundTabFrame
+              sectionId={sectionId}
               currentSection={isEditingSection ? currentSection : settingText}
               setPreviewSection={setPreviewSection}
               type={isEditingSection ? "edit" : "add"}

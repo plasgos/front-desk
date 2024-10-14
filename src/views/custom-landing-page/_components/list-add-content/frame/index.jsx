@@ -23,7 +23,6 @@ import BackgroundTab from "../../common/BackgroundTab";
 import { ListSectionContent } from "../../ListSectionContent";
 import FrameControl from "./FrameControl";
 import ListSections from "./ListSections";
-// import { UpdateContent } from "./UpdateContent";
 
 const newId = () => Math.random().toString(36).substr(2, 9);
 
@@ -142,10 +141,24 @@ const Frame = ({
       title: "Bingkai",
       content: [initialSection],
       wrapperStyle: {
-        ...background,
+        bgType: "gradient",
+        bgColor: "",
+        bgImage: "",
+        blur: 0,
+        opacity: 0,
+        paddingY: 120,
+        paddingTop: 0,
+        paddingBottom: 0,
+        paddingType: "equal",
+        direction: "to right",
+        fromColor: "#FF6F61",
+        toColor: "#6B5B95",
+        isRevert: false,
+        pattern: "",
         width: 400,
         rounded: 40,
         rotation: 0,
+        shadow: "tw-shadow-lg",
       },
       background,
     };
@@ -235,6 +248,11 @@ const Frame = ({
                     setPreviewSection={setPreviewSection}
                     isShowContent={(value) => setIsAddContent(value)}
                     handleSectionContentFocus={handleSectionContentFocus}
+                    sectionId={
+                      isEditingSection
+                        ? currentSection.id
+                        : selectedCurrentSection.id
+                    }
                   />
                 </CTabContent>
               </CTabs>
@@ -274,7 +292,11 @@ const Frame = ({
                   </CNavItem>
                 </CNav>
                 <CTabContent
-                  style={{ height: "auto", paddingRight: 5, overflowY: "auto" }}
+                  style={{
+                    height: "340px",
+                    paddingRight: 5,
+                    overflowY: "auto",
+                  }}
                   className="pt-3"
                 >
                   <CTabPane className="p-1" data-tab="content">
