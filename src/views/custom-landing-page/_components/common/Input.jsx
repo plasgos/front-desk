@@ -56,7 +56,7 @@ const Input = ({
         <div className="form-group ">
           {label && <label>{label}</label>}
           <input
-            value={value || ""}
+            value={value}
             onChange={onChange}
             type={type}
             className="form-control"

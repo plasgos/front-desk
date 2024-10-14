@@ -11,6 +11,7 @@ import {
 } from "react-icons/md";
 import {
   PiArrowsDownUpLight,
+  PiFrameCornersThin,
   PiTargetDuotone,
   PiVideoLight,
   PiVideoThin,
@@ -163,6 +164,12 @@ export const dataListContent = [
         title: "Multi Kolom",
         icon: <PiColumnsPlusRightThin style={{ marginRight: 5 }} size={24} />,
         action: (setAddContent) => setAddContent("multi-column"),
+      },
+      {
+        name: "frame",
+        title: "Bingkai",
+        icon: <PiFrameCornersThin style={{ marginRight: 5 }} size={24} />,
+        action: (setAddContent) => setAddContent("frame"),
       },
     ],
   },

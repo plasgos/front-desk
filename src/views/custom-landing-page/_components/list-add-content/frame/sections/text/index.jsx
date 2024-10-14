@@ -17,11 +17,11 @@ import {
   FaAlignRight,
 } from "react-icons/fa6";
 import { useDebounce } from "use-debounce";
-import { createUniqueID } from "../../../../../lib/unique-id";
-import AnimationControl from "../../common/AnimationControl";
-import BackgroundTab from "../../common/BackgroundTab";
-import ColorPicker from "../../common/ColorPicker";
-import { CustomReactQuill } from "../../common/ReactQuill";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import ColorPicker from "../../../../common/ColorPicker";
+import AnimationControl from "../../../../common/AnimationControl";
+import { CustomReactQuill } from "../../../../common/ReactQuill";
+import BackgroundTab from "../../../../common/BackgroundTab";
 
 const Text = ({
   previewSection,
@@ -198,7 +198,7 @@ const Text = ({
         </CNav>
         <CTabContent
           style={{
-            height: 340,
+            height: "auto",
             paddingRight: 5,
             overflowY: "auto",
             paddingBottom: 50,

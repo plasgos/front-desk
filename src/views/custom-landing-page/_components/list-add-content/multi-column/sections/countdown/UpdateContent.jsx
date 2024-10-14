@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import SelectOptions from "../../common/SelectOptions";
 
 import moment from "moment";
 import { SingleDatePicker } from "react-dates";
 import "react-dates/initialize"; // Inisialisasi untuk react-dates
 import "react-dates/lib/css/_datepicker.css";
-import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import DurationControl from "./DurationControl";
-import ColorPicker from "../../common/ColorPicker";
+import SelectOptions from "../../../../common/SelectOptions";
+import ColorPicker from "../../../../common/ColorPicker";
+import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 
 const typeTargetOptions = [
   { value: "duration", label: "Durasi" },
@@ -27,9 +27,10 @@ export const hoursOptions = Array.from({ length: 24 }, (_, i) => {
 });
 
 const UpdateContent = ({
+  sectionId,
+  columnId,
   setPreviewSection,
   currentSection,
-  isEditingContent,
 }) => {
   const [typeTarget, setTypeTarget] = useState(
     typeTargetOptions.find(
@@ -109,66 +110,108 @@ const UpdateContent = ({
     (key, value) => {
       setPreviewSection((prevSection) =>
         prevSection.map((section) =>
-          section.id === currentSection?.id
+          section.id === sectionId
             ? {
                 ...section,
-                content: {
-                  ...section.content,
-                  datePicked: {
-                    ...section.content.datePicked,
-                    [key]: value,
-                  },
-                },
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) =>
+                          content.id === currentSection.id
+                            ? {
+                                ...content,
+                                content: {
+                                  ...content.content,
+                                  datePicked: {
+                                    ...content.content.datePicked,
+                                    [key]: value,
+                                  },
+                                },
+                              }
+                            : content
+                        ),
+                      }
+                    : column
+                ),
               }
             : section
         )
       );
     },
-    [currentSection.id, setPreviewSection]
+    [columnId, currentSection.id, sectionId, setPreviewSection]
   );
 
   const handelUpdateDuration = useCallback(
     (key, value) => {
       setPreviewSection((prevSection) =>
         prevSection.map((section) =>
-          section.id === currentSection?.id
+          section.id === sectionId
             ? {
                 ...section,
-                content: {
-                  ...section.content,
-                  duration: {
-                    ...section.content.duration,
-                    [key]: value,
-                  },
-                },
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) =>
+                          content.id === currentSection.id
+                            ? {
+                                ...content,
+                                content: {
+                                  ...content.content,
+                                  duration: {
+                                    ...content.content.duration,
+                                    [key]: value,
+                                  },
+                                },
+                              }
+                            : content
+                        ),
+                      }
+                    : column
+                ),
               }
             : section
         )
       );
     },
-    [currentSection.id, setPreviewSection]
+    [columnId, currentSection.id, sectionId, setPreviewSection]
   );
 
   const handelUpdateStyle = useCallback(
     (key, value) => {
       setPreviewSection((prevSection) =>
         prevSection.map((section) =>
-          section.id === currentSection?.id
+          section.id === sectionId
             ? {
                 ...section,
-                variant: {
-                  ...section.variant,
-                  style: {
-                    ...section.variant.style,
-                    [key]: value,
-                  },
-                },
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) =>
+                          content.id === currentSection.id
+                            ? {
+                                ...content,
+                                variant: {
+                                  ...content.variant,
+                                  style: {
+                                    ...content.variant.style,
+                                    [key]: value,
+                                  },
+                                },
+                              }
+                            : content
+                        ),
+                      }
+                    : column
+                ),
               }
             : section
         )
       );
     },
-    [currentSection.id, setPreviewSection]
+    [columnId, currentSection.id, sectionId, setPreviewSection]
   );
 
   const handleDateChange = (newDate) => {
@@ -180,22 +223,37 @@ const UpdateContent = ({
 
     setPreviewSection((prevSection) =>
       prevSection.map((section) =>
-        section.id === currentSection?.id
+        section.id === sectionId
           ? {
               ...section,
-              content: {
-                ...section.content,
-                datePicked: {
-                  ...section.content.datePicked,
-                  date: selectedDay,
-                  month: selectedMonth,
-                  years: selectedYear,
-                },
-              },
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) =>
+                        content.id === currentSection.id
+                          ? {
+                              ...content,
+                              content: {
+                                ...content.content,
+                                datePicked: {
+                                  ...content.content.datePicked,
+                                  date: selectedDay,
+                                  month: selectedMonth,
+                                  years: selectedYear,
+                                },
+                              },
+                            }
+                          : content
+                      ),
+                    }
+                  : column
+              ),
             }
           : section
       )
     );
+
     handleUpdateDatePicker("dateView", newDate);
   };
 
@@ -211,19 +269,33 @@ const UpdateContent = ({
     (key, value) => {
       setPreviewSection((prevSection) =>
         prevSection.map((section) =>
-          section.id === currentSection?.id
+          section.id === sectionId
             ? {
                 ...section,
-                content: {
-                  ...section.content,
-                  [key]: value,
-                },
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) =>
+                          content.id === currentSection.id
+                            ? {
+                                ...content,
+                                content: {
+                                  ...content.content,
+                                  [key]: value,
+                                },
+                              }
+                            : content
+                        ),
+                      }
+                    : column
+                ),
               }
             : section
         )
       );
     },
-    [currentSection.id, setPreviewSection]
+    [columnId, currentSection.id, sectionId, setPreviewSection]
   );
   return (
     <div>

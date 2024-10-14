@@ -17,6 +17,7 @@ import Video from "../sections/video";
 import VideoText from "../sections/video-text";
 import CallToAction from "../sections/call-to-action";
 import FormActivity from "../sections/form-activity";
+import CountDown from "../sections/countdown";
 
 export function useRenderEditSection({
   previewSection,
@@ -367,6 +368,24 @@ export function useRenderEditSection({
                 ) {
                   return (
                     <FormActivity
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "countdown" &&
+                  content.name === "countdown" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <CountDown
                       key={content.id}
                       currentSection={content}
                       previewSection={previewSection}

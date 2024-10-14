@@ -19,6 +19,7 @@ import ViewVideo from "../ViewVideo";
 import ViewVideoText from "../ViewVideoText";
 import ViewCallToAction from "../ViewCallToAction";
 import ViewFormActivity from "../ViewFormActivity";
+import ViewCountDown from "../ViewCountdown";
 
 const ViewMultiColumn = forwardRef(
   (
@@ -335,6 +336,13 @@ const ViewMultiColumn = forwardRef(
 
                         {contentItem.name === "form-activity" && (
                           <ViewFormActivity
+                            content={contentItem}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {contentItem.name === "countdown" && (
+                          <ViewCountDown
                             content={contentItem}
                             isResizing={isResizing}
                           />

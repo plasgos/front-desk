@@ -548,7 +548,7 @@ const MultiColumn = ({
                       variant="outline"
                       className="mx-2"
                     >
-                      Batal NIH
+                      Batal
                     </CButton>
 
                     <CButton onClick={handleConfirm} color="primary">

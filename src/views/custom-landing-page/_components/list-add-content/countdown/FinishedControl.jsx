@@ -13,7 +13,7 @@ const textShadowOptions = [
   { value: "3px 3px 6px rgba(0, 0, 0, 0.7)", label: "Gelap" },
 ];
 
-const Finish = ({ setPreviewSection, currentSection }) => {
+const FinishControl = ({ setPreviewSection, currentSection }) => {
   const initialIsFinished = currentSection?.finish?.isFinished;
 
   const {
@@ -196,4 +196,4 @@ const Finish = ({ setPreviewSection, currentSection }) => {
   );
 };
 
-export default Finish;
+export default FinishControl;

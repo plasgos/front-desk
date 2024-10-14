@@ -27,8 +27,6 @@ const DateCountDown = ({ content }) => {
   const { date, month, years, hours, minutes } = content?.content?.datePicked;
 
   const [remainingTime, setRemainingTime] = useState(0);
-  console.log("🚀 ~ DateCountDown ~ remainingTime:", remainingTime);
-
   useEffect(() => {
     const now = moment(); // Waktu sekarang
 
@@ -72,8 +70,6 @@ const DateCountDown = ({ content }) => {
 
   const daysDuration =
     daySeconds + hours * hourSeconds + minutes * minuteSeconds;
-  console.log("🚀 ~ DateCountDown ~ daysDuration:", daysDuration);
-
   // Fungsi untuk menghitung waktu
   const formatTime = (totalSeconds) => {
     const daysView = Math.floor(totalSeconds / (24 * 3600));
@@ -130,7 +126,7 @@ const DateCountDown = ({ content }) => {
   return (
     <div>
       {group === "Full Text" && (
-        <div className="tw-flex tw-flex-wrap tw-justify-center tw-items-center tw-gap-3">
+        <div>
           {remainingTime > 0 && !isFinished ? (
             <div className="tw-flex tw-flex-wrap tw-justify-center tw-items-center tw-gap-3">
               <div
@@ -138,10 +134,10 @@ const DateCountDown = ({ content }) => {
                   fontSize: size,
                   color: dividerColor,
                 }}
-                className="tw-flex tw-items-center tw-gap-2"
+                className="tw-flex tw-items-center tw-gap-2  tw-font-bold"
               >
                 {daysView > 0 && (
-                  <div>
+                  <div className={`tw-font-bold `}>
                     <span
                       style={{
                         fontSize: size,
@@ -155,7 +151,7 @@ const DateCountDown = ({ content }) => {
                   </div>
                 )}
                 {hoursView > 0 && (
-                  <div>
+                  <div className={`tw-font-bold `}>
                     <span
                       style={{
                         fontSize: size,
@@ -186,6 +182,87 @@ const DateCountDown = ({ content }) => {
                   className={`tw-font-bold `}
                 >
                   {secondsView} Detik
+                </span>
+              </div>
+            </div>
+          ) : (
+            <div
+              className={`tw-w-full tw-flex tw-items-center  tw-font-semibold tw-text-lg`}
+            >
+              <div
+                className={`${fontSize} `}
+                style={{
+                  color: textColor,
+                  textShadow: textShadow,
+                }}
+                dangerouslySetInnerHTML={{ __html: text }}
+              />
+            </div>
+          )}
+        </div>
+      )}
+
+      {group === "Digital" && (
+        <div className="tw-flex tw-flex-wrap tw-justify-center tw-items-center tw-gap-3">
+          {remainingTime > 0 && !isFinished ? (
+            <div className="tw-flex tw-flex-wrap tw-justify-center tw-items-center tw-gap-3">
+              <div
+                style={{
+                  fontSize: size,
+                  color: dividerColor,
+                }}
+                className="tw-flex tw-items-center  tw-font-bold"
+              >
+                {daysView > 0 && (
+                  <div className="tw-mr-2">
+                    <span
+                      style={{
+                        fontSize: size,
+                        color: daysColor,
+                      }}
+                      className={`tw-font-bold `}
+                    >
+                      {daysView} Hari
+                    </span>{" "}
+                    - <br />
+                  </div>
+                )}
+                <div>
+                  <span
+                    style={{
+                      fontSize: size,
+                      color: hoursColor,
+                    }}
+                    className={`tw-font-bold `}
+                  >
+                    {hoursView === 0
+                      ? "00"
+                      : hoursView.toString().padStart(2, "0")}
+                  </span>
+                  : <br />
+                </div>
+                <span
+                  style={{
+                    fontSize: size,
+                    color: minutesColor,
+                  }}
+                  className={`tw-font-bold `}
+                >
+                  {minutesView === 0
+                    ? "00"
+                    : minutesView.toString().padStart(2, "0")}
+                </span>{" "}
+                : <br />
+                <span
+                  style={{
+                    fontSize: size,
+                    color: secondsColor,
+                  }}
+                  className={`tw-font-bold `}
+                >
+                  {secondsView === 0
+                    ? "00"
+                    : secondsView.toString().padStart(2, "0")}
                 </span>
               </div>
             </div>

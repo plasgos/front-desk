@@ -1,40 +1,32 @@
 import { CButton, CCard, CTabContent } from "@coreui/react";
 import React, { useState } from "react";
-import { SearchForm } from "../common/SearchForm";
-import Buttons from "./button";
-import CallToAction from "./call-to-action";
-import ColumnTextAndImages from "./colum-text-and-image";
-import { dataListContent } from "./DataListContent";
-import EmptySpace from "./empty-space/index";
-import FAQ from "./faq";
-import FloatingButton from "./floating-button";
-import FloatingButtonCircle from "./floating-button-circle";
-import FormCheckout from "./form-checkout";
-import Image from "./image";
-import ImageText from "./image-text";
-import Line from "./line/index";
-import ListFeature from "./list-feature";
-import ListImagesControl from "./list-images/index";
-import MultiColumn from "./multi-column";
-import Quote from "./quote";
-import ScrollTarget from "./scroll-target/index";
-import Testimony from "./testimony";
-import Text from "./text/index";
-import Video from "./video";
-import VideoText from "./video-text";
-import FormActivity from "./form-activity";
-import CountDown from "./countdown";
-import Frame from "./frame";
+// import Buttons from "./button";
+// import CallToAction from "./call-to-action";
+// import ColumnTextAndImages from "./colum-text-and-image";
+// import CountDown from "./countdown";
+// import EmptySpace from "./empty-space/index";
+// import FAQ from "./faq";
+// import FormActivity from "./form-activity";
+// import FormCheckout from "./form-checkout";
+// import Frame from "./frame";
+// import Image from "./image";
+// import ImageText from "./image-text";
+// import Line from "./line/index";
+// import ListFeature from "./list-feature";
+// import ListImagesControl from "./list-images/index";
+// import Quote from "./quote";
+// import ScrollTarget from "./scroll-target/index";
+// import Testimony from "./testimony";
+// import Video from "./video";
+// import VideoText from "./video-text";
+import { SearchForm } from "../../common/SearchForm";
+import { dataListContent } from "../DataListContent";
+import Text from "./sections/text";
 
-const ListContent = ({
+const ListSections = ({
   previewSection,
   setPreviewSection,
   isShowContent,
-  previewFloatingSection,
-  setPreviewFloatingSection,
-  isMultiColumn,
-  setIsAddColumnSectionMultiColumn,
-  handleColumnFocus,
   handleSectionContentFocus,
 }) => {
   const [addContent, setAddContent] = useState("");
@@ -68,20 +60,12 @@ const ListContent = ({
   };
 
   const handleCancelAddContent = () => {
-    if (isMultiColumn) {
-      setIsAddColumnSectionMultiColumn(false);
-    } else {
-      isShowContent(false);
-      setAddContent("");
-    }
+    isShowContent(false);
+    setAddContent("");
   };
 
-  const handleSelectSection = (existSection, action) => {
-    if (existSection) {
-      return;
-    } else {
-      action(setAddContent);
-    }
+  const handleSelectSection = (action) => {
+    action(setAddContent);
   };
 
   return (
@@ -115,7 +99,7 @@ const ListContent = ({
           isShowContent={isShowContent}
         />
       ) : null}
-
+      {/* 
       {addContent === "column-text-and-image" && (
         <ColumnTextAndImages
           previewSection={previewSection}
@@ -210,15 +194,6 @@ const ListContent = ({
         />
       )}
 
-      {addContent === "floating-button" && (
-        <FloatingButton
-          previewFloatingSection={previewFloatingSection}
-          setPreviewFloatingSection={setPreviewFloatingSection}
-          isShowContent={isShowContent}
-          handleSectionContentFocus={handleSectionContentFocus}
-        />
-      )}
-
       {addContent === "image" && (
         <Image
           previewSection={previewSection}
@@ -232,17 +207,6 @@ const ListContent = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
-        />
-      )}
-
-      {addContent === "multi-column" && (
-        <MultiColumn
-          previewSection={previewSection}
-          setPreviewSection={(value) => setPreviewSection(value)}
-          isShowMultiColumn={isShowContent}
-          previewFloatingSection={previewFloatingSection}
-          setPreviewFloatingSection={setPreviewFloatingSection}
-          handleColumnFocus={handleColumnFocus}
         />
       )}
 
@@ -270,15 +234,6 @@ const ListContent = ({
         />
       )}
 
-      {addContent === "floating-button-circle" && (
-        <FloatingButtonCircle
-          previewFloatingSection={previewFloatingSection}
-          setPreviewFloatingSection={setPreviewFloatingSection}
-          isShowContent={isShowContent}
-          handleSectionContentFocus={handleSectionContentFocus}
-        />
-      )}
-
       {addContent === "form-activity" && (
         <FormActivity
           previewSection={previewSection}
@@ -302,7 +257,7 @@ const ListContent = ({
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
         />
-      )}
+      )} */}
 
       <CTabContent
         style={{
@@ -318,41 +273,18 @@ const ListContent = ({
                 <div key={groupIndex}>
                   <div className="mb-2 font-weight-bold">{group.group}</div>
                   {group.sections.map((section, index) => {
-                    const existFloatingSectionSelected = previewFloatingSection
-                      .map((prevSection) => prevSection)
-                      .some((prevSection) => prevSection.name === section.name);
-
                     return (
                       <CCard
                         key={index}
                         style={{
                           marginBottom: 10,
-                          cursor: existFloatingSectionSelected
-                            ? "not-allowed"
-                            : "pointer",
+                          cursor: "pointer",
                         }}
-                        onClick={() =>
-                          handleSelectSection(
-                            existFloatingSectionSelected,
-                            section.action
-                          )
-                        }
+                        onClick={() => handleSelectSection(section.action)}
                       >
                         <div className="d-flex align-items-center py-1 px-2">
-                          <div
-                            className={`${
-                              existFloatingSectionSelected && "text-secondary"
-                            }`}
-                          >
-                            {section.icon}
-                          </div>
-                          <div
-                            className={`${
-                              existFloatingSectionSelected && "text-secondary"
-                            }`}
-                          >
-                            {section.title}
-                          </div>
+                          <div>{section.icon}</div>
+                          <div>{section.title}</div>
                         </div>
                       </CCard>
                     );
@@ -369,4 +301,4 @@ const ListContent = ({
   );
 };
 
-export default ListContent;
+export default ListSections;

@@ -3,7 +3,7 @@ import { dataListContent } from "../DataListContent";
 import { CButton, CCard, CTabContent } from "@coreui/react";
 import { SearchForm } from "../../common/SearchForm";
 import Text from "./sections/text";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setIsAddColumnSection,
   setIsEditingColumnSection,
@@ -25,6 +25,7 @@ import Video from "./sections/video";
 import VideoText from "./sections/video-text";
 import CallToAction from "./sections/call-to-action";
 import FormActivity from "./sections/form-activity";
+import CountDown from "./sections/countdown";
 
 const ListContentMultiColumn = ({
   previewSection,
@@ -243,6 +244,15 @@ const ListContentMultiColumn = ({
 
       {addContent === "form-activity" && (
         <FormActivity
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          sectionId={sectionId}
+          columnId={columnId}
+        />
+      )}
+
+      {addContent === "countdown" && (
+        <CountDown
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           sectionId={sectionId}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Input from "../../common/Input";
-import SelectOptions from "../../common/SelectOptions";
 import { minuteOptions } from "./UpdateContent";
+import Input from "../../../../common/Input";
+import SelectOptions from "../../../../common/SelectOptions";
 
 const DurationControl = ({ currentSection, handelUpdateDuration }) => {
   const [hoursDuration, setHoursDuration] = useState(

@@ -11,11 +11,19 @@ import {
 } from "@coreui/react";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { createUniqueID } from "../../../../../lib/unique-id";
-import BackgroundTab from "../../common/BackgroundTab";
-import SelectVariant from "../../common/SelectVariant";
 import FinishControl from "./FinishedControl";
 import UpdateContent from "./UpdateContent";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import SelectVariant from "../../../../common/SelectVariant";
+import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsAddColumnSection,
+  setIsEditingColumnSection,
+  setIsEditingSection,
+} from "../../../../../../../redux/modules/custom-landing-page/reducer";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 
 const optionVariant = [
   {
@@ -69,11 +77,16 @@ const circleStyle = {
 const CountDown = ({
   previewSection,
   setPreviewSection,
-  isShowContent,
-  isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  sectionId,
+  columnId,
 }) => {
+  const { isEditingSection, isAddColumnSection } = useSelector(
+    (state) => state.customLandingPage.multiColumnSection
+  );
+  const dispatch = useDispatch();
+
   const [isSelectVariant, setIsSelectVariant] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState(
     flattenedOptions.find(
@@ -84,13 +97,22 @@ const CountDown = ({
   const [currentVariant, setCurrentVariant] = useState({});
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
 
-  useEffect(() => {
-    const section = previewSection.find((section) => section.id === setting.id);
+  const contentIdToCheck = isEditingSection ? currentSection.id : setting.id;
 
-    if (section) {
-      setSelectedCurrentSection(section);
+  useEffect(() => {
+    if (!isEditingSection) {
+      let section = previewSection.find((section) => section.id === sectionId);
+      if (section) {
+        let column = section.column.find((col) => col.id === columnId);
+        if (column) {
+          let content = column.content.find((cnt) => cnt.id === setting?.id);
+          if (content) {
+            setSelectedCurrentSection(content);
+          }
+        }
+      }
     }
-  }, [previewSection, setting.id]);
+  }, [previewSection, isEditingSection, sectionId, columnId, setting.id]);
 
   const handleAddContent = () => {
     const today = moment();
@@ -154,7 +176,7 @@ const CountDown = ({
       },
     };
 
-    setPreviewSection((prevSections) => [...prevSections, payload]);
+    addSectionMultiColumn(setPreviewSection, sectionId, columnId, payload);
     setSetting(payload);
   };
 
@@ -180,27 +202,39 @@ const CountDown = ({
     const style = styleMap[option.id] || {};
 
     setSelectedVariant({ ...option, group });
+
     setPreviewSection((arr) =>
-      arr.map((item) => {
-        const contentIdToCheck = isEditingSection
-          ? currentSection.id
-          : setting.id;
-        return String(item.id) === contentIdToCheck
+      arr.map((section) =>
+        String(section.id) === sectionId
           ? {
-              ...item,
-              variant: {
-                ...item.variant,
-                group,
-                id: option.id,
-                name: option.value,
-                style: {
-                  ...item.variant.style,
-                  ...style,
-                },
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) =>
+                        content.id === contentIdToCheck
+                          ? {
+                              ...content,
+                              variant: {
+                                ...content.variant,
+                                group,
+                                id: option.id,
+                                name: option.value,
+                                style: {
+                                  ...content.variant.style,
+                                  ...style,
+                                },
+                              },
+                            }
+                          : content
+                      ),
+                    }
+                  : column
+              ),
             }
-          : item;
-      })
+          : section
+      )
     );
 
     if (!isEditingSection) {
@@ -225,59 +259,62 @@ const CountDown = ({
       setSelectedVariant(currentVariant);
       const style = styleMap[currentVariant.id] || {};
 
-      console.log("🚀 ~ handleCancel ~ currentVariant:", currentVariant);
-
       setIsSelectVariant(false);
+
       setPreviewSection((arr) =>
-        arr.map((item) => {
-          const contentIdToCheck = isEditingSection
-            ? currentSection.id
-            : setting.id;
-
-          return String(item.id) === contentIdToCheck
+        arr.map((section) =>
+          String(section.id) === sectionId
             ? {
-                ...item,
-                variant: {
-                  ...item.variant,
-                  group: currentVariant.group,
-                  id: currentVariant.id,
-                  name: currentVariant.value,
-                  style: {
-                    ...item.variant.style,
-                    ...style,
-                  },
-                },
+                ...section,
+                column: section.column.map((column) =>
+                  column.id === columnId
+                    ? {
+                        ...column,
+                        content: column.content.map((content) =>
+                          content.id === contentIdToCheck
+                            ? {
+                                ...content,
+                                variant: {
+                                  ...content.variant,
+                                  group: currentVariant.group,
+                                  id: currentVariant.id,
+                                  name: currentVariant.value,
+                                  style: {
+                                    ...content.variant.style,
+                                    ...style,
+                                  },
+                                },
+                              }
+                            : content
+                        ),
+                      }
+                    : column
+                ),
               }
-            : item;
-        })
-      );
-    } else if (!isEditingSection) {
-      isShowContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.filter((section) => {
-          const contentIdToCheck = isEditingSection
-            ? currentSection.id
-            : setting.id;
-
-          return section.id !== contentIdToCheck;
-        })
+            : section
+        )
       );
     } else if (isEditingSection) {
-      isShowContent(false);
+      dispatch(setIsEditingSection(false));
       setPreviewSection([...sectionBeforeEdit]);
     } else {
-      isShowContent(false);
+      dispatch(setIsAddColumnSection(false));
+      dispatch(setIsEditingColumnSection(false));
+      cancelSectionMultiColumn(setPreviewSection, sectionId, columnId, setting);
     }
   };
 
   const handleConfirm = () => {
     if (isSelectVariant) {
       setIsSelectVariant(false);
+    } else if (isAddColumnSection) {
+      dispatch(setIsAddColumnSection(false));
+    } else if (isEditingSection) {
+      dispatch(setIsEditingSection(false));
     } else {
-      isShowContent(false);
+      dispatch(setIsEditingColumnSection(false));
     }
   };
-
   return (
     <div>
       <CRow>
@@ -348,6 +385,8 @@ const CountDown = ({
                     </div>
 
                     <UpdateContent
+                      sectionId={sectionId}
+                      columnId={columnId}
                       currentSection={
                         isEditingSection
                           ? currentSection
@@ -359,6 +398,8 @@ const CountDown = ({
 
                   <CTabPane className="p-1" data-tab="finish">
                     <FinishControl
+                      sectionId={sectionId}
+                      columnId={columnId}
                       setPreviewSection={setPreviewSection}
                       currentSection={
                         isEditingSection
@@ -373,7 +414,9 @@ const CountDown = ({
                     className="p-1"
                     data-tab="background"
                   >
-                    <BackgroundTab
+                    <BackgroundTabMultiColumnContent
+                      sectionId={sectionId}
+                      columnId={columnId}
                       currentSection={
                         isEditingSection ? currentSection : setting
                       }
