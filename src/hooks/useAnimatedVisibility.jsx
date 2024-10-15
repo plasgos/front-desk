@@ -51,7 +51,7 @@ const useAnimatedVisibility = (
   const getClassName = () => {
     return isVisible
       ? `animate__animated ${content?.animation?.type} custom-animation`
-      : "animate__animated animate__fadeOut";
+      : "";
   };
 
   return { elementRef, getClassName, duration };

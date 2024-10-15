@@ -23,6 +23,7 @@ import BackgroundTab from "../../common/BackgroundTab";
 import { ListSectionContent } from "../../ListSectionContent";
 import FrameControl from "./FrameControl";
 import ListSections from "./ListSections";
+import { useRenderEditSectionFrame } from "./hooks/useRenderEditSectionFrame";
 
 const newId = () => Math.random().toString(36).substr(2, 9);
 
@@ -73,8 +74,10 @@ const Frame = ({
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
-  const [selectedContent, setSelectedContent] = useState({});
-  const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
+
+  const [selectedSection, setSelectedSection] = useState({});
+
+  const [currentSectionBeforeEdit, setCurrentSectionBeforeEdit] = useState([]);
 
   const [setting, setSetting] = useState({});
 
@@ -107,7 +110,7 @@ const Frame = ({
         })
       );
     } else if (isEditingContent) {
-      setPreviewSection([...currentContentBeforeEdit]);
+      setPreviewSection([...currentSectionBeforeEdit]);
       setIsAddContent(false);
       setIsEditingContent(false);
     } else if (isEditingSection) {
@@ -176,8 +179,8 @@ const Frame = ({
 
   const editSection = useCallback(
     (section) => {
-      setCurrentContentBeforeEdit([...previewSection]);
-      setSelectedContent(section);
+      setCurrentSectionBeforeEdit([...previewSection]);
+      setSelectedSection(section);
       setIsEditingContent(true);
     },
     [previewSection]
@@ -196,10 +199,10 @@ const Frame = ({
               index={contentIndex}
               id={contentItem.id}
               section={contentItem}
-              moveSection={
-                section.name.includes("floating") ? null : moveSection
+              moveSection={(dragIndex, hoverIndex) =>
+                moveSection(section.id, dragIndex, hoverIndex)
               }
-              editSection={() => editSection(section)}
+              editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
               focusContent={() => handleSectionContentFocus(contentItem.id)}
             />
@@ -209,6 +212,14 @@ const Frame = ({
     },
     [moveSection, editSection, removeSection, handleSectionContentFocus]
   );
+
+  const { renderEditSectionFrame } = useRenderEditSectionFrame({
+    previewSection,
+    setPreviewSection,
+    currentSectionBeforeEdit,
+    selectedSection,
+    setIsEditingContent,
+  });
 
   return (
     <div>
@@ -265,14 +276,15 @@ const Frame = ({
                     overflowX: "hidden",
                   }}
                 >
-                  {/* <UpdateContent
-                    idSection={
-                      isEditingSection ? currentSection.id : setting.id
-                    }
-                    currentContent={selectedContent}
-                    setPreviewSection={setPreviewSection}
-                    isEditingContent={true}
-                  /> */}
+                  <div>
+                    {previewSection
+                      .filter((section) =>
+                        isEditingSection
+                          ? section.id === currentSection.id
+                          : section.id === setting.id
+                      )
+                      .map((section, i) => renderEditSectionFrame(section))}
+                  </div>
                 </CTabContent>
               </CTabs>
             ) : (

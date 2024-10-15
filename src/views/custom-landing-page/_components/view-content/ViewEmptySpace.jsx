@@ -2,6 +2,7 @@ import React, { forwardRef } from "react";
 
 const ViewEmptySpace = forwardRef(
   ({ isDragging, isResizing, content, isFocused }, ref) => {
+    console.log("🚀 ~ content:", content);
     return (
       <div
         ref={ref}
@@ -9,7 +10,7 @@ const ViewEmptySpace = forwardRef(
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
-          height: content.height,
+          height: content?.height,
         }}
         className={`${
           isFocused &&

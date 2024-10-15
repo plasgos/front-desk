@@ -74,6 +74,7 @@ import ViewFormActivity from "./_components/view-content/ViewFormActivity";
 import ViewCountDown from "./_components/view-content/ViewCountdown/index";
 import CountDown from "./_components/list-add-content/countdown";
 import ViewFrame from "./_components/view-content/ViewFrame";
+import Frame from "./_components/list-add-content/frame";
 
 const landingPage = {
   detail: {
@@ -142,6 +143,7 @@ const CustomLandingPage = () => {
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [focusedIndexColumn, setFocusedIndexColumn] = useState(null);
+
   const [focusedIndexSectionContent, setFocusedIndexSectionContent] =
     useState(null);
 
@@ -563,6 +565,10 @@ const CustomLandingPage = () => {
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
             isFocused={focusedIndex === index}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
+            isPreview={isPreview}
+            width={dimensions.width}
           />
         );
       }
@@ -963,6 +969,24 @@ const CustomLandingPage = () => {
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "frame" &&
+        section.name === "frame" &&
+        editing.id === section.id
+      ) {
+        return (
+          <Frame
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+            handleSectionContentFocus={handleSectionContentFocus}
           />
         );
       }

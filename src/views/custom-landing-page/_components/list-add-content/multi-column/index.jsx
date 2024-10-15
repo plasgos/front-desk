@@ -31,6 +31,7 @@ import { ListSectionContent } from "../../ListSectionContent";
 import BackgroundTabSpecificColumn from "./common/BackgrounTabSpecificColumn";
 import { useRenderEditSection } from "./hooks/useRenderEditSection";
 import ListContentMultiColumn from "./ListContentMultiColumn";
+import Checkbox from "../../common/Checkbox";
 
 const widthTypeOptions = [
   { value: "equal", label: "Sama Rata" },
@@ -67,6 +68,8 @@ const MultiColumn = ({
 
   const [widthType, setWidthType] = useState(widthTypeOptions[0]);
 
+  const [isCombineMobileView, setIsCombineMobileView] = useState(false);
+
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
   useEffect(() => {
     const section = previewSection.find((section) => section.id === setting.id);
@@ -85,6 +88,13 @@ const MultiColumn = ({
 
       if (currentWidhtType) {
         setWidthType(currentWidhtType);
+      }
+
+      const currentMobileView =
+        currentSectionMultiColumn?.wrapperStyle?.combineColumnInMobileView;
+
+      if (currentMobileView) {
+        setIsCombineMobileView(currentMobileView);
       }
     }
   }, [currentSectionMultiColumn, isEditingSectionMultiColumn]);
@@ -216,6 +226,7 @@ const MultiColumn = ({
       ],
       wrapperStyle: {
         isWidthCustom: "equal",
+        combineColumnInMobileView: false,
       },
       background,
     };
@@ -613,6 +624,20 @@ const MultiColumn = ({
                                 })}
                               </div>
                             )}
+
+                            <Checkbox
+                              label="Gabungkan Kolom Di Mobile"
+                              id="combineColumnInMobileView"
+                              checked={isCombineMobileView}
+                              onChange={(e) => {
+                                const { checked } = e.target;
+                                setIsCombineMobileView(checked);
+                                handleChangeWrapperStyle(
+                                  "combineColumnInMobileView",
+                                  checked
+                                );
+                              }}
+                            />
                           </div>
 
                           <div className="my-3">

@@ -22,6 +22,8 @@ import React, { useState } from "react";
 import { SearchForm } from "../../common/SearchForm";
 import { dataListContent } from "../DataListContent";
 import Text from "./sections/text";
+import EmptySpace from "./sections/empty-space";
+import ColumnTextAndImages from "./sections/colum-text-and-image";
 
 const ListSections = ({
   sectionId,
@@ -101,13 +103,14 @@ const ListSections = ({
           sectionId={sectionId}
         />
       ) : null}
-      {/* 
+
       {addContent === "column-text-and-image" && (
         <ColumnTextAndImages
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          sectionId={sectionId}
         />
       )}
 
@@ -116,142 +119,143 @@ const ListSections = ({
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
       )}
 
-      {addContent === "list-images" && (
+      {/* {addContent === "list-images" && (
         <ListImagesControl
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
         />
-      )}
+      )} */}
 
-      {addContent === "scroll-target" && (
+      {/* {addContent === "scroll-target" && (
         <ScrollTarget
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "button" && (
+      {/* {addContent === "button" && (
         <Buttons
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
         />
-      )}
+      )} */}
 
-      {addContent === "testimony" && (
+      {/* {addContent === "testimony" && (
         <Testimony
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
         />
-      )}
+      )} */}
 
-      {addContent === "line" && (
+      {/* {addContent === "line" && (
         <Line
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "list-feature" && (
+      {/* {addContent === "list-feature" && (
         <ListFeature
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "quote" && (
+      {/* {addContent === "quote" && (
         <Quote
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "faq" && (
+      {/* {addContent === "faq" && (
         <FAQ
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
         />
-      )}
+      )} */}
 
-      {addContent === "form-checkout" && (
+      {/* {addContent === "form-checkout" && (
         <FormCheckout
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
         />
-      )}
+      )} */}
 
-      {addContent === "image" && (
+      {/* {addContent === "image" && (
         <Image
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "image-text" && (
+      {/* {addContent === "image-text" && (
         <ImageText
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "video" && (
+      {/* {addContent === "video" && (
         <Video
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "video-text" && (
+      {/* {addContent === "video-text" && (
         <VideoText
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
-
+      )} */}
+      {/* 
       {addContent === "call-to-action" && (
         <CallToAction
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
+      )} */}
 
-      {addContent === "form-activity" && (
+      {/* {addContent === "form-activity" && (
         <FormActivity
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
-
+      )} */}
+      {/* 
       {addContent === "countdown" && (
         <CountDown
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
         />
-      )}
-
+      )} */}
+      {/* 
       {addContent === "frame" && (
         <Frame
           previewSection={previewSection}
@@ -259,7 +263,7 @@ const ListSections = ({
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
         />
-      )} */}
+      )}  */}
 
       <CTabContent
         style={{

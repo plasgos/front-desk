@@ -39,6 +39,8 @@ const ViewMultiColumn = forwardRef(
   ) => {
     const stylesBg = useBackgroundStyles(content);
 
+    const { combineColumnInMobileView } = content.wrapperStyle;
+
     return (
       <>
         <div
@@ -52,8 +54,12 @@ const ViewMultiColumn = forwardRef(
             backgroundColor: content.background.bgColor || "",
             position: "relative",
             zIndex: 1,
+            maxWidth: "100%",
+            flexWrap:
+              isPreview && combineColumnInMobileView && width < 420
+                ? "wrap"
+                : "nowrap",
           }}
-          // className="tw-flex tw-flex-row tw-justify-center tw-items-center tw-flex-wrap tw-p-3 tw-gap-y-3"
           className={` tw-flex    ${
             isFocused &&
             "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20 "
@@ -148,22 +154,28 @@ const ViewMultiColumn = forwardRef(
               overflow: "hidden",
             };
 
+            const wrapperPreview = combineColumnInMobileView
+              ? {
+                  display: isPreview && width < 420 ? "flex" : "",
+                  width: "100%",
+                  justifyContent: isPreview && width < 420 ? "center" : "",
+                }
+              : {
+                  ...(content?.wrapperStyle?.isWidthCustom === "equal"
+                    ? { flex: "1 1 0%" }
+                    : { flex: `${column.width} 1 0% ` }),
+                };
+
             return (
               <div
                 ref={(el) => setColumnRef(el, columnIndex)}
                 style={{
-                  ...(content?.wrapperStyle?.isWidthCustom === "equal"
-                    ? { flex: "1 1 0%" }
-                    : { flex: `${column.width} 1 0% ` }),
+                  ...wrapperPreview,
                   ...(focusedIndexColumn === columnIndex && {
                     border: "2px solid green",
                   }),
                 }}
                 className={`${
-                  content?.wrapperStyle?.isWidthCustom === "equal"
-                    ? "tw-flex-1"
-                    : ""
-                } ${
                   focusedIndexColumn === columnIndex
                     ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20  "
                     : ""
@@ -178,7 +190,7 @@ const ViewMultiColumn = forwardRef(
                     position: "relative",
                     zIndex: 1,
                   }}
-                  className="tw-flex tw-flex-col "
+                  className={`tw-flex tw-flex-col`}
                 >
                   <div style={backgroundImgStyle}></div>
 
