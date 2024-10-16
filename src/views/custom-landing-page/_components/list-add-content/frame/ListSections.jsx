@@ -1,29 +1,15 @@
 import { CButton, CCard, CTabContent } from "@coreui/react";
 import React, { useState } from "react";
-// import Buttons from "./button";
-// import CallToAction from "./call-to-action";
-// import ColumnTextAndImages from "./colum-text-and-image";
-// import CountDown from "./countdown";
-// import EmptySpace from "./empty-space/index";
-// import FAQ from "./faq";
-// import FormActivity from "./form-activity";
-// import FormCheckout from "./form-checkout";
-// import Frame from "./frame";
-// import Image from "./image";
-// import ImageText from "./image-text";
-// import Line from "./line/index";
-// import ListFeature from "./list-feature";
-// import ListImagesControl from "./list-images/index";
-// import Quote from "./quote";
-// import ScrollTarget from "./scroll-target/index";
-// import Testimony from "./testimony";
-// import Video from "./video";
-// import VideoText from "./video-text";
 import { SearchForm } from "../../common/SearchForm";
 import { dataListContent } from "../DataListContent";
 import Text from "./sections/text";
 import EmptySpace from "./sections/empty-space";
 import ColumnTextAndImages from "./sections/colum-text-and-image";
+import ScrollTarget from "./sections/scroll-target/index";
+import ListImagesControl from "./sections/list-images";
+import Line from "./sections/line";
+import Quote from "./sections/quote";
+import ListFeature from "./sections/list-feature";
 
 const ListSections = ({
   sectionId,
@@ -123,22 +109,23 @@ const ListSections = ({
         />
       )}
 
-      {/* {addContent === "list-images" && (
+      {addContent === "list-images" && (
         <ListImagesControl
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
-          handleSectionContentFocus={handleSectionContentFocus}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
-      {/* {addContent === "scroll-target" && (
+      {addContent === "scroll-target" && (
         <ScrollTarget
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
       {/* {addContent === "button" && (
         <Buttons
@@ -158,29 +145,32 @@ const ListSections = ({
         />
       )} */}
 
-      {/* {addContent === "line" && (
+      {addContent === "line" && (
         <Line
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
-      {/* {addContent === "list-feature" && (
+      {addContent === "list-feature" && (
         <ListFeature
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
-      {/* {addContent === "quote" && (
+      {addContent === "quote" && (
         <Quote
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
       {/* {addContent === "faq" && (
         <FAQ

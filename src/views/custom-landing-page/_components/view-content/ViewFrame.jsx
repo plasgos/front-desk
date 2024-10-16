@@ -4,6 +4,10 @@ import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 import ViewText from "./ViewText";
 import ViewEmptySpace from "./ViewEmptySpace";
 import ViewColumnTextAndImage from "./ViewColumnTextAndImage";
+import ViewListImages from "./ViewListImages";
+import ViewScrollTraget from "./ViewScrollTraget";
+import ViewLine from "./ViewLine";
+import ViewQuote from "./ViewQuote";
 
 const ViewFrame = forwardRef(
   (
@@ -198,11 +202,34 @@ const ViewFrame = forwardRef(
 
                 {section.name === "column-text-and-image" && (
                   <ViewColumnTextAndImage
+                    containerRef={containerRef}
                     content={section}
                     isResizing={isResizing}
                     isPreview={isPreview}
                     width={width}
                   />
+                )}
+
+                {section.name === "list-images" && (
+                  <ViewListImages
+                    containerRef={containerRef}
+                    content={section}
+                    isResizing={isResizing}
+                    isPreview={isPreview}
+                    width={width}
+                  />
+                )}
+
+                {section.name === "scroll-target" && (
+                  <ViewScrollTraget content={section} isResizing={isResizing} />
+                )}
+
+                {section.name === "line" && (
+                  <ViewLine content={section.content} isResizing={isResizing} />
+                )}
+
+                {section.name === "quote" && (
+                  <ViewQuote content={section} isResizing={isResizing} />
                 )}
               </div>
             );

@@ -1,9 +1,11 @@
 import { CButton, CCard, CTabContent } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa6";
-import { createUniqueID } from "../../../../../lib/unique-id";
 import StripeLineControl from "./StripeLineControl";
 import BasicLineControl from "./BasicLineControl";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import { addNewSection } from "../../helper/addNewSection";
+import { cancelNewSection } from "../../helper/cancelNewSection";
 
 const Line = ({
   previewSection,
@@ -12,6 +14,7 @@ const Line = ({
   isEditing = false,
   sectionBeforeEdit,
   currentSection,
+  sectionId,
 }) => {
   const [variantLine, setVariantLine] = useState(
     isEditing ? currentSection.content?.variant : "Stripe - Barber"
@@ -19,7 +22,8 @@ const Line = ({
   const [isEditDesign, setIsEditDesign] = useState(false);
   const [designBeforeEdit, setDesignBeforeEdit] = useState("");
   const [setting, setSetting] = useState({});
-  console.log("🚀 ~ setting:", setting);
+
+  const contentIdToCheck = isEditing ? currentSection.id : setting.id;
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
@@ -42,7 +46,8 @@ const Line = ({
       },
     };
 
-    setPreviewSection((prevSections) => [...prevSections, payload]);
+    addNewSection(setPreviewSection, sectionId, payload);
+
     setSetting(payload);
   };
 
@@ -61,33 +66,36 @@ const Line = ({
       setIsEditDesign(false);
       setVariantLine(designBeforeEdit);
 
-      const contentIdToCheck = isEditing ? currentSection.id : setting.id;
-
       setPreviewSection((arr) =>
-        arr.map((item) => {
-          const currentVariant = item.content.variant;
+        arr.map((section) => {
+          const currentVariant = section.content.variant;
 
           const prevContent = commonContent(
             currentVariant === "Basic",
             designBeforeEdit
           );
 
-          return String(item.id) === contentIdToCheck
+          return String(section.id) === sectionId
             ? {
-                ...item,
-                content: {
-                  ...item.content,
-                  ...prevContent,
-                },
+                ...section,
+                content: section.content.map((sectionFrame) =>
+                  sectionFrame.id === contentIdToCheck
+                    ? {
+                        ...sectionFrame,
+                        content: {
+                          ...sectionFrame.content,
+                          ...prevContent,
+                        },
+                      }
+                    : sectionFrame
+                ),
               }
-            : item;
+            : section;
         })
       );
     } else {
       isShowContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.filter((section) => section.id !== setting.id)
-      );
+      cancelNewSection(setPreviewSection, sectionId, setting.id);
     }
   };
 
@@ -139,12 +147,19 @@ const Line = ({
       };
     };
 
-    const updatePreviewSection = (sectionId) => {
+    const updatePreviewSection = (sectionFrameId) => {
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === sectionId
-            ? updateContent(item, value, value === "Basic")
-            : item
+        arr.map((section) =>
+          section.id === sectionId
+            ? {
+                ...section,
+                content: section.content.map((sectionFrame) =>
+                  sectionFrame.id === sectionFrameId
+                    ? updateContent(sectionFrame, value, value === "Basic")
+                    : sectionFrame
+                ),
+              }
+            : section
         )
       );
     };
@@ -248,12 +263,14 @@ const Line = ({
         ) : variantLine === "Stripe - Barber" ? (
           <div>
             <StripeLineControl
+              sectionId={sectionId}
               setPreviewSection={setPreviewSection}
               currentSection={isEditing ? currentSection : setting}
             />
           </div>
         ) : variantLine === "Basic" ? (
           <BasicLineControl
+            sectionId={sectionId}
             setPreviewSection={setPreviewSection}
             currentSection={isEditing ? currentSection : setting}
           />

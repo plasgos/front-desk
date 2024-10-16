@@ -7,8 +7,14 @@ import {
 } from "../../../../SelectOptions";
 import ColorPicker from "../../../../common/ColorPicker";
 import SelectOptions from "../../../../common/SelectOptions";
+import { changeWrapperStyleFrame } from "../../helper/changeWrapperStyle";
 
-const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
+const DesignTab = ({
+  sectionId,
+  currentSection,
+  setPreviewSection,
+  isEditingSection,
+}) => {
   const [selectedColorTitle, setSelectedColorTitle] = useState(
     currentSection?.wrapperStyle?.colorTitle || "#000000"
   );
@@ -66,35 +72,15 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
     }
   }, [currentSection, isEditingSection]);
 
-  const handleChangeWrapperStyle = (key, selectedOption) => {
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              wrapperStyle: {
-                ...item.wrapperStyle,
-                [key]: selectedOption.value,
-              },
-            }
-          : item
-      )
-    );
-  };
-
-  const handleChangeColor = (key, color) => {
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              wrapperStyle: {
-                ...item.wrapperStyle,
-                [key]: color,
-              },
-            }
-          : item
-      )
+  const handleChangeWrapperStyle = (key, value) => {
+    const newValue = {
+      [key]: value,
+    };
+    changeWrapperStyleFrame(
+      setPreviewSection,
+      sectionId,
+      currentSection.id,
+      newValue
     );
   };
 
@@ -106,7 +92,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           label="Warna Judul"
           onChange={(color) => {
             setSelectedColorTitle(color);
-            handleChangeColor("colorTitle", color);
+            handleChangeWrapperStyle("colorTitle", color);
           }}
           bottom={"10px"}
         />
@@ -116,7 +102,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           label="Warna Deskripsi"
           onChange={(color) => {
             setSelectedColorDesc(color);
-            handleChangeColor("colorDescription", color);
+            handleChangeWrapperStyle("colorDescription", color);
           }}
           bottom={"10px"}
         />
@@ -128,7 +114,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           options={maxColumnOptions}
           onChange={(selectedOption) => {
             setSelectedMaxColumn(selectedOption);
-            handleChangeWrapperStyle("maxColumn", selectedOption);
+            handleChangeWrapperStyle("maxColumn", selectedOption.value);
           }}
           value={selectedMaxColumn}
           width="50"
@@ -139,7 +125,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           options={distanceOptions}
           onChange={(selectedOption) => {
             setSelectedDistance(selectedOption);
-            handleChangeWrapperStyle("paddingX", selectedOption);
+            handleChangeWrapperStyle("paddingX", selectedOption.value);
           }}
           value={selectedDistance}
           width="50"
@@ -153,7 +139,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           options={aspectRatioOptions}
           onChange={(selectedOption) => {
             setSelectedImageRatio(selectedOption);
-            handleChangeWrapperStyle("aspectRatio", selectedOption);
+            handleChangeWrapperStyle("aspectRatio", selectedOption.value);
           }}
           value={selectedImageRatio}
           width="50"
@@ -167,7 +153,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
           options={fontSizeOptions}
           onChange={(selectedOption) => {
             setSelectedFontSize(selectedOption);
-            handleChangeWrapperStyle("fontSizeTitle", selectedOption);
+            handleChangeWrapperStyle("fontSizeTitle", selectedOption.value);
           }}
           value={selectedFontSize}
           width="50"

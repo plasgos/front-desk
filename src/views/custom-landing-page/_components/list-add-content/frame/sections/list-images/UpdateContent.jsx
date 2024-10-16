@@ -4,18 +4,17 @@ import image from "../../../../../../../assets/action-figure.jpg";
 
 import { useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
+import { useUrlChangeFrame } from "../../hooks/useUrlChangeFrame";
+import { useWhatAppsChangeFrame } from "../../hooks/useWhatAppsChangeFrame";
+import { useScrollTargetChangeFrames } from "../../hooks/useScrollTargetFrames";
 import { createUniqueID } from "../../../../../../../lib/unique-id";
 import Input from "../../../../common/Input";
-import { CustomReactQuill } from "../../../../common/ReactQuill";
-import ScrollTargetInput from "../../../../common/ScrollTargetSelect";
 import SelectOptions from "../../../../common/SelectOptions";
 import UrlInput from "../../../../common/UrlInput";
 import WhatsAppInput from "../../../../common/WhatAppsInput";
+import ScrollTargetInput from "../../../../common/ScrollTargetSelect";
 import FacebookPixel from "../../../../FacebookPixel";
 import { addSectionContent } from "../../helper/addSectionContent";
-import { useScrollTargetChangeFrames } from "../../hooks/useScrollTargetFrames";
-import { useUrlChangeFrame } from "../../hooks/useUrlChangeFrame";
-import { useWhatAppsChangeFrame } from "../../hooks/useWhatAppsChangeFrame";
 
 export const UpdateContent = ({
   sectionId,
@@ -31,20 +30,50 @@ export const UpdateContent = ({
   const [imageUrl, setImageUrl] = useState(
     isEditingContent ? currentContent?.content?.image : image
   );
-  const [title, setTitle] = useState(
-    isEditingContent ? currentContent?.content?.title : "How awesome are you?"
-  );
-  const [description, setDescription] = useState(
-    isEditingContent
-      ? currentContent?.content?.description
-      : "So awesome that you will not believe it"
+
+  const [alt, setAlt] = useState(
+    isEditingContent ? currentContent?.content?.alt : ""
   );
 
-  const [titleValue] = useDebounce(title, 1000);
-  const [descriptionValue] = useDebounce(description, 1000);
+  const [altValue] = useDebounce(alt, 300);
+
   const [setting, setSetting] = useState({});
   const [selectedOption, setSelectedOption] = useState(
     optionsTarget[0].options[0]
+  );
+
+  useEffect(() => {
+    if (altValue !== currentContent?.content?.alt) {
+      handleChangeContent("alt", altValue);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [altValue]);
+
+  const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChangeFrame(
+    setPreviewSection,
+    sectionId,
+    idSection,
+    isEditingContent ? currentContent : setting
+  );
+
+  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
+    useWhatAppsChangeFrame(
+      setPreviewSection,
+      sectionId,
+      idSection,
+      isEditingContent ? currentContent : setting
+    );
+
+  const {
+    selectedOptionScrollTarget,
+    setSelectedOptionScrollTarget,
+    handleChangeScrollTarget,
+  } = useScrollTargetChangeFrames(
+    setPreviewSection,
+    sectionId,
+    idSection,
+    isEditingContent ? currentContent : setting
   );
 
   const contentIdToCheck = isEditingContent ? currentContent.id : setting.id;
@@ -78,44 +107,6 @@ export const UpdateContent = ({
       )
     );
   };
-
-  useEffect(() => {
-    if (titleValue !== currentContent?.content?.title) {
-      handleChangeContent("title", titleValue);
-    }
-
-    if (descriptionValue !== currentContent?.content?.description) {
-      handleChangeContent("description", descriptionValue);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [titleValue, descriptionValue]);
-
-  const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChangeFrame(
-    setPreviewSection,
-    sectionId,
-    idSection,
-    isEditingContent ? currentContent : setting
-  );
-
-  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
-    useWhatAppsChangeFrame(
-      setPreviewSection,
-      sectionId,
-      idSection,
-      isEditingContent ? currentContent : setting
-    );
-
-  const {
-    selectedOptionScrollTarget,
-    setSelectedOptionScrollTarget,
-    handleChangeScrollTarget,
-  } = useScrollTargetChangeFrames(
-    setPreviewSection,
-    sectionId,
-    idSection,
-    isEditingContent ? currentContent : setting
-  );
 
   useEffect(() => {
     if (isEditingContent) {
@@ -323,8 +314,6 @@ export const UpdateContent = ({
     let payload = {
       id: uniqueId,
       content: {
-        title,
-        description,
         image: imageUrl,
       },
       target: {},
@@ -376,6 +365,16 @@ export const UpdateContent = ({
           </CButton>
         </div>
 
+        <Input
+          label="Alt"
+          value={alt}
+          onChange={(event) => {
+            const { value } = event.target;
+            setAlt(value);
+          }}
+          type="text"
+        />
+
         <form>
           <SelectOptions
             label="Target"
@@ -384,10 +383,9 @@ export const UpdateContent = ({
             value={selectedOption}
             width="100"
           />
-
           {selectedOption?.value === "url" && (
             <UrlInput
-              id="urlOpenNewTabText&Img"
+              id="urlOpenNewTabListImg"
               url={url}
               handleUrlChange={(newValue) => {
                 setUrl((prevValue) => ({
@@ -401,7 +399,7 @@ export const UpdateContent = ({
 
           {selectedOption?.value === "whatApps" && (
             <WhatsAppInput
-              id="waOpenNewTabText&Img"
+              id="waOpenNewTabListImg"
               whatApps={whatApps}
               handlePhoneNumberChange={(newValue) => {
                 setWhatApps((prevValue) => ({
@@ -426,27 +424,9 @@ export const UpdateContent = ({
               selectedOptionScrollTarget={selectedOptionScrollTarget}
             />
           )}
-
-          <Input
-            label="Judul"
-            value={title}
-            onChange={(e) => {
-              const { value } = e.target;
-              setTitle(value);
-            }}
-            type="text"
-          />
         </form>
 
         {selectedOption.value !== undefined && <FacebookPixel />}
-
-        <CustomReactQuill
-          value={description}
-          onChange={(value) => {
-            setDescription(value);
-          }}
-          version="basic"
-        />
       </div>
     </CCard>
   );
