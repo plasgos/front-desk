@@ -7,7 +7,7 @@ import EmptySpace from "./sections/empty-space";
 import ColumnTextAndImages from "./sections/colum-text-and-image";
 import ScrollTarget from "./sections/scroll-target/index";
 import ListImagesControl from "./sections/list-images";
-import Line from "./sections/lines";
+import Line from "./sections/line";
 import Quote from "./sections/quote";
 import ListFeature from "./sections/list-feature";
 

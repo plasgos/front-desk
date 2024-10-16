@@ -4,7 +4,7 @@ import EmptySpace from "../sections/empty-space";
 import ColumnTextAndImages from "../sections/colum-text-and-image";
 import ListImages from "../sections/list-images";
 import ScrollTarget from "../sections/scroll-target";
-import Line from "../sections/lines";
+import Line from "../sections/line";
 import Quote from "../sections/quote";
 
 export function useRenderEditSectionFrame({
