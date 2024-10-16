@@ -75,6 +75,9 @@ const ViewCallToAction = forwardRef(
               />
 
               <div
+                onClick={() =>
+                  useHandleClickTarget(section.target, containerRef)
+                }
                 className={`tw-rounded-md tw-py-3 tw-px-4 tw-cursor-pointer`}
                 ref={(el) => {
                   if (setSectionContentRef) {
@@ -96,9 +99,6 @@ const ViewCallToAction = forwardRef(
                 key={section.id}
               >
                 <div
-                  onClick={() =>
-                    useHandleClickTarget(section.target, containerRef)
-                  }
                   style={{
                     color: section.textColorButton,
                   }}

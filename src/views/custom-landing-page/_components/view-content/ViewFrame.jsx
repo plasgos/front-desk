@@ -8,6 +8,11 @@ import ViewListImages from "./ViewListImages";
 import ViewScrollTraget from "./ViewScrollTraget";
 import ViewLine from "./ViewLine";
 import ViewQuote from "./ViewQuote";
+import ViewListFeature from "./ViewListFeature";
+import ViewCallToAction from "./ViewCallToAction";
+import ViewVideo from "./ViewVideo";
+import ViewVideoText from "./ViewVideoText";
+import ViewImage from "./ViewImage";
 
 const ViewFrame = forwardRef(
   (
@@ -230,6 +235,34 @@ const ViewFrame = forwardRef(
 
                 {section.name === "quote" && (
                   <ViewQuote content={section} isResizing={isResizing} />
+                )}
+
+                {section.name === "list-feature" && (
+                  <ViewListFeature content={section} isResizing={isResizing} />
+                )}
+
+                {section.name === "call-to-action" && (
+                  <ViewCallToAction
+                    containerRef={containerRef}
+                    content={section}
+                    isResizing={isResizing}
+                  />
+                )}
+
+                {section.name === "video" && (
+                  <ViewVideo content={section} isResizing={isResizing} />
+                )}
+
+                {section.name === "video-text" && (
+                  <ViewVideoText content={section} isResizing={isResizing} />
+                )}
+
+                {section.name === "image" && (
+                  <ViewImage
+                    containerRef={containerRef}
+                    content={section}
+                    isResizing={isResizing}
+                  />
                 )}
               </div>
             );

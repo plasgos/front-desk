@@ -6,6 +6,11 @@ import ListImages from "../sections/list-images";
 import ScrollTarget from "../sections/scroll-target";
 import Line from "../sections/line";
 import Quote from "../sections/quote";
+import ListFeature from "../sections/list-feature";
+import CallToAction from "../sections/call-to-action";
+import Video from "../sections/video";
+import VideoText from "../sections/video-text";
+import Image from "../sections/image";
 
 export function useRenderEditSectionFrame({
   previewSection,
@@ -140,6 +145,96 @@ export function useRenderEditSectionFrame({
                   sectionBeforeEdit={currentSectionBeforeEdit}
                   sectionId={section.id}
                   isEditing={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "list-feature" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <ListFeature
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "call-to-action" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <CallToAction
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "video" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <Video
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "video-text" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <VideoText
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "image" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <Image
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
                   isShowContent={setIsEditingContent}
                 />
               );

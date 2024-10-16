@@ -131,20 +131,12 @@ const IconTab = ({
       if (iconName) {
         setIconName({});
       }
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
-            ? {
-                ...item,
-                iconStyle: {
-                  ...item.iconStyle,
-                  image: imageUrl,
-                  icon: "",
-                },
-              }
-            : item
-        )
-      );
+
+      const newValue = {
+        image: imageUrl,
+        icon: "",
+      };
+      setIconValue(newValue);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl]);

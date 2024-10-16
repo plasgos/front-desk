@@ -10,6 +10,10 @@ import ListImagesControl from "./sections/list-images";
 import Line from "./sections/line";
 import Quote from "./sections/quote";
 import ListFeature from "./sections/list-feature";
+import CallToAction from "./sections/call-to-action";
+import Video from "./sections/video";
+import VideoText from "./sections/video-text";
+import Image from "./sections/image";
 
 const ListSections = ({
   sectionId,
@@ -190,13 +194,14 @@ const ListSections = ({
         />
       )} */}
 
-      {/* {addContent === "image" && (
+      {addContent === "image" && (
         <Image
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
       {/* {addContent === "image-text" && (
         <ImageText
@@ -206,29 +211,32 @@ const ListSections = ({
         />
       )} */}
 
-      {/* {addContent === "video" && (
+      {addContent === "video" && (
         <Video
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
-      {/* {addContent === "video-text" && (
+      {addContent === "video-text" && (
         <VideoText
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
-      )} */}
-      {/* 
+      )}
+
       {addContent === "call-to-action" && (
         <CallToAction
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
       {/* {addContent === "form-activity" && (
         <FormActivity

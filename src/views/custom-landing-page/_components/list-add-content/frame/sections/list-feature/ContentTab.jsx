@@ -48,6 +48,29 @@ const ContentTab = ({ setPreviewSection, currentSection, sectionId }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editorHtmlValue]);
 
+  const setIconValue = (newValue) => {
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              content: section.content.map((sectionFrame) =>
+                sectionFrame.id === currentSection.id
+                  ? {
+                      ...sectionFrame,
+                      content: {
+                        ...sectionFrame.content,
+                        ...newValue,
+                      },
+                    }
+                  : sectionFrame
+              ),
+            }
+          : section
+      )
+    );
+  };
+
   const handleEditorChange = (html) => {
     // Buat elemen DOM sementara untuk mengonversi HTML menjadi teks tanpa tag
     const tempElement = document.createElement("div");
@@ -59,35 +82,18 @@ const ContentTab = ({ setPreviewSection, currentSection, sectionId }) => {
       .filter(Boolean);
 
     setEditorHtml(html);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === String(currentSection.id)
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                text: lines, // Simpan sebagai array per baris
-              },
-            }
-          : item
-      )
-    );
+
+    const newValue = {
+      text: lines,
+    };
+    setIconValue(newValue);
   };
 
   const handleUpdateValue = (key, value) => {
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                [key]: value,
-              },
-            }
-          : item
-      )
-    );
+    const newValue = {
+      [key]: value,
+    };
+    setIconValue(newValue);
   };
 
   const handleSetValueWhenBlurValue = (value, min, max, key) => {
@@ -102,19 +108,11 @@ const ContentTab = ({ setPreviewSection, currentSection, sectionId }) => {
 
   const onChangeAlign = (value) => {
     setSelectAlign(value);
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
-          ? {
-              ...item,
-              content: {
-                ...item.content,
-                textAlign: value,
-              },
-            }
-          : item
-      )
-    );
+
+    const newValue = {
+      textAlign: value,
+    };
+    setIconValue(newValue);
   };
 
   return (
