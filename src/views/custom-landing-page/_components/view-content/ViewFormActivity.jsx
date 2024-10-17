@@ -4,11 +4,7 @@ import { Controller, useForm } from "react-hook-form";
 
 const ViewFormActivity = forwardRef(
   ({ isDragging, isResizing, content, isFocused }, ref) => {
-    const {
-      handleSubmit,
-      control,
-      formState: { isValid },
-    } = useForm({
+    const { handleSubmit, control } = useForm({
       defaultValues: {
         email: "",
       },

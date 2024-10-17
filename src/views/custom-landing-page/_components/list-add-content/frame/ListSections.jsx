@@ -20,6 +20,7 @@ import FormActivity from "./sections/form-activity";
 import Buttons from "./sections/button";
 import FAQ from "./sections/faq";
 import Testimony from "./sections/testimony";
+import FormCheckout from "./sections/form-checkout";
 
 const ListSections = ({
   sectionId,
@@ -154,6 +155,7 @@ const ListSections = ({
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
           sectionId={sectionId}
+          s
         />
       )}
 
@@ -194,14 +196,15 @@ const ListSections = ({
         />
       )}
 
-      {/* {addContent === "form-checkout" && (
+      {addContent === "form-checkout" && (
         <FormCheckout
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
       {addContent === "image" && (
         <Image

@@ -1,4 +1,3 @@
-import React, { useCallback, useEffect, useState } from "react";
 import {
   CButton,
   CCard,
@@ -12,25 +11,25 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
+import React, { useCallback, useEffect, useState } from "react";
 
-import { IoAdd } from "react-icons/io5";
 import { FaStar } from "react-icons/fa6";
+import { IoAdd } from "react-icons/io5";
 import profilePicture from "../../../../../../../assets/profile.jpg";
-import DesignTab from "./DesignTab";
-import { UpdateContents } from "./UpdateContents";
-import { UpdateShapes } from "./UpdateShapes";
-import { columnTestimonyOptions } from "../../../../SelectOptions";
 import { createUniqueID } from "../../../../../../../lib/unique-id";
-import { useRemoveSectionFrame } from "../../hooks/useRemoveSectionFrame";
-import { useMoveSectionFrame } from "../../hooks/useMoveSectionFrame";
 import { DraggableList } from "../../../../common/DraggableList";
-import SelectOptions from "../../../../common/SelectOptions";
 import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
+import SelectOptions from "../../../../common/SelectOptions";
+import { columnTestimonyOptions } from "../../../../SelectOptions";
 import BackgroundTabFrame from "../../common/BackgroundTabFrame";
 import { addNewSection } from "../../helper/addNewSection";
 import { cancelNewSection } from "../../helper/cancelNewSection";
-import { cancelAddSectionContent } from "../../helper/cancelAddSectionContent";
 import { changeWrapperStyleFrame } from "../../helper/changeWrapperStyle";
+import { useMoveSectionFrame } from "../../hooks/useMoveSectionFrame";
+import { useRemoveSectionFrame } from "../../hooks/useRemoveSectionFrame";
+import DesignTab from "./DesignTab";
+import { UpdateContents } from "./UpdateContents";
+import { UpdateShapes } from "./UpdateShapes";
 
 const Testimony = ({
   previewSection,
