@@ -4,7 +4,7 @@ import { useBackgroundStyles } from "../../../../../hooks/useBackgroundStyles";
 import DurationCountdown from "./DurationCountdown";
 
 const ViewCountDown = forwardRef(
-  ({ containerRef, isDragging, isResizing, content, isFocused }, ref) => {
+  ({ isDragging, isResizing, content, isFocused }, ref) => {
     const stylesBg = useBackgroundStyles(content);
 
     const { textAlign } = content?.finish;

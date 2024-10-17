@@ -258,7 +258,7 @@ const CustomLandingPage = () => {
             section={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -271,7 +271,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
             isPreview={isPreview}
             width={dimensions.width}
             setSectionContentRef={setSectionContentRef}
@@ -288,7 +288,7 @@ const CustomLandingPage = () => {
             content={section.content}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -302,7 +302,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
             isPreview={isPreview}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
@@ -317,7 +317,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -330,7 +330,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
           />
@@ -346,7 +346,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
             isPreview={isPreview}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
@@ -361,7 +361,7 @@ const CustomLandingPage = () => {
             content={section.content}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -373,7 +373,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -385,7 +385,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -397,7 +397,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
             isPreview={isPreview}
             width={dimensions.width}
             setSectionContentRef={setSectionContentRef}
@@ -413,7 +413,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
             setPreviewSection={setPreviewSection}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
@@ -453,7 +453,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -466,7 +466,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -479,7 +479,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
             width={dimensions.width}
             isPreview={isPreview}
             setPreviewSection={setPreviewSection}
@@ -497,7 +497,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -510,7 +510,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
             isPreview={isPreview}
             width={dimensions.width}
           />
@@ -525,7 +525,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -538,7 +538,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -551,7 +551,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -564,7 +564,7 @@ const CustomLandingPage = () => {
             content={section}
             isResizing={isResizing}
             ref={(el) => setRef(el, index)}
-            isFocused={focusedIndex === index}
+            isFocused={focusedIndex === section.id}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
             isPreview={isPreview}
@@ -1157,7 +1157,7 @@ const CustomLandingPage = () => {
           section={section}
           editSection={() => editSectionFlaoting(section)}
           removeSection={removeSectionFloating}
-          focusContent={() => handleContentFocus(index)}
+          focusContent={() => handleContentFocus(section.id)}
         />
       );
     },
@@ -1183,7 +1183,7 @@ const CustomLandingPage = () => {
               ? removeSectionFloating
               : removeSection
           }
-          focusContent={() => handleContentFocus(index)}
+          focusContent={() => handleContentFocus(section.id)}
         />
       );
     },

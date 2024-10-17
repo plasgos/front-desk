@@ -45,7 +45,7 @@ const ImageContent = ({
   );
 
   const [width, setWidth] = useState(
-    currentSection?.wrapperStyle?.width || 600
+    currentSection?.wrapperStyle?.width || 250
   );
 
   const [rotation, setRotation] = useState(

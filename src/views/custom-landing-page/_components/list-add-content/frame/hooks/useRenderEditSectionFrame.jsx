@@ -11,6 +11,12 @@ import CallToAction from "../sections/call-to-action";
 import Video from "../sections/video";
 import VideoText from "../sections/video-text";
 import Image from "../sections/image";
+import ImageText from "../sections/image-text";
+import CountDown from "../sections/countdown";
+import FormActivity from "../sections/form-activity";
+import Buttons from "../sections/button";
+import FAQ from "../sections/faq";
+import Testimony from "../sections/testimony";
 
 export function useRenderEditSectionFrame({
   previewSection,
@@ -228,6 +234,114 @@ export function useRenderEditSectionFrame({
             ) {
               return (
                 <Image
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "image-text" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <ImageText
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "countdown" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <CountDown
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "form-activity" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <FormActivity
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "button" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <Buttons
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "faq" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <FAQ
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "testimony" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <Testimony
                   key={content.id}
                   currentSection={content}
                   previewSection={previewSection}

@@ -14,6 +14,12 @@ import CallToAction from "./sections/call-to-action";
 import Video from "./sections/video";
 import VideoText from "./sections/video-text";
 import Image from "./sections/image";
+import ImageText from "./sections/image-text";
+import CountDown from "./sections/countdown";
+import FormActivity from "./sections/form-activity";
+import Buttons from "./sections/button";
+import FAQ from "./sections/faq";
+import Testimony from "./sections/testimony";
 
 const ListSections = ({
   sectionId,
@@ -131,23 +137,25 @@ const ListSections = ({
         />
       )}
 
-      {/* {addContent === "button" && (
+      {addContent === "button" && (
         <Buttons
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
-      {/* {addContent === "testimony" && (
+      {addContent === "testimony" && (
         <Testimony
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
       {addContent === "line" && (
         <Line
@@ -176,14 +184,15 @@ const ListSections = ({
         />
       )}
 
-      {/* {addContent === "faq" && (
+      {addContent === "faq" && (
         <FAQ
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
       {/* {addContent === "form-checkout" && (
         <FormCheckout
@@ -203,13 +212,14 @@ const ListSections = ({
         />
       )}
 
-      {/* {addContent === "image-text" && (
+      {addContent === "image-text" && (
         <ImageText
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
 
       {addContent === "video" && (
         <Video
@@ -238,21 +248,23 @@ const ListSections = ({
         />
       )}
 
-      {/* {addContent === "form-activity" && (
+      {addContent === "form-activity" && (
         <FormActivity
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
-      )} */}
-      {/* 
+      )}
+
       {addContent === "countdown" && (
         <CountDown
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
+          sectionId={sectionId}
         />
-      )} */}
+      )}
       {/* 
       {addContent === "frame" && (
         <Frame

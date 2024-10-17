@@ -13,6 +13,12 @@ import ViewCallToAction from "./ViewCallToAction";
 import ViewVideo from "./ViewVideo";
 import ViewVideoText from "./ViewVideoText";
 import ViewImage from "./ViewImage";
+import ViewImageText from "./ViewImageText";
+import ViewCountDown from "./ViewCountdown";
+import ViewFormActivity from "./ViewFormActivity";
+import ViewButtonUpdate from "./ViewButtonUpdate";
+import ViewFAQ from "./ViewFAQ";
+import ViewTestimony from "./ViewTestimony";
 
 const ViewFrame = forwardRef(
   (
@@ -262,6 +268,39 @@ const ViewFrame = forwardRef(
                     containerRef={containerRef}
                     content={section}
                     isResizing={isResizing}
+                  />
+                )}
+
+                {section.name === "image-text" && (
+                  <ViewImageText content={section} isResizing={isResizing} />
+                )}
+
+                {section.name === "countdown" && (
+                  <ViewCountDown content={section} isResizing={isResizing} />
+                )}
+
+                {section.name === "form-activity" && (
+                  <ViewFormActivity content={section} isResizing={isResizing} />
+                )}
+
+                {section.name === "button" && (
+                  <ViewButtonUpdate
+                    containerRef={containerRef}
+                    content={section}
+                    isResizing={isResizing}
+                  />
+                )}
+
+                {section.name === "faq" && (
+                  <ViewFAQ content={section} isResizing={isResizing} />
+                )}
+
+                {section.name === "testimony" && (
+                  <ViewTestimony
+                    content={section}
+                    isResizing={isResizing}
+                    isPreview={isPreview}
+                    width={width}
                   />
                 )}
               </div>
