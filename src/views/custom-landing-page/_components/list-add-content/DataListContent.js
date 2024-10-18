@@ -21,6 +21,7 @@ import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
 import { PiColumnsPlusRightThin } from "react-icons/pi";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import { CgFileDocument } from "react-icons/cg";
+import { VscSymbolInterface } from "react-icons/vsc";
 
 export const dataListContent = [
   {
@@ -204,6 +205,12 @@ export const dataListContent = [
         title: "Countdown",
         icon: <RxTimer style={{ marginRight: 5 }} size={24} />,
         action: (setAddContent) => setAddContent("countdown"),
+      },
+      {
+        name: "stock-counter",
+        title: "Stock Counter",
+        icon: <VscSymbolInterface style={{ marginRight: 5 }} size={24} />,
+        action: (setAddContent) => setAddContent("stock-counter"),
       },
     ],
   },

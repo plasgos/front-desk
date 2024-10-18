@@ -25,6 +25,7 @@ import VideoText from "./video-text";
 import FormActivity from "./form-activity";
 import CountDown from "./countdown";
 import Frame from "./frame";
+import StockCounter from "./stock-counter";
 
 const ListContent = ({
   previewSection,
@@ -301,6 +302,14 @@ const ListContent = ({
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+        />
+      )}
+
+      {addContent === "stock-counter" && (
+        <StockCounter
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
         />
       )}
 

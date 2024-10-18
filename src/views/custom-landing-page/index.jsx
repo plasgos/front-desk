@@ -75,6 +75,8 @@ import ViewCountDown from "./_components/view-content/ViewCountdown/index";
 import CountDown from "./_components/list-add-content/countdown";
 import ViewFrame from "./_components/view-content/ViewFrame";
 import Frame from "./_components/list-add-content/frame";
+import StockCounter from "./_components/list-add-content/stock-counter";
+import ViewStockCounter from "./_components/view-content/ViewStockCounter";
 
 const landingPage = {
   detail: {
@@ -569,6 +571,19 @@ const CustomLandingPage = () => {
             focusedIndexSectionContent={focusedIndexSectionContent}
             isPreview={isPreview}
             width={dimensions.width}
+            setPreviewSection={setPreviewSection}
+          />
+        );
+      }
+
+      if (section.name === "stock-counter") {
+        return (
+          <ViewStockCounter
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, section.id)}
+            isFocused={focusedIndex === section.id}
           />
         );
       }
@@ -987,6 +1002,23 @@ const CustomLandingPage = () => {
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
             handleSectionContentFocus={handleSectionContentFocus}
+          />
+        );
+      }
+
+      if (
+        editing.name === "stock-counter" &&
+        section.name === "stock-counter" &&
+        editing.id === section.id
+      ) {
+        return (
+          <StockCounter
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }

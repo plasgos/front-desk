@@ -36,6 +36,7 @@ export const CustomReactQuill = ({ value, onChange, customStyle, version }) => {
         toolbar: [
           [{ header: "1" }, { header: "2" }],
           [{ size: [] }],
+          [{ color: [] }, { background: [] }],
           ["bold", "italic", "underline", "strike", "blockquote"],
           [
             { list: "ordered" },
@@ -64,6 +65,8 @@ export const CustomReactQuill = ({ value, onChange, customStyle, version }) => {
         "link",
         "image",
         "clean",
+        "color",
+        "background",
       ],
     },
   };

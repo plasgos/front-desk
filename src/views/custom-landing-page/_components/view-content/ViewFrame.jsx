@@ -19,6 +19,7 @@ import ViewFormActivity from "./ViewFormActivity";
 import ViewButtonUpdate from "./ViewButtonUpdate";
 import ViewFAQ from "./ViewFAQ";
 import ViewTestimony from "./ViewTestimony";
+import ViewFormCheckout from "./ViewFormCheckout";
 
 const ViewFrame = forwardRef(
   (
@@ -32,6 +33,7 @@ const ViewFrame = forwardRef(
       isFocused,
       setSectionContentRef,
       focusedIndexSectionContent,
+      setPreviewSection,
     },
     ref
   ) => {
@@ -301,6 +303,14 @@ const ViewFrame = forwardRef(
                     isResizing={isResizing}
                     isPreview={isPreview}
                     width={width}
+                  />
+                )}
+
+                {section.name === "form-checkout" && (
+                  <ViewFormCheckout
+                    setPreviewSection={setPreviewSection}
+                    content={section}
+                    isResizing={isResizing}
                   />
                 )}
               </div>

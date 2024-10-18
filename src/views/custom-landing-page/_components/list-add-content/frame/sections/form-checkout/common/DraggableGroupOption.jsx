@@ -107,31 +107,37 @@ export const DraggableListGroupOption = ({
   }, [options]);
 
   const handleBlurLabelGroup = (value, id) => {
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === idSection) {
-          return {
-            ...section,
-            content: section.content.map((contentItem) => {
-              if (contentItem.type === type) {
-                return {
-                  ...contentItem,
-                  optionsGroup: contentItem.optionsGroup.map((opt) =>
-                    opt.groupId === id
-                      ? {
-                          ...opt,
-                          label: value,
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              content: section.content.map((content) =>
+                content.id === idSection
+                  ? {
+                      ...content,
+                      content: content.content.map((contentItem) => {
+                        if (contentItem.type === type) {
+                          return {
+                            ...contentItem,
+                            optionsGroup: contentItem.optionsGroup.map((opt) =>
+                              opt.groupId === id
+                                ? {
+                                    ...opt,
+                                    label: value,
+                                  }
+                                : opt
+                            ),
+                          };
                         }
-                      : opt
-                  ),
-                };
-              }
-              return contentItem;
-            }),
-          };
-        }
-        return section;
-      })
+                        return contentItem;
+                      }),
+                    }
+                  : content
+              ),
+            }
+          : section
+      )
     );
 
     dispatch(updateOptionsGroup(id, value));
@@ -146,31 +152,43 @@ export const DraggableListGroupOption = ({
   };
 
   const handleBlurLabelOption = (value, optionid) => {
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === idSection) {
-          return {
-            ...section,
-            content: section.content.map((contentItem) => {
-              if (contentItem.type === type) {
-                return {
-                  ...contentItem,
-                  optionsGroup: contentItem.optionsGroup.map((optGroup) => ({
-                    ...optGroup,
-                    options: optGroup.options.map((item) =>
-                      item.id === optionid
-                        ? { ...item, label: value, value: `${id}-${value}` }
-                        : item
-                    ),
-                  })),
-                };
-              }
-              return contentItem;
-            }),
-          };
-        }
-        return section;
-      })
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              content: section.content.map((content) =>
+                content.id === idSection
+                  ? {
+                      ...content,
+                      content: content.content.map((contentItem) => {
+                        if (contentItem.type === type) {
+                          return {
+                            ...contentItem,
+                            optionsGroup: contentItem.optionsGroup.map(
+                              (optGroup) => ({
+                                ...optGroup,
+                                options: optGroup.options.map((item) =>
+                                  item.id === optionid
+                                    ? {
+                                        ...item,
+                                        label: value,
+                                        value: `${id}-${value}`,
+                                      }
+                                    : item
+                                ),
+                              })
+                            ),
+                          };
+                        }
+                        return contentItem;
+                      }),
+                    }
+                  : content
+              ),
+            }
+          : section
+      )
     );
 
     dispatch(updateOptionsOpsiGroup(id, optionid, value));
@@ -179,47 +197,58 @@ export const DraggableListGroupOption = ({
   const handleAddOption = () => {
     setPreviewSection((prevSections) => {
       const updatedSections = prevSections.map((section) => {
-        if (section.id === idSection) {
+        if (section.id === sectionId) {
           return {
             ...section,
-            content: section.content.map((contentItem) => {
-              if (contentItem.type === type) {
-                return {
-                  ...contentItem,
-                  optionsGroup: contentItem.optionsGroup.map((optGroup) => {
-                    if (optGroup.groupId === id) {
-                      // Ambil dan perbarui counter untuk grup ini
-                      const newCounter =
-                        (optionCounters[id] || optGroup.options.length) + 1;
+            content: section.content.map((content) =>
+              content.id === idSection
+                ? {
+                    ...content,
+                    content: content.content.map((contentItem) => {
+                      if (contentItem.type === type) {
+                        return {
+                          ...contentItem,
+                          optionsGroup: contentItem.optionsGroup.map(
+                            (optGroup) => {
+                              if (optGroup.groupId === id) {
+                                // Ambil dan perbarui counter untuk grup ini
+                                const newCounter =
+                                  (optionCounters[id] ||
+                                    optGroup.options.length) + 1;
 
-                      setOptionCounters((prevCounters) => ({
-                        ...prevCounters,
-                        [id]: newCounter,
-                      }));
+                                setOptionCounters((prevCounters) => ({
+                                  ...prevCounters,
+                                  [id]: newCounter,
+                                }));
 
-                      let uniqueId = createUniqueID(options);
+                                let uniqueId = createUniqueID(options);
 
-                      let newOption = {
-                        id: uniqueId,
-                        label: `Opsi ${newCounter}`,
-                        value: `${id}-Opsi ${newCounter}`,
-                      };
+                                let newOption = {
+                                  id: uniqueId,
+                                  label: `Opsi ${newCounter}`,
+                                  value: `${id}-Opsi ${newCounter}`,
+                                };
 
-                      dispatch(addOptionOpsiGroup(id, newOption));
+                                dispatch(addOptionOpsiGroup(id, newOption));
 
-                      return {
-                        ...optGroup,
-                        options: [...optGroup.options, newOption],
-                      };
-                    }
-                    return optGroup;
-                  }),
-                };
-              }
-              return contentItem;
-            }),
+                                return {
+                                  ...optGroup,
+                                  options: [...optGroup.options, newOption],
+                                };
+                              }
+                              return optGroup;
+                            }
+                          ),
+                        };
+                      }
+                      return contentItem;
+                    }),
+                  }
+                : content
+            ),
           };
         }
+
         return section;
       });
 
@@ -243,42 +272,51 @@ export const DraggableListGroupOption = ({
       };
     });
 
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === idSection) {
-          return {
-            ...section,
-            content: section.content.map((contentItem) => {
-              if (contentItem.type === type) {
-                const currentDefaultValue = contentItem.defaultValue;
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              content: section.content.map((content) =>
+                content.id === idSection
+                  ? {
+                      ...content,
+                      content: content.content.map((contentItem) => {
+                        if (contentItem.type === type) {
+                          const currentDefaultValue = contentItem.defaultValue;
 
-                return {
-                  ...contentItem,
-                  defaultValue:
-                    currentDefaultValue === optionValue
-                      ? undefined
-                      : currentDefaultValue,
-                  optionsGroup: contentItem.optionsGroup.map((optGroup) => {
-                    // Hapus opsi dari grup yang sesuai
-                    if (optGroup.groupId === id) {
-                      return {
-                        ...optGroup,
-                        options: optGroup.options.filter(
-                          (item) => item.id !== optionId
-                        ),
-                      };
+                          return {
+                            ...contentItem,
+                            defaultValue:
+                              currentDefaultValue === optionValue
+                                ? undefined
+                                : currentDefaultValue,
+                            optionsGroup: contentItem.optionsGroup.map(
+                              (optGroup) => {
+                                // Hapus opsi dari grup yang sesuai
+                                if (optGroup.groupId === id) {
+                                  return {
+                                    ...optGroup,
+                                    options: optGroup.options.filter(
+                                      (item) => item.id !== optionId
+                                    ),
+                                  };
+                                }
+                                return optGroup;
+                              }
+                            ),
+                          };
+                        }
+                        return contentItem;
+                      }),
                     }
-                    return optGroup;
-                  }),
-                };
-              }
-              return contentItem;
-            }),
-          };
-        }
-        return section;
-      })
+                  : content
+              ),
+            }
+          : section
+      )
     );
+
     dispatch(deleteOptionsOpsiGroup(id, optionId));
   };
 

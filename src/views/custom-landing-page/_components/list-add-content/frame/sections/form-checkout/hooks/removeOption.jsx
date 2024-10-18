@@ -5,7 +5,14 @@ import { deleteOption } from "../../../../../../../../redux/modules/custom-landi
 export const useRemoveOption = (setPreviewSection, type) => {
   const dispacth = useDispatch();
   const removeOption = useCallback(
-    (sectionId, contentIndex, optionIndex, option, setDefaultValue) => {
+    (
+      sectionId,
+      idSection,
+      contentIndex,
+      optionIndex,
+      option,
+      setDefaultValue
+    ) => {
       if (type !== "multiSelect") {
         setDefaultValue((prevValue) => {
           const currentDefaultValue = prevValue.value;
@@ -24,60 +31,67 @@ export const useRemoveOption = (setPreviewSection, type) => {
         });
       }
 
-      setPreviewSection((prevSections) =>
-        prevSections.map((section) => {
-          if (section.id === sectionId) {
-            const updatedContent = section.content
-              .map((contentItem, i) => {
-                if (type !== "multiSelect") {
-                  const currentDefaultValue = contentItem.defaultValue;
+      setPreviewSection((prevSections) => {
+        return prevSections.map((section) =>
+          section.id === sectionId
+            ? {
+                ...section,
+                content: section.content.map((content) => {
+                  if (content.id === idSection) {
+                    const updatedContent = content.content
+                      .map((contentItem, i) => {
+                        if (type !== "multiSelect") {
+                          const currentDefaultValue = contentItem.defaultValue;
 
-                  if (i === contentIndex) {
-                    // Jika terdapat optionIndex, hapus item di dalam options
-                    if (optionIndex !== undefined) {
-                      return {
-                        ...contentItem,
-                        options: contentItem.options.filter(
-                          (_, oIndex) => oIndex !== optionIndex
-                        ),
-                        defaultValue:
-                          currentDefaultValue === option.value
-                            ? undefined
-                            : currentDefaultValue,
-                      };
+                          if (i === contentIndex) {
+                            // Jika terdapat optionIndex, hapus item di dalam options
+                            if (optionIndex !== undefined) {
+                              return {
+                                ...contentItem,
+                                options: contentItem.options.filter(
+                                  (_, oIndex) => oIndex !== optionIndex
+                                ),
+                                defaultValue:
+                                  currentDefaultValue === option.value
+                                    ? undefined
+                                    : currentDefaultValue,
+                              };
+                            }
+                            // Jika tidak ada optionIndex, hapus contentItem itu sendiri
+                            return null;
+                          }
+                        } else {
+                          if (i === contentIndex) {
+                            // Jika terdapat optionIndex, hapus item di dalam options
+                            if (optionIndex !== undefined) {
+                              return {
+                                ...contentItem,
+                                options: contentItem.options.filter(
+                                  (_, oIndex) => oIndex !== optionIndex
+                                ),
+                              };
+                            }
+                            // Jika tidak ada optionIndex, hapus contentItem itu sendiri
+                            return null;
+                          }
+                        }
+
+                        return contentItem;
+                      })
+                      .filter(Boolean); // Filter out null values
+
+                    if (type !== "multiSelect") {
+                      dispacth(deleteOption(option.id));
                     }
-                    // Jika tidak ada optionIndex, hapus contentItem itu sendiri
-                    return null;
+
+                    return { ...content, content: updatedContent };
                   }
-                } else {
-                  if (i === contentIndex) {
-                    // Jika terdapat optionIndex, hapus item di dalam options
-                    if (optionIndex !== undefined) {
-                      return {
-                        ...contentItem,
-                        options: contentItem.options.filter(
-                          (_, oIndex) => oIndex !== optionIndex
-                        ),
-                      };
-                    }
-                    // Jika tidak ada optionIndex, hapus contentItem itu sendiri
-                    return null;
-                  }
-                }
-
-                return contentItem;
-              })
-              .filter(Boolean); // Filter out null values
-
-            if (type !== "multiSelect") {
-              dispacth(deleteOption(option.id));
-            }
-
-            return { ...section, content: updatedContent };
-          }
-          return section;
-        })
-      );
+                  return content;
+                }),
+              }
+            : section
+        );
+      });
     },
     [dispacth, setPreviewSection, type]
   );

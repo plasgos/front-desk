@@ -2,22 +2,21 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { useRemoveOption } from "../hooks/removeOption";
-import { useMoveOption } from "../hooks/moveOption";
 import { CButton } from "@coreui/react";
 import { IoAdd } from "react-icons/io5";
-import { DraggableListOption } from "./DraggableListOption";
 import { useDebounce } from "use-debounce";
+import { createUniqueID } from "../../../../../../../../lib/unique-id";
 import {
-  addOption,
   setCurrentVariantMultiSelect,
   setIsSelectVariantMultiSelect,
   setSelectedVariant,
 } from "../../../../../../../../redux/modules/custom-landing-page/reducer";
-import { createUniqueID } from "../../../../../../../../lib/unique-id";
-import SelectVariant from "../../../../../common/SelectVariant";
-import SelectOptions from "../../../../../common/SelectOptions";
 import Input from "../../../../../common/Input";
+import SelectOptions from "../../../../../common/SelectOptions";
+import SelectVariant from "../../../../../common/SelectVariant";
+import { useMoveOption } from "../hooks/moveOption";
+import { useRemoveOption } from "../hooks/removeOption";
+import { DraggableListOption } from "./DraggableListOption";
 
 const optionVariant = [
   {
@@ -189,8 +188,6 @@ const MultiSelectControl = ({
           : section
       )
     );
-
-    dispatch(addOption(newOption));
   };
 
   const removeSection = useRemoveOption(setPreviewSection, "multiSelect");

@@ -100,43 +100,43 @@ export const DraggableListOption = ({
   }, [labelOption, labelOptionValue]);
 
   const handleChangeLabelOption = (value, optionId) => {
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === idSection) {
-          return {
-            ...section,
-            content: section.content.map((contentItem) => {
-              if (contentItem.type === type) {
-                return {
-                  ...contentItem,
-                  options: contentItem.options.map((opt) =>
-                    opt.id === optionId
-                      ? {
-                          ...opt,
-                          label: value,
-                          value: `${id}-${value}`,
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              content: section.content.map((content) =>
+                content.id === idSection
+                  ? {
+                      ...content,
+                      content: content.content.map((contentItem) => {
+                        if (contentItem.type === type) {
+                          return {
+                            ...contentItem,
+                            options: contentItem.options.map((opt) =>
+                              opt.id === optionId
+                                ? {
+                                    ...opt,
+                                    label: value,
+                                    value: `${id}-${value}`,
+                                  }
+                                : opt
+                            ),
+                          };
                         }
-                      : opt
-                  ),
-                };
-              }
-              return contentItem;
-            }),
-          };
-        }
-        return section;
-      })
+                        return contentItem;
+                      }),
+                    }
+                  : content
+              ),
+            }
+          : section
+      )
     );
-
-    console.log("IDDDD", id);
 
     if (id) {
       dispatch(updateOption(id, value));
-    } else {
-      console.warn("ID tidak ditemukan saat dispatch");
     }
-
-    // dispatch(updateOption(labelOption.id, value));
   };
 
   return (

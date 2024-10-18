@@ -53,7 +53,11 @@ export const useMoveOption = (setPreviewSection, key, optionTomaping) => {
       if (optionTomaping === "optionsGroup") {
         dispatch(sortOptionsGroups(dragIndex, hoverIndex));
       } else {
-        dispatch(sortOption(dragIndex, hoverIndex));
+        if (key !== "multiSelect") {
+          dispatch(sortOption(dragIndex, hoverIndex));
+        }
+
+        return;
       }
     },
     [dispatch, key, optionTomaping, setPreviewSection]

@@ -17,6 +17,7 @@ import FormActivity from "../sections/form-activity";
 import Buttons from "../sections/button";
 import FAQ from "../sections/faq";
 import Testimony from "../sections/testimony";
+import FormCheckout from "../sections/form-checkout";
 
 export function useRenderEditSectionFrame({
   previewSection,
@@ -342,6 +343,24 @@ export function useRenderEditSectionFrame({
             ) {
               return (
                 <Testimony
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "form-checkout" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <FormCheckout
                   key={content.id}
                   currentSection={content}
                   previewSection={previewSection}

@@ -215,7 +215,7 @@ const SelectOptionsControl = ({
                   }
                   setPreviewSection={setPreviewSection}
                   sectionId={sectionId}
-                  contentId={idSection}
+                  idSection={idSection}
                   idOption={option.id}
                   type="selectOption"
                   setDefaultValue={setDefaultValue}
@@ -305,7 +305,7 @@ const SelectOptionsControl = ({
                 content.id === idSection
                   ? {
                       ...content,
-                      content: section.content.map((contentItem) => {
+                      content: content.content.map((contentItem) => {
                         if (
                           contentItem.type === "selectOption" &&
                           contentItem.id === currentContent.id
@@ -378,7 +378,7 @@ const SelectOptionsControl = ({
                   }
                   setPreviewSection={setPreviewSection}
                   sectionId={sectionId}
-                  contentId={idSection}
+                  idSection={idSection}
                   idOption={option.groupId}
                   type="selectOption"
                   options={option.options}

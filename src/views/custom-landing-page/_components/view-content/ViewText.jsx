@@ -55,8 +55,6 @@ const ViewText = forwardRef(
             (isResizing && { cursor: "not-allowed" },
             {
               color: section.content?.style?.color,
-              // ...(isDragging && { border: "2px solid green" }),
-              // ...(isFocused && { border: "2px solid green" }),
             })
           }
           className={`${section.content?.style?.textAlign} tw-my-2`}

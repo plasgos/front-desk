@@ -1,21 +1,20 @@
+import { CButton } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
-import Input from "../../../common/Input";
-import SelectOptions from "../../../common/SelectOptions";
-import SelectVariant from "../../../common/SelectVariant";
+import { IoAdd } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
+import { useDebounce } from "use-debounce";
+import { createUniqueID } from "../../../../../../lib/unique-id";
 import {
-  addOption,
   setCurrentVariantMultiSelect,
   setIsSelectVariantMultiSelect,
   setSelectedVariant,
 } from "../../../../../../redux/modules/custom-landing-page/reducer";
-import { useRemoveOption } from "../hooks/removeOption";
+import Input from "../../../common/Input";
+import SelectOptions from "../../../common/SelectOptions";
+import SelectVariant from "../../../common/SelectVariant";
 import { useMoveOption } from "../hooks/moveOption";
-import { CButton } from "@coreui/react";
-import { IoAdd } from "react-icons/io5";
+import { useRemoveOption } from "../hooks/removeOption";
 import { DraggableListOption } from "./DraggableListOption";
-import { createUniqueID } from "../../../../../../lib/unique-id";
-import { useDebounce } from "use-debounce";
 
 const optionVariant = [
   {
@@ -156,8 +155,6 @@ const MultiSelectControl = ({
         return section;
       })
     );
-
-    dispatch(addOption(newOption));
   };
 
   const removeSection = useRemoveOption(setPreviewSection, "multiSelect");
@@ -196,7 +193,12 @@ const MultiSelectControl = ({
                         )
                       }
                       removeSection={() =>
-                        removeSection(section.id, contentIndex, optionIndex)
+                        removeSection(
+                          section.id,
+                          contentIndex,
+                          optionIndex,
+                          option
+                        )
                       }
                       setPreviewSection={setPreviewSection}
                       idSection={idSection}
