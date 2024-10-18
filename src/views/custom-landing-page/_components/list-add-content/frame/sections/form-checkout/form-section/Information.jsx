@@ -64,7 +64,7 @@ const phoneNumberDropshipperOptions = [
   { value: "required", label: "Diharuskan" },
 ];
 
-const Information = ({ setPreviewSection, currentSection }) => {
+const Information = ({ setPreviewSection, currentSection, sectionId }) => {
   const [visitor, setVisitor] = useState(visitorOptions[0]);
   const [subcribeNewsletter, setSetsubcribeNewsletter] = useState(
     subcribeNewLetterOptions[1]
@@ -88,19 +88,26 @@ const Information = ({ setPreviewSection, currentSection }) => {
 
   const handleChangeFormValue = (key, selectedOption) => {
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
+      arr.map((section) =>
+        section.id === sectionId
           ? {
-              ...item,
-              form: {
-                ...item.form,
-                formSetting: {
-                  ...item.form.formSetting,
-                  [key]: selectedOption,
-                },
-              },
+              ...section,
+              content: section.content.map((content) =>
+                content.id === currentSection.id
+                  ? {
+                      ...content,
+                      form: {
+                        ...content.form,
+                        formSetting: {
+                          ...content.form.formSetting,
+                          [key]: selectedOption,
+                        },
+                      },
+                    }
+                  : content
+              ),
             }
-          : item
+          : section
       )
     );
   };

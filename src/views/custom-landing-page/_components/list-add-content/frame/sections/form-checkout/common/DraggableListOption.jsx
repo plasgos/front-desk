@@ -21,6 +21,7 @@ export const DraggableListOption = ({
   idSection,
   idOption,
   type,
+  sectionId,
 }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({

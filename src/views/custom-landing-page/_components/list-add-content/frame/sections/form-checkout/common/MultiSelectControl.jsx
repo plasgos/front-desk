@@ -53,6 +53,7 @@ const MultiSelectControl = ({
   handleChangeValueContent,
   previewSection,
   setPreviewSection,
+  sectionId,
 }) => {
   const [label, setLabel] = useState(currentContent?.label || "Nama");
 

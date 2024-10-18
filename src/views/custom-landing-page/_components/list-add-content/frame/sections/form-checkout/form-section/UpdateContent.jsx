@@ -12,6 +12,7 @@ import MultiSelectControl from "../common/MultiSelectControl";
 import { useSelector } from "react-redux";
 import SelectOptionsControl from "../common/SelectOptionsControl";
 import { useDebounce } from "use-debounce";
+import { addSectionContent } from "../../../helper/addSectionContent";
 
 const typeOptions = [
   {
@@ -151,6 +152,7 @@ const UpdateContent = ({
   previewSection,
   setPreviewSection,
   isEditingContent,
+  sectionId,
 }) => {
   const [typeOption, setTypeOption] = useState(
     typeOptions
@@ -189,6 +191,9 @@ const UpdateContent = ({
   );
 
   const [setting, setSetting] = useState({});
+
+  const contentIdToCheck = isEditingContent ? currentContent.id : setting.id;
+
   const commonConfig = {
     isRequired,
     label: "Nama",
@@ -310,25 +315,29 @@ const UpdateContent = ({
     const specificPayload = payloadConfig[selectedOption.value] || {};
 
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === idSection
+      arr.map((section) =>
+        section.id === sectionId
           ? {
-              ...item,
-              content: item.content.map((contentItem) => {
-                const contentIdToCheck = isEditingContent
-                  ? currentContent.id
-                  : setting.id;
-                return String(contentItem.id) === String(contentIdToCheck)
+              ...section,
+              content: section.content.map((content) =>
+                content.id === idSection
                   ? {
-                      id: contentIdToCheck,
-                      type: selectedOption.value,
-                      labelType: selectedOption.label,
-                      ...specificPayload,
+                      ...content,
+                      content: content.content.map((contentItem) =>
+                        contentItem.id === contentIdToCheck
+                          ? {
+                              id: contentIdToCheck,
+                              type: selectedOption.value,
+                              labelType: selectedOption.label,
+                              ...specificPayload,
+                            }
+                          : contentItem
+                      ),
                     }
-                  : contentItem;
-              }),
+                  : content
+              ),
             }
-          : item
+          : section
       )
     );
 
@@ -344,24 +353,27 @@ const UpdateContent = ({
 
   const handleChangeValueContent = (key, value) => {
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === idSection
+      arr.map((section) =>
+        section.id === sectionId
           ? {
-              ...item,
-              content: item.content.map((contentItem) => {
-                const contentIdToCheck = isEditingContent
-                  ? currentContent.id
-                  : setting.id;
-
-                return String(contentItem.id) === String(contentIdToCheck)
+              ...section,
+              content: section.content.map((content) =>
+                content.id === idSection
                   ? {
-                      ...contentItem,
-                      [key]: value,
+                      ...content,
+                      content: content.content.map((contentItem) =>
+                        contentItem.id === contentIdToCheck
+                          ? {
+                              ...contentItem,
+                              [key]: value,
+                            }
+                          : contentItem
+                      ),
                     }
-                  : contentItem;
-              }),
+                  : content
+              ),
             }
-          : item
+          : section
       )
     );
   };
@@ -375,13 +387,7 @@ const UpdateContent = ({
       labelType: "Teks",
     };
 
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) =>
-        section.id === idSection
-          ? { ...section, content: [...section.content, payload] }
-          : section
-      )
-    );
+    addSectionContent(setPreviewSection, sectionId, idSection, payload);
 
     setSetting(payload);
   };
@@ -486,6 +492,7 @@ const UpdateContent = ({
           idSection={idSection}
           setPreviewSection={setPreviewSection}
           previewSection={previewSection}
+          sectionId={sectionId}
         />
       )}
 
@@ -496,6 +503,7 @@ const UpdateContent = ({
           idSection={idSection}
           setPreviewSection={setPreviewSection}
           previewSection={previewSection}
+          sectionId={sectionId}
         />
       )}
 

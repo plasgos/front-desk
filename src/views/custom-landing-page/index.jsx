@@ -257,7 +257,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             section={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -270,7 +270,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
             isPreview={isPreview}
             width={dimensions.width}
@@ -287,7 +287,7 @@ const CustomLandingPage = () => {
             width={dimensions.width}
             content={section.content}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -301,7 +301,7 @@ const CustomLandingPage = () => {
             width={dimensions.width}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
             isPreview={isPreview}
             setSectionContentRef={setSectionContentRef}
@@ -316,7 +316,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -329,7 +329,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
@@ -345,7 +345,7 @@ const CustomLandingPage = () => {
             width={dimensions.width}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
             isPreview={isPreview}
             setSectionContentRef={setSectionContentRef}
@@ -360,7 +360,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section.content}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -372,7 +372,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -384,7 +384,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -396,7 +396,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
             isPreview={isPreview}
             width={dimensions.width}
@@ -412,7 +412,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
             setPreviewSection={setPreviewSection}
             setSectionContentRef={setSectionContentRef}
@@ -452,7 +452,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -465,7 +465,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -478,7 +478,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
             width={dimensions.width}
             isPreview={isPreview}
@@ -496,7 +496,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -509,7 +509,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
             isPreview={isPreview}
             width={dimensions.width}
@@ -524,7 +524,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -537,7 +537,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -550,7 +550,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
           />
         );
@@ -563,7 +563,7 @@ const CustomLandingPage = () => {
             isDragging={isDragging && section.id === id}
             content={section}
             isResizing={isResizing}
-            ref={(el) => setRef(el, index)}
+            ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}

@@ -28,6 +28,7 @@ const SelectOptionsControl = ({
   handleChangeValueContent,
   previewSection,
   setPreviewSection,
+  sectionId,
 }) => {
   const { optionsGroups, options } = useSelector(
     (state) => state.customLandingPage
@@ -172,62 +173,66 @@ const SelectOptionsControl = ({
 
   const renderSection = useCallback(
     (section) => {
-      return (
-        <div key={section.id}>
-          {section?.content?.map((contentItem, contentIndex) => {
-            // Filter atau cari contentItem berdasarkan kondisi tertentu
-            if (
-              contentItem?.type === "selectOption" &&
-              contentItem.id === currentContent.id
-            ) {
-              return (
-                <div key={contentItem.id || contentIndex}>
-                  {contentItem?.options?.map((option, optionIndex) => (
-                    <DraggableListOption
-                      key={option.id || optionIndex}
-                      index={optionIndex}
-                      id={option.id}
-                      showInfoText={option.label}
-                      moveSection={(dragIndex, hoverIndex) =>
-                        moveSection(
-                          section.id,
-                          dragIndex,
-                          hoverIndex,
-                          true,
-                          contentIndex
-                        )
-                      }
-                      removeSection={() =>
-                        removeSection(
-                          section.id,
-                          contentIndex,
-                          optionIndex,
-                          option,
-                          setDefaultValue
-                        )
-                      }
-                      setPreviewSection={setPreviewSection}
-                      idSection={idSection}
-                      idOption={option.id}
-                      type="selectOption"
-                      setDefaultValue={setDefaultValue}
-                    />
-                  ))}
-                </div>
-              );
-            }
+      if (section.id !== sectionId) return null;
 
-            // Jika tidak memenuhi kondisi, Anda bisa mengembalikan null atau komponen lainnya
-            return null;
-          })}
-        </div>
+      const selectedSectionFrame = section.content.find(
+        (content) => content.id === idSection
       );
+      if (!selectedSectionFrame) return null;
+
+      return selectedSectionFrame?.content.map((contentItem, contentIndex) => {
+        if (
+          contentItem?.type === "selectOption" &&
+          contentItem.id === currentContent.id
+        ) {
+          return (
+            <div key={contentItem.id || contentIndex}>
+              {contentItem?.options?.map((option, optionIndex) => (
+                <DraggableListOption
+                  key={option.id || optionIndex}
+                  index={optionIndex}
+                  id={option.id}
+                  showInfoText={option.label}
+                  moveSection={(dragIndex, hoverIndex) =>
+                    moveSection(
+                      sectionId,
+                      idSection,
+                      dragIndex,
+                      hoverIndex,
+                      true,
+                      contentIndex
+                    )
+                  }
+                  removeSection={() =>
+                    removeSection(
+                      sectionId,
+                      idSection,
+                      contentIndex,
+                      optionIndex,
+                      option,
+                      setDefaultValue
+                    )
+                  }
+                  setPreviewSection={setPreviewSection}
+                  sectionId={sectionId}
+                  contentId={idSection}
+                  idOption={option.id}
+                  type="selectOption"
+                  setDefaultValue={setDefaultValue}
+                />
+              ))}
+            </div>
+          );
+        }
+        return null;
+      });
     },
     [
       currentContent.id,
       idSection,
       moveSection,
       removeSection,
+      sectionId,
       setPreviewSection,
     ]
   );
@@ -241,28 +246,34 @@ const SelectOptionsControl = ({
       value: `${uniqueId}-Opsi ${optionCounter}`,
     };
 
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === idSection) {
-          return {
-            ...section,
-            content: section.content.map((contentItem) => {
-              if (
-                contentItem.type === "selectOption" &&
-                contentItem.id === currentContent.id
-              ) {
-                return {
-                  ...contentItem,
-                  options: [...contentItem.options, newOption],
-                };
-              }
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              content: section.content.map((content) =>
+                content.id === idSection
+                  ? {
+                      ...content,
+                      content: content.content.map((contentItem) => {
+                        if (
+                          contentItem.type === "selectOption" &&
+                          contentItem.id === currentContent.id
+                        ) {
+                          return {
+                            ...contentItem,
+                            options: [...contentItem.options, newOption],
+                          };
+                        }
 
-              return contentItem;
-            }),
-          };
-        }
-        return section;
-      })
+                        return contentItem;
+                      }),
+                    }
+                  : content
+              ),
+            }
+          : section
+      )
     );
 
     dispatch(addOption(newOption));
@@ -285,28 +296,37 @@ const SelectOptionsControl = ({
       ],
     };
 
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) => {
-        if (section.id === idSection) {
-          return {
-            ...section,
-            content: section.content.map((contentItem) => {
-              if (
-                contentItem.type === "selectOption" &&
-                contentItem.id === currentContent.id
-              ) {
-                return {
-                  ...contentItem,
-                  optionsGroup: [...contentItem.optionsGroup, newOptionGroup],
-                };
-              }
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        section.id === sectionId
+          ? {
+              ...section,
+              content: section.content.map((content) =>
+                content.id === idSection
+                  ? {
+                      ...content,
+                      content: section.content.map((contentItem) => {
+                        if (
+                          contentItem.type === "selectOption" &&
+                          contentItem.id === currentContent.id
+                        ) {
+                          return {
+                            ...contentItem,
+                            optionsGroup: [
+                              ...contentItem.optionsGroup,
+                              newOptionGroup,
+                            ],
+                          };
+                        }
 
-              return contentItem;
-            }),
-          };
-        }
-        return section;
-      })
+                        return contentItem;
+                      }),
+                    }
+                  : content
+              ),
+            }
+          : section
+      )
     );
 
     // setSetting(newOption);
@@ -316,63 +336,67 @@ const SelectOptionsControl = ({
 
   const renderSectionGroup = useCallback(
     (section) => {
-      return (
-        <div key={section.id}>
-          {section?.content?.map((contentItem, contentIndex) => {
-            // Filter atau cari contentItem berdasarkan kondisi tertentu
-            if (
-              contentItem?.type === "selectOption" &&
-              contentItem.id === currentContent.id
-            ) {
-              return (
-                <div key={contentItem.id || contentIndex}>
-                  {contentItem?.optionsGroup?.map((option, optionIndex) => (
-                    <DraggableListGroupOption
-                      key={option.groupId || optionIndex}
-                      index={optionIndex}
-                      id={option.groupId}
-                      showInfoText={option.label}
-                      moveSection={(dragIndex, hoverIndex) =>
-                        moveSectionGroup(
-                          section.id,
-                          dragIndex,
-                          hoverIndex,
-                          true,
-                          contentIndex
-                        )
-                      }
-                      removeSection={() =>
-                        removeSectionGroup(
-                          section.id,
-                          contentIndex,
-                          optionIndex,
-                          option,
-                          setDefaultValue
-                        )
-                      }
-                      setPreviewSection={setPreviewSection}
-                      idSection={idSection}
-                      idOption={option.groupId}
-                      type="selectOption"
-                      options={option.options}
-                      setDefaultValue={setDefaultValue}
-                    />
-                  ))}
-                </div>
-              );
-            }
+      if (section.id !== sectionId) return null;
 
-            // Jika tidak memenuhi kondisi, Anda bisa mengembalikan null atau komponen lainnya
-            return null;
-          })}
-        </div>
+      const selectedSectionFrame = section.content.find(
+        (content) => content.id === idSection
       );
+      if (!selectedSectionFrame) return null;
+
+      return selectedSectionFrame?.content.map((contentItem, contentIndex) => {
+        if (
+          contentItem?.type === "selectOption" &&
+          contentItem.id === currentContent.id
+        ) {
+          return (
+            <div key={contentItem.id}>
+              {contentItem?.optionsGroup?.map((option, optionIndex) => (
+                <DraggableListGroupOption
+                  key={option.groupId || optionIndex}
+                  index={optionIndex}
+                  id={option.groupId}
+                  showInfoText={option.label}
+                  moveSection={(dragIndex, hoverIndex) =>
+                    moveSectionGroup(
+                      sectionId,
+                      idSection,
+                      dragIndex,
+                      hoverIndex,
+                      true,
+                      contentIndex
+                    )
+                  }
+                  removeSection={() =>
+                    removeSectionGroup(
+                      sectionId,
+                      idSection,
+                      contentIndex,
+                      optionIndex,
+                      option,
+                      setDefaultValue
+                    )
+                  }
+                  setPreviewSection={setPreviewSection}
+                  sectionId={sectionId}
+                  contentId={idSection}
+                  idOption={option.groupId}
+                  type="selectOption"
+                  options={option.options}
+                  setDefaultValue={setDefaultValue}
+                />
+              ))}
+            </div>
+          );
+        }
+        return null;
+      });
     },
     [
       currentContent.id,
       idSection,
       moveSectionGroup,
       removeSectionGroup,
+      sectionId,
       setPreviewSection,
     ]
   );
@@ -444,7 +468,7 @@ const SelectOptionsControl = ({
           <h5>Group Opsi</h5>
           <div>
             {previewSection
-              .filter((section) => section.id === idSection)
+              .filter((section) => section.id === sectionId)
               .map((section, i) => renderSectionGroup(section, i))}
           </div>
 
@@ -471,7 +495,7 @@ const SelectOptionsControl = ({
 
           <div>
             {previewSection
-              .filter((section) => section.id === idSection)
+              .filter((section) => section.id === sectionId)
               .map((section, i) => renderSection(section, i))}
           </div>
 

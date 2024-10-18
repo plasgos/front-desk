@@ -27,6 +27,7 @@ export const DraggableListGroupOption = ({
   type,
   options,
   setDefaultValue,
+  sectionId,
 }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({

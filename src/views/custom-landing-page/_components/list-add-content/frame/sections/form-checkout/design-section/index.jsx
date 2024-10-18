@@ -22,6 +22,7 @@ const DesignSection = ({
   setIsListIconVisible,
   setIconBeforeEdit,
   setPreviousIcon,
+  sectionId,
 }) => {
   const [labelColor, setLabelColor] = useState(
     currentSection?.form?.style?.labelColor || "#000000"
@@ -73,20 +74,27 @@ const DesignSection = ({
       // Update tempSections hanya jika imageUrl bukan string kosong
       setIcon({});
       setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
+        arr.map((section) =>
+          section.id === sectionId
             ? {
-                ...item,
-                form: {
-                  ...item.form,
-                  style: {
-                    ...item.form.style,
-                    image: imageUrl,
-                    icon: "",
-                  },
-                },
+                ...section,
+                content: section.content.map((content) =>
+                  content.id === currentSection.id
+                    ? {
+                        ...content,
+                        form: {
+                          ...content.form,
+                          style: {
+                            ...content.form.style,
+                            image: imageUrl,
+                            icon: "",
+                          },
+                        },
+                      }
+                    : content
+                ),
               }
-            : item
+            : section
         )
       );
     }
@@ -119,40 +127,55 @@ const DesignSection = ({
 
   const handleChangeFormValue = (key, selectedOption) => {
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
+      arr.map((section) =>
+        section.id === sectionId
           ? {
-              ...item,
-              form: {
-                ...item.form,
-                style: {
-                  ...item.form.style,
-                  [key]: selectedOption,
-                },
-              },
+              ...section,
+              content: section.content.map((content) =>
+                content.id === currentSection.id
+                  ? {
+                      ...content,
+                      form: {
+                        ...content.form,
+                        style: {
+                          ...content.form.style,
+                          [key]: selectedOption,
+                        },
+                      },
+                    }
+                  : content
+              ),
             }
-          : item
+          : section
       )
     );
   };
 
   const handleChangeIcon = (value) => {
     setIcon(value);
+
     setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection.id
+      arr.map((section) =>
+        section.id === sectionId
           ? {
-              ...item,
-              form: {
-                ...item.form,
-                style: {
-                  ...item.form.style,
-                  icon: value,
-                  image: "",
-                },
-              },
+              ...section,
+              content: section.content.map((content) =>
+                content.id === currentSection.id
+                  ? {
+                      ...content,
+                      form: {
+                        ...content.form,
+                        style: {
+                          ...content.form.style,
+                          icon: value,
+                          image: "",
+                        },
+                      },
+                    }
+                  : content
+              ),
             }
-          : item
+          : section
       )
     );
   };
