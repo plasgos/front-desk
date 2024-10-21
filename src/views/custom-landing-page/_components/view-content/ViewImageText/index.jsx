@@ -4,7 +4,7 @@ import ViewFrosty from "./variant/ViewFrosty";
 import ViewPage from "./variant/ViewPage";
 
 const ViewImageText = forwardRef(
-  ({ isDragging, isResizing, content, isFocused }, ref) => {
+  ({ isDragging, isResizing, content, isFocused, isPreview, width }, ref) => {
     const stylesBg = useBackgroundStyles(content);
 
     return (
@@ -62,7 +62,7 @@ const ViewImageText = forwardRef(
 
             {(content?.variant?.group === "Page" ||
               content?.variant?.group === "Penuh") && (
-              <ViewPage content={content} />
+              <ViewPage content={content} isPreview={isPreview} width={width} />
             )}
           </div>
         )}

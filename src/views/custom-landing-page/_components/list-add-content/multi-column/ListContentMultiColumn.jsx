@@ -26,6 +26,7 @@ import VideoText from "./sections/video-text";
 import CallToAction from "./sections/call-to-action";
 import FormActivity from "./sections/form-activity";
 import CountDown from "./sections/countdown";
+import StockCounter from "./sections/stock-counter";
 
 const ListContentMultiColumn = ({
   previewSection,
@@ -253,6 +254,15 @@ const ListContentMultiColumn = ({
 
       {addContent === "countdown" && (
         <CountDown
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          sectionId={sectionId}
+          columnId={columnId}
+        />
+      )}
+
+      {addContent === "stock-counter" && (
+        <StockCounter
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           sectionId={sectionId}

@@ -47,7 +47,7 @@ const ColorPicker = ({
 
   const popover = {
     position: "absolute",
-    zIndex: "2",
+    zIndex: "99999",
     bottom,
     left,
     right,

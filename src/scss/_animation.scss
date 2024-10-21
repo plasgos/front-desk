@@ -46,3 +46,29 @@
 .custom-animation {
   animation-duration: var(--animation-duration) !important;
 }
+
+@keyframes expand-width-fill-in {
+  from {
+    width: 0%;
+  }
+  to {
+    width: var(--target-width, 100%);
+  }
+}
+
+.expandWidthFillIn {
+  animation: expand-width-fill-in var(--animation-duration, 1s) ease-out;
+}
+
+@keyframes expand-width-fill-out {
+  from {
+    width: 100%;
+  }
+  to {
+    width: var(--target-width, 100%);
+  }
+}
+
+.expandWidthFillOut {
+  animation: expand-width-fill-out var(--animation-duration, 1s) ease-out;
+}

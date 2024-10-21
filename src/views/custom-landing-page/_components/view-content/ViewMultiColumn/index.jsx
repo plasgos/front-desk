@@ -20,6 +20,7 @@ import ViewVideoText from "../ViewVideoText";
 import ViewCallToAction from "../ViewCallToAction";
 import ViewFormActivity from "../ViewFormActivity";
 import ViewCountDown from "../ViewCountdown";
+import ViewStockCounter from "../ViewStockCounter";
 
 const ViewMultiColumn = forwardRef(
   (
@@ -355,6 +356,13 @@ const ViewMultiColumn = forwardRef(
 
                         {contentItem.name === "countdown" && (
                           <ViewCountDown
+                            content={contentItem}
+                            isResizing={isResizing}
+                          />
+                        )}
+
+                        {contentItem.name === "stock-counter" && (
+                          <ViewStockCounter
                             content={contentItem}
                             isResizing={isResizing}
                           />

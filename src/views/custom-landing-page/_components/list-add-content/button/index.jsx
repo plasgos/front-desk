@@ -44,6 +44,7 @@ const Buttons = ({
   sectionBeforeEdit,
   currentSection,
   handleSectionContentFocus,
+  hiddenFocused,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -252,12 +253,19 @@ const Buttons = ({
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
               handleFocus={() => handleSectionContentFocus(contentItem.id)}
+              hiddenFocus={hiddenFocused}
             />
           ))}
         </div>
       );
     },
-    [moveSection, editSection, removeSection, handleSectionContentFocus]
+    [
+      hiddenFocused,
+      moveSection,
+      editSection,
+      removeSection,
+      handleSectionContentFocus,
+    ]
   );
 
   return (

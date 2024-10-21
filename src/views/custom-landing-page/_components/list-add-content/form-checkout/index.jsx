@@ -32,6 +32,7 @@ const FormCheckout = ({
   sectionBeforeEdit,
   currentSection,
   handleSectionContentFocus,
+  hiddenFocused,
 }) => {
   const [activeTab, setActiveTab] = useState("form");
   const [isAddContent, setIsAddContent] = useState(false);
@@ -339,6 +340,7 @@ const FormCheckout = ({
               >
                 <CTabPane className="p-1" data-tab="form">
                   <FormSection
+                    hiddenFocused={hiddenFocused}
                     previewSection={previewSection}
                     setPreviewSection={setPreviewSection}
                     currentSection={isEditingSection ? currentSection : setting}

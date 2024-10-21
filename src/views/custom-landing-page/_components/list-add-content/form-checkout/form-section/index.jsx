@@ -30,6 +30,7 @@ const FormSection = ({
   setIsEditingContent,
   isEditingSection,
   handleSectionContentFocus,
+  hiddenFocused,
 }) => {
   const [activeTab, setActiveTab] = useState("information");
   const [selectedContent, setSelectedContent] = useState({});
@@ -61,12 +62,19 @@ const FormSection = ({
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
               handleFocus={() => handleSectionContentFocus(contentItem.id)}
+              hiddenFocus={hiddenFocused}
             />
           ))}
         </div>
       );
     },
-    [moveSection, editSection, removeSection, handleSectionContentFocus]
+    [
+      hiddenFocused,
+      moveSection,
+      editSection,
+      removeSection,
+      handleSectionContentFocus,
+    ]
   );
 
   return (

@@ -162,28 +162,6 @@ export const aspectRatioOptions = [
   },
 ];
 
-// export const aspectRatioVideoOptions = [
-//   {
-//     label: "Kotak",
-//     options: [{ value: "100%", label: "1:1" }], // 1:1
-//   },
-//   {
-//     label: "Melebar",
-//     options: [
-//       { value: "75%", label: "4:3" }, // 4:3
-//       { value: "56.25%", label: "16:9" }, // 16:9
-//     ],
-//   },
-//   {
-//     label: "Potret",
-//     options: [
-//       { value: "80%", label: "4:5" }, // 4:5
-//       { value: "150%", label: "2:3" }, // 2:3
-//       { value: "177.78%", label: "9:16" }, // 9:16
-//     ],
-//   },
-// ];
-
 export const aspectRatioVideoOptions = [
   {
     label: "Kotak",
@@ -202,6 +180,56 @@ export const aspectRatioVideoOptions = [
       { value: 4 / 5, label: "4:5" }, // 4:5
       { value: 2 / 3, label: "2:3" }, // 2:3
       { value: 9 / 16, label: "9:16" }, // 9:16
+    ],
+  },
+];
+
+export const optionsFbPixelId = [{ value: "fb-id-1", label: "Old Habassy" }];
+
+export const optionsFbPixelEvent = [
+  {
+    label: "Utama",
+    options: [
+      { value: undefined, label: "Tidak Ada" },
+      { value: "custom", label: "Custom" },
+    ],
+  },
+  {
+    label: "Belanja",
+    options: [
+      { value: "add-payment-info", label: "Add Payment Info" },
+      { value: "add-to-cart", label: "Add to Cart" },
+      { value: "add-to-wishlist", label: "Add to Wishlist" },
+      { value: "initiate-checkout", label: "Initiate Checkout" },
+      { value: "purchase", label: "Purchase" },
+      { value: "search", label: "Search" },
+      { value: "view-content", label: "View Content" },
+    ],
+  },
+  {
+    label: "Leads",
+    options: [
+      { value: "lead", label: "Lead" },
+      { value: "page-view", label: "Page View" },
+      { value: "complete-registration", label: "Complete Registration" },
+      { value: "contact", label: "Contact" },
+      { value: "find-location", label: "Find Location" },
+    ],
+  },
+  {
+    label: "Subscription",
+    options: [
+      { value: "start-trial", label: "Start Trial" },
+      { value: "subscribe", label: "Subscribe" },
+    ],
+  },
+  {
+    label: "Lainnya",
+    options: [
+      { value: "customize-product", label: "Customize Product" },
+      { value: "donate", label: "Donate" },
+      { value: "schedule", label: "Schedule" },
+      { value: "submit-application", label: "Submit Application" },
     ],
   },
 ];

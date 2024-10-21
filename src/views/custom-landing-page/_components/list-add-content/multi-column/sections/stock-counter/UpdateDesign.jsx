@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
-import { shadowOptions } from "../../SelectOptions";
-import Input from "../../common/Input";
-import SelectOptions from "../../common/SelectOptions";
-import ColorPicker from "../../common/ColorPicker";
-import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import { CButton } from "@coreui/react";
+import { shadowOptions } from "../../../../SelectOptions";
+import Input from "../../../../common/Input";
+import ColorPicker from "../../../../common/ColorPicker";
+import SelectOptions from "../../../../common/SelectOptions";
+import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 
 const animationIndicatorOptions = [
   { value: undefined, label: "Tidak Ada" },
@@ -17,6 +17,8 @@ const UpdateDesign = ({
   setPreviewSection,
   currentSection,
   isEditingSection,
+  sectionId,
+  columnId,
 }) => {
   const [animation, setAnimation] = useState(
     currentSection?.animation?.type || animationIndicatorOptions[2]
@@ -100,19 +102,33 @@ const UpdateDesign = ({
 
   const handleChangeValue = (key, value) => {
     setPreviewSection((arr) =>
-      arr.map((item) => {
-        return String(item.id) === currentSection.id
+      arr.map((section) => {
+        return String(section.id) === sectionId
           ? {
-              ...item,
-              content: {
-                ...item.content,
-                design: {
-                  ...item.content.design,
-                  [key]: value,
-                },
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) => {
+                        return content.id === currentSection.id
+                          ? {
+                              ...content,
+                              content: {
+                                ...content.content,
+                                design: {
+                                  ...content.content.design,
+                                  [key]: value,
+                                },
+                              },
+                            }
+                          : content;
+                      }),
+                    }
+                  : column
+              ),
             }
-          : item;
+          : section;
       })
     );
   };
@@ -135,16 +151,30 @@ const UpdateDesign = ({
 
   const handleChangeAnimation = (value) => {
     setPreviewSection((arr) =>
-      arr.map((item) => {
-        return String(item.id) === currentSection.id
+      arr.map((section) => {
+        return String(section.id) === sectionId
           ? {
-              ...item,
-              animation: {
-                ...item.animation,
-                type: value,
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) => {
+                        return content.id === currentSection.id
+                          ? {
+                              ...content,
+                              animation: {
+                                ...content.animation,
+                                type: value,
+                              },
+                            }
+                          : content;
+                      }),
+                    }
+                  : column
+              ),
             }
-          : item;
+          : section;
       })
     );
   };
@@ -153,16 +183,30 @@ const UpdateDesign = ({
     setIsReplay((prev) => !prev);
 
     setPreviewSection((arr) =>
-      arr.map((item) => {
-        return String(item.id) === currentSection.id
+      arr.map((section) => {
+        return String(section.id) === sectionId
           ? {
-              ...item,
-              animation: {
-                ...item.animation,
-                isReplay,
-              },
+              ...section,
+              column: section.column.map((column) =>
+                column.id === columnId
+                  ? {
+                      ...column,
+                      content: column.content.map((content) => {
+                        return content.id === currentSection.id
+                          ? {
+                              ...content,
+                              animation: {
+                                ...content.animation,
+                                isReplay,
+                              },
+                            }
+                          : content;
+                      }),
+                    }
+                  : column
+              ),
             }
-          : item;
+          : section;
       })
     );
   };

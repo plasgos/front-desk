@@ -13,70 +13,20 @@ import {
 } from "@coreui/react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDragLayer } from "react-dnd";
-import { renderToString } from "react-dom/server";
 import { IoIosPhonePortrait, IoIosTabletPortrait } from "react-icons/io";
 import { IoAdd } from "react-icons/io5";
 import { MdLaptopMac } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import {
-  removeOptionScrollTarget,
-  setLandingPageSection,
-} from "../../redux/modules/custom-landing-page/reducer";
+import { removeOptionScrollTarget } from "../../redux/modules/custom-landing-page/reducer";
 import DesignTabControl from "./_components/DesignTabControl";
 import { ListSectionContent } from "./_components/ListSectionContent";
 import ModalConfirmation from "./_components/ModalConfirmation";
 import ResizableView from "./_components/ResizebleView";
 import Input from "./_components/common/Input";
-import ListContent from "./_components/list-add-content/";
-import Buttons from "./_components/list-add-content/button";
-import ColumnTextAndImages from "./_components/list-add-content/colum-text-and-image";
-import EmptySpace from "./_components/list-add-content/empty-space";
-import FAQ from "./_components/list-add-content/faq";
-import FloatingButton from "./_components/list-add-content/floating-button";
-import FormCheckout from "./_components/list-add-content/form-checkout";
-import Image from "./_components/list-add-content/image";
-import ImageText from "./_components/list-add-content/image-text";
-import Line from "./_components/list-add-content/line/index";
-import ListFeature from "./_components/list-add-content/list-feature";
-import ListImages from "./_components/list-add-content/list-images";
-import Quote from "./_components/list-add-content/quote";
-import ScrollTarget from "./_components/list-add-content/scroll-target";
-import Testimony from "./_components/list-add-content/testimony";
-import Text from "./_components/list-add-content/text/index";
-import ViewButtonUpdate from "./_components/view-content/ViewButtonUpdate";
-import ViewColumnTextAndImage from "./_components/view-content/ViewColumnTextAndImage";
-import ViewEmptySpace from "./_components/view-content/ViewEmptySpace";
-import ViewFAQ from "./_components/view-content/ViewFAQ/index";
-import ViewFloatingButton from "./_components/view-content/ViewFloatingButton";
-import ViewFormCheckout from "./_components/view-content/ViewFormCheckout";
-import ViewImage from "./_components/view-content/ViewImage";
-import ViewImageText from "./_components/view-content/ViewImageText";
-import ViewLine from "./_components/view-content/ViewLine";
-import ViewListFeature from "./_components/view-content/ViewListFeature";
-import ViewListImages from "./_components/view-content/ViewListImages";
-import ViewQuote from "./_components/view-content/ViewQuote";
-import ViewScrollTraget from "./_components/view-content/ViewScrollTraget";
-import ViewTestimony from "./_components/view-content/ViewTestimony/index";
-import ViewText from "./_components/view-content/ViewText";
-import ViewMultiColumn from "./_components/view-content/ViewMultiColumn";
-import MultiColumn from "./_components/list-add-content/multi-column";
-import ViewVideo from "./_components/view-content/ViewVideo";
-import Video from "./_components/list-add-content/video";
-import VideoText from "./_components/list-add-content/video-text";
-import ViewVideoText from "./_components/view-content/ViewVideoText";
 import { UnDraggabelList } from "./_components/common/UnDraggabaleList";
-import CallToAction from "./_components/list-add-content/call-to-action";
-import ViewCallToAction from "./_components/view-content/ViewCallToAction";
-import FloatingButtonCircle from "./_components/list-add-content/floating-button-circle";
-import ViewFloatingButtonCircle from "./_components/view-content/ViewFloatingButtonCircle";
-import FormActivity from "./_components/list-add-content/form-activity";
-import ViewFormActivity from "./_components/view-content/ViewFormActivity";
-import ViewCountDown from "./_components/view-content/ViewCountdown/index";
-import CountDown from "./_components/list-add-content/countdown";
-import ViewFrame from "./_components/view-content/ViewFrame";
-import Frame from "./_components/list-add-content/frame";
-import StockCounter from "./_components/list-add-content/stock-counter";
-import ViewStockCounter from "./_components/view-content/ViewStockCounter";
+import { useRenderEditSection } from "./_components/hooks/useRenderEditSection";
+import ListContent from "./_components/list-add-content/";
+import { useRenderViewSections } from "./_components/hooks/useRenderViewSections";
 
 const landingPage = {
   detail: {
@@ -98,7 +48,7 @@ const CustomLandingPage = () => {
   });
   const [isResizing, setIsResizing] = useState(false);
   const [isPreview, setIsPreview] = useState(true);
-  const [shouldSave, setShouldSave] = useState(false);
+  // const [shouldSave, setShouldSave] = useState(false);
   const [isSelectedView, setIsSelectedView] = useState("laptop");
   const [sections, setSections] = useState(landingPage.detail.contents || []); //final section save to db
   const [editing, setEditing] = useState("");
@@ -250,811 +200,56 @@ const CustomLandingPage = () => {
 
   const viewTypes = Object.keys(viewIcon);
 
-  const [strViewContent, setStrViewContent] = useState({});
-  const renderViewComponent = useCallback(
-    (section, index) => {
-      if (section.name === "text") {
-        return (
-          <ViewText
-            isDragging={isDragging && section.id === id}
-            section={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
+  // const [strViewContent, setStrViewContent] = useState({});
 
-      if (section.name === "column-text-and-image") {
-        return (
-          <ViewColumnTextAndImage
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-            isPreview={isPreview}
-            width={dimensions.width}
-            setSectionContentRef={setSectionContentRef}
-            focusedIndexSectionContent={focusedIndexSectionContent}
-          />
-        );
-      }
+  const { renderViewSections } = useRenderViewSections({
+    id,
+    setPreviewSection,
+    isDragging,
+    isResizing,
+    setRef,
+    focusedIndex,
+    focusedIndexSectionContent,
+    isPreview,
+    dimensions,
+    containerRef,
+    setSectionContentRef,
+    setColumnRef,
+    focusedIndexColumn,
+    setPreviewFloatingSection,
+  });
 
-      if (section.name === "empty-space") {
-        return (
-          <ViewEmptySpace
-            isDragging={isDragging && section.id === id}
-            width={dimensions.width}
-            content={section.content}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
+  const { renderEditSection } = useRenderEditSection({
+    previewSection,
+    setPreviewSection,
+    editing,
+    setEditing,
+    sectionBeforeEdit,
+    handleSectionContentFocus,
+    previewFloatingSection,
+    setPreviewFloatingSection,
+    sectionFloatingBeforeEdit,
+    handleColumnFocus,
+  });
 
-      if (section.name === "list-images") {
-        return (
-          <ViewListImages
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            width={dimensions.width}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-            isPreview={isPreview}
-            setSectionContentRef={setSectionContentRef}
-            focusedIndexSectionContent={focusedIndexSectionContent}
-          />
-        );
-      }
+  // const handleSave = () => {
+  //   setIsPreview(false);
+  //   setShouldSave(true);
+  //   dispatch(setLandingPageSection(previewSection));
+  // };
 
-      if (section.name === "scroll-target") {
-        return (
-          <ViewScrollTraget
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
+  // useEffect(() => {
+  //   if (!isPreview && shouldSave) {
+  //     const renderedString = previewSection
+  //       .map((item) => renderToString(renderViewComponent(item)))
+  //       .join("");
+  //     setStrViewContent(renderedString);
 
-      if (section.name === "button") {
-        return (
-          <ViewButtonUpdate
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-            setSectionContentRef={setSectionContentRef}
-            focusedIndexSectionContent={focusedIndexSectionContent}
-          />
-        );
-      }
-
-      if (section.name === "testimony") {
-        return (
-          <ViewTestimony
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            width={dimensions.width}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-            isPreview={isPreview}
-            setSectionContentRef={setSectionContentRef}
-            focusedIndexSectionContent={focusedIndexSectionContent}
-          />
-        );
-      }
-
-      if (section.name === "line") {
-        return (
-          <ViewLine
-            isDragging={isDragging && section.id === id}
-            content={section.content}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
-
-      if (section.name === "list-feature") {
-        return (
-          <ViewListFeature
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
-
-      if (section.name === "quote") {
-        return (
-          <ViewQuote
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
-
-      if (section.name === "faq") {
-        return (
-          <ViewFAQ
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-            isPreview={isPreview}
-            width={dimensions.width}
-            setSectionContentRef={setSectionContentRef}
-            focusedIndexSectionContent={focusedIndexSectionContent}
-          />
-        );
-      }
-
-      if (section.name === "form-checkout") {
-        return (
-          <ViewFormCheckout
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-            setPreviewSection={setPreviewSection}
-            setSectionContentRef={setSectionContentRef}
-            focusedIndexSectionContent={focusedIndexSectionContent}
-          />
-        );
-      }
-
-      if (section.name === "floating-button") {
-        return (
-          <ViewFloatingButton
-            containerRef={containerRef}
-            content={section}
-            isResizing={isResizing}
-            setSectionContentRef={setSectionContentRef}
-            focusedIndexSectionContent={focusedIndexSectionContent}
-          />
-        );
-      }
-
-      if (section.name === "floating-button-circle") {
-        return (
-          <ViewFloatingButtonCircle
-            containerRef={containerRef}
-            content={section}
-            isResizing={isResizing}
-            setSectionContentRef={setSectionContentRef}
-            focusedIndexSectionContent={focusedIndexSectionContent}
-          />
-        );
-      }
-
-      if (section.name === "image") {
-        return (
-          <ViewImage
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
-
-      if (section.name === "image-text") {
-        return (
-          <ViewImageText
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
-
-      if (section.name === "multi-column") {
-        return (
-          <ViewMultiColumn
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-            width={dimensions.width}
-            isPreview={isPreview}
-            setPreviewSection={setPreviewSection}
-            setColumnRef={setColumnRef}
-            focusedIndexColumn={focusedIndexColumn}
-          />
-        );
-      }
-
-      if (section.name === "video") {
-        return (
-          <ViewVideo
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
-
-      if (section.name === "video-text") {
-        return (
-          <ViewVideoText
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-            isPreview={isPreview}
-            width={dimensions.width}
-          />
-        );
-      }
-
-      if (section.name === "call-to-action") {
-        return (
-          <ViewCallToAction
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
-
-      if (section.name === "form-activity") {
-        return (
-          <ViewFormActivity
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
-
-      if (section.name === "countdown") {
-        return (
-          <ViewCountDown
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
-
-      if (section.name === "frame") {
-        return (
-          <ViewFrame
-            containerRef={containerRef}
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-            setSectionContentRef={setSectionContentRef}
-            focusedIndexSectionContent={focusedIndexSectionContent}
-            isPreview={isPreview}
-            width={dimensions.width}
-            setPreviewSection={setPreviewSection}
-          />
-        );
-      }
-
-      if (section.name === "stock-counter") {
-        return (
-          <ViewStockCounter
-            isDragging={isDragging && section.id === id}
-            content={section}
-            isResizing={isResizing}
-            ref={(el) => setRef(el, section.id)}
-            isFocused={focusedIndex === section.id}
-          />
-        );
-      }
-
-      return null;
-    },
-    [
-      dimensions.width,
-      focusedIndex,
-      focusedIndexColumn,
-      focusedIndexSectionContent,
-      id,
-      isDragging,
-      isPreview,
-      isResizing,
-    ]
-  );
-
-  const renderEditSection = useCallback(
-    (section) => {
-      if (
-        editing.name === "text" &&
-        section.name === "text" &&
-        editing.id === section.id
-      ) {
-        return (
-          <Text
-            currentSection={section}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "column-text-and-image" &&
-        section.name === "column-text-and-image" &&
-        editing.id === section.id
-      ) {
-        return (
-          <ColumnTextAndImages
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-            handleSectionContentFocus={handleSectionContentFocus}
-          />
-        );
-      }
-
-      if (
-        editing.name === "empty-space" &&
-        section.name === "empty-space" &&
-        editing.id === section.id
-      ) {
-        return (
-          <EmptySpace
-            currentSection={section}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "list-images" &&
-        section.name === "list-images" &&
-        editing.id === section.id
-      ) {
-        return (
-          <ListImages
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-            handleSectionContentFocus={handleSectionContentFocus}
-          />
-        );
-      }
-
-      if (
-        editing.name === "scroll-target" &&
-        section.name === "scroll-target" &&
-        editing.id === section.id
-      ) {
-        return (
-          <ScrollTarget
-            currentSection={section}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "button" &&
-        section.name === "button" &&
-        editing.id === section.id
-      ) {
-        return (
-          <Buttons
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-            handleSectionContentFocus={handleSectionContentFocus}
-          />
-        );
-      }
-
-      if (
-        editing.name === "testimony" &&
-        section.name === "testimony" &&
-        editing.id === section.id
-      ) {
-        return (
-          <Testimony
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-            handleSectionContentFocus={handleSectionContentFocus}
-          />
-        );
-      }
-
-      if (
-        editing.name === "line" &&
-        section.name === "line" &&
-        editing.id === section.id
-      ) {
-        return (
-          <Line
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditing={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "list-feature" &&
-        section.name === "list-feature" &&
-        editing.id === section.id
-      ) {
-        return (
-          <ListFeature
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "quote" &&
-        section.name === "quote" &&
-        editing.id === section.id
-      ) {
-        return (
-          <Quote
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditing={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "faq" &&
-        section.name === "faq" &&
-        editing.id === section.id
-      ) {
-        return (
-          <FAQ
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-            handleSectionContentFocus={handleSectionContentFocus}
-          />
-        );
-      }
-
-      if (
-        editing.name === "form-checkout" &&
-        section.name === "form-checkout" &&
-        editing.id === section.id
-      ) {
-        return (
-          <FormCheckout
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-            handleSectionContentFocus={handleSectionContentFocus}
-          />
-        );
-      }
-
-      if (
-        editing.name === "floating-button" &&
-        section.name === "floating-button" &&
-        editing.id === section.id
-      ) {
-        return (
-          <FloatingButton
-            currentSection={section}
-            previewFloatingSection={previewFloatingSection}
-            setPreviewFloatingSection={(value) =>
-              setPreviewFloatingSection(value)
-            }
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionFloatingBeforeEdit}
-            isEditingSection={true}
-            handleSectionContentFocus={handleSectionContentFocus}
-          />
-        );
-      }
-
-      if (
-        editing.name === "image" &&
-        section.name === "image" &&
-        editing.id === section.id
-      ) {
-        return (
-          <Image
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "image-text" &&
-        section.name === "image-text" &&
-        editing.id === section.id
-      ) {
-        return (
-          <ImageText
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "multi-column" &&
-        section.name === "multi-column" &&
-        editing.id === section.id
-      ) {
-        return (
-          <MultiColumn
-            currentSectionMultiColumn={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowMultiColumn={(value) => setEditing(value)}
-            sectionMultiColumnBeforeEdit={sectionBeforeEdit}
-            isEditingSectionMultiColumn={true}
-            handleColumnFocus={handleColumnFocus}
-          />
-        );
-      }
-
-      if (
-        editing.name === "video" &&
-        section.name === "video" &&
-        editing.id === section.id
-      ) {
-        return (
-          <Video
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "video-text" &&
-        section.name === "video-text" &&
-        editing.id === section.id
-      ) {
-        return (
-          <VideoText
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "call-to-action" &&
-        section.name === "call-to-action" &&
-        editing.id === section.id
-      ) {
-        return (
-          <CallToAction
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "floating-button-circle" &&
-        section.name === "floating-button-circle" &&
-        editing.id === section.id
-      ) {
-        return (
-          <FloatingButtonCircle
-            currentSection={section}
-            previewFloatingSection={previewFloatingSection}
-            setPreviewFloatingSection={(value) =>
-              setPreviewFloatingSection(value)
-            }
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionFloatingBeforeEdit}
-            isEditingSection={true}
-            handleSectionContentFocus={handleSectionContentFocus}
-          />
-        );
-      }
-
-      if (
-        editing.name === "form-activity" &&
-        section.name === "form-activity" &&
-        editing.id === section.id
-      ) {
-        return (
-          <FormActivity
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "countdown" &&
-        section.name === "countdown" &&
-        editing.id === section.id
-      ) {
-        return (
-          <CountDown
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      if (
-        editing.name === "frame" &&
-        section.name === "frame" &&
-        editing.id === section.id
-      ) {
-        return (
-          <Frame
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-            handleSectionContentFocus={handleSectionContentFocus}
-          />
-        );
-      }
-
-      if (
-        editing.name === "stock-counter" &&
-        section.name === "stock-counter" &&
-        editing.id === section.id
-      ) {
-        return (
-          <StockCounter
-            currentSection={section}
-            previewSection={previewSection}
-            setPreviewSection={(value) => setPreviewSection(value)}
-            isShowContent={(value) => setEditing(value)}
-            sectionBeforeEdit={sectionBeforeEdit}
-            isEditingSection={true}
-          />
-        );
-      }
-
-      return null;
-    },
-    [
-      editing.id,
-      editing.name,
-      handleColumnFocus,
-      handleSectionContentFocus,
-      previewFloatingSection,
-      previewSection,
-      sectionBeforeEdit,
-      sectionFloatingBeforeEdit,
-    ]
-  );
-
-  const handleSave = () => {
-    setIsPreview(false);
-    setShouldSave(true);
-    dispatch(setLandingPageSection(previewSection));
-  };
-
-  useEffect(() => {
-    if (!isPreview && shouldSave) {
-      const renderedString = previewSection
-        .map((item) => renderToString(renderViewComponent(item)))
-        .join("");
-      setStrViewContent(renderedString);
-
-      // Reset shouldSave after saving
-      setShouldSave(false);
-      setIsPreview(true);
-    }
-  }, [isPreview, shouldSave, previewSection, renderViewComponent]);
+  //     // Reset shouldSave after saving
+  //     setShouldSave(false);
+  //     setIsPreview(true);
+  //   }
+  // }, [isPreview, shouldSave, previewSection, renderViewComponent]);
 
   const handleMouseDown = (e, direction) => {
     if (isSelectedView === "laptop") return;
@@ -1259,9 +454,7 @@ const CustomLandingPage = () => {
                         Batal
                       </CButton>
 
-                      <CButton onClick={handleSave} color="primary">
-                        Selesai
-                      </CButton>
+                      <CButton color="primary">Simpan</CButton>
                     </div>
                   </div>
                   <CNav variant="tabs">
@@ -1406,19 +599,19 @@ const CustomLandingPage = () => {
               handleMouseDown={handleMouseDown}
             >
               {previewSection.map((item, index) => (
-                <div key={item.id}>{renderViewComponent(item, index)}</div>
+                <div key={item.id}>{renderViewSections(item, index)}</div>
               ))}
 
               {previewFloatingSection.map((item, index) => (
-                <div key={item.id}>{renderViewComponent(item, index)}</div>
+                <div key={item.id}>{renderViewSections(item, index)}</div>
               ))}
             </ResizableView>
           </CCol>
         </CRow>
 
-        {strViewContent && Object.keys(strViewContent).length > 0 && (
+        {/* {strViewContent && Object.keys(strViewContent).length > 0 && (
           <div dangerouslySetInnerHTML={{ __html: strViewContent }} />
-        )}
+        )} */}
       </div>
 
       <ModalConfirmation

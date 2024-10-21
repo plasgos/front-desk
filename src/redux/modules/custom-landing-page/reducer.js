@@ -89,6 +89,7 @@ const initialState = {
     isEditingColumnSection: false,
     isEditingSection: false,
   },
+  popup: [],
 };
 
 export default (state = initialState, action) => {
@@ -167,7 +168,6 @@ export default (state = initialState, action) => {
       };
 
     case types.UPDATE_OPTION:
-      console.log("UPDATE OPTION PAYLOAD", action.payload);
       return {
         ...state,
         options: state.options.map((opt) =>
@@ -357,6 +357,81 @@ export default (state = initialState, action) => {
         },
       };
 
+    case types.SET_POP_UP_CLICK_OPTION:
+      const updatedOptionsPopUp = (() => {
+        // Cek apakah grup "Kegiatan" sudah ada
+        const existingGroup = state.optionsTarget.find(
+          (group) => group.label === "Kegiatan"
+        );
+
+        if (existingGroup) {
+          // Jika grup "Kegiatan" sudah ada
+          return state.optionsTarget.map((group) => {
+            if (group.label === "Kegiatan") {
+              // Buat array baru untuk opsi yang diperbarui
+              const updatedOptions = group.options.map((option) => {
+                // Cek apakah ada opsi baru dengan ID yang sama
+                const newOption = action.payload.options.find(
+                  (opt) => opt.id === option.id
+                );
+
+                // Jika opsi baru ditemukan, kembalikan opsi baru, jika tidak, kembalikan opsi yang lama
+                return newOption ? newOption : option;
+              });
+
+              // Tambahkan opsi baru yang belum ada
+              const newOptions = action.payload.options.filter(
+                (newOpt) => !group.options.some((opt) => opt.id === newOpt.id)
+              );
+
+              // Gabungkan opsi yang diperbarui dengan opsi baru
+              return {
+                ...group,
+                options: [...updatedOptions, ...newOptions],
+              };
+            }
+
+            // Kembalikan grup lain tanpa perubahan
+            return group;
+          });
+        } else {
+          // Jika grup "Kegiatan" belum ada, tambahkan grup baru
+          return [
+            ...state.optionsTarget,
+            {
+              label: action.payload.label,
+              options: action.payload.options,
+            },
+          ];
+        }
+      })();
+
+      console.log(
+        "🚀 ~ updatedOptionsPopUp ~ updatedOptionsPopUp:",
+        updatedOptionsPopUp
+      );
+
+      return {
+        ...state,
+        optionsTarget: updatedOptionsPopUp,
+      };
+
+    case types.SET_IS_OPEN_POP_UP:
+      const isExistingPopUp = state.popup.some(
+        (option) => option.id === action.payload.id
+      );
+
+      const updatedOptionsPopUpShown = isExistingPopUp
+        ? state.popup.map((option) =>
+            option.id === action.payload.id ? action.payload : option
+          )
+        : [...state.popup, action.payload];
+
+      return {
+        ...state,
+        popup: updatedOptionsPopUpShown,
+      };
+
     default:
       return state;
   }
@@ -469,7 +544,6 @@ export const addOption = (option) => {
 };
 
 export const updateOption = (optionId, value) => {
-  console.log("🚀 ~ updateOption ~ optionId:", optionId);
   return {
     type: types.UPDATE_OPTION,
     payload: {
@@ -557,6 +631,20 @@ export const setIsEditingColumnSection = (value) => {
 export const setIsEditingSection = (value) => {
   return {
     type: types.SET_IS_EDITING_SECTION,
+    payload: value,
+  };
+};
+
+export const setPopUpClickOption = (value) => {
+  return {
+    type: types.SET_POP_UP_CLICK_OPTION,
+    payload: value,
+  };
+};
+
+export const setIsOpenPopup = (value) => {
+  return {
+    type: types.SET_IS_OPEN_POP_UP,
     payload: value,
   };
 };

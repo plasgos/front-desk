@@ -18,6 +18,7 @@ import Buttons from "../sections/button";
 import FAQ from "../sections/faq";
 import Testimony from "../sections/testimony";
 import FormCheckout from "../sections/form-checkout";
+import StockCounter from "../sections/stock-counter";
 
 export function useRenderEditSectionFrame({
   previewSection,
@@ -361,6 +362,24 @@ export function useRenderEditSectionFrame({
             ) {
               return (
                 <FormCheckout
+                  key={content.id}
+                  currentSection={content}
+                  previewSection={previewSection}
+                  setPreviewSection={setPreviewSection}
+                  sectionBeforeEdit={currentSectionBeforeEdit}
+                  sectionId={section.id}
+                  isEditingSection={true}
+                  isShowContent={setIsEditingContent}
+                />
+              );
+            }
+
+            if (
+              selectedSection.name === "stock-counter" &&
+              selectedSection.id === content.id
+            ) {
+              return (
+                <StockCounter
                   key={content.id}
                   currentSection={content}
                   previewSection={previewSection}

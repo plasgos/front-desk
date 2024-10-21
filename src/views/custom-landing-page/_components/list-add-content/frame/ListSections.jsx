@@ -21,6 +21,7 @@ import Buttons from "./sections/button";
 import FAQ from "./sections/faq";
 import Testimony from "./sections/testimony";
 import FormCheckout from "./sections/form-checkout";
+import StockCounter from "./sections/stock-counter";
 
 const ListSections = ({
   sectionId,
@@ -262,6 +263,15 @@ const ListSections = ({
 
       {addContent === "countdown" && (
         <CountDown
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+          sectionId={sectionId}
+        />
+      )}
+
+      {addContent === "stock-counter" && (
+        <StockCounter
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}

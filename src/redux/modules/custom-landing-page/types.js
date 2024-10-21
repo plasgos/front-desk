@@ -31,4 +31,7 @@ export default {
   SET_IS_ADD_COLUMN_SECTION: "set-is-add-column-section",
   SET_IS_EDITING_COLUMN_SECTION: "set-is-editing-column-section",
   SET_IS_EDITING_SECTION: "set-is-editing-section",
+
+  SET_POP_UP_CLICK_OPTION: "set-pop-up-click-option",
+  SET_IS_OPEN_POP_UP: "set-is-open-pop-up",
 };

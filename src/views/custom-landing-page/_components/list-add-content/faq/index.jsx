@@ -110,6 +110,7 @@ const FAQ = ({
   sectionBeforeEdit,
   currentSection,
   handleSectionContentFocus,
+  hiddenFocused,
 }) => {
   const [activeTab, setActiveTab] = useState("faqs");
   const [isAddContent, setIsAddContent] = useState(false);
@@ -176,12 +177,19 @@ const FAQ = ({
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
               handleFocus={() => handleSectionContentFocus(contentItem.id)}
+              hiddenFocus={hiddenFocused}
             />
           ))}
         </div>
       );
     },
-    [moveSection, editSection, removeSection, handleSectionContentFocus]
+    [
+      hiddenFocused,
+      moveSection,
+      editSection,
+      removeSection,
+      handleSectionContentFocus,
+    ]
   );
 
   const handleCancel = () => {

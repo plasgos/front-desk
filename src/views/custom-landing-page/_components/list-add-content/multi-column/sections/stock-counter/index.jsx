@@ -11,48 +11,70 @@ import {
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 
-import { createUniqueID } from "../../../../../lib/unique-id";
-
-import BackgroundTab from "../../common/BackgroundTab";
 import UpdateText from "./UpdateText";
 import UpdateDesign from "./UpdateDesign";
+import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsAddColumnSection,
+  setIsEditingColumnSection,
+  setIsEditingSection,
+} from "../../../../../../../redux/modules/custom-landing-page/reducer";
 
 const StockCounter = ({
   previewSection,
   setPreviewSection,
-  isShowContent,
-  isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  sectionId,
+  columnId,
 }) => {
+  const { isEditingSection, isAddColumnSection } = useSelector(
+    (state) => state.customLandingPage.multiColumnSection
+  );
+  const dispatch = useDispatch();
+
   const [setting, setSetting] = useState({});
 
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
 
   useEffect(() => {
-    const section = previewSection.find((section) => section.id === setting.id);
-
-    if (section) {
-      setSelectedCurrentSection(section);
+    if (!isEditingSection) {
+      let section = previewSection.find((section) => section.id === sectionId);
+      if (section) {
+        let column = section.column.find((col) => col.id === columnId);
+        if (column) {
+          let content = column.content.find((cnt) => cnt.id === setting?.id);
+          if (content) {
+            setSelectedCurrentSection(content);
+          }
+        }
+      }
     }
-  }, [previewSection, setting.id]);
+  }, [previewSection, isEditingSection, sectionId, columnId, setting.id]);
 
   const handleCancel = () => {
     if (isEditingSection) {
-      isShowContent(false);
       setPreviewSection([...sectionBeforeEdit]);
+      dispatch(setIsEditingSection(false));
     } else {
-      isShowContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.filter((section) => {
-          return section.id !== setting.id;
-        })
-      );
+      dispatch(setIsAddColumnSection(false));
+      dispatch(setIsEditingColumnSection(false));
+      cancelSectionMultiColumn(setPreviewSection, sectionId, columnId, setting);
     }
   };
 
   const handleConfirm = () => {
-    isShowContent(false);
+    if (isAddColumnSection) {
+      dispatch(setIsAddColumnSection(false));
+    } else if (isEditingSection) {
+      dispatch(setIsEditingSection(false));
+    } else {
+      dispatch(setIsEditingColumnSection(false));
+    }
   };
 
   const onAddContent = () => {
@@ -109,7 +131,8 @@ const StockCounter = ({
       },
     };
 
-    setPreviewSection((prevSections) => [...prevSections, payload]);
+    addSectionMultiColumn(setPreviewSection, sectionId, columnId, payload);
+
     setSetting(payload);
   };
 
@@ -160,6 +183,8 @@ const StockCounter = ({
               >
                 <CTabPane className="p-1" data-tab="design">
                   <UpdateDesign
+                    sectionId={sectionId}
+                    columnId={columnId}
                     setPreviewSection={setPreviewSection}
                     currentSection={
                       isEditingSection ? currentSection : selectedCurrentSection
@@ -169,6 +194,8 @@ const StockCounter = ({
 
                 <CTabPane className="p-1" data-tab="text">
                   <UpdateText
+                    sectionId={sectionId}
+                    columnId={columnId}
                     setPreviewSection={setPreviewSection}
                     currentSection={
                       isEditingSection ? currentSection : selectedCurrentSection
@@ -181,7 +208,9 @@ const StockCounter = ({
                   className="p-1"
                   data-tab="background"
                 >
-                  <BackgroundTab
+                  <BackgroundTabMultiColumnContent
+                    columnId={columnId}
+                    sectionId={sectionId}
                     currentSection={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                     type={isEditingSection ? "edit" : "add"}

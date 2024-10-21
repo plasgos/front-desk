@@ -11,11 +11,12 @@ import {
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 
-import { createUniqueID } from "../../../../../lib/unique-id";
-
-import BackgroundTab from "../../common/BackgroundTab";
 import UpdateText from "./UpdateText";
 import UpdateDesign from "./UpdateDesign";
+import BackgroundTabFrame from "../../common/BackgroundTabFrame";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
+import { cancelNewSection } from "../../helper/cancelNewSection";
+import { addNewSection } from "../../helper/addNewSection";
 
 const StockCounter = ({
   previewSection,
@@ -24,18 +25,27 @@ const StockCounter = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  sectionId,
 }) => {
   const [setting, setSetting] = useState({});
 
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
 
   useEffect(() => {
-    const section = previewSection.find((section) => section.id === setting.id);
+    if (!isEditingSection) {
+      let section = previewSection.find((section) => section.id === sectionId);
 
-    if (section) {
-      setSelectedCurrentSection(section);
+      if (section) {
+        let sectionFrame = section.content.find(
+          (sectionItem) => sectionItem.id === setting.id
+        );
+
+        if (sectionFrame) {
+          setSelectedCurrentSection(sectionFrame);
+        }
+      }
     }
-  }, [previewSection, setting.id]);
+  }, [previewSection, setting.id, isEditingSection, sectionId]);
 
   const handleCancel = () => {
     if (isEditingSection) {
@@ -43,11 +53,7 @@ const StockCounter = ({
       setPreviewSection([...sectionBeforeEdit]);
     } else {
       isShowContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.filter((section) => {
-          return section.id !== setting.id;
-        })
-      );
+      cancelNewSection(setPreviewSection, sectionId, setting.id);
     }
   };
 
@@ -109,7 +115,8 @@ const StockCounter = ({
       },
     };
 
-    setPreviewSection((prevSections) => [...prevSections, payload]);
+    addNewSection(setPreviewSection, sectionId, payload);
+
     setSetting(payload);
   };
 
@@ -160,6 +167,7 @@ const StockCounter = ({
               >
                 <CTabPane className="p-1" data-tab="design">
                   <UpdateDesign
+                    sectionId={sectionId}
                     setPreviewSection={setPreviewSection}
                     currentSection={
                       isEditingSection ? currentSection : selectedCurrentSection
@@ -169,6 +177,7 @@ const StockCounter = ({
 
                 <CTabPane className="p-1" data-tab="text">
                   <UpdateText
+                    sectionId={sectionId}
                     setPreviewSection={setPreviewSection}
                     currentSection={
                       isEditingSection ? currentSection : selectedCurrentSection
@@ -181,7 +190,8 @@ const StockCounter = ({
                   className="p-1"
                   data-tab="background"
                 >
-                  <BackgroundTab
+                  <BackgroundTabFrame
+                    sectionId={sectionId}
                     currentSection={isEditingSection ? currentSection : setting}
                     setPreviewSection={setPreviewSection}
                     type={isEditingSection ? "edit" : "add"}

@@ -32,7 +32,7 @@ const ViewStockCounter = forwardRef(
           position: "relative",
           zIndex: 1,
         }}
-        className={` tw-flex tw-flex-row tw-flex-wrap tw-justify-center tw-items-center  ${
+        className={` tw-flex tw-flex-row tw-flex-wrap tw-justify-center tw-items-center tw-px-3  ${
           isFocused &&
           "animate__animated  animate__headShake animate__fast tw-bg-green-300/20"
         } `}
@@ -58,7 +58,7 @@ const ViewStockCounter = forwardRef(
         ) : null}
 
         <div
-          className={`tw-flex tw-flex-col tw-items-center tw-justify-center tw-my-2`}
+          className={`tw-flex tw-flex-col tw-items-center tw-justify-center tw-my-2 tw-max-w-full`}
         >
           <div
             style={{
@@ -71,7 +71,7 @@ const ViewStockCounter = forwardRef(
           />
 
           <div
-            className={`${content?.content?.design?.outerShadow}`}
+            className={`${content?.content?.design?.outerShadow} tw-max-w-full `}
             style={{
               width: content?.content?.design?.width,
               height: content?.content?.design?.height,
@@ -94,6 +94,7 @@ const ViewStockCounter = forwardRef(
                 top: 0,
                 left: 0,
                 "--animation-duration": `${duration}s`,
+                "--target-width": `${widhtPercentage}%`,
               }}
               className={`${getClassName()} ${
                 content?.content?.design?.innerShadow

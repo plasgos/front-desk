@@ -24,6 +24,7 @@ export const variantButton = [
 ];
 
 export const roundedButtonOptions = [
+  { value: undefined, label: "Tidak Ada" },
   { value: "tw-rounded", label: "Kecil" },
   { value: "tw-rounded-md", label: "Sedang" },
   { value: "tw-rounded-lg", label: "Besar" },
@@ -172,6 +173,45 @@ const UpdateContent = ({
   }, [currentContent, isEditingContent]);
 
   useEffect(() => {
+    if (
+      selectedOption &&
+      selectedOption.value &&
+      selectedOption?.value.includes("Pop Up")
+    ) {
+      const contentIdToCheck = isEditingContent
+        ? currentContent.id
+        : setting.id;
+
+      const payload = {
+        ...selectedOption,
+        isShowPopup: false,
+      };
+
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === idSection
+            ? {
+                ...item,
+                content: item.content.map((contentItem) =>
+                  String(contentItem.id) === contentIdToCheck
+                    ? {
+                        ...contentItem,
+                        target: {
+                          popup: payload,
+                        },
+                      }
+                    : contentItem
+                ),
+              }
+            : item
+        )
+      );
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOption]);
+
+  useEffect(() => {
     if (isEditingContent) {
       if (
         selectedOption &&
@@ -221,7 +261,8 @@ const UpdateContent = ({
           return (
             (targetType?.scrollTarget && opt.value === "scroll-target") ||
             (targetType?.url && opt.value === "url") ||
-            (targetType?.whatApps && opt.value === "whatApps")
+            (targetType?.whatApps && opt.value === "whatApps") ||
+            (targetType?.popup && opt.value?.includes("Pop Up"))
           );
         });
 

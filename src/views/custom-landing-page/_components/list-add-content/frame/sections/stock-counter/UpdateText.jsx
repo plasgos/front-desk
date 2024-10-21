@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
-import ColorPicker from "../../common/ColorPicker";
-import { CustomReactQuill } from "../../common/ReactQuill";
-import SelectOptions from "../../common/SelectOptions";
-import TextAlignSelect from "../../common/TextAlignSelect";
-import { fontSizeOptions } from "../../SelectOptions";
+import { fontSizeOptions } from "../../../../SelectOptions";
+import TextAlignSelect from "../../../../common/TextAlignSelect";
+import ColorPicker from "../../../../common/ColorPicker";
+import SelectOptions from "../../../../common/SelectOptions";
+import { CustomReactQuill } from "../../../../common/ReactQuill";
 
 const textShadowOptions = [
   { value: undefined, label: "Tidak Ada" },
@@ -17,6 +17,7 @@ const UpdateText = ({
   setPreviewSection,
   currentSection,
   isEditingContent,
+  sectionId,
 }) => {
   const {
     text,
@@ -85,39 +86,53 @@ const UpdateText = ({
     const replacedContent = value.replace(/{{stock}}/g, currentStock);
 
     setPreviewSection((arr) =>
-      arr.map((item) => {
-        return String(item.id) === currentSection.id
+      arr.map((section) =>
+        section.id === sectionId
           ? {
-              ...item,
-              content: {
-                ...item.content,
-                text: {
-                  ...item.content.text,
-                  text: replacedContent,
-                },
-              },
+              ...section,
+              content: section.content.map((content) =>
+                content.id === currentSection.id
+                  ? {
+                      ...content,
+                      content: {
+                        ...content.content,
+                        text: {
+                          ...content.content.text,
+                          text: replacedContent,
+                        },
+                      },
+                    }
+                  : content
+              ),
             }
-          : item;
-      })
+          : section
+      )
     );
   };
 
   const handleChangeTitle = (key, value) => {
     setPreviewSection((arr) =>
-      arr.map((item) => {
-        return String(item.id) === currentSection.id
+      arr.map((section) =>
+        section.id === sectionId
           ? {
-              ...item,
-              content: {
-                ...item.content,
-                text: {
-                  ...item.content.text,
-                  [key]: value,
-                },
-              },
+              ...section,
+              content: section.content.map((content) =>
+                content.id === currentSection.id
+                  ? {
+                      ...content,
+                      content: {
+                        ...content.content,
+                        text: {
+                          ...content.content.text,
+                          [key]: value,
+                        },
+                      },
+                    }
+                  : content
+              ),
             }
-          : item;
-      })
+          : section
+      )
     );
   };
 

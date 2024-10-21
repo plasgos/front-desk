@@ -72,13 +72,11 @@ const ScrollTarget = ({
       });
   };
 
+  const contentIdToCheck = isEditingSection ? currentSection.id : setting.id;
+
   const handleNameChange = (value) => {
     setPreviewSection((arr) =>
       arr.map((item) => {
-        const contentIdToCheck = isEditingSection
-          ? currentSection.id
-          : setting.id;
-
         return String(item.id) === contentIdToCheck
           ? {
               ...item,
@@ -145,18 +143,14 @@ const ScrollTarget = ({
   };
 
   const handleConfirm = async () => {
-    if (isEditingSection) {
-      await dispatch(
-        setOptionsScrollTarget({
-          id: currentSection.id,
-          value: name,
-          label: name,
-        })
-      );
-      isShowContent(false);
-    } else {
-      isShowContent(false);
-    }
+    await dispatch(
+      setOptionsScrollTarget({
+        id: contentIdToCheck,
+        value: name,
+        label: name,
+      })
+    );
+    isShowContent(false);
   };
 
   return (

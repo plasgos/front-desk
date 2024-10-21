@@ -1,25 +1,26 @@
 import React, { forwardRef } from "react";
 import useAnimatedVisibility from "../../../../hooks/useAnimatedVisibility";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
-import ViewText from "./ViewText";
-import ViewEmptySpace from "./ViewEmptySpace";
-import ViewColumnTextAndImage from "./ViewColumnTextAndImage";
-import ViewListImages from "./ViewListImages";
-import ViewScrollTraget from "./ViewScrollTraget";
-import ViewLine from "./ViewLine";
-import ViewQuote from "./ViewQuote";
-import ViewListFeature from "./ViewListFeature";
+import ViewButtonUpdate from "./ViewButtonUpdate";
 import ViewCallToAction from "./ViewCallToAction";
-import ViewVideo from "./ViewVideo";
-import ViewVideoText from "./ViewVideoText";
+import ViewColumnTextAndImage from "./ViewColumnTextAndImage";
+import ViewCountDown from "./ViewCountdown";
+import ViewEmptySpace from "./ViewEmptySpace";
+import ViewFAQ from "./ViewFAQ";
+import ViewFormActivity from "./ViewFormActivity";
+import ViewFormCheckout from "./ViewFormCheckout";
 import ViewImage from "./ViewImage";
 import ViewImageText from "./ViewImageText";
-import ViewCountDown from "./ViewCountdown";
-import ViewFormActivity from "./ViewFormActivity";
-import ViewButtonUpdate from "./ViewButtonUpdate";
-import ViewFAQ from "./ViewFAQ";
+import ViewLine from "./ViewLine";
+import ViewListFeature from "./ViewListFeature";
+import ViewListImages from "./ViewListImages";
+import ViewQuote from "./ViewQuote";
+import ViewScrollTraget from "./ViewScrollTraget";
+import ViewStockCounter from "./ViewStockCounter";
 import ViewTestimony from "./ViewTestimony";
-import ViewFormCheckout from "./ViewFormCheckout";
+import ViewText from "./ViewText";
+import ViewVideo from "./ViewVideo";
+import ViewVideoText from "./ViewVideoText";
 
 const ViewFrame = forwardRef(
   (
@@ -308,6 +309,14 @@ const ViewFrame = forwardRef(
 
                 {section.name === "form-checkout" && (
                   <ViewFormCheckout
+                    setPreviewSection={setPreviewSection}
+                    content={section}
+                    isResizing={isResizing}
+                  />
+                )}
+
+                {section.name === "stock-counter" && (
+                  <ViewStockCounter
                     setPreviewSection={setPreviewSection}
                     content={section}
                     isResizing={isResizing}

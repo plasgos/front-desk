@@ -1,6 +1,6 @@
 import React from "react";
 import useAnimatedVisibility from "../../../../../../hooks/useAnimatedVisibility";
-const ViewPageCSS = ({ content }) => {
+const ViewPageCSS = ({ content, isPreview, width }) => {
   const { elementRef, getClassName, duration } = useAnimatedVisibility(content);
   const {
     elementRef: elementRefContent,
@@ -9,7 +9,19 @@ const ViewPageCSS = ({ content }) => {
   } = useAnimatedVisibility(content.content[0]);
 
   return (
-    <div className="tw-flex tw-items-center">
+    <div
+      className={` ${
+        isPreview
+          ? `tw-flex tw-items-center tw-max-w-full ${
+              width === "100%"
+                ? "tw-flex-nowrap"
+                : width < 420
+                ? "tw-flex-wrap"
+                : ""
+            }`
+          : "parent-container-video-text-view"
+      }`}
+    >
       {content?.variant?.style?.imagePosition === "right" ? (
         <>
           <div

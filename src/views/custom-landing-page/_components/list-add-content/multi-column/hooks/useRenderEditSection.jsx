@@ -18,6 +18,7 @@ import VideoText from "../sections/video-text";
 import CallToAction from "../sections/call-to-action";
 import FormActivity from "../sections/form-activity";
 import CountDown from "../sections/countdown";
+import StockCounter from "../sections/stock-counter";
 
 export function useRenderEditSection({
   previewSection,
@@ -386,6 +387,24 @@ export function useRenderEditSection({
                 ) {
                   return (
                     <CountDown
+                      key={content.id}
+                      currentSection={content}
+                      previewSection={previewSection}
+                      setPreviewSection={setPreviewSection}
+                      sectionBeforeEdit={currentSetionBeforeEdit}
+                      sectionId={section.id}
+                      columnId={columIdCheck}
+                    />
+                  );
+                }
+
+                if (
+                  selectedSection.name === "stock-counter" &&
+                  content.name === "stock-counter" &&
+                  selectedSection.id === content.id
+                ) {
+                  return (
+                    <StockCounter
                       key={content.id}
                       currentSection={content}
                       previewSection={previewSection}

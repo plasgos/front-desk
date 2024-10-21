@@ -36,6 +36,7 @@ const Testimony = ({
   sectionBeforeEdit,
   currentSection,
   handleSectionContentFocus,
+  hiddenFocused,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -323,6 +324,7 @@ const Testimony = ({
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
               handleFocus={() => handleSectionContentFocus(contentItem.id)}
+              hiddenFocus={hiddenFocused}
             />
           ))}
         </div>
@@ -344,7 +346,7 @@ const Testimony = ({
               moveSection={moveSectionShape}
               editSection={() => editSectionShape(contentItem)}
               removeSection={() => removeSectionShape(section.id, contentIndex)}
-              hiddenFocus={true}
+              hiddenFocus={hiddenFocused}
             />
           ))}
         </div>

@@ -37,6 +37,7 @@ const ListImages = ({
   sectionBeforeEdit,
   currentSection,
   handleSectionContentFocus,
+  hiddenFocused,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -242,12 +243,19 @@ const ListImages = ({
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
               handleFocus={() => handleSectionContentFocus(contentItem.id)}
+              hiddenFocus={hiddenFocused}
             />
           ))}
         </div>
       );
     },
-    [moveSection, handleSectionContentFocus, editSection, removeSection]
+    [
+      hiddenFocused,
+      moveSection,
+      editSection,
+      removeSection,
+      handleSectionContentFocus,
+    ]
   );
 
   return (

@@ -396,7 +396,7 @@ const FloatingButton = ({
                       currentSection={
                         isEditingSection ? currentSection : setting
                       }
-                      setPreviewFloatingSection={setPreviewFloatingSection}
+                      setPreviewSection={setPreviewFloatingSection}
                       type={isEditingSection ? "edit" : "add"}
                     />
                   </CTabPane>

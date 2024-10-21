@@ -1,8 +1,11 @@
 import React, { forwardRef } from "react";
-import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
+import { handleScrollToTop } from "../../../../hooks/useScrollToTop";
+import { useDispatch } from "react-redux";
+import { setIsOpenPopup } from "../../../../redux/modules/custom-landing-page/reducer";
 
 const ViewButtonUpdate = forwardRef(
   (
@@ -18,6 +21,53 @@ const ViewButtonUpdate = forwardRef(
     ref
   ) => {
     const iconPack = useFontAwesomeIconPack();
+
+    const dispatch = useDispatch();
+
+    const handleSectionClick = (target) => {
+      console.log("🚀 ~ handleSectionClick ~ target:", target);
+
+      if (target?.url?.url) {
+        window.open(
+          target.url.url,
+          target.url.isOpenNewTab ? "_blank" : "_self",
+          target.url.isOpenNewTab ? "noopener noreferrer" : ""
+        );
+      } else if (target?.whatApps?.phoneNumber) {
+        const waLink = `https://wa.me/+62${
+          target.whatApps.phoneNumber
+        }?text=${encodeURIComponent(target.whatApps.message)}`;
+        window.open(
+          waLink,
+          target.whatApps.isOpenNewTab ? "_blank" : "_self",
+          target.whatApps.isOpenNewTab ? "noopener noreferrer" : ""
+        );
+      } else if (target?.scrollTarget?.value) {
+        const targetId = target.scrollTarget.value;
+        if (targetId === "back-to-top") {
+          handleScrollToTop(targetId, containerRef);
+        } else {
+          // Update URL and scroll
+          window.location.hash = targetId;
+          const element = document.getElementById(targetId);
+
+          if (element) {
+            element.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+              inline: "nearest",
+            });
+          }
+        }
+      } else if (target?.popup) {
+        const payload = {
+          ...target?.popup,
+          isShowPopup: true,
+        };
+
+        dispatch(setIsOpenPopup(payload));
+      }
+    };
 
     const getIconForSection = (icon) => {
       if (iconPack) {
@@ -165,9 +215,11 @@ const ViewButtonUpdate = forwardRef(
               `}
             >
               <div
-                onClick={() =>
-                  useHandleClickTarget(section.target, containerRef)
-                }
+                // onClick={() =>
+                //   useHandleClickTarget(section.target, containerRef)
+                // }
+
+                onClick={() => handleSectionClick(section.target)}
                 style={{
                   ...buttonColorClass,
                   color: section.content.style.textColor,

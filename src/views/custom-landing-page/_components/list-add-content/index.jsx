@@ -1,5 +1,5 @@
 import { CButton, CCard, CTabContent } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SearchForm } from "../common/SearchForm";
 import Buttons from "./button";
 import CallToAction from "./call-to-action";
@@ -26,6 +26,8 @@ import FormActivity from "./form-activity";
 import CountDown from "./countdown";
 import Frame from "./frame";
 import StockCounter from "./stock-counter";
+import FbPixelEvent from "./fb-pixel-event";
+import PopUp from "./popup";
 
 const ListContent = ({
   previewSection,
@@ -37,35 +39,53 @@ const ListContent = ({
   setIsAddColumnSectionMultiColumn,
   handleColumnFocus,
   handleSectionContentFocus,
+  isPopUpSection,
 }) => {
   const [addContent, setAddContent] = useState("");
   const [searchContent, setSearchContent] = useState("");
   const [filteredContents, setFilteredContents] = useState(dataListContent);
+  useEffect(() => {
+    if (isPopUpSection) {
+      const sectionsPopUp = dataListContent.filter(
+        (section) => section.group !== "Floating"
+      );
+
+      if (sectionsPopUp) {
+        setFilteredContents(sectionsPopUp);
+      }
+    }
+  }, [isPopUpSection]);
+
   const handleChangeContent = (value) => {
     setSearchContent(value);
-    const filteredContents = dataListContent
+
+    const sourceData = isPopUpSection
+      ? dataListContent.filter((section) => section.group !== "Floating")
+      : dataListContent;
+
+    if (value.trim() === "") {
+      setFilteredContents(sourceData);
+      return;
+    }
+
+    const filteredData = sourceData
       .map((group) => {
-        // Filter sections berdasarkan title
         const filteredSections = group.sections.filter((section) =>
           section.title.toLocaleLowerCase().includes(value.toLocaleLowerCase())
         );
 
-        // Periksa apakah grup.group cocok dengan pencarian
         const isGroupMatch = group.group
           .toLocaleLowerCase()
           .includes(value.toLocaleLowerCase());
 
-        // Kembalikan grup dengan:
-        // - Semua sections jika grup cocok dengan pencarian
-        // - Hanya sections yang difilter jika grup tidak cocok
         return {
           ...group,
           sections: isGroupMatch ? group.sections : filteredSections,
         };
       })
-      .filter((group) => group.sections.length > 0); // Hanya simpan grup yang memiliki section
+      .filter((group) => group.sections.length > 0);
 
-    setFilteredContents(filteredContents);
+    setFilteredContents(filteredData);
   };
 
   const handleCancelAddContent = () => {
@@ -123,6 +143,7 @@ const ListContent = ({
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          hiddenFocused={isPopUpSection}
         />
       )}
 
@@ -140,6 +161,7 @@ const ListContent = ({
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          hiddenFocused={isPopUpSection}
         />
       )}
 
@@ -157,6 +179,7 @@ const ListContent = ({
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          hiddenFocused={isPopUpSection}
         />
       )}
 
@@ -166,6 +189,7 @@ const ListContent = ({
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          hiddenFocused={isPopUpSection}
         />
       )}
 
@@ -199,6 +223,7 @@ const ListContent = ({
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          hiddenFocused={isPopUpSection}
         />
       )}
 
@@ -208,11 +233,29 @@ const ListContent = ({
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          hiddenFocused={isPopUpSection}
         />
       )}
 
       {addContent === "floating-button" && (
         <FloatingButton
+          previewFloatingSection={previewFloatingSection}
+          setPreviewFloatingSection={setPreviewFloatingSection}
+          isShowContent={isShowContent}
+          handleSectionContentFocus={handleSectionContentFocus}
+        />
+      )}
+
+      {addContent === "fb-pixel-event" && (
+        <FbPixelEvent
+          previewFloatingSection={previewFloatingSection}
+          setPreviewFloatingSection={setPreviewFloatingSection}
+          isShowContent={isShowContent}
+        />
+      )}
+
+      {addContent === "popup" && (
+        <PopUp
           previewFloatingSection={previewFloatingSection}
           setPreviewFloatingSection={setPreviewFloatingSection}
           isShowContent={isShowContent}
@@ -329,7 +372,11 @@ const ListContent = ({
                   {group.sections.map((section, index) => {
                     const existFloatingSectionSelected = previewFloatingSection
                       .map((prevSection) => prevSection)
-                      .some((prevSection) => prevSection.name === section.name);
+                      .some(
+                        (prevSection) =>
+                          prevSection.name.includes("floating-button") &&
+                          prevSection.name === section.name
+                      );
 
                     return (
                       <CCard

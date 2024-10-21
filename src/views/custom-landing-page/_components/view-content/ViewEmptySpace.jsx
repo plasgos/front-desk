@@ -2,7 +2,6 @@ import React, { forwardRef } from "react";
 
 const ViewEmptySpace = forwardRef(
   ({ isDragging, isResizing, content, isFocused }, ref) => {
-    console.log("🚀 ~ content:", content);
     return (
       <div
         ref={ref}

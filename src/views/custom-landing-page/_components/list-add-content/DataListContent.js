@@ -1,6 +1,6 @@
 import React from "react";
-import { BsFillChatSquareQuoteFill } from "react-icons/bs";
-import { FaClipboardList, FaImage } from "react-icons/fa";
+import { BsFillChatSquareQuoteFill, BsWindowStack } from "react-icons/bs";
+import { FaClipboardList, FaFacebook, FaImage } from "react-icons/fa";
 import { FaGripLines, FaListCheck } from "react-icons/fa6";
 import { IoMdImages } from "react-icons/io";
 import { LuImagePlus, LuQuote } from "react-icons/lu";
@@ -144,6 +144,12 @@ export const dataListContent = [
         icon: <MdSupervisedUserCircle style={{ marginRight: 5 }} size={24} />,
         action: (setAddContent) => setAddContent("floating-button-circle"),
       },
+      {
+        name: "popup",
+        title: "Pop Up",
+        icon: <BsWindowStack style={{ marginRight: 5 }} size={24} />,
+        action: (setAddContent) => setAddContent("popup"),
+      },
     ],
   },
   {
@@ -188,6 +194,17 @@ export const dataListContent = [
         title: "Formulir Kegiatan",
         icon: <CgFileDocument style={{ marginRight: 5 }} size={24} />,
         action: (setAddContent) => setAddContent("form-activity"),
+      },
+    ],
+  },
+  {
+    group: "Tracking",
+    sections: [
+      {
+        name: "fb-pixel-event",
+        title: "FB Pixel Event",
+        icon: <FaFacebook style={{ marginRight: 5 }} size={24} />,
+        action: (setAddContent) => setAddContent("fb-pixel-event"),
       },
     ],
   },
