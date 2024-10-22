@@ -24,6 +24,8 @@ import ViewCountDown from "../view-content/ViewCountdown";
 import ViewFrame from "../view-content/ViewFrame";
 import ViewStockCounter from "../view-content/ViewStockCounter";
 import ViewPopUp from "../view-content/ViewPopUp";
+import ViewFloatingContent from "../view-content/ViewFloatingContent";
+import ViewFrames from "../view-content/ViewFrames";
 
 export function useRenderViewSections({
   id,
@@ -350,9 +352,9 @@ export function useRenderViewSections({
         );
       }
 
-      if (section.name === "frame") {
+      if (section.name === "frames") {
         return (
-          <ViewFrame
+          <ViewFrames
             containerRef={containerRef}
             isDragging={isDragging && section.id === id}
             content={section}
@@ -364,6 +366,8 @@ export function useRenderViewSections({
             isPreview={isPreview}
             width={dimensions.width}
             setPreviewSection={setPreviewSection}
+            setColumnRef={setColumnRef}
+            focusedIndexColumn={focusedIndexColumn}
           />
         );
       }
@@ -392,6 +396,26 @@ export function useRenderViewSections({
             setPreviewSection={setPreviewSection}
             isPreview={isPreview}
             width={dimensions.width}
+            setColumnRef={setColumnRef}
+            focusedIndexColumn={focusedIndexColumn}
+          />
+        );
+      }
+
+      if (section.name === "floating-content") {
+        return (
+          <ViewFloatingContent
+            containerRef={containerRef}
+            content={section}
+            isResizing={isResizing}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
+            setPreviewFloatingSection={setPreviewFloatingSection}
+            setPreviewSection={setPreviewSection}
+            isPreview={isPreview}
+            width={dimensions.width}
+            setColumnRef={setColumnRef}
+            focusedIndexColumn={focusedIndexColumn}
           />
         );
       }

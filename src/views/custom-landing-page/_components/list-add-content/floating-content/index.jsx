@@ -16,31 +16,26 @@ import React, { useCallback, useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
 
-import { useDispatch, useSelector } from "react-redux";
 import ListContent from "..";
 import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
-import { setPopUpClickOption } from "../../../../../redux/modules/custom-landing-page/reducer";
+import AnimationControl from "../../common/AnimationControl";
 import BackgroundTab from "../../common/BackgroundTab";
-import Input from "../../common/Input";
-import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 import SelectOptions from "../../common/SelectOptions";
 import { useRenderEditSection } from "../../hooks/useRenderEditSection";
 import { ListSectionContent } from "../../ListSectionContent";
-import { roundedButtonOptions } from "../floating-button/UpdateContent";
+import { shadowOptions } from "../../SelectOptions";
 
-const shownOnWhenOptions = [
-  { value: "clickButton", label: "Klik Tombol" },
-  { value: "immediately", label: "Langsung" },
-  { value: "waitAfter", label: "Tunggu Setelah" },
-  { value: "afterInteraction", label: "Setelah Interaksi" },
+const positionOptions = [
+  { value: "top", label: "Atas" },
+  { value: "bottom", label: "Bawah" },
 ];
 
 const newId = () => Math.random().toString(36).substr(2, 9);
 
 const background = {
-  bgType: undefined,
-  bgColor: "",
+  bgType: "color",
+  bgColor: "#ffffff",
   bgImage: "",
   blur: 0,
   opacity: 0,
@@ -71,10 +66,25 @@ const initialSection = {
     duration: 1,
     isReplay: false,
   },
-  background,
+  background: {
+    bgType: undefined,
+    bgColor: "",
+    bgImage: "",
+    blur: 0,
+    opacity: 0,
+    paddingY: 0,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingType: "equal",
+    direction: "to right",
+    fromColor: "",
+    toColor: "",
+    isRevert: false,
+    pattern: "",
+  },
 };
 
-const PopUp = ({
+const FloatingContent = ({
   currentSection,
   isShowContent,
   isEditingSection,
@@ -100,73 +110,43 @@ const PopUp = ({
 
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
 
-  const [popupName, setPopupName] = useState(currentSection?.popupName || "");
+  const [position, setPosition] = useState(positionOptions[1]);
 
-  const [shownOnWhen, setShownOnWhen] = useState(shownOnWhenOptions[1]);
-
-  const [rounded, setRounded] = useState(roundedButtonOptions[2]);
-
-  const [width, setWidth] = useState(currentSection?.width || 500);
-
-  const { optionsTarget } = useSelector((state) => state.customLandingPage);
-
-  const kegiatanGroup = optionsTarget.find(
-    (group) => group.label === "Kegiatan"
-  );
-  const popUpNumber = kegiatanGroup ? kegiatanGroup.options.length + 1 : 1;
+  const [shadow, setShadow] = useState(shadowOptions[3]);
 
   useEffect(() => {
-    const currentShownOnWhen = shownOnWhenOptions.find(
-      (opt) => opt.value === currentSection?.shownOnWhen
-    );
+    if (isEditingSection) {
+      const currentPosition = positionOptions.find(
+        (opt) => opt.value === currentSection?.wrapperStyle?.position
+      );
 
-    if (currentShownOnWhen) {
-      setShownOnWhen(currentShownOnWhen);
+      if (currentPosition) {
+        setPosition(currentPosition);
+      }
+
+      const currentShadow = shadowOptions.find(
+        (opt) => opt.value === currentSection?.wrapperStyle?.shadow
+      );
+      if (currentShadow) {
+        setShadow(currentShadow);
+      }
     }
+  }, [currentSection, isEditingSection]);
 
-    const currentRounded = roundedButtonOptions.find(
-      (opt) => opt.value === currentSection?.rounded
-    );
-
-    if (currentRounded) {
-      setRounded(currentRounded);
-    }
-  }, [currentSection]);
-
-  const dispatch = useDispatch();
-
-  const handleChangeShownOnWhen = (value) => {
+  const handleChangeWrapperStyle = (key, value) => {
     setPreviewFloatingSection((arr) =>
       arr.map((section) =>
         section.id === contentIdToCheck
           ? {
               ...section,
-              shownOnWhen: value,
+              wrapperStyle: {
+                ...section.wrapperStyle,
+                [key]: value,
+              },
             }
           : section
       )
     );
-  };
-
-  const handleChangeValue = (key, value) => {
-    setPreviewFloatingSection((arr) =>
-      arr.map((section) =>
-        section.id === contentIdToCheck
-          ? {
-              ...section,
-              [key]: value,
-            }
-          : section
-      )
-    );
-  };
-
-  const handleSetValueWhenBlur = (value, min, max, key) => {
-    const newValue = Math.min(Math.max(value, min), max);
-    if (key === "width") {
-      setWidth(newValue);
-    }
-    handleChangeValue(key, newValue);
   };
 
   useEffect(() => {
@@ -221,23 +201,6 @@ const PopUp = ({
       setIsAddContent(false);
       setIsEditingContent(false);
     } else {
-      if (shownOnWhen.value === "clickButton") {
-        const labelValue = popupName || `Pop Up ${popUpNumber}`;
-
-        const payload = {
-          label: "Kegiatan",
-          options: [
-            {
-              id: contentIdToCheck,
-              value: `Pop Up (${labelValue})`,
-              label: `Pop Up (${labelValue})`,
-            },
-          ],
-        };
-
-        dispatch(setPopUpClickOption(payload));
-      }
-
       isShowContent(false);
     }
   };
@@ -259,15 +222,13 @@ const PopUp = ({
 
     let payload = {
       id: uniqueId,
-      name: "popup",
-      title: "Pop Up",
+      name: "floating-content",
+      title: "Floating Content",
       content: popUpSections,
-      wrapperStyle: {},
-      popupName: "",
-      shownOnWhen: "immediately",
-      rounded: "tw-rounded-lg",
-      isPopupShown: true,
-      width: 500,
+      wrapperStyle: {
+        position: "bottom",
+        shadow: "tw-shadow-md",
+      },
       background,
     };
 
@@ -428,7 +389,12 @@ const PopUp = ({
                   <CNavItem>
                     <CNavLink data-tab="content">Konten</CNavLink>
                   </CNavItem>
-
+                  {/* <CNavItem>
+                    <CNavLink data-tab="conditions">Kondisi</CNavLink>
+                  </CNavItem> */}
+                  <CNavItem>
+                    <CNavLink data-tab="animation">Animasi</CNavLink>
+                  </CNavItem>
                   <CNavItem>
                     <CNavLink data-tab="background">Background</CNavLink>
                   </CNavItem>
@@ -441,80 +407,37 @@ const PopUp = ({
                   }}
                   className="pt-3"
                 >
-                  <CTabPane
-                    style={{ overflowX: "hidden" }}
-                    className="p-1"
-                    data-tab="content"
-                  >
+                  <CTabPane className="p-1" data-tab="content">
                     {!isAddContent && !isEditingContent && (
                       <>
-                        <div>
-                          <div className="mb-2">
-                            <Input
-                              label="Nama Popup"
-                              placeholder="Newsletter Popup"
-                              value={popupName}
-                              onChange={(e) => {
-                                const { value } = e.target;
-                                setPopupName(value);
-                                handleChangeValue("popupName", value);
-                              }}
-                            />
-                          </div>
-
+                        <div
+                          style={{ gap: 10 }}
+                          className="d-flex align-items-center"
+                        >
                           <SelectOptions
-                            label="Perlihatkan Ketika"
-                            options={shownOnWhenOptions}
-                            value={shownOnWhen}
+                            label="Posisi"
+                            options={positionOptions}
+                            value={position}
                             onChange={(selectedOption) => {
-                              setShownOnWhen(selectedOption);
-                              handleChangeShownOnWhen(selectedOption.value);
+                              setPosition(selectedOption);
+                              handleChangeWrapperStyle(
+                                "position",
+                                selectedOption.value
+                              );
                             }}
                           />
 
-                          <h5>Desain</h5>
-
-                          <div
-                            style={{ gap: 10 }}
-                            className="d-flex align-items-center"
-                          >
-                            <SelectOptions
-                              label="Melingkar"
-                              options={roundedButtonOptions}
-                              value={rounded}
-                              onChange={(selectedOption) => {
-                                setRounded(selectedOption);
-                                handleChangeValue(
-                                  "rounded",
-                                  selectedOption.value
-                                );
-                              }}
-                            />
-
-                            <CButton
-                              onClick={() =>
-                                handleChangeValue("isPopupShown", true)
-                              }
-                              color="primary"
-                              variant="outline"
-                              size="md"
-                            >
-                              Perlihatkan
-                            </CButton>
-                          </div>
-
-                          <InputRangeWithNumber
-                            label="Lebar"
-                            value={width}
-                            onChange={(newValue) => {
-                              setWidth(newValue);
-                              handleChangeValue("width", newValue);
+                          <SelectOptions
+                            label="Bayangan"
+                            options={shadowOptions}
+                            value={shadow}
+                            onChange={(selectedOption) => {
+                              setShadow(selectedOption);
+                              handleChangeWrapperStyle(
+                                "shadow",
+                                selectedOption.value
+                              );
                             }}
-                            min={120}
-                            max={1024}
-                            onBlur={() =>
-                              handleSetValueWhenBlur(width, 120, 10204, "width")
-                            }
                           />
                         </div>
 
@@ -550,6 +473,22 @@ const PopUp = ({
                     )}
                   </CTabPane>
 
+                  {/* <CTabPane className="p-1" data-tab="conditions">
+                    KONDISI
+                  </CTabPane> */}
+
+                  <CTabPane className="p-1" data-tab="animation">
+                    <AnimationControl
+                      label=""
+                      currentSection={
+                        isEditingSection
+                          ? currentSection
+                          : selectedCurrentSection
+                      }
+                      setPreviewSection={setPreviewFloatingSection}
+                    />
+                  </CTabPane>
+
                   <CTabPane
                     style={{ overflowX: "hidden", height: "100%" }}
                     className="p-1"
@@ -573,4 +512,4 @@ const PopUp = ({
   );
 };
 
-export default PopUp;
+export default FloatingContent;

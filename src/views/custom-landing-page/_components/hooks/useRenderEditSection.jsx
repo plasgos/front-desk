@@ -25,6 +25,8 @@ import MultiColumn from "../list-add-content/multi-column";
 import FloatingButtonCircle from "../list-add-content/floating-button-circle";
 import Frame from "../list-add-content/frame";
 import PopUp from "../list-add-content/popup";
+import FloatingContent from "../list-add-content/floating-content";
+import Frames from "../list-add-content/frames";
 
 export function useRenderEditSection({
   previewSection,
@@ -275,6 +277,27 @@ export function useRenderEditSection({
       }
 
       if (
+        editing.name === "floating-content" &&
+        section.name === "floating-content" &&
+        editing.id === section.id
+      ) {
+        return (
+          <FloatingContent
+            currentSection={section}
+            previewFloatingSection={previewFloatingSection}
+            setPreviewFloatingSection={(value) =>
+              setPreviewFloatingSection(value)
+            }
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionFloatingBeforeEdit}
+            isEditingSection={true}
+            handleSectionContentFocus={handleSectionContentFocus}
+            handleColumnFocus={handleColumnFocus}
+          />
+        );
+      }
+
+      if (
         editing.name === "fb-pixel-event" &&
         section.name === "fb-pixel-event" &&
         editing.id === section.id
@@ -451,12 +474,12 @@ export function useRenderEditSection({
       }
 
       if (
-        editing.name === "frame" &&
-        section.name === "frame" &&
+        editing.name === "frames" &&
+        section.name === "frames" &&
         editing.id === section.id
       ) {
         return (
-          <Frame
+          <Frames
             currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
@@ -464,6 +487,9 @@ export function useRenderEditSection({
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
             handleSectionContentFocus={handleSectionContentFocus}
+            previewFloatingSection={previewFloatingSection}
+            setPreviewFloatingSection={setPreviewFloatingSection}
+            handleColumnFocus={handleColumnFocus}
           />
         );
       }
@@ -501,6 +527,7 @@ export function useRenderEditSection({
             sectionBeforeEdit={sectionFloatingBeforeEdit}
             isEditingSection={true}
             handleSectionContentFocus={handleSectionContentFocus}
+            handleColumnFocus={handleColumnFocus}
           />
         );
       }
@@ -512,6 +539,7 @@ export function useRenderEditSection({
       editing.name,
       handleColumnFocus,
       handleSectionContentFocus,
+      isPopUpSection,
       previewFloatingSection,
       previewSection,
       sectionBeforeEdit,

@@ -22,6 +22,7 @@ import { PiColumnsPlusRightThin } from "react-icons/pi";
 import { AiOutlineUserSwitch } from "react-icons/ai";
 import { CgFileDocument } from "react-icons/cg";
 import { VscSymbolInterface } from "react-icons/vsc";
+import { GoStack } from "react-icons/go";
 
 export const dataListContent = [
   {
@@ -150,6 +151,12 @@ export const dataListContent = [
         icon: <BsWindowStack style={{ marginRight: 5 }} size={24} />,
         action: (setAddContent) => setAddContent("popup"),
       },
+      {
+        name: "floating-content",
+        title: "Floating Content",
+        icon: <GoStack style={{ marginRight: 5 }} size={24} />,
+        action: (setAddContent) => setAddContent("floating-content"),
+      },
     ],
   },
   {
@@ -173,10 +180,10 @@ export const dataListContent = [
         action: (setAddContent) => setAddContent("multi-column"),
       },
       {
-        name: "frame",
+        name: "frames",
         title: "Bingkai",
         icon: <PiFrameCornersThin style={{ marginRight: 5 }} size={24} />,
-        action: (setAddContent) => setAddContent("frame"),
+        action: (setAddContent) => setAddContent("frames"),
       },
     ],
   },

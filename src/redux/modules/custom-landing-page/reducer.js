@@ -406,10 +406,7 @@ export default (state = initialState, action) => {
         }
       })();
 
-      console.log(
-        "🚀 ~ updatedOptionsPopUp ~ updatedOptionsPopUp:",
-        updatedOptionsPopUp
-      );
+      console.log("🚀 ~ updatedOptionsPopUp:", updatedOptionsPopUp);
 
       return {
         ...state,
@@ -430,6 +427,42 @@ export default (state = initialState, action) => {
       return {
         ...state,
         popup: updatedOptionsPopUpShown,
+      };
+
+    case types.SET_CLOSE_POP_UP:
+      const updatePopupValue = state.popup.map((arr) =>
+        arr.id === action.payload.id
+          ? {
+              ...arr,
+              isShowPopup: false,
+            }
+          : arr
+      );
+
+      return {
+        ...state,
+        popup: updatePopupValue,
+      };
+
+    case types.REMOVE_POP_UP_OPTION:
+      const { optionsTarget } = state;
+
+      const existingGroup = optionsTarget.find(
+        (group) => group.label === "Kegiatan"
+      );
+
+      const updatedOptionsTarget = optionsTarget.map((group) =>
+        group.label === "Kegiatan"
+          ? {
+              ...group,
+              options: group.options.filter((opt) => opt.id !== action.payload),
+            }
+          : group
+      );
+
+      return {
+        ...state,
+        optionsTarget: existingGroup ? updatedOptionsTarget : optionsTarget,
       };
 
     default:
@@ -645,6 +678,20 @@ export const setPopUpClickOption = (value) => {
 export const setIsOpenPopup = (value) => {
   return {
     type: types.SET_IS_OPEN_POP_UP,
+    payload: value,
+  };
+};
+
+export const setClosePopup = (value) => {
+  return {
+    type: types.SET_CLOSE_POP_UP,
+    payload: value,
+  };
+};
+
+export const removePopupOption = (value) => {
+  return {
+    type: types.REMOVE_POP_UP_OPTION,
     payload: value,
   };
 };

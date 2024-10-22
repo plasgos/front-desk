@@ -17,7 +17,10 @@ import { IoIosPhonePortrait, IoIosTabletPortrait } from "react-icons/io";
 import { IoAdd } from "react-icons/io5";
 import { MdLaptopMac } from "react-icons/md";
 import { useDispatch } from "react-redux";
-import { removeOptionScrollTarget } from "../../redux/modules/custom-landing-page/reducer";
+import {
+  removeOptionScrollTarget,
+  removePopupOption,
+} from "../../redux/modules/custom-landing-page/reducer";
 import DesignTabControl from "./_components/DesignTabControl";
 import { ListSectionContent } from "./_components/ListSectionContent";
 import ModalConfirmation from "./_components/ModalConfirmation";
@@ -340,10 +343,12 @@ const CustomLandingPage = () => {
   // );
 
   const removeSection = useCallback(
-    (index, id) => {
+    (sectionId) => {
       setPreviewSection((prev) => {
         // Hapus section berdasarkan index
-        const updatedPreviewSection = prev.filter((_, i) => i !== index);
+        const updatedPreviewSection = prev.filter(
+          (section) => section.id !== sectionId
+        );
 
         // Perbarui section yang tersisa dengan mereset target jika ID cocok dengan ID dari optionsScrolltarget
         return updatedPreviewSection.map((section) => {
@@ -351,7 +356,7 @@ const CustomLandingPage = () => {
             return {
               ...section,
               content: section.content.map((contentItem) => {
-                return contentItem?.target?.scrollTarget?.id === id
+                return contentItem?.target?.scrollTarget?.id === sectionId
                   ? { ...contentItem, target: {} }
                   : contentItem;
               }),
@@ -363,17 +368,43 @@ const CustomLandingPage = () => {
       });
 
       // Dispatch untuk menghapus option scroll target
-      dispatch(removeOptionScrollTarget(id));
+      dispatch(removeOptionScrollTarget(sectionId));
     },
     [dispatch]
   );
 
-  const removeSectionFloating = useCallback((index) => {
-    setPreviewFloatingSection((prev) => {
-      // Hapus section berdasarkan index
-      return prev.filter((_, i) => i !== index);
-    });
-  }, []);
+  const removeSectionFloating = useCallback(
+    (sectionId) => {
+      // Hapus section dari preview floating section
+      setPreviewFloatingSection((prev) =>
+        prev.filter((section) => section.id !== sectionId)
+      );
+
+      // Reset target popup di section utama yang merujuk ke floating section
+      setPreviewSection((prevSections) =>
+        prevSections.map((section) => {
+          if (Array.isArray(section.content)) {
+            return {
+              ...section,
+              content: section.content.map((contentItem) => {
+                const { target } = contentItem || {};
+
+                // Reset target jika popup.id cocok dengan sectionId
+                if (target?.popup?.id === sectionId) {
+                  return { ...contentItem, target: {} };
+                }
+                return contentItem;
+              }),
+            };
+          }
+          return section;
+        })
+      );
+
+      dispatch(removePopupOption(sectionId));
+    },
+    [dispatch]
+  );
 
   const renderListSectionFloating = useCallback(
     (section, index) => {
@@ -399,29 +430,14 @@ const CustomLandingPage = () => {
           index={index}
           id={section.id}
           section={section}
-          moveSection={section.name.includes("floating") ? null : moveSection}
-          editSection={
-            section.name.includes("floating")
-              ? () => editSectionFlaoting(section)
-              : () => editSection(section)
-          }
-          removeSection={
-            section.name.includes("floating")
-              ? removeSectionFloating
-              : removeSection
-          }
+          moveSection={moveSection}
+          editSection={() => editSection(section)}
+          removeSection={removeSection}
           focusContent={() => handleContentFocus(section.id)}
         />
       );
     },
-    [
-      editSection,
-      editSectionFlaoting,
-      handleContentFocus,
-      moveSection,
-      removeSection,
-      removeSectionFloating,
-    ]
+    [editSection, handleContentFocus, moveSection, removeSection]
   );
 
   const handleAddContent = () => {
@@ -489,11 +505,9 @@ const CustomLandingPage = () => {
                         />
                       </div>
 
-                      {previewSection
-                        .filter((section) => section.name !== "floating-button")
-                        .map((section, index) =>
-                          renderListContent(section, index)
-                        )}
+                      {previewSection.map((section, index) =>
+                        renderListContent(section, index)
+                      )}
 
                       <CCard
                         style={{ cursor: "pointer", marginBottom: 8 }}

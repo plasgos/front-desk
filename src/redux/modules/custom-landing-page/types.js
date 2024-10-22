@@ -34,4 +34,7 @@ export default {
 
   SET_POP_UP_CLICK_OPTION: "set-pop-up-click-option",
   SET_IS_OPEN_POP_UP: "set-is-open-pop-up",
+  SET_CLOSE_POP_UP: "set-close-pop-up",
+
+  REMOVE_POP_UP_OPTION: "remove-pop-up-option",
 };

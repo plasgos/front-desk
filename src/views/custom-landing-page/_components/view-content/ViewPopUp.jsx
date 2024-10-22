@@ -22,6 +22,8 @@ import ViewTestimony from "./ViewTestimony";
 import ViewFormCheckout from "./ViewFormCheckout";
 import ViewStockCounter from "./ViewStockCounter";
 import { useDispatch, useSelector } from "react-redux";
+import { setClosePopup } from "../../../../redux/modules/custom-landing-page/reducer";
+import ViewMultiColumn from "./ViewMultiColumn";
 
 const ViewPopUp = forwardRef(
   (
@@ -37,6 +39,8 @@ const ViewPopUp = forwardRef(
       focusedIndexSectionContent = null,
       setPreviewFloatingSection,
       setPreviewSection,
+      setColumnRef,
+      focusedIndexColumn,
     },
     ref
   ) => {
@@ -48,8 +52,16 @@ const ViewPopUp = forwardRef(
 
     const stylesBg = useBackgroundStyles(content);
 
-    const handelModalClose = () => {
+    const handelModalClose = (popup) => {
       if (content?.shownOnWhen === "clickButton") {
+        dispatch(setClosePopup(popup));
+        setPreviewFloatingSection((prevSections) =>
+          prevSections.map((section) =>
+            section.id === content.id
+              ? { ...section, isPopupShown: false }
+              : section
+          )
+        );
       } else {
         setPreviewFloatingSection((prevSections) =>
           prevSections.map((section) =>
@@ -61,387 +73,219 @@ const ViewPopUp = forwardRef(
       }
     };
 
+    const PopupContent = ({ selectedPopup }) => (
+      <div
+        ref={ref}
+        className="tw-absolute tw-inset-0 tw-bg-black/50 tw-flex tw-flex-col tw-items-center tw-justify-center tw-z-50 "
+      >
+        <div
+          style={{
+            width: width < 420 ? "80%" : content?.width,
+            overflow: "hidden",
+            paddingTop: stylesBg.paddingTop,
+            paddingBottom: stylesBg.paddingBottom,
+            backgroundColor: content.background.bgColor || "",
+            position: "relative",
+            zIndex: 1,
+          }}
+          className={`tw-bg-white ${content?.rounded} tw-shadow-lg  sm:tw-w-3/4 lg:tw-w-1/2 tw-py-6 tw-px-2 tw-relative animate__animated animate__zoomIn`}
+        >
+          {content.background?.opacity ? (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                backgroundColor:
+                  content.background?.opacity < 0 ? "black" : "white",
+                opacity: Math.abs(stylesBg.calculateOpacity),
+              }}
+            ></div>
+          ) : null}
+
+          {content?.background?.bgImage ? (
+            <div style={stylesBg.backgroundImgStyle}></div>
+          ) : content?.background?.bgType === "gradient" ? (
+            <div style={stylesBg.gradientStyle}></div>
+          ) : content?.background?.bgType === "pattern" ? (
+            <div style={stylesBg.backgroundPatternStyle}></div>
+          ) : null}
+          <div
+            className="tw-absolute tw-top-2 tw-right-2 tw-w-8 tw-h-8 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-cursor-pointer hover:tw-bg-gray-300 hover:tw-text-black tw-text-gray-500 tw-p-2"
+            onClick={() => handelModalClose(selectedPopup)}
+            aria-label="Close modal"
+          >
+            <IoMdClose size={24} />
+          </div>
+
+          <div
+            className="tw-scrollbar-hide"
+            style={{
+              maxHeight: 350,
+              overflowY: "auto",
+              marginTop: 20,
+              scrollbarWidth: "none", // Firefox
+              msOverflowStyle: "none", // IE/Edge
+            }}
+          >
+            {content.content.map((section) => (
+              <div
+                ref={(el) => {
+                  if (setSectionContentRef) {
+                    setSectionContentRef(el, section.id);
+                  }
+                }}
+                key={section.id}
+                className={`${
+                  focusedIndexSectionContent === section.id
+                    ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20  "
+                    : ""
+                }`}
+              >
+                {section.name === "text" && <ViewText section={section} />}
+
+                {section.name === "empty-space" && (
+                  <ViewEmptySpace content={section.content} />
+                )}
+
+                {section.name === "column-text-and-image" && (
+                  <ViewColumnTextAndImage
+                    containerRef={containerRef}
+                    content={section}
+                    isPreview={isPreview}
+                    width={content?.width}
+                  />
+                )}
+
+                {section.name === "list-images" && (
+                  <ViewListImages
+                    containerRef={containerRef}
+                    content={section}
+                    isPreview={isPreview}
+                    width={content?.width}
+                  />
+                )}
+
+                {section.name === "scroll-target" && (
+                  <ViewScrollTraget content={section} />
+                )}
+
+                {section.name === "line" && (
+                  <ViewLine content={section.content} />
+                )}
+
+                {section.name === "quote" && <ViewQuote content={section} />}
+
+                {section.name === "list-feature" && (
+                  <ViewListFeature content={section} />
+                )}
+
+                {section.name === "call-to-action" && (
+                  <ViewCallToAction
+                    containerRef={containerRef}
+                    content={section}
+                  />
+                )}
+
+                {section.name === "video" && <ViewVideo content={section} />}
+
+                {section.name === "video-text" && (
+                  <ViewVideoText
+                    isPreview={isPreview}
+                    width={content?.width}
+                    content={section}
+                  />
+                )}
+
+                {section.name === "image" && (
+                  <ViewImage containerRef={containerRef} content={section} />
+                )}
+
+                {section.name === "image-text" && (
+                  <ViewImageText
+                    isPreview={isPreview}
+                    width={content?.width}
+                    content={section}
+                  />
+                )}
+
+                {section.name === "countdown" && (
+                  <ViewCountDown content={section} />
+                )}
+
+                {section.name === "form-activity" && (
+                  <ViewFormActivity content={section} />
+                )}
+
+                {section.name === "button" && (
+                  <ViewButtonUpdate
+                    containerRef={containerRef}
+                    content={section}
+                  />
+                )}
+
+                {section.name === "faq" && <ViewFAQ content={section} />}
+
+                {section.name === "testimony" && (
+                  <ViewTestimony
+                    content={section}
+                    isPreview={isPreview}
+                    width={content?.width}
+                  />
+                )}
+
+                {section.name === "form-checkout" && (
+                  <ViewFormCheckout
+                    setPreviewSection={setPreviewSection}
+                    content={section}
+                  />
+                )}
+
+                {section.name === "stock-counter" && (
+                  <ViewStockCounter
+                    setPreviewSection={setPreviewSection}
+                    content={section}
+                  />
+                )}
+
+                {section.name === "multi-column" && (
+                  <ViewMultiColumn
+                    containerRef={containerRef}
+                    content={section}
+                    isPreview={isPreview}
+                    width={content?.wrapperStyle?.width}
+                    setPreviewSection={setPreviewSection}
+                    setColumnRef={setColumnRef}
+                    focusedIndexColumn={focusedIndexColumn}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
     return (
       <>
-        {/* {content?.shownOnWhen === "clickButton" && (
-          <div
-            ref={ref}
-            className="tw-absolute tw-inset-0 tw-bg-black/50 tw-flex tw-flex-col tw-items-center tw-justify-center tw-z-50 "
-          >
-            <div
-              style={{ width: width < 420 ? "80%" : content?.width }}
-              className={`tw-bg-white ${content?.rounded} tw-shadow-lg  sm:tw-w-3/4 lg:tw-w-1/2 tw-py-6 tw-px-2 tw-relative animate__animated animate__zoomIn`}
-            >
-              <div
-                className="tw-absolute tw-top-2 tw-right-2 tw-w-8 tw-h-8 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-cursor-pointer hover:tw-bg-gray-300 hover:tw-text-black tw-text-gray-500 tw-p-2"
-                onClick={handelModalClose}
-                aria-label="Close modal"
-              >
-                <IoMdClose size={24} />
-              </div>
-
-              <div
-                className="tw-scrollbar-hide"
-                style={{
-                  maxHeight: 350,
-                  overflowY: "auto",
-                  marginTop: 20,
-                  scrollbarWidth: "none", // Firefox
-                  msOverflowStyle: "none", // IE/Edge
-                }}
-              >
-                {content.content.map((section) => (
-                  <div
-                    ref={(el) => {
-                      if (setSectionContentRef) {
-                        setSectionContentRef(el, section.id);
-                      }
-                    }}
-                    style={{
-                      ...(focusedIndexSectionContent === section.id && {
-                        border: "2px solid green",
-                      }),
-                      paddingTop: stylesBg.paddingTop,
-                      paddingBottom: stylesBg.paddingBottom,
-                      backgroundColor: content.background.bgColor || "",
-                      position: "relative",
-                      zIndex: 1,
-                    }}
-                    key={section.id}
-                    className={`${
-                      focusedIndexSectionContent === section.id
-                        ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20  "
-                        : ""
-                    }`}
-                  >
-                    {content?.background?.bgImage ? (
-                      <div style={stylesBg.backgroundImgStyle}></div>
-                    ) : content?.background?.bgType === "gradient" ? (
-                      <div style={stylesBg.gradientStyle}></div>
-                    ) : content?.background?.bgType === "pattern" ? (
-                      <div style={stylesBg.backgroundPatternStyle}></div>
-                    ) : null}
-
-                    {content.background?.opacity ? (
-                      <div
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          backgroundColor:
-                            content.background?.opacity < 0 ? "black" : "white",
-                          opacity: Math.abs(stylesBg.calculateOpacity),
-                        }}
-                      ></div>
-                    ) : null}
-
-                    {section.name === "text" && <ViewText section={section} />}
-
-                    {section.name === "empty-space" && (
-                      <ViewEmptySpace content={section.content} />
-                    )}
-
-                    {section.name === "column-text-and-image" && (
-                      <ViewColumnTextAndImage
-                        containerRef={containerRef}
-                        content={section}
-                        isPreview={isPreview}
-                        width={content?.width}
-                      />
-                    )}
-
-                    {section.name === "list-images" && (
-                      <ViewListImages
-                        containerRef={containerRef}
-                        content={section}
-                        isPreview={isPreview}
-                        width={content?.width}
-                      />
-                    )}
-
-                    {section.name === "scroll-target" && (
-                      <ViewScrollTraget content={section} />
-                    )}
-
-                    {section.name === "line" && (
-                      <ViewLine content={section.content} />
-                    )}
-
-                    {section.name === "quote" && (
-                      <ViewQuote content={section} />
-                    )}
-
-                    {section.name === "list-feature" && (
-                      <ViewListFeature content={section} />
-                    )}
-
-                    {section.name === "call-to-action" && (
-                      <ViewCallToAction
-                        containerRef={containerRef}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "video" && (
-                      <ViewVideo content={section} />
-                    )}
-
-                    {section.name === "video-text" && (
-                      <ViewVideoText
-                        isPreview={isPreview}
-                        width={content?.width}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "image" && (
-                      <ViewImage
-                        containerRef={containerRef}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "image-text" && (
-                      <ViewImageText
-                        isPreview={isPreview}
-                        width={content?.width}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "countdown" && (
-                      <ViewCountDown content={section} />
-                    )}
-
-                    {section.name === "form-activity" && (
-                      <ViewFormActivity content={section} />
-                    )}
-
-                    {section.name === "button" && (
-                      <ViewButtonUpdate
-                        containerRef={containerRef}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "faq" && <ViewFAQ content={section} />}
-
-                    {section.name === "testimony" && (
-                      <ViewTestimony
-                        content={section}
-                        isPreview={isPreview}
-                        width={content?.width}
-                      />
-                    )}
-
-                    {section.name === "form-checkout" && (
-                      <ViewFormCheckout
-                        setPreviewSection={setPreviewSection}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "stock-counter" && (
-                      <ViewStockCounter
-                        setPreviewSection={setPreviewSection}
-                        content={section}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
+        <div>
+          {content?.shownOnWhen === "clickButton" ? (
+            <div>
+              {popup.map((popup) => (
+                <div key={popup.id}>
+                  {popup.id === content?.id && popup.isShowPopup ? (
+                    <PopupContent selectedPopup={popup} />
+                  ) : null}
+                </div>
+              ))}
             </div>
-          </div>
-        )} */}
+          ) : content?.shownOnWhen === "immediately" ? (
+            <div>{content?.isPopupShown ? <PopupContent /> : null}</div>
+          ) : content?.isPopupShown ? (
+            <PopupContent />
+          ) : null}
 
-        {content?.isPopupShown ? (
-          <div
-            ref={ref}
-            className="tw-absolute tw-inset-0 tw-bg-black/50 tw-flex tw-flex-col tw-items-center tw-justify-center tw-z-50 "
-          >
-            <div
-              style={{ width: width < 420 ? "80%" : content?.width }}
-              className={`tw-bg-white ${content?.rounded} tw-shadow-lg  sm:tw-w-3/4 lg:tw-w-1/2 tw-py-6 tw-px-2 tw-relative animate__animated animate__zoomIn`}
-            >
-              <div
-                className="tw-absolute tw-top-2 tw-right-2 tw-w-8 tw-h-8 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-cursor-pointer hover:tw-bg-gray-300 hover:tw-text-black tw-text-gray-500 tw-p-2"
-                onClick={handelModalClose}
-                aria-label="Close modal"
-              >
-                <IoMdClose size={24} />
-              </div>
-
-              <div
-                className="tw-scrollbar-hide"
-                style={{
-                  maxHeight: 350,
-                  overflowY: "auto",
-                  marginTop: 20,
-                  scrollbarWidth: "none", // Firefox
-                  msOverflowStyle: "none", // IE/Edge
-                }}
-              >
-                {content.content.map((section) => (
-                  <div
-                    ref={(el) => {
-                      if (setSectionContentRef) {
-                        setSectionContentRef(el, section.id);
-                      }
-                    }}
-                    style={{
-                      ...(focusedIndexSectionContent === section.id && {
-                        border: "2px solid green",
-                      }),
-                      paddingTop: stylesBg.paddingTop,
-                      paddingBottom: stylesBg.paddingBottom,
-                      backgroundColor: content.background.bgColor || "",
-                      position: "relative",
-                      zIndex: 1,
-                    }}
-                    key={section.id}
-                    className={`${
-                      focusedIndexSectionContent === section.id
-                        ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20  "
-                        : ""
-                    }`}
-                  >
-                    {content?.background?.bgImage ? (
-                      <div style={stylesBg.backgroundImgStyle}></div>
-                    ) : content?.background?.bgType === "gradient" ? (
-                      <div style={stylesBg.gradientStyle}></div>
-                    ) : content?.background?.bgType === "pattern" ? (
-                      <div style={stylesBg.backgroundPatternStyle}></div>
-                    ) : null}
-
-                    {content.background?.opacity ? (
-                      <div
-                        style={{
-                          position: "absolute",
-                          inset: 0,
-                          backgroundColor:
-                            content.background?.opacity < 0 ? "black" : "white",
-                          opacity: Math.abs(stylesBg.calculateOpacity),
-                        }}
-                      ></div>
-                    ) : null}
-
-                    {section.name === "text" && <ViewText section={section} />}
-
-                    {section.name === "empty-space" && (
-                      <ViewEmptySpace content={section.content} />
-                    )}
-
-                    {section.name === "column-text-and-image" && (
-                      <ViewColumnTextAndImage
-                        containerRef={containerRef}
-                        content={section}
-                        isPreview={isPreview}
-                        width={content?.width}
-                      />
-                    )}
-
-                    {section.name === "list-images" && (
-                      <ViewListImages
-                        containerRef={containerRef}
-                        content={section}
-                        isPreview={isPreview}
-                        width={content?.width}
-                      />
-                    )}
-
-                    {section.name === "scroll-target" && (
-                      <ViewScrollTraget content={section} />
-                    )}
-
-                    {section.name === "line" && (
-                      <ViewLine content={section.content} />
-                    )}
-
-                    {section.name === "quote" && (
-                      <ViewQuote content={section} />
-                    )}
-
-                    {section.name === "list-feature" && (
-                      <ViewListFeature content={section} />
-                    )}
-
-                    {section.name === "call-to-action" && (
-                      <ViewCallToAction
-                        containerRef={containerRef}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "video" && (
-                      <ViewVideo content={section} />
-                    )}
-
-                    {section.name === "video-text" && (
-                      <ViewVideoText
-                        isPreview={isPreview}
-                        width={content?.width}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "image" && (
-                      <ViewImage
-                        containerRef={containerRef}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "image-text" && (
-                      <ViewImageText
-                        isPreview={isPreview}
-                        width={content?.width}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "countdown" && (
-                      <ViewCountDown content={section} />
-                    )}
-
-                    {section.name === "form-activity" && (
-                      <ViewFormActivity content={section} />
-                    )}
-
-                    {section.name === "button" && (
-                      <ViewButtonUpdate
-                        containerRef={containerRef}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "faq" && <ViewFAQ content={section} />}
-
-                    {section.name === "testimony" && (
-                      <ViewTestimony
-                        content={section}
-                        isPreview={isPreview}
-                        width={content?.width}
-                      />
-                    )}
-
-                    {section.name === "form-checkout" && (
-                      <ViewFormCheckout
-                        setPreviewSection={setPreviewSection}
-                        content={section}
-                      />
-                    )}
-
-                    {section.name === "stock-counter" && (
-                      <ViewStockCounter
-                        setPreviewSection={setPreviewSection}
-                        content={section}
-                      />
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        ) : null}
+          {content?.isPopupShown && <PopupContent />}
+        </div>
       </>
     );
   }

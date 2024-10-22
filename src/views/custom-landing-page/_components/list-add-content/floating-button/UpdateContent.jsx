@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { shadowOptions } from "../../SelectOptions";
 import { useUrlChange } from "../../../../../hooks/useUrlChange";
 import { useWhatAppsChange } from "../../../../../hooks/useWhatAppsChange";
@@ -17,6 +17,7 @@ import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack"
 import { CButton } from "@coreui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import IconPicker from "../../common/IconPicker";
+import { setIsOpenPopup } from "../../../../../redux/modules/custom-landing-page/reducer";
 
 export const variantButton = [
   { value: "fill", label: "Fill" },
@@ -172,6 +173,8 @@ const UpdateContent = ({
     }
   }, [currentContent, isEditingContent]);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (
       selectedOption &&
@@ -186,6 +189,8 @@ const UpdateContent = ({
         ...selectedOption,
         isShowPopup: false,
       };
+
+      dispatch(setIsOpenPopup(payload));
 
       setPreviewSection((arr) =>
         arr.map((item) =>
@@ -261,8 +266,9 @@ const UpdateContent = ({
           return (
             (targetType?.scrollTarget && opt.value === "scroll-target") ||
             (targetType?.url && opt.value === "url") ||
-            (targetType?.whatApps && opt.value === "whatApps") ||
-            (targetType?.popup && opt.value?.includes("Pop Up"))
+            (targetType?.whatApps && opt.value === "whatApps")
+            //  ||
+            // (targetType?.popup && opt.value?.includes("Pop Up"))
           );
         });
 
@@ -310,6 +316,24 @@ const UpdateContent = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOption]);
+
+  useEffect(() => {
+    if (isEditingContent) {
+      const existingGroup = optionsTarget.find(
+        (group) => group.label === "Kegiatan"
+      );
+
+      if (existingGroup) {
+        const currentTargetOption = existingGroup.options.find(
+          (opt) => opt.id === currentContent.target?.popup?.id
+        );
+
+        if (currentTargetOption) {
+          setSelectedOption(currentTargetOption);
+        }
+      }
+    }
+  }, [isEditingContent, optionsTarget, currentContent]);
 
   useEffect(() => {
     if (isEditingContent) {

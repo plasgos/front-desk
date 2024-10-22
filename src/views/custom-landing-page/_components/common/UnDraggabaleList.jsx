@@ -1,6 +1,5 @@
 import { CCard, CCardBody } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoCloseOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
 import { dataListContent } from "../list-add-content/DataListContent";
 
@@ -13,8 +12,6 @@ export const UnDraggabelList = ({
   section,
   editSection,
   removeSection,
-  focusContent,
-  isMultiColumn,
 }) => {
   const [icon, setIcon] = useState(undefined);
 
@@ -72,7 +69,7 @@ export const UnDraggabelList = ({
                 size={16}
               />
               <IoCloseOutline
-                onClick={() => removeSection(index, section.id)}
+                onClick={() => removeSection(section.id)}
                 style={{ cursor: "pointer" }}
                 size={18}
               />

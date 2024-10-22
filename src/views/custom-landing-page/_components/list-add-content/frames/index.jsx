@@ -16,25 +16,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
 
-import { useDispatch, useSelector } from "react-redux";
 import ListContent from "..";
-import { useMoveSection } from "../../../../../hooks/useMoveSection";
-import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
-import { setPopUpClickOption } from "../../../../../redux/modules/custom-landing-page/reducer";
+import AnimationControl from "../../common/AnimationControl";
 import BackgroundTab from "../../common/BackgroundTab";
-import Input from "../../common/Input";
-import InputRangeWithNumber from "../../common/InputRangeWithNumber";
-import SelectOptions from "../../common/SelectOptions";
 import { useRenderEditSection } from "../../hooks/useRenderEditSection";
 import { ListSectionContent } from "../../ListSectionContent";
-import { roundedButtonOptions } from "../floating-button/UpdateContent";
-
-const shownOnWhenOptions = [
-  { value: "clickButton", label: "Klik Tombol" },
-  { value: "immediately", label: "Langsung" },
-  { value: "waitAfter", label: "Tunggu Setelah" },
-  { value: "afterInteraction", label: "Setelah Interaksi" },
-];
+import FrameControl from "./FrameControl";
+import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
+import { useMoveSection } from "../../../../../hooks/useMoveSection";
 
 const newId = () => Math.random().toString(36).substr(2, 9);
 
@@ -74,17 +63,19 @@ const initialSection = {
   background,
 };
 
-const PopUp = ({
-  currentSection,
+const Frames = ({
+  previewSection,
+  setPreviewSection,
   isShowContent,
-  isEditingSection,
+  isEditingSection = false,
   sectionBeforeEdit,
+  currentSection,
+  handleSectionContentFocus,
   previewFloatingSection,
   setPreviewFloatingSection,
-  handleSectionContentFocus,
   handleColumnFocus,
 }) => {
-  const [popUpSections, setPopUpSections] = useState(
+  const [frameSections, setFrameSections] = useState(
     isEditingSection ? [...(currentSection?.content || [])] : [initialSection]
   );
   const [isAddContent, setIsAddContent] = useState(false);
@@ -96,101 +87,38 @@ const PopUp = ({
 
   const [setting, setSetting] = useState({});
 
-  const [popUpSectionBeforeEdit, setPopUpSectionBeforeEdit] = useState([]);
-
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
 
-  const [popupName, setPopupName] = useState(currentSection?.popupName || "");
+  const [frameSectionBeforeEdit, setFrameSectionBeforeEdit] = useState([]);
 
-  const [shownOnWhen, setShownOnWhen] = useState(shownOnWhenOptions[1]);
-
-  const [rounded, setRounded] = useState(roundedButtonOptions[2]);
-
-  const [width, setWidth] = useState(currentSection?.width || 500);
-
-  const { optionsTarget } = useSelector((state) => state.customLandingPage);
-
-  const kegiatanGroup = optionsTarget.find(
-    (group) => group.label === "Kegiatan"
-  );
-  const popUpNumber = kegiatanGroup ? kegiatanGroup.options.length + 1 : 1;
+  const contentIdToCheck = isEditingSection ? currentSection.id : setting.id;
 
   useEffect(() => {
-    const currentShownOnWhen = shownOnWhenOptions.find(
-      (opt) => opt.value === currentSection?.shownOnWhen
-    );
-
-    if (currentShownOnWhen) {
-      setShownOnWhen(currentShownOnWhen);
-    }
-
-    const currentRounded = roundedButtonOptions.find(
-      (opt) => opt.value === currentSection?.rounded
-    );
-
-    if (currentRounded) {
-      setRounded(currentRounded);
-    }
-  }, [currentSection]);
-
-  const dispatch = useDispatch();
-
-  const handleChangeShownOnWhen = (value) => {
-    setPreviewFloatingSection((arr) =>
-      arr.map((section) =>
-        section.id === contentIdToCheck
-          ? {
-              ...section,
-              shownOnWhen: value,
-            }
-          : section
-      )
-    );
-  };
-
-  const handleChangeValue = (key, value) => {
-    setPreviewFloatingSection((arr) =>
-      arr.map((section) =>
-        section.id === contentIdToCheck
-          ? {
-              ...section,
-              [key]: value,
-            }
-          : section
-      )
-    );
-  };
-
-  const handleSetValueWhenBlur = (value, min, max, key) => {
-    const newValue = Math.min(Math.max(value, min), max);
-    if (key === "width") {
-      setWidth(newValue);
-    }
-    handleChangeValue(key, newValue);
-  };
-
-  useEffect(() => {
-    const section = previewFloatingSection.find(
-      (section) => section.id === setting.id
-    );
+    const section = previewSection.find((section) => section.id === setting.id);
 
     if (section) {
       setSelectedCurrentSection(section);
     }
-  }, [previewFloatingSection, setting.id]);
+  }, [previewSection, setting.id]);
 
-  const contentIdToCheck = isEditingSection ? currentSection.id : setting.id;
+  useEffect(() => {
+    setPreviewSection((prevSections) =>
+      prevSections.map((section) =>
+        section.id === contentIdToCheck
+          ? { ...section, content: [...frameSections] } // Update konten jika ada perubahan
+          : section
+      )
+    );
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [frameSections]);
 
   const handleCancel = () => {
     if (isAddContent) {
       setIsAddContent(false);
       setIsEditingContent(false);
-      setPreviewFloatingSection((prevSections) =>
+      setPreviewSection((prevSections) =>
         prevSections.map((section) => {
-          const contentIdToCheck = isEditingSection
-            ? currentSection.id
-            : setting.id;
-
           return section.id === contentIdToCheck
             ? {
                 ...section,
@@ -200,17 +128,17 @@ const PopUp = ({
         })
       );
     } else if (isEditingContent) {
-      setPreviewFloatingSection([...currentSectionBeforeEdit]);
+      setPreviewSection([...currentSectionBeforeEdit]);
       setIsAddContent(false);
       setIsEditingContent(false);
     } else if (isEditingSection) {
       setIsAddContent(false);
       isShowContent(false);
-      setPreviewFloatingSection([...sectionBeforeEdit]);
+      setPreviewSection([...sectionBeforeEdit]);
     } else {
       setIsAddContent(false);
       isShowContent(false);
-      setPreviewFloatingSection((prevSections) =>
+      setPreviewSection((prevSections) =>
         prevSections.filter((section) => section.id !== setting.id)
       );
     }
@@ -221,57 +149,42 @@ const PopUp = ({
       setIsAddContent(false);
       setIsEditingContent(false);
     } else {
-      if (shownOnWhen.value === "clickButton") {
-        const labelValue = popupName || `Pop Up ${popUpNumber}`;
-
-        const payload = {
-          label: "Kegiatan",
-          options: [
-            {
-              id: contentIdToCheck,
-              value: `Pop Up (${labelValue})`,
-              label: `Pop Up (${labelValue})`,
-            },
-          ],
-        };
-
-        dispatch(setPopUpClickOption(payload));
-      }
-
       isShowContent(false);
     }
   };
 
-  useEffect(() => {
-    setPreviewFloatingSection((prevSections) =>
-      prevSections.map((section) =>
-        section.id === contentIdToCheck
-          ? { ...section, content: [...popUpSections] } // Update konten jika ada perubahan
-          : section
-      )
-    );
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [popUpSections]);
-
   const onAddContent = () => {
-    let uniqueId = createUniqueID(previewFloatingSection);
+    let uniqueId = createUniqueID(previewSection);
 
     let payload = {
       id: uniqueId,
-      name: "popup",
-      title: "Pop Up",
-      content: popUpSections,
-      wrapperStyle: {},
-      popupName: "",
-      shownOnWhen: "immediately",
-      rounded: "tw-rounded-lg",
-      isPopupShown: true,
-      width: 500,
+      name: "frames",
+      title: "Bingkai",
+      content: frameSections,
+      wrapperStyle: {
+        bgType: "gradient",
+        bgColor: "",
+        bgImage: "",
+        blur: 0,
+        opacity: 0,
+        paddingY: 120,
+        paddingTop: 0,
+        paddingBottom: 0,
+        paddingType: "equal",
+        direction: "to right",
+        fromColor: "#FF6F61",
+        toColor: "#6B5B95",
+        isRevert: false,
+        pattern: "",
+        width: 400,
+        rounded: 40,
+        rotation: 0,
+        shadow: "tw-shadow-lg",
+      },
       background,
     };
 
-    setPreviewFloatingSection((prevSections) => [...prevSections, payload]);
+    setPreviewSection((prevSections) => [...prevSections, payload]);
     setSetting(payload);
   };
 
@@ -284,26 +197,25 @@ const PopUp = ({
 
   const editSection = useCallback(
     (section) => {
-      setCurrentSectionBeforeEdit([...previewFloatingSection]);
-      setPopUpSectionBeforeEdit([...popUpSections]);
+      setCurrentSectionBeforeEdit([...previewSection]);
+      setFrameSectionBeforeEdit([...frameSections]);
       setSelectedSection(section);
       setIsEditingContent(true);
     },
-    [popUpSections, previewFloatingSection]
+    [frameSections, previewSection]
   );
 
-  const removeSection = useRemoveSection(setPreviewFloatingSection);
-
-  const removePopUpSection = useCallback(
+  const removeFrameSection = useCallback(
     (sectionId) => {
-      setPopUpSections((prevSections) =>
+      setFrameSections((prevSections) =>
         prevSections.filter((section) => section.id !== sectionId)
       );
     },
-    [setPopUpSections]
+    [setFrameSections]
   );
 
-  const moveSection = useMoveSection(setPreviewFloatingSection);
+  const removeSection = useRemoveSection(setPreviewSection);
+  const moveSection = useMoveSection(setPreviewSection);
 
   const renderSection = useCallback(
     (section) => {
@@ -315,13 +227,13 @@ const PopUp = ({
               index={contentIndex}
               id={contentItem.id}
               section={contentItem}
-              moveSection={(dragIndex, hoverIndex) =>
-                moveSection(section.id, dragIndex, hoverIndex)
-              }
+              moveSection={(dragIndex, hoverIndex) => {
+                moveSection(section.id, dragIndex, hoverIndex);
+              }}
               editSection={() => editSection(contentItem)}
               removeSection={() => {
                 removeSection(section.id, contentIndex);
-                removePopUpSection(contentItem.id);
+                removeFrameSection(contentItem.id);
               }}
               focusContent={() => handleSectionContentFocus(contentItem.id)}
             />
@@ -331,23 +243,23 @@ const PopUp = ({
     },
     [
       moveSection,
+      removeFrameSection,
       editSection,
       removeSection,
-      removePopUpSection,
       handleSectionContentFocus,
     ]
   );
 
-  const popUpsection = true;
+  const frameSection = true;
 
   const { renderEditSection } = useRenderEditSection({
-    previewSection: popUpSections,
-    setPreviewSection: setPopUpSections,
+    previewSection: frameSections,
+    setPreviewSection: setFrameSections,
     editing: selectedSection,
     setEditing: setIsEditingContent,
-    sectionBeforeEdit: popUpSectionBeforeEdit,
+    sectionBeforeEdit: frameSectionBeforeEdit,
     handleSectionContentFocus,
-    isPopUpSection: popUpsection,
+    isPopUpSection: frameSection,
     handleColumnFocus,
   });
 
@@ -385,14 +297,14 @@ const PopUp = ({
                   }}
                 >
                   <ListContent
-                    previewSection={popUpSections}
-                    setPreviewSection={(value) => setPopUpSections(value)}
+                    previewSection={frameSections}
+                    setPreviewSection={(value) => setFrameSections(value)}
                     isShowContent={(value) => setIsAddContent(value)}
+                    handleSectionContentFocus={handleSectionContentFocus}
                     previewFloatingSection={previewFloatingSection}
                     setPreviewFloatingSection={(value) =>
                       setPreviewFloatingSection(value)
                     }
-                    handleSectionContentFocus={handleSectionContentFocus}
                     handleColumnFocus={handleColumnFocus}
                     isPopUpSection={true}
                   />
@@ -408,7 +320,7 @@ const PopUp = ({
                   }}
                 >
                   <div>
-                    {previewFloatingSection
+                    {previewSection
                       .filter((section) =>
                         isEditingSection
                           ? section.id === currentSection.id
@@ -428,7 +340,12 @@ const PopUp = ({
                   <CNavItem>
                     <CNavLink data-tab="content">Konten</CNavLink>
                   </CNavItem>
-
+                  <CNavItem>
+                    <CNavLink data-tab="frame">Bingkai</CNavLink>
+                  </CNavItem>
+                  <CNavItem>
+                    <CNavLink data-tab="animation">Animasi</CNavLink>
+                  </CNavItem>
                   <CNavItem>
                     <CNavLink data-tab="background">Background</CNavLink>
                   </CNavItem>
@@ -441,89 +358,15 @@ const PopUp = ({
                   }}
                   className="pt-3"
                 >
-                  <CTabPane
-                    style={{ overflowX: "hidden" }}
-                    className="p-1"
-                    data-tab="content"
-                  >
+                  <CTabPane className="p-1" data-tab="content">
                     {!isAddContent && !isEditingContent && (
                       <>
                         <div>
-                          <div className="mb-2">
-                            <Input
-                              label="Nama Popup"
-                              placeholder="Newsletter Popup"
-                              value={popupName}
-                              onChange={(e) => {
-                                const { value } = e.target;
-                                setPopupName(value);
-                                handleChangeValue("popupName", value);
-                              }}
-                            />
-                          </div>
-
-                          <SelectOptions
-                            label="Perlihatkan Ketika"
-                            options={shownOnWhenOptions}
-                            value={shownOnWhen}
-                            onChange={(selectedOption) => {
-                              setShownOnWhen(selectedOption);
-                              handleChangeShownOnWhen(selectedOption.value);
-                            }}
-                          />
-
-                          <h5>Desain</h5>
-
-                          <div
-                            style={{ gap: 10 }}
-                            className="d-flex align-items-center"
-                          >
-                            <SelectOptions
-                              label="Melingkar"
-                              options={roundedButtonOptions}
-                              value={rounded}
-                              onChange={(selectedOption) => {
-                                setRounded(selectedOption);
-                                handleChangeValue(
-                                  "rounded",
-                                  selectedOption.value
-                                );
-                              }}
-                            />
-
-                            <CButton
-                              onClick={() =>
-                                handleChangeValue("isPopupShown", true)
-                              }
-                              color="primary"
-                              variant="outline"
-                              size="md"
-                            >
-                              Perlihatkan
-                            </CButton>
-                          </div>
-
-                          <InputRangeWithNumber
-                            label="Lebar"
-                            value={width}
-                            onChange={(newValue) => {
-                              setWidth(newValue);
-                              handleChangeValue("width", newValue);
-                            }}
-                            min={120}
-                            max={1024}
-                            onBlur={() =>
-                              handleSetValueWhenBlur(width, 120, 10204, "width")
-                            }
-                          />
-                        </div>
-
-                        <div>
-                          {previewFloatingSection
+                          {previewSection
                             .filter((section) =>
                               isEditingSection
                                 ? section.id === currentSection.id
-                                : section.id === selectedCurrentSection.id
+                                : section.id === setting.id
                             )
                             .map((section, i) => renderSection(section, i))}
                         </div>
@@ -550,6 +393,29 @@ const PopUp = ({
                     )}
                   </CTabPane>
 
+                  <CTabPane className="p-1" data-tab="frame">
+                    <FrameControl
+                      setPreviewSection={setPreviewSection}
+                      currentSection={
+                        isEditingSection
+                          ? currentSection
+                          : selectedCurrentSection
+                      }
+                    />
+                  </CTabPane>
+
+                  <CTabPane className="p-1" data-tab="animation">
+                    <AnimationControl
+                      label=""
+                      currentSection={
+                        isEditingSection
+                          ? currentSection
+                          : selectedCurrentSection
+                      }
+                      setPreviewSection={setPreviewSection}
+                    />
+                  </CTabPane>
+
                   <CTabPane
                     style={{ overflowX: "hidden", height: "100%" }}
                     className="p-1"
@@ -559,7 +425,7 @@ const PopUp = ({
                       currentSection={
                         isEditingSection ? currentSection : setting
                       }
-                      setPreviewSection={setPreviewFloatingSection}
+                      setPreviewSection={setPreviewSection}
                       type={isEditingSection ? "edit" : "add"}
                     />
                   </CTabPane>
@@ -573,4 +439,4 @@ const PopUp = ({
   );
 };
 
-export default PopUp;
+export default Frames;

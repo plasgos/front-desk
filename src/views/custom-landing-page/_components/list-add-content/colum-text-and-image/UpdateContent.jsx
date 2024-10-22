@@ -304,7 +304,6 @@ export const UpdateContent = ({
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(currentContent?.content);
-    console.log("🚀 ~ handleAddContent ~ uniqueId:", uniqueId);
     let payload = {
       id: uniqueId,
       content: {

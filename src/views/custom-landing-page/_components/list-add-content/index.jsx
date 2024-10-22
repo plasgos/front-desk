@@ -28,6 +28,8 @@ import Frame from "./frame";
 import StockCounter from "./stock-counter";
 import FbPixelEvent from "./fb-pixel-event";
 import PopUp from "./popup";
+import FloatingContent from "./floating-content";
+import Frames from "./frames";
 
 const ListContent = ({
   previewSection,
@@ -246,6 +248,16 @@ const ListContent = ({
         />
       )}
 
+      {addContent === "floating-content" && (
+        <FloatingContent
+          previewFloatingSection={previewFloatingSection}
+          setPreviewFloatingSection={setPreviewFloatingSection}
+          isShowContent={isShowContent}
+          handleSectionContentFocus={handleSectionContentFocus}
+          handleColumnFocus={handleColumnFocus}
+        />
+      )}
+
       {addContent === "fb-pixel-event" && (
         <FbPixelEvent
           previewFloatingSection={previewFloatingSection}
@@ -260,6 +272,7 @@ const ListContent = ({
           setPreviewFloatingSection={setPreviewFloatingSection}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          handleColumnFocus={handleColumnFocus}
         />
       )}
 
@@ -339,12 +352,15 @@ const ListContent = ({
         />
       )}
 
-      {addContent === "frame" && (
-        <Frame
+      {addContent === "frames" && (
+        <Frames
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}
           handleSectionContentFocus={handleSectionContentFocus}
+          previewFloatingSection={previewFloatingSection}
+          setPreviewFloatingSection={setPreviewFloatingSection}
+          handleColumnFocus={handleColumnFocus}
         />
       )}
 
