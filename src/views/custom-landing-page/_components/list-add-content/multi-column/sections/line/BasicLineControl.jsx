@@ -46,7 +46,6 @@ const BasicLineControl = ({
             setColorBasicLine(color);
             handleUpdateValue("colorBasicLine", color);
           }}
-          bottom={"18px"}
           type="rgba"
         />
       </div>

@@ -1,11 +1,53 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { forwardRef } from "react";
+import { useDispatch } from "react-redux";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
 import { handleScrollToTop } from "../../../../hooks/useScrollToTop";
-import { useDispatch } from "react-redux";
 import { setIsOpenPopup } from "../../../../redux/modules/custom-landing-page/reducer";
+
+export const handleButtonSectionClick = (target, containerRef, dispatch) => {
+  if (target?.url?.url) {
+    window.open(
+      target.url.url,
+      target.url.isOpenNewTab ? "_blank" : "_self",
+      target.url.isOpenNewTab ? "noopener noreferrer" : ""
+    );
+  } else if (target?.whatApps?.phoneNumber) {
+    const waLink = `https://wa.me/+62${
+      target.whatApps.phoneNumber
+    }?text=${encodeURIComponent(target.whatApps.message)}`;
+    window.open(
+      waLink,
+      target.whatApps.isOpenNewTab ? "_blank" : "_self",
+      target.whatApps.isOpenNewTab ? "noopener noreferrer" : ""
+    );
+  } else if (target?.scrollTarget?.value) {
+    const targetId = target.scrollTarget.value;
+    if (targetId === "back-to-top") {
+      handleScrollToTop(targetId, containerRef);
+    } else {
+      // Update URL and scroll
+      window.location.hash = targetId;
+      const element = document.getElementById(targetId);
+
+      if (element) {
+        element.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+          inline: "nearest",
+        });
+      }
+    }
+  } else if (target?.popup) {
+    const payload = {
+      ...target?.popup,
+      isShowPopup: true,
+    };
+
+    dispatch(setIsOpenPopup(payload));
+  }
+};
 
 const ViewButtonUpdate = forwardRef(
   (
@@ -24,50 +66,48 @@ const ViewButtonUpdate = forwardRef(
 
     const dispatch = useDispatch();
 
-    const handleSectionClick = (target) => {
-      console.log("🚀 ~ handleSectionClick ~ target:", target);
+    // const handleSectionClick = (target) => {
+    //   if (target?.url?.url) {
+    //     window.open(
+    //       target.url.url,
+    //       target.url.isOpenNewTab ? "_blank" : "_self",
+    //       target.url.isOpenNewTab ? "noopener noreferrer" : ""
+    //     );
+    //   } else if (target?.whatApps?.phoneNumber) {
+    //     const waLink = `https://wa.me/+62${
+    //       target.whatApps.phoneNumber
+    //     }?text=${encodeURIComponent(target.whatApps.message)}`;
+    //     window.open(
+    //       waLink,
+    //       target.whatApps.isOpenNewTab ? "_blank" : "_self",
+    //       target.whatApps.isOpenNewTab ? "noopener noreferrer" : ""
+    //     );
+    //   } else if (target?.scrollTarget?.value) {
+    //     const targetId = target.scrollTarget.value;
+    //     if (targetId === "back-to-top") {
+    //       handleScrollToTop(targetId, containerRef);
+    //     } else {
+    //       // Update URL and scroll
+    //       window.location.hash = targetId;
+    //       const element = document.getElementById(targetId);
 
-      if (target?.url?.url) {
-        window.open(
-          target.url.url,
-          target.url.isOpenNewTab ? "_blank" : "_self",
-          target.url.isOpenNewTab ? "noopener noreferrer" : ""
-        );
-      } else if (target?.whatApps?.phoneNumber) {
-        const waLink = `https://wa.me/+62${
-          target.whatApps.phoneNumber
-        }?text=${encodeURIComponent(target.whatApps.message)}`;
-        window.open(
-          waLink,
-          target.whatApps.isOpenNewTab ? "_blank" : "_self",
-          target.whatApps.isOpenNewTab ? "noopener noreferrer" : ""
-        );
-      } else if (target?.scrollTarget?.value) {
-        const targetId = target.scrollTarget.value;
-        if (targetId === "back-to-top") {
-          handleScrollToTop(targetId, containerRef);
-        } else {
-          // Update URL and scroll
-          window.location.hash = targetId;
-          const element = document.getElementById(targetId);
+    //       if (element) {
+    //         element.scrollIntoView({
+    //           behavior: "smooth",
+    //           block: "center",
+    //           inline: "nearest",
+    //         });
+    //       }
+    //     }
+    //   } else if (target?.popup) {
+    //     const payload = {
+    //       ...target?.popup,
+    //       isShowPopup: true,
+    //     };
 
-          if (element) {
-            element.scrollIntoView({
-              behavior: "smooth",
-              block: "center",
-              inline: "nearest",
-            });
-          }
-        }
-      } else if (target?.popup) {
-        const payload = {
-          ...target?.popup,
-          isShowPopup: true,
-        };
-
-        dispatch(setIsOpenPopup(payload));
-      }
-    };
+    //     dispatch(setIsOpenPopup(payload));
+    //   }
+    // };
 
     const getIconForSection = (icon) => {
       if (iconPack) {
@@ -215,11 +255,13 @@ const ViewButtonUpdate = forwardRef(
               `}
             >
               <div
-                // onClick={() =>
-                //   useHandleClickTarget(section.target, containerRef)
-                // }
-
-                onClick={() => handleSectionClick(section.target)}
+                onClick={() =>
+                  handleButtonSectionClick(
+                    section.target,
+                    containerRef,
+                    dispatch
+                  )
+                }
                 style={{
                   ...buttonColorClass,
                   color: section.content.style.textColor,

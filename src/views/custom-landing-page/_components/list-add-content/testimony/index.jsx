@@ -330,7 +330,13 @@ const Testimony = ({
         </div>
       );
     },
-    [moveSection, editSection, removeSection, handleSectionContentFocus]
+    [
+      hiddenFocused,
+      moveSection,
+      editSection,
+      removeSection,
+      handleSectionContentFocus,
+    ]
   );
 
   const renderSectionShape = useCallback(
@@ -346,7 +352,7 @@ const Testimony = ({
               moveSection={moveSectionShape}
               editSection={() => editSectionShape(contentItem)}
               removeSection={() => removeSectionShape(section.id, contentIndex)}
-              hiddenFocus={hiddenFocused}
+              hiddenFocus={true}
             />
           ))}
         </div>

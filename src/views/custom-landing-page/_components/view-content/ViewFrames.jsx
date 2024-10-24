@@ -22,6 +22,7 @@ import ViewText from "./ViewText";
 import ViewVideo from "./ViewVideo";
 import ViewVideoText from "./ViewVideoText";
 import ViewMultiColumn from "./ViewMultiColumn";
+import ViewArrowMoved from "./ViewArrowMoved";
 
 const ViewFrames = forwardRef(
   (
@@ -312,6 +313,12 @@ const ViewFrames = forwardRef(
                   />
                 )}
 
+                {section.name === "arrow-moved" && (
+                  <ViewArrowMoved
+                    setPreviewSection={setPreviewSection}
+                    content={section}
+                  />
+                )}
                 {section.name === "multi-column" && (
                   <ViewMultiColumn
                     containerRef={containerRef}

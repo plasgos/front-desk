@@ -138,7 +138,6 @@ const Frosty = ({
             setBackgroundColor(color);
             handleChangeVariantStyle("backgroundColor", color);
           }}
-          bottom={"10px"}
         />
 
         <ColorPicker
@@ -148,7 +147,6 @@ const Frosty = ({
             setBorderColor(color);
             handleChangeVariantStyle("borderColor", color);
           }}
-          bottom={"10px"}
         />
       </div>
 

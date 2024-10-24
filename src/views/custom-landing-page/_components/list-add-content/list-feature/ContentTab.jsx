@@ -135,7 +135,6 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
             handleUpdateValue("textColor", color);
           }}
           width="w-0"
-          bottom={"-10px"}
         />
 
         <div>

@@ -37,4 +37,5 @@ export default {
   SET_CLOSE_POP_UP: "set-close-pop-up",
 
   REMOVE_POP_UP_OPTION: "remove-pop-up-option",
+  REMOVE_POP_UP_OPTION_SHOWN: "remove-pop-up-option-shown",
 };

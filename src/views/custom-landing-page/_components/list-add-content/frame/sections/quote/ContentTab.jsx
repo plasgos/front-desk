@@ -117,7 +117,6 @@ const ContentTab = ({
           onChange={(color) => {
             setQuoteTextColor(color);
           }}
-          bottom={"100px"}
         />
 
         <ColorPicker
@@ -126,7 +125,6 @@ const ContentTab = ({
           onChange={(color) => {
             setQuoteTagColor(color);
           }}
-          bottom={"100px"}
         />
       </div>
 
@@ -137,7 +135,6 @@ const ContentTab = ({
           onChange={(color) => {
             setWriterColor(color);
           }}
-          bottom={"100px"}
         />
       </div>
 

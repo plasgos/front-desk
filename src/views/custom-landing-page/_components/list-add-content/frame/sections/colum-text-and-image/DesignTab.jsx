@@ -94,7 +94,6 @@ const DesignTab = ({
             setSelectedColorTitle(color);
             handleChangeWrapperStyle("colorTitle", color);
           }}
-          bottom={"10px"}
         />
 
         <ColorPicker
@@ -104,7 +103,6 @@ const DesignTab = ({
             setSelectedColorDesc(color);
             handleChangeWrapperStyle("colorDescription", color);
           }}
-          bottom={"10px"}
         />
       </div>
 

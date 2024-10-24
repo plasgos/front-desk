@@ -1,11 +1,13 @@
 import React, { forwardRef } from "react";
-import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
-import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
+import { useDispatch } from "react-redux";
 import useAnimatedVisibility from "../../../../hooks/useAnimatedVisibility";
+import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
+import { handleButtonSectionClick } from "./ViewButtonUpdate";
 
 const ViewImage = forwardRef(
   ({ containerRef, isDragging, isResizing, content, isFocused }, ref) => {
     const stylesBg = useBackgroundStyles(content);
+    const dispatch = useDispatch();
 
     const { elementRef, getClassName, duration } =
       useAnimatedVisibility(content);
@@ -70,7 +72,11 @@ const ViewImage = forwardRef(
                     : {}),
                 }}
                 onClick={() =>
-                  useHandleClickTarget(section.target, containerRef)
+                  handleButtonSectionClick(
+                    section.target,
+                    containerRef,
+                    dispatch
+                  )
                 }
                 className={`tw-w-full   `}
               >

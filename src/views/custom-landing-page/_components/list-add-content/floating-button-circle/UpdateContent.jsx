@@ -1,7 +1,7 @@
 import { CButton } from "@coreui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
 import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack";
 import { useSCrollTargetChange } from "../../../../../hooks/useScrolltargetChange";
@@ -16,6 +16,7 @@ import UrlInput from "../../common/UrlInput";
 import WhatsAppInput from "../../common/WhatAppsInput";
 import FacebookPixel from "../../FacebookPixel";
 import { shadowOptions } from "../../SelectOptions";
+import { setIsOpenPopup } from "../../../../../redux/modules/custom-landing-page/reducer";
 
 export const variantButton = [
   { value: "fill", label: "Fill" },
@@ -113,6 +114,67 @@ const UpdateContent = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [colorButtonValue]);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (
+      selectedOption &&
+      selectedOption.value &&
+      selectedOption?.value.includes("Pop Up")
+    ) {
+      const contentIdToCheck = isEditingContent
+        ? currentContent.id
+        : setting.id;
+
+      const payload = {
+        ...selectedOption,
+        isShowPopup: false,
+      };
+
+      dispatch(setIsOpenPopup(payload));
+
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === idSection
+            ? {
+                ...item,
+                content: item.content.map((contentItem) =>
+                  String(contentItem.id) === contentIdToCheck
+                    ? {
+                        ...contentItem,
+                        target: {
+                          popup: payload,
+                        },
+                      }
+                    : contentItem
+                ),
+              }
+            : item
+        )
+      );
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOption]);
+
+  useEffect(() => {
+    if (isEditingContent) {
+      const existingGroup = optionsTarget.find(
+        (group) => group.label === "Kegiatan"
+      );
+
+      if (existingGroup) {
+        const currentTargetOption = existingGroup.options.find(
+          (opt) => opt.id === currentContent.target?.popup?.id
+        );
+
+        if (currentTargetOption) {
+          setSelectedOption(currentTargetOption);
+        }
+      }
+    }
+  }, [isEditingContent, optionsTarget, currentContent]);
 
   useEffect(() => {
     if (isEditingContent) {
@@ -474,7 +536,6 @@ const UpdateContent = ({
               onChange={(color) => {
                 setSelectedColorButton(color);
               }}
-              bottom={"10px"}
             />
           </div>
 
@@ -557,7 +618,6 @@ const UpdateContent = ({
                       handleChangeButtonStyle("iconColor", color);
                     }}
                     width="w-0"
-                    bottom={"-10px"}
                   />
 
                   <CButton

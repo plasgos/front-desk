@@ -45,7 +45,6 @@ const BasicLineControl = ({ setPreviewSection, currentSection }) => {
             setColorBasicLine(color);
             handleUpdateValue("colorBasicLine", color);
           }}
-          bottom={"18px"}
           type="rgba"
         />
       </div>

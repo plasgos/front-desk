@@ -36,6 +36,20 @@ const shownOnWhenOptions = [
   { value: "afterInteraction", label: "Setelah Interaksi" },
 ];
 
+const waitingPopupOptions = [
+  { value: 1, label: "1 detik" },
+  { value: 2, label: "2 detik" },
+  { value: 3, label: "3 detik" },
+  { value: 5, label: "5 detik" },
+  { value: 10, label: "10 detik" },
+  { value: 15, label: "15 detik" },
+  { value: 20, label: "20 detik" },
+  { value: 30, label: "30 detik" },
+  { value: 45, label: "45 detik" },
+  { value: 60, label: "60 detik" },
+  { value: 90, label: "90 detik" },
+];
+
 const newId = () => Math.random().toString(36).substr(2, 9);
 
 const background = {
@@ -108,6 +122,8 @@ const PopUp = ({
 
   const [width, setWidth] = useState(currentSection?.width || 500);
 
+  const [waitingPopup, setWaitingPopup] = useState(waitingPopupOptions[2]);
+
   const { optionsTarget } = useSelector((state) => state.customLandingPage);
 
   const kegiatanGroup = optionsTarget.find(
@@ -117,7 +133,7 @@ const PopUp = ({
 
   useEffect(() => {
     const currentShownOnWhen = shownOnWhenOptions.find(
-      (opt) => opt.value === currentSection?.shownOnWhen
+      (opt) => opt.value === currentSection?.shownOnWhen?.value
     );
 
     if (currentShownOnWhen) {
@@ -135,13 +151,51 @@ const PopUp = ({
 
   const dispatch = useDispatch();
 
-  const handleChangeShownOnWhen = (value) => {
+  const handleChangeWaitingPopup = (value) => {
     setPreviewFloatingSection((arr) =>
       arr.map((section) =>
         section.id === contentIdToCheck
           ? {
               ...section,
-              shownOnWhen: value,
+              shownOnWhen: {
+                ...section.shownOnWhen,
+                waitTime: value,
+              },
+            }
+          : section
+      )
+    );
+  };
+
+  const handleChangeShownOnWhen = (value) => {
+    if (value === "waitAfter") {
+      setPreviewFloatingSection((arr) =>
+        arr.map((section) =>
+          section.id === contentIdToCheck
+            ? {
+                ...section,
+                shownOnWhen: {
+                  ...section.shownOnWhen,
+                  value: value,
+                  isShown: false,
+                  waitTime: waitingPopup.value,
+                },
+              }
+            : section
+        )
+      );
+    }
+
+    setPreviewFloatingSection((arr) =>
+      arr.map((section) =>
+        section.id === contentIdToCheck
+          ? {
+              ...section,
+              shownOnWhen: {
+                ...section.shownOnWhen,
+                value: value,
+                isShown: true,
+              },
             }
           : section
       )
@@ -182,24 +236,7 @@ const PopUp = ({
   const contentIdToCheck = isEditingSection ? currentSection.id : setting.id;
 
   const handleCancel = () => {
-    if (isAddContent) {
-      setIsAddContent(false);
-      setIsEditingContent(false);
-      setPreviewFloatingSection((prevSections) =>
-        prevSections.map((section) => {
-          const contentIdToCheck = isEditingSection
-            ? currentSection.id
-            : setting.id;
-
-          return section.id === contentIdToCheck
-            ? {
-                ...section,
-                content: section.content.slice(0, -1),
-              }
-            : section;
-        })
-      );
-    } else if (isEditingContent) {
+    if (isEditingContent) {
       setPreviewFloatingSection([...currentSectionBeforeEdit]);
       setIsAddContent(false);
       setIsEditingContent(false);
@@ -264,7 +301,10 @@ const PopUp = ({
       content: popUpSections,
       wrapperStyle: {},
       popupName: "",
-      shownOnWhen: "immediately",
+      shownOnWhen: {
+        value: "immediately",
+        isShown: true,
+      },
       rounded: "tw-rounded-lg",
       isPopupShown: true,
       width: 500,
@@ -462,15 +502,34 @@ const PopUp = ({
                             />
                           </div>
 
-                          <SelectOptions
-                            label="Perlihatkan Ketika"
-                            options={shownOnWhenOptions}
-                            value={shownOnWhen}
-                            onChange={(selectedOption) => {
-                              setShownOnWhen(selectedOption);
-                              handleChangeShownOnWhen(selectedOption.value);
-                            }}
-                          />
+                          <div
+                            style={{ gap: 10 }}
+                            className="d-flex align-items-center"
+                          >
+                            <SelectOptions
+                              label="Perlihatkan Ketika"
+                              options={shownOnWhenOptions}
+                              value={shownOnWhen}
+                              onChange={(selectedOption) => {
+                                setShownOnWhen(selectedOption);
+                                handleChangeShownOnWhen(selectedOption.value);
+                              }}
+                            />
+
+                            {shownOnWhen.value === "waitAfter" && (
+                              <SelectOptions
+                                label="Menunggu Selama"
+                                options={waitingPopupOptions}
+                                value={waitingPopup}
+                                onChange={(selectedOption) => {
+                                  setWaitingPopup(selectedOption);
+                                  handleChangeWaitingPopup(
+                                    selectedOption.value
+                                  );
+                                }}
+                              />
+                            )}
+                          </div>
 
                           <h5>Desain</h5>
 

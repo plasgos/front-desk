@@ -450,8 +450,6 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
               setSelectedBgColor(color);
               handleUpdateBackground("bgColor", color);
             }}
-            top={"0"}
-            right={"34px"}
             type="rgba"
           />
         </div>
@@ -523,8 +521,6 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
                 setFromColor(color);
                 handleUpdateBackground("fromColor", color);
               }}
-              top={"0"}
-              right={"34px"}
               type="rgba"
             />
 
@@ -535,8 +531,6 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
                 setToColor(color);
                 handleUpdateBackground("toColor", color);
               }}
-              top={"0"}
-              right={"34px"}
               type="rgba"
             />
           </div>

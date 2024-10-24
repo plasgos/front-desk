@@ -549,7 +549,6 @@ const UpdateContent = ({
               onChange={(color) => {
                 setSelectedColorButton(color);
               }}
-              bottom={"10px"}
             />
 
             <ColorPicker
@@ -558,7 +557,6 @@ const UpdateContent = ({
               onChange={(color) => {
                 setSelectedColorText(color);
               }}
-              bottom={"10px"}
             />
           </div>
 
@@ -672,7 +670,6 @@ const UpdateContent = ({
                       handleContentChange("iconColor", color);
                     }}
                     width="w-0"
-                    bottom={"-10px"}
                   />
 
                   <CButton

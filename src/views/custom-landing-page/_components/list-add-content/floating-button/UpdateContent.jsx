@@ -267,8 +267,6 @@ const UpdateContent = ({
             (targetType?.scrollTarget && opt.value === "scroll-target") ||
             (targetType?.url && opt.value === "url") ||
             (targetType?.whatApps && opt.value === "whatApps")
-            //  ||
-            // (targetType?.popup && opt.value?.includes("Pop Up"))
           );
         });
 
@@ -622,7 +620,6 @@ const UpdateContent = ({
               onChange={(color) => {
                 setSelectedColorButton(color);
               }}
-              bottom={"10px"}
             />
 
             <ColorPicker
@@ -631,7 +628,6 @@ const UpdateContent = ({
               onChange={(color) => {
                 setSelectedColorText(color);
               }}
-              bottom={"10px"}
             />
           </div>
 
@@ -745,7 +741,6 @@ const UpdateContent = ({
                       handleContentChange("iconColor", color);
                     }}
                     width="w-0"
-                    bottom={"-10px"}
                   />
 
                   <CButton

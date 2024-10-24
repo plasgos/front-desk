@@ -100,7 +100,6 @@ const StripeLineControl = ({
             setColor1(color);
             handleUpdateValue("color1", color);
           }}
-          bottom={"80px"}
           type="rgba"
         />
 
@@ -111,7 +110,6 @@ const StripeLineControl = ({
             setColor2(color);
             handleUpdateValue("color2", color);
           }}
-          bottom={"80px"}
           type="rgba"
         />
       </div>

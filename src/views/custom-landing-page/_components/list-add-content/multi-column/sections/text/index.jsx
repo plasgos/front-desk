@@ -331,8 +331,6 @@ const Text = ({
                     setSelectedColor(color);
                   }}
                   flexEnd="justify-content-end"
-                  bottom={"77px"}
-                  left={"236px"}
                 />
               </div>
 

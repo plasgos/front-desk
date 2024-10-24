@@ -562,8 +562,6 @@ const BackgroundTabMultiColumnContent = ({
               setSelectedBgColor(color);
               handleUpdateBackground("bgColor", color);
             }}
-            top={"0"}
-            right={"34px"}
             type="rgba"
           />
         </div>
@@ -635,8 +633,6 @@ const BackgroundTabMultiColumnContent = ({
                 setFromColor(color);
                 handleUpdateBackground("fromColor", color);
               }}
-              top={"0"}
-              right={"34px"}
               type="rgba"
             />
 
@@ -647,8 +643,6 @@ const BackgroundTabMultiColumnContent = ({
                 setToColor(color);
                 handleUpdateBackground("toColor", color);
               }}
-              top={"0"}
-              right={"34px"}
               type="rgba"
             />
           </div>

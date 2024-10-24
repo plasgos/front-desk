@@ -3,6 +3,8 @@ import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDispatch } from "react-redux";
+import { handleButtonSectionClick } from "./ViewButtonUpdate";
 
 const ViewFloatingButtonCircle = forwardRef(
   (
@@ -16,6 +18,7 @@ const ViewFloatingButtonCircle = forwardRef(
     ref
   ) => {
     const iconPack = useFontAwesomeIconPack();
+    const dispatch = useDispatch();
 
     const getIconForSection = (icon) => {
       if (iconPack) {
@@ -35,14 +38,6 @@ const ViewFloatingButtonCircle = forwardRef(
 
     const stylesBg = useBackgroundStyles(content);
 
-    // const sizeClassesMap = {
-    //   sm: "tw-p-2",
-    //   md: "tw-p-4 ",
-    //   lg: "tw-p-6  ",
-    //   xl: "tw-p-8  ",
-    //   default: "tw-p-4 ",
-    // };
-
     const sizeClassesMap = {
       sm: 40,
       md: 48,
@@ -50,14 +45,6 @@ const ViewFloatingButtonCircle = forwardRef(
       xl: 68,
       default: 48,
     };
-
-    // const iconSizeMap = {
-    //   sm: "1x",
-    //   md: "2x ",
-    //   lg: "3x  ",
-    //   xl: "4x ",
-    //   default: "2px",
-    // };
 
     const iconSizeMap = {
       sm: 16,
@@ -69,6 +56,7 @@ const ViewFloatingButtonCircle = forwardRef(
 
     return (
       <div
+        ref={ref}
         style={{
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           backgroundColor: content.background.bgColor || "",
@@ -135,7 +123,11 @@ const ViewFloatingButtonCircle = forwardRef(
             >
               <div
                 onClick={() =>
-                  useHandleClickTarget(section.target, containerRef)
+                  handleButtonSectionClick(
+                    section.target,
+                    containerRef,
+                    dispatch
+                  )
                 }
                 style={{
                   //   width: "100%",

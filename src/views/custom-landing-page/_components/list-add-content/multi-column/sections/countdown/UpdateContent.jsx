@@ -372,8 +372,6 @@ const UpdateContent = ({
             setDaysColor(color);
             handelUpdateStyle("daysColor", color);
           }}
-          top={"0"}
-          right={"34px"}
           type="rgba"
         />
 
@@ -384,8 +382,6 @@ const UpdateContent = ({
             setHoursColor(color);
             handelUpdateStyle("hoursColor", color);
           }}
-          top={"0"}
-          right={"34px"}
           type="rgba"
         />
       </div>
@@ -398,8 +394,6 @@ const UpdateContent = ({
             setMinutesColor(color);
             handelUpdateStyle("minutesColor", color);
           }}
-          top={"0"}
-          right={"34px"}
           type="rgba"
         />
 
@@ -410,8 +404,6 @@ const UpdateContent = ({
             setSecondsColor(color);
             handelUpdateStyle("secondsColor", color);
           }}
-          top={"0"}
-          right={"34px"}
           type="rgba"
         />
       </div>
@@ -425,8 +417,6 @@ const UpdateContent = ({
               setDividerColor(color);
               handelUpdateStyle("dividerColor", color);
             }}
-            top={"0"}
-            right={"34px"}
             type="rgba"
           />
         </div>

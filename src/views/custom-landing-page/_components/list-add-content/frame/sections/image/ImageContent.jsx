@@ -369,7 +369,6 @@ const ImageContent = ({
               setBorderColor(color);
               handleChangeWrapperStyle("borderColor", color);
             }}
-            bottom={"10px"}
           />
         </div>
       )}

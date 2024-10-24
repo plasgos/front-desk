@@ -495,8 +495,6 @@ const BackgrounTabSpecificColumn = ({
               setSelectedBgColor(color);
               handleUpdateBackground("bgColor", color);
             }}
-            top={"0"}
-            right={"34px"}
             type="rgba"
           />
         </div>
@@ -568,8 +566,6 @@ const BackgrounTabSpecificColumn = ({
                 setFromColor(color);
                 handleUpdateBackground("fromColor", color);
               }}
-              top={"0"}
-              right={"34px"}
               type="rgba"
             />
 
@@ -580,8 +576,6 @@ const BackgrounTabSpecificColumn = ({
                 setToColor(color);
                 handleUpdateBackground("toColor", color);
               }}
-              top={"0"}
-              right={"34px"}
               type="rgba"
             />
           </div>

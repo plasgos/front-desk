@@ -431,7 +431,7 @@ export default (state = initialState, action) => {
 
     case types.SET_CLOSE_POP_UP:
       const updatePopupValue = state.popup.map((arr) =>
-        arr.id === action.payload.id
+        arr.id === action.payload?.id
           ? {
               ...arr,
               isShowPopup: false,
@@ -442,6 +442,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         popup: updatePopupValue,
+      };
+
+    case types.REMOVE_POP_UP_OPTION_SHOWN:
+      return {
+        ...state,
+        popup: state.popup.filter((opt) => opt.id !== action.payload),
       };
 
     case types.REMOVE_POP_UP_OPTION:
@@ -692,6 +698,13 @@ export const setClosePopup = (value) => {
 export const removePopupOption = (value) => {
   return {
     type: types.REMOVE_POP_UP_OPTION,
+    payload: value,
+  };
+};
+
+export const removePopupOptionShown = (value) => {
+  return {
+    type: types.REMOVE_POP_UP_OPTION_SHOWN,
     payload: value,
   };
 };

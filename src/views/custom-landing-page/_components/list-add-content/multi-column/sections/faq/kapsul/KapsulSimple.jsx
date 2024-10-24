@@ -52,7 +52,6 @@ const KapsulSimple = ({ currentSection, handleChangeStyle }) => {
             setColorTitle(color);
             handleChangeStyle("colorTitle", color);
           }}
-          bottom={"10px"}
         />
 
         <ColorPicker
@@ -62,7 +61,6 @@ const KapsulSimple = ({ currentSection, handleChangeStyle }) => {
             setColorContent(color);
             handleChangeStyle("colorContent", color);
           }}
-          bottom={"10px"}
         />
       </div>
 
@@ -74,7 +72,6 @@ const KapsulSimple = ({ currentSection, handleChangeStyle }) => {
             setBgColor(color);
             handleChangeStyle("bgColor", color);
           }}
-          bottom={"10px"}
         />
 
         <ColorPicker
@@ -84,7 +81,6 @@ const KapsulSimple = ({ currentSection, handleChangeStyle }) => {
             setBorderColor(color);
             handleChangeStyle("borderColor", color);
           }}
-          bottom={"10px"}
         />
       </div>
 

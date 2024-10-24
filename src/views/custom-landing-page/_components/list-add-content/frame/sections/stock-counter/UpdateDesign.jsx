@@ -225,7 +225,6 @@ const UpdateDesign = ({
             setStartColor(color);
             handleChangeValue("startColor", color);
           }}
-          bottom={"10px"}
         />
 
         <ColorPicker
@@ -235,7 +234,6 @@ const UpdateDesign = ({
             setFinishColor(color);
             handleChangeValue("finishColor", color);
           }}
-          bottom={"10px"}
         />
       </div>
 
@@ -247,7 +245,6 @@ const UpdateDesign = ({
             setOutlineColor(color);
             handleChangeValue("outlineColor", color);
           }}
-          bottom={"10px"}
         />
 
         <ColorPicker
@@ -257,7 +254,6 @@ const UpdateDesign = ({
             setBgColor(color);
             handleChangeValue("bgColor", color);
           }}
-          bottom={"10px"}
         />
       </div>
 

@@ -1,19 +1,23 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { forwardRef } from "react";
-import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
+import { useDispatch } from "react-redux";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { handleButtonSectionClick } from "./ViewButtonUpdate";
 
 const ViewFloatingButton = forwardRef(
-  ({
-    containerRef,
-
-    content,
-    isResizing,
-    setSectionContentRef,
-    focusedIndexSectionContent,
-  }) => {
+  (
+    {
+      containerRef,
+      content,
+      isResizing,
+      setSectionContentRef,
+      focusedIndexSectionContent,
+    },
+    ref
+  ) => {
     const iconPack = useFontAwesomeIconPack();
+    const dispatch = useDispatch();
 
     const getIconForSection = (icon) => {
       if (iconPack) {
@@ -82,6 +86,7 @@ const ViewFloatingButton = forwardRef(
 
     return (
       <div
+        ref={ref}
         style={{
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           paddingTop,
@@ -171,7 +176,11 @@ const ViewFloatingButton = forwardRef(
             >
               <div
                 onClick={() =>
-                  useHandleClickTarget(section.target, containerRef)
+                  handleButtonSectionClick(
+                    section.target,
+                    containerRef,
+                    dispatch
+                  )
                 }
                 style={{
                   ...buttonColorClass,

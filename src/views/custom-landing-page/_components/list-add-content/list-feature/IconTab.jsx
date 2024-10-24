@@ -225,7 +225,6 @@ const IconTab = ({
                     handleUpdateValue("color", color);
                   }}
                   width="w-0"
-                  bottom={"-10px"}
                 />
 
                 <CButton

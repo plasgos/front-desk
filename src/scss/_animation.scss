@@ -72,3 +72,18 @@
 .expandWidthFillOut {
   animation: expand-width-fill-out var(--animation-duration, 1s) ease-out;
 }
+
+/* Animasi bounce */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0); /* Posisi awal dan akhir */
+  }
+  50% {
+    transform: translateY(10px); /* Gerakan ke bawah */
+  }
+}
+
+.infiniteBounce {
+  animation: bounce 1s infinite ease-in-out;
+}

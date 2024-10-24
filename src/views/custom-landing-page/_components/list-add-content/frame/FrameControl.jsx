@@ -473,8 +473,6 @@ const FrameControl = ({ currentSection, setPreviewSection, type }) => {
               setSelectedBgColor(color);
               handleUpdateBackground("bgColor", color);
             }}
-            top={"0"}
-            right={"34px"}
             type="rgba"
           />
         </div>
@@ -546,8 +544,6 @@ const FrameControl = ({ currentSection, setPreviewSection, type }) => {
                 setFromColor(color);
                 handleUpdateBackground("fromColor", color);
               }}
-              top={"0"}
-              right={"34px"}
               type="rgba"
             />
 
@@ -558,8 +554,6 @@ const FrameControl = ({ currentSection, setPreviewSection, type }) => {
                 setToColor(color);
                 handleUpdateBackground("toColor", color);
               }}
-              top={"0"}
-              right={"34px"}
               type="rgba"
             />
           </div>

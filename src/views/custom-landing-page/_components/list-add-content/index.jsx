@@ -4,32 +4,32 @@ import { SearchForm } from "../common/SearchForm";
 import Buttons from "./button";
 import CallToAction from "./call-to-action";
 import ColumnTextAndImages from "./colum-text-and-image";
+import CountDown from "./countdown";
 import { dataListContent } from "./DataListContent";
 import EmptySpace from "./empty-space/index";
 import FAQ from "./faq";
+import FbPixelEvent from "./fb-pixel-event";
 import FloatingButton from "./floating-button";
 import FloatingButtonCircle from "./floating-button-circle";
+import FloatingContent from "./floating-content";
+import FormActivity from "./form-activity";
 import FormCheckout from "./form-checkout";
+import Frames from "./frames";
 import Image from "./image";
 import ImageText from "./image-text";
 import Line from "./line/index";
 import ListFeature from "./list-feature";
 import ListImagesControl from "./list-images/index";
 import MultiColumn from "./multi-column";
+import PopUp from "./popup";
 import Quote from "./quote";
 import ScrollTarget from "./scroll-target/index";
+import StockCounter from "./stock-counter";
 import Testimony from "./testimony";
 import Text from "./text/index";
 import Video from "./video";
 import VideoText from "./video-text";
-import FormActivity from "./form-activity";
-import CountDown from "./countdown";
-import Frame from "./frame";
-import StockCounter from "./stock-counter";
-import FbPixelEvent from "./fb-pixel-event";
-import PopUp from "./popup";
-import FloatingContent from "./floating-content";
-import Frames from "./frames";
+import ArrowMoved from "./arrow-moved";
 
 const ListContent = ({
   previewSection,
@@ -366,6 +366,14 @@ const ListContent = ({
 
       {addContent === "stock-counter" && (
         <StockCounter
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
+      {addContent === "arrow-moved" && (
+        <ArrowMoved
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}

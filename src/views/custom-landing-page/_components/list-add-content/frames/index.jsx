@@ -114,20 +114,7 @@ const Frames = ({
   }, [frameSections]);
 
   const handleCancel = () => {
-    if (isAddContent) {
-      setIsAddContent(false);
-      setIsEditingContent(false);
-      setPreviewSection((prevSections) =>
-        prevSections.map((section) => {
-          return section.id === contentIdToCheck
-            ? {
-                ...section,
-                content: section.content.slice(0, -1),
-              }
-            : section;
-        })
-      );
-    } else if (isEditingContent) {
+    if (isEditingContent) {
       setPreviewSection([...currentSectionBeforeEdit]);
       setIsAddContent(false);
       setIsEditingContent(false);

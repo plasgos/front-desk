@@ -330,8 +330,6 @@ export const UpdateShapes = ({
             initialColor={selectedShapeColor}
             label="Warna"
             onChange={handleChangeShapeColor}
-            top={"0"}
-            right={"34px"}
             type="rgba"
           />
         </div>

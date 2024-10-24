@@ -48,10 +48,7 @@ const ColorPicker = ({
   const popover = {
     position: "absolute",
     zIndex: "99999",
-    bottom,
-    left,
-    right,
-    top,
+    top: 40,
   };
 
   const cover = {
@@ -64,8 +61,9 @@ const ColorPicker = ({
 
   return (
     <div
+      style={{ position: "relative" }}
       className={`${width} d-flex  align-items-center ${
-        flexEnd && `${flexEnd} mr-3`
+        flexEnd && `${flexEnd} mr-3 `
       }  `}
     >
       <div
@@ -81,6 +79,7 @@ const ColorPicker = ({
       <div className="mb-1 ml-2" style={{ fontFamily: "Arial" }}>
         {label}
       </div>
+
       {showColorPicker && (
         <div style={popover}>
           <div style={cover} onClick={closeColorPicker} />

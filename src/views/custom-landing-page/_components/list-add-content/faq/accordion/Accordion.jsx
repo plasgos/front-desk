@@ -73,7 +73,6 @@ const Accordion = ({
             setColorTitle(color);
             handleChangeStyle("colorTitle", color);
           }}
-          bottom={"10px"}
         />
 
         <ColorPicker
@@ -83,7 +82,6 @@ const Accordion = ({
             setColorContent(color);
             handleChangeStyle("colorContent", color);
           }}
-          bottom={"10px"}
         />
       </div>
 
@@ -95,7 +93,6 @@ const Accordion = ({
             setBgColor(color);
             handleChangeStyle("bgColor", color);
           }}
-          bottom={"10px"}
         />
 
         <ColorPicker
@@ -105,7 +102,6 @@ const Accordion = ({
             setBorderColor(color);
             handleChangeStyle("borderColor", color);
           }}
-          bottom={"10px"}
         />
       </div>
 
@@ -117,7 +113,6 @@ const Accordion = ({
             setIconColor(color);
             handleChangeStyle("iconColor", color);
           }}
-          bottom={"10psx"}
         />
 
         <ColorPicker
@@ -127,7 +122,6 @@ const Accordion = ({
             setDividerColor(color);
             handleChangeStyle("dividerColor", color);
           }}
-          bottom={"10px"}
         />
       </div>
 
@@ -139,7 +133,6 @@ const Accordion = ({
             setBgContent(color);
             handleChangeStyle("bgContent", color);
           }}
-          bottom={"10psx"}
         />
       </div>
 
@@ -242,7 +235,6 @@ const Accordion = ({
                 handleChangeStyle("iconColor", color);
               }}
               width="w-0"
-              bottom={"-10px"}
             />
 
             <CButton

@@ -275,8 +275,6 @@ export const UpdateShapes = ({
               setSelectedShapeColor(color);
               handleUpdateSectionWrapperStyle("color", color);
             }}
-            top={"0"}
-            right={"34px"}
             type="rgba"
           />
         </div>

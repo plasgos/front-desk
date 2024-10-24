@@ -193,7 +193,6 @@ const DesignSection = ({
                 setLabelColor(color);
                 handleChangeFormValue("labelColor", color);
               }}
-              bottom={"10px"}
             />
 
             <ColorPicker
@@ -203,7 +202,6 @@ const DesignSection = ({
                 setBgInputColor(color);
                 handleChangeFormValue("bgInputColor", color);
               }}
-              bottom={"10px"}
             />
           </div>
           <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
@@ -214,7 +212,6 @@ const DesignSection = ({
                 setTextInputColor(color);
                 handleChangeFormValue("textInputColor", color);
               }}
-              bottom={"10px"}
             />
 
             <ColorPicker
@@ -224,7 +221,6 @@ const DesignSection = ({
                 setOutlineInputColor(color);
                 handleChangeFormValue("outlineInputColor", color);
               }}
-              bottom={"10px"}
             />
           </div>
 
@@ -346,7 +342,6 @@ const DesignSection = ({
                 setBtnSubmitColor(color);
                 handleChangeFormValue("btnSubmitColor", color);
               }}
-              bottom={"10px"}
             />
           </div>
 
@@ -404,7 +399,6 @@ const DesignSection = ({
                     handleChangeFormValue("iconColor", color);
                   }}
                   width="w-0"
-                  bottom={"-10px"}
                 />
 
                 <CButton

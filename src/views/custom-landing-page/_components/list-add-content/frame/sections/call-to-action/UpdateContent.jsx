@@ -321,7 +321,6 @@ const UpdateContent = ({
             setTextColor(color);
             handleChangeContent("textColor", color);
           }}
-          bottom={"10px"}
         />
 
         <ColorPicker
@@ -331,7 +330,6 @@ const UpdateContent = ({
             setButtonColor(color);
             handleChangeContent("buttonColor", color);
           }}
-          bottom={"10px"}
         />
       </div>
 
@@ -343,7 +341,6 @@ const UpdateContent = ({
             setTextColorButton(color);
             handleChangeContent("textColorButton", color);
           }}
-          bottom={"10px"}
         />
         <Checkbox
           label="Ghost Button"

@@ -120,7 +120,6 @@ const DesignTabControl = ({
         <ColorPicker
           initialColor={bgColor}
           onChange={handleChangeBgColor}
-          bottom={"20px"}
           type="rgba"
         />
       </div>

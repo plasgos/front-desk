@@ -162,24 +162,7 @@ const FloatingContent = ({
   const contentIdToCheck = isEditingSection ? currentSection.id : setting.id;
 
   const handleCancel = () => {
-    if (isAddContent) {
-      setIsAddContent(false);
-      setIsEditingContent(false);
-      setPreviewFloatingSection((prevSections) =>
-        prevSections.map((section) => {
-          const contentIdToCheck = isEditingSection
-            ? currentSection.id
-            : setting.id;
-
-          return section.id === contentIdToCheck
-            ? {
-                ...section,
-                content: section.content.slice(0, -1),
-              }
-            : section;
-        })
-      );
-    } else if (isEditingContent) {
+    if (isEditingContent) {
       setPreviewFloatingSection([...currentSectionBeforeEdit]);
       setIsAddContent(false);
       setIsEditingContent(false);

@@ -26,6 +26,7 @@ import ViewStockCounter from "../view-content/ViewStockCounter";
 import ViewPopUp from "../view-content/ViewPopUp";
 import ViewFloatingContent from "../view-content/ViewFloatingContent";
 import ViewFrames from "../view-content/ViewFrames";
+import ViewArrowMoved from "../view-content/ViewArrowMoved";
 
 export function useRenderViewSections({
   id,
@@ -389,7 +390,6 @@ export function useRenderViewSections({
           <ViewPopUp
             containerRef={containerRef}
             content={section}
-            isResizing={isResizing}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
             setPreviewFloatingSection={setPreviewFloatingSection}
@@ -416,6 +416,18 @@ export function useRenderViewSections({
             width={dimensions.width}
             setColumnRef={setColumnRef}
             focusedIndexColumn={focusedIndexColumn}
+          />
+        );
+      }
+
+      if (section.name === "arrow-moved") {
+        return (
+          <ViewArrowMoved
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, section.id)}
+            isFocused={focusedIndex === section.id}
           />
         );
       }

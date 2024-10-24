@@ -187,7 +187,6 @@ const ContentTab = ({
             handleUpdateValue("textColor", color);
           }}
           width="w-0"
-          bottom={"-10px"}
         />
 
         <div>

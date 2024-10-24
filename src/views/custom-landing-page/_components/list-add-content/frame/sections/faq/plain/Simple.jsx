@@ -34,7 +34,6 @@ const PlainSimple = ({ currentSection, handleChangeStyle }) => {
             setColorTitle(color);
             handleChangeStyle("colorTitle", color);
           }}
-          bottom={"10px"}
         />
 
         <ColorPicker
@@ -44,7 +43,6 @@ const PlainSimple = ({ currentSection, handleChangeStyle }) => {
             setColorContent(color);
             handleChangeStyle("colorContent", color);
           }}
-          bottom={"10px"}
         />
       </div>
 

@@ -1,6 +1,6 @@
 import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
 import Input from "../../common/Input";
 
@@ -17,6 +17,7 @@ import UrlInput from "../../common/UrlInput";
 import WhatsAppInput from "../../common/WhatAppsInput";
 import FacebookPixel from "../../FacebookPixel";
 import { shadowOptions } from "../../SelectOptions";
+import { setIsOpenPopup } from "../../../../../redux/modules/custom-landing-page/reducer";
 
 const ImageContent = ({
   setPreviewSection,
@@ -84,6 +85,63 @@ const ImageContent = ({
       setShadow(currentShadowOption);
     }
   }, [currentSection]);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (
+      selectedOption &&
+      selectedOption.value &&
+      selectedOption?.value.includes("Pop Up")
+    ) {
+      const payload = {
+        ...selectedOption,
+        isShowPopup: false,
+      };
+
+      dispatch(setIsOpenPopup(payload));
+
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === currentSection.id
+            ? {
+                ...item,
+                content: item.content.map((contentItem) =>
+                  String(contentItem.id) === currentContent?.id
+                    ? {
+                        ...contentItem,
+                        target: {
+                          popup: payload,
+                        },
+                      }
+                    : contentItem
+                ),
+              }
+            : item
+        )
+      );
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOption]);
+
+  useEffect(() => {
+    if (isEditingContent) {
+      const existingGroup = optionsTarget.find(
+        (group) => group.label === "Kegiatan"
+      );
+
+      if (existingGroup) {
+        const currentTargetOption = existingGroup.options.find(
+          (opt) => opt.id === currentContent.target?.popup?.id
+        );
+
+        if (currentTargetOption) {
+          setSelectedOption(currentTargetOption);
+        }
+      }
+    }
+  }, [isEditingContent, optionsTarget, currentContent]);
 
   useEffect(() => {
     if (isEditingContent) {
@@ -336,7 +394,6 @@ const ImageContent = ({
               setBorderColor(color);
               handleChangeWrapperStyle("borderColor", color);
             }}
-            bottom={"10px"}
           />
         </div>
       )}

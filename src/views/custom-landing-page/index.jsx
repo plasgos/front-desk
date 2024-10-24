@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import {
   removeOptionScrollTarget,
   removePopupOption,
+  removePopupOptionShown,
 } from "../../redux/modules/custom-landing-page/reducer";
 import DesignTabControl from "./_components/DesignTabControl";
 import { ListSectionContent } from "./_components/ListSectionContent";
@@ -402,6 +403,7 @@ const CustomLandingPage = () => {
       );
 
       dispatch(removePopupOption(sectionId));
+      dispatch(removePopupOptionShown(sectionId));
     },
     [dispatch]
   );

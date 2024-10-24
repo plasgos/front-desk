@@ -105,7 +105,6 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
           onChange={(color) => {
             setQuoteTextColor(color);
           }}
-          bottom={"100px"}
         />
 
         <ColorPicker
@@ -114,7 +113,6 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
           onChange={(color) => {
             setQuoteTagColor(color);
           }}
-          bottom={"100px"}
         />
       </div>
 
@@ -125,7 +123,6 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
           onChange={(color) => {
             setWriterColor(color);
           }}
-          bottom={"100px"}
         />
       </div>
 

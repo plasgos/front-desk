@@ -22,6 +22,7 @@ import ViewVideo from "./ViewVideo";
 import ViewVideoText from "./ViewVideoText";
 import useAnimatedVisibility from "../../../../hooks/useAnimatedVisibility";
 import ViewMultiColumn from "./ViewMultiColumn";
+import ViewArrowMoved from "./ViewArrowMoved";
 const ViewFloatingContent = forwardRef(
   ({
     containerRef,
@@ -204,6 +205,13 @@ const ViewFloatingContent = forwardRef(
 
               {section.name === "stock-counter" && (
                 <ViewStockCounter
+                  setPreviewSection={setPreviewSection}
+                  content={section}
+                />
+              )}
+
+              {section.name === "arrow-moved" && (
+                <ViewArrowMoved
                   setPreviewSection={setPreviewSection}
                   content={section}
                 />

@@ -353,7 +353,6 @@ const DesignTab = ({
             setSelectedBackgroundColor(color);
             handleUpdateSectionCardStyle("bgColor", color);
           }}
-          bottom={"10px"}
         />
 
         <ColorPicker
@@ -363,7 +362,6 @@ const DesignTab = ({
             setSelectedBorderCardColor(color);
             handleUpdateSectionCardStyle("borderColor", color);
           }}
-          bottom={"10px"}
         />
       </div>
       <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
@@ -374,7 +372,6 @@ const DesignTab = ({
             setSelectedStarColor(color);
             handleUpdateSectionCardStyle("starColor", color);
           }}
-          bottom={"-40px"}
         />
       </div>
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
@@ -510,8 +507,6 @@ const DesignTab = ({
             setSelectedColorName(color);
             handleUpdateSectionProfileStyle("colorName", color);
           }}
-          bottom={"-30px"}
-          right={"130px"}
         />
       </div>
 
@@ -571,8 +566,6 @@ const DesignTab = ({
             setSelectedColorBorderpict(color);
             handleUpdateSectionProfileStyle("borderPictColor", color);
           }}
-          bottom={"-30px"}
-          right={"130px"}
         />
       </div>
       <SelectOptions
@@ -697,8 +690,6 @@ const DesignTab = ({
             setSelectedStarColor(color);
             handleUpdateSectionCardStyle("starColor", color);
           }}
-          bottom={"10px"}
-          left={"70px"}
         />
       </div>
 

@@ -21,6 +21,7 @@ import ViewCallToAction from "../ViewCallToAction";
 import ViewFormActivity from "../ViewFormActivity";
 import ViewCountDown from "../ViewCountdown";
 import ViewStockCounter from "../ViewStockCounter";
+import ViewArrowMoved from "../ViewArrowMoved";
 
 const ViewMultiColumn = forwardRef(
   (
@@ -365,6 +366,13 @@ const ViewMultiColumn = forwardRef(
                           <ViewStockCounter
                             content={contentItem}
                             isResizing={isResizing}
+                          />
+                        )}
+
+                        {contentItem.name === "arrow-moved" && (
+                          <ViewArrowMoved
+                            setPreviewSection={setPreviewSection}
+                            content={contentItem}
                           />
                         )}
                       </div>

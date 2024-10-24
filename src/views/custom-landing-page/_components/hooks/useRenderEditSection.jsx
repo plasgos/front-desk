@@ -27,6 +27,7 @@ import Frame from "../list-add-content/frame";
 import PopUp from "../list-add-content/popup";
 import FloatingContent from "../list-add-content/floating-content";
 import Frames from "../list-add-content/frames";
+import ArrowMoved from "../list-add-content/arrow-moved";
 
 export function useRenderEditSection({
   previewSection,
@@ -528,6 +529,23 @@ export function useRenderEditSection({
             isEditingSection={true}
             handleSectionContentFocus={handleSectionContentFocus}
             handleColumnFocus={handleColumnFocus}
+          />
+        );
+      }
+
+      if (
+        editing.name === "arrow-moved" &&
+        section.name === "arrow-moved" &&
+        editing.id === section.id
+      ) {
+        return (
+          <ArrowMoved
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
           />
         );
       }
