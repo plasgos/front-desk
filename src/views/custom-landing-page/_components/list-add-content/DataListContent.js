@@ -17,6 +17,7 @@ import {
 import {
   PiArrowsDownUpLight,
   PiFrameCornersThin,
+  PiImagesBold,
   PiTargetDuotone,
   PiVideoLight,
   PiVideoThin,
@@ -98,6 +99,12 @@ export const dataListContent = [
         title: "Gambar + Teks",
         icon: <LuImagePlus style={{ marginRight: 5 }} size={24} />,
         action: (setAddContent) => setAddContent("image-text"),
+      },
+      {
+        name: "slider-image",
+        title: "Slider Gambar",
+        icon: <PiImagesBold style={{ marginRight: 5 }} size={24} />,
+        action: (setAddContent) => setAddContent("slider-image"),
       },
       {
         name: "video",

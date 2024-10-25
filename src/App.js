@@ -5,6 +5,8 @@ import { useSelector } from "react-redux";
 import "./scss/style.scss";
 import "./scss/tailwind.css";
 import "animate.css";
+// import "swiper/swiper.min.css";
+import "swiper/swiper-bundle.min.css";
 
 // Containers
 const TheLayout = React.lazy(() => import("./containers/TheLayout"));

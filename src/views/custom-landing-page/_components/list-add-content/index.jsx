@@ -30,6 +30,7 @@ import Text from "./text/index";
 import Video from "./video";
 import VideoText from "./video-text";
 import ArrowMoved from "./arrow-moved";
+import SliderImage from "./slider-image";
 
 const ListContent = ({
   previewSection,
@@ -374,6 +375,14 @@ const ListContent = ({
 
       {addContent === "arrow-moved" && (
         <ArrowMoved
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+        />
+      )}
+
+      {addContent === "slider-image" && (
+        <SliderImage
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowContent={isShowContent}

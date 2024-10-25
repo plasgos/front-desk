@@ -560,3 +560,33 @@ div.horizontal-scrolling-menu::-webkit-scrollbar-thumb:hover {
   top: 100%; /* Mengatur posisi di bawah input */
   left: 0;
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: rgba(
+    255,
+    255,
+    255,
+    0.7
+  ) !important; /* Warna putih dengan transparansi 70% */
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  color: rgba(255, 255, 255, 1) !important; /* Warna penuh saat hover */
+}
+
+/* Media query untuk perangkat mobile */
+@media (max-width: 768px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    --swiper-navigation-size: 24px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .swiper-button-next,
+  .swiper-button-prev {
+    --swiper-navigation-size: 20px !important;
+  }
+}

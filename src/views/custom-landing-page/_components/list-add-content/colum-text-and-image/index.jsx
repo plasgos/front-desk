@@ -37,9 +37,9 @@ const ColumnTextAndImages = ({
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
-  const [selectedContent, setSelectedContent] = useState({});
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
 
+  const [selectedContent, setSelectedContent] = useState({});
   const [setting, setSetting] = useState({});
 
   const handleCancel = () => {

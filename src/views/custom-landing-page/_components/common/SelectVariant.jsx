@@ -2,7 +2,12 @@ import { CButton, CCard } from "@coreui/react";
 import React from "react";
 import { FaCheck } from "react-icons/fa";
 
-const SelectVariant = ({ optionVariant, selectedVariant, onChangeVariant }) => {
+const SelectVariant = ({
+  optionVariant,
+  selectedVariant,
+  onChangeVariant,
+  verticalList,
+}) => {
   return (
     <div>
       {optionVariant.map((group, groupIndex) => (
@@ -13,7 +18,12 @@ const SelectVariant = ({ optionVariant, selectedVariant, onChangeVariant }) => {
           >
             {group.group} {/* Display the group label */}
           </div>
-          <div style={{ gap: 10 }} className="d-flex align-items-center">
+          <div
+            style={{ gap: 10 }}
+            className={` ${
+              verticalList ? "d-flex flex-column" : " d-flex align-items-center"
+            }`}
+          >
             {group.options.map((option, optionIndex) => {
               const isSelected =
                 selectedVariant?.value === option.value &&
@@ -21,6 +31,7 @@ const SelectVariant = ({ optionVariant, selectedVariant, onChangeVariant }) => {
 
               return (
                 <CButton
+                  style={{ whiteSpace: "nowrap" }}
                   key={optionIndex}
                   onClick={() => onChangeVariant(group.group, option)}
                   color={isSelected ? "primary" : "secondary"}

@@ -28,6 +28,7 @@ import PopUp from "../list-add-content/popup";
 import FloatingContent from "../list-add-content/floating-content";
 import Frames from "../list-add-content/frames";
 import ArrowMoved from "../list-add-content/arrow-moved";
+import SliderImage from "../list-add-content/slider-image";
 
 export function useRenderEditSection({
   previewSection,
@@ -324,6 +325,23 @@ export function useRenderEditSection({
       ) {
         return (
           <Image
+            currentSection={section}
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "slider-image" &&
+        section.name === "slider-image" &&
+        editing.id === section.id
+      ) {
+        return (
+          <SliderImage
             currentSection={section}
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}

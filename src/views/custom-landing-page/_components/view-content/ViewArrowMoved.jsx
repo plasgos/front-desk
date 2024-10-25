@@ -70,6 +70,7 @@ const ViewArrowMoved = forwardRef(
         ) : null}
 
         <div
+          className="infiniteBounce"
           style={{
             display: "flex",
             justifyContent: "center",
@@ -99,7 +100,6 @@ const ViewArrowMoved = forwardRef(
                       // top: distanceY,
                     }}
                     key={index}
-                    className="infiniteBounce"
                   >
                     <svg
                       style={{
@@ -146,7 +146,6 @@ const ViewArrowMoved = forwardRef(
                       top: distanceY,
                     }}
                     key={index}
-                    className="infiniteBounce"
                   >
                     <img
                       className={`${

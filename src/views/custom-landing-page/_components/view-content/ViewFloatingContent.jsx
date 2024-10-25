@@ -23,6 +23,7 @@ import ViewVideoText from "./ViewVideoText";
 import useAnimatedVisibility from "../../../../hooks/useAnimatedVisibility";
 import ViewMultiColumn from "./ViewMultiColumn";
 import ViewArrowMoved from "./ViewArrowMoved";
+import ViewSliderImage from "./ViewSliderImage";
 const ViewFloatingContent = forwardRef(
   ({
     containerRef,
@@ -167,6 +168,13 @@ const ViewFloatingContent = forwardRef(
                 <ViewImageText
                   isPreview={isPreview}
                   width={width}
+                  content={section}
+                />
+              )}
+
+              {section.name === "slider-image" && (
+                <ViewSliderImage
+                  containerRef={containerRef}
                   content={section}
                 />
               )}

@@ -23,6 +23,7 @@ import ViewVideo from "./ViewVideo";
 import ViewVideoText from "./ViewVideoText";
 import ViewMultiColumn from "./ViewMultiColumn";
 import ViewArrowMoved from "./ViewArrowMoved";
+import ViewSliderImage from "./ViewSliderImage";
 
 const ViewFrames = forwardRef(
   (
@@ -228,6 +229,13 @@ const ViewFrames = forwardRef(
                     content={section}
                     isPreview={isPreview}
                     width={content?.wrapperStyle?.width}
+                  />
+                )}
+
+                {section.name === "slider-image" && (
+                  <ViewSliderImage
+                    containerRef={containerRef}
+                    content={section}
                   />
                 )}
 

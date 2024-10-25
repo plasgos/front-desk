@@ -161,6 +161,7 @@ const MultiColumn = ({
       isShowMultiColumn(false);
     }
   };
+
   const background = {
     bgType: undefined,
     bgColor: "",

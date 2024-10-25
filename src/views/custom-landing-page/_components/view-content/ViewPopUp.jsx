@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setClosePopup } from "../../../../redux/modules/custom-landing-page/reducer";
 import ViewMultiColumn from "./ViewMultiColumn";
 import ViewArrowMoved from "./ViewArrowMoved";
+import ViewSliderImage from "./ViewSliderImage";
 
 const ContentMultipleSection = ({
   content,
@@ -112,6 +113,10 @@ const ContentMultipleSection = ({
               width={content?.width}
               content={section}
             />
+          )}
+
+          {section.name === "slider-image" && (
+            <ViewSliderImage containerRef={containerRef} content={section} />
           )}
 
           {section.name === "countdown" && <ViewCountDown content={section} />}

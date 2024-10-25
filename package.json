@@ -82,6 +82,7 @@
     "redux-persist-transform-compress": "^4.2.0",
     "redux-persist-transform-encrypt": "^3.0.1",
     "redux-saga": "^1.3.0",
+    "swiper": "^7.4.1",
     "use-debounce": "^10.0.0",
     "xlsx": "^0.18.5"
   },
