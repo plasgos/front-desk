@@ -1,15 +1,8 @@
-import React, { forwardRef, useState } from "react";
+import React, { forwardRef } from "react";
 
+import { Autoplay, EffectCoverflow, EffectFade, Navigation } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react/swiper-react";
 import { useBackgroundStyles } from "../../../../../hooks/useBackgroundStyles";
-import {
-  Autoplay,
-  EffectFade,
-  Navigation,
-  EffectCoverflow,
-  Thumbs,
-  FreeMode,
-} from "swiper";
 import { useHandleClickTarget } from "../../../../../hooks/useHandleClickTarget";
 
 const ViewSliderImage = forwardRef(
@@ -26,10 +19,7 @@ const ViewSliderImage = forwardRef(
   ) => {
     const stylesBg = useBackgroundStyles(content);
     const variant = content?.variant?.value;
-    const variantStyle =
-      variant !== "page-slider" && variant !== "showcase"
-        ? "tw-p-0"
-        : "tw-px-3";
+    const variantStyle = variant !== "page-slider" ? "tw-p-0" : "tw-px-3";
 
     const { transition, autoScroll, aspectRatio, width } =
       content?.variant?.style;
@@ -40,8 +30,6 @@ const ViewSliderImage = forwardRef(
 
     const effectOption = transition === "fade" ? "fade" : "slide";
 
-    const [thumbsSwiper, setThumbsSwiper] = useState(null);
-
     return (
       <div
         ref={ref}
@@ -49,14 +37,8 @@ const ViewSliderImage = forwardRef(
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
-          paddingTop:
-            variant === "full-slider" || variant === "showcase"
-              ? 0
-              : stylesBg.paddingTop,
-          paddingBottom:
-            variant === "full-slider" || variant === "showcase"
-              ? 0
-              : stylesBg.paddingBottom,
+          paddingTop: variant === "full-slider" ? 0 : stylesBg.paddingTop,
+          paddingBottom: variant === "full-slider" ? 0 : stylesBg.paddingBottom,
           backgroundColor: content.background.bgColor || "",
           position: "relative",
           zIndex: 1,
@@ -249,75 +231,6 @@ const ViewSliderImage = forwardRef(
                       objectFit: "cover",
                       borderRadius: "10px",
                       boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                    }}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        )}
-
-        {variant === "showcase" && (
-          <div
-            style={{
-              width: "100%",
-              maxWidth:
-                variant === "full-slider" || variant === "showcase"
-                  ? "100%"
-                  : width,
-              margin: "0 auto",
-            }}
-          >
-            <Swiper
-              style={{ marginBottom: 10 }}
-              key={`swiper-${delay}-${effectOption}`}
-              spaceBetween={10}
-              navigation={true}
-              thumbs={thumbsSwiper ? { swiper: thumbsSwiper } : undefined}
-              modules={[FreeMode, Navigation, Thumbs]}
-            >
-              {content.content.map((section) => (
-                <SwiperSlide key={section.id}>
-                  <img
-                    onClick={() =>
-                      useHandleClickTarget(section.target, containerRef)
-                    }
-                    src={section?.content?.image}
-                    alt="slider-img"
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      aspectRatio,
-                      objectFit: "cover",
-                    }}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-
-            <Swiper
-              style={{ cursor: "pointer" }}
-              key={`thumb-swiper-${delay}-${effectOption}`}
-              onSwiper={setThumbsSwiper}
-              spaceBetween={10}
-              slidesPerView={4}
-              freeMode={true}
-              watchSlidesProgress={true}
-              modules={[FreeMode, Navigation, Thumbs]}
-            >
-              {content.content.map((section) => (
-                <SwiperSlide key={`thumb-${section.id}`}>
-                  <img
-                    onClick={() =>
-                      useHandleClickTarget(section.target, containerRef)
-                    }
-                    src={section?.content?.image}
-                    alt="slider-img"
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      aspectRatio: 5 / 2,
-                      objectFit: "cover",
                     }}
                   />
                 </SwiperSlide>

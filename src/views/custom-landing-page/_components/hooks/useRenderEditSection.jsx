@@ -29,6 +29,7 @@ import FloatingContent from "../list-add-content/floating-content";
 import Frames from "../list-add-content/frames";
 import ArrowMoved from "../list-add-content/arrow-moved";
 import SliderImage from "../list-add-content/slider-image";
+import SalesNotification from "../list-add-content/sales-notification";
 
 export function useRenderEditSection({
   previewSection,
@@ -547,6 +548,25 @@ export function useRenderEditSection({
             isEditingSection={true}
             handleSectionContentFocus={handleSectionContentFocus}
             handleColumnFocus={handleColumnFocus}
+          />
+        );
+      }
+
+      if (
+        editing.name === "sales-notification" &&
+        section.name === "sales-notification" &&
+        editing.id === section.id
+      ) {
+        return (
+          <SalesNotification
+            currentSection={section}
+            previewFloatingSection={previewFloatingSection}
+            setPreviewFloatingSection={(value) =>
+              setPreviewFloatingSection(value)
+            }
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionFloatingBeforeEdit}
+            isEditingSection={true}
           />
         );
       }

@@ -1,9 +1,8 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { forwardRef } from "react";
-import { useHandleClickTarget } from "../../../../hooks/useHandleClickTarget";
+import { useDispatch } from "react-redux";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 import { useFontAwesomeIconPack } from "../../../../hooks/useFontAwesomePack";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch } from "react-redux";
 import { handleButtonSectionClick } from "./ViewButtonUpdate";
 
 const ViewFloatingButtonCircle = forwardRef(

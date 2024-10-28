@@ -70,7 +70,6 @@ const optionVariant = [
       { id: "2", value: "page-slider", label: "Page Slider" },
       { id: "3", value: "perspective-card", label: "Perspective Card" },
       { id: "4", value: "sliding-card", label: "Sliding Card" },
-      { id: "5", value: "showcase", label: "Showcase" },
     ],
   },
 ];
@@ -193,7 +192,6 @@ const SliderImage = ({
     2: pageSlider,
     3: perspectiveCard,
     4: perspectiveCard,
-    5: commonStyle,
   };
 
   const handleVariantChange = (group, option) => {

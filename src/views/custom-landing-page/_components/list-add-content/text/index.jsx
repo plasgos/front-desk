@@ -109,10 +109,10 @@ const Text = ({
       name: "text",
       title: "Teks",
       content: {
-        editorHtml,
+        editorHtml: "Type your text here",
         style: {
-          textAlign: selectAlign,
-          color: selectedColor,
+          textAlign: "tw-text-center",
+          color: "#000000",
         },
       },
       animation: {

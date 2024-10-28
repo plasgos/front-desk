@@ -1,5 +1,7 @@
 import React from "react";
+import { AiOutlineUserSwitch } from "react-icons/ai";
 import { BsFillChatSquareQuoteFill, BsWindowStack } from "react-icons/bs";
+import { CgFileDocument } from "react-icons/cg";
 import {
   FaClipboardList,
   FaCompressArrowsAlt,
@@ -7,15 +9,18 @@ import {
   FaImage,
 } from "react-icons/fa";
 import { FaGripLines, FaListCheck } from "react-icons/fa6";
+import { GoStack } from "react-icons/go";
 import { IoMdImages } from "react-icons/io";
 import { LuImagePlus, LuQuote } from "react-icons/lu";
 import {
+  MdNotificationsActive,
   MdSupervisedUserCircle,
   MdTextFields,
   MdViewColumn,
 } from "react-icons/md";
 import {
   PiArrowsDownUpLight,
+  PiColumnsPlusRightThin,
   PiFrameCornersThin,
   PiImagesBold,
   PiTargetDuotone,
@@ -24,11 +29,7 @@ import {
 } from "react-icons/pi";
 import { RxButton, RxSwitch, RxTimer } from "react-icons/rx";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
-import { PiColumnsPlusRightThin } from "react-icons/pi";
-import { AiOutlineUserSwitch } from "react-icons/ai";
-import { CgFileDocument } from "react-icons/cg";
 import { VscSymbolInterface } from "react-icons/vsc";
-import { GoStack } from "react-icons/go";
 
 export const dataListContent = [
   {
@@ -168,6 +169,12 @@ export const dataListContent = [
         title: "Floating Content",
         icon: <GoStack style={{ marginRight: 5 }} size={24} />,
         action: (setAddContent) => setAddContent("floating-content"),
+      },
+      {
+        name: "sales-notification",
+        title: "Sales Notification",
+        icon: <MdNotificationsActive style={{ marginRight: 5 }} size={24} />,
+        action: (setAddContent) => setAddContent("sales-notification"),
       },
     ],
   },

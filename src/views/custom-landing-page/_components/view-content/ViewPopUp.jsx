@@ -194,7 +194,6 @@ const ViewPopUp = forwardRef(
     ref
   ) => {
     const [isVisible, setIsVisible] = useState(false);
-    console.log("🚀 ~ isVisible:", isVisible);
 
     const { popup } = useSelector((state) => state.customLandingPage);
 

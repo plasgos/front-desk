@@ -21,12 +21,51 @@ import SelectOptions from "../../common/SelectOptions";
 import Checkbox from "../../common/Checkbox";
 import { IoAdd } from "react-icons/io5";
 import BackgroundTab from "../../common/BackgroundTab";
-import BackgroundTabSpecificColumn from "./common/BackgrounTabSpecificColumn";
+import BackgroundTabSpecificColumn from "../multi-column/common/BackgrounTabSpecificColumn";
+import ListContent from "..";
 
 const widthTypeOptions = [
   { value: "equal", label: "Sama Rata" },
   { value: "custom", label: "Custom" },
 ];
+
+const newId = () => Math.random().toString(36).substr(2, 9);
+
+const background = {
+  bgType: undefined,
+  bgColor: "",
+  bgImage: "",
+  blur: 0,
+  opacity: 0,
+  paddingY: 0,
+  paddingTop: 0,
+  paddingBottom: 0,
+  paddingType: "equal",
+  direction: "to right",
+  fromColor: "",
+  toColor: "",
+  isRevert: false,
+  pattern: "",
+};
+
+const initialSection = {
+  id: newId(),
+  name: "text",
+  title: "Teks",
+  content: {
+    editorHtml: "Text 1",
+    style: {
+      textAlign: "tw-text-center",
+      color: "#face12",
+    },
+  },
+  animation: {
+    type: undefined,
+    duration: 1,
+    isReplay: false,
+  },
+  background,
+};
 
 const MultiColumnUpdate = ({
   previewSection,
@@ -58,13 +97,42 @@ const MultiColumnUpdate = ({
   const [isEditingColumn, setIsEditingColumn] = useState(false);
   const [isAddColumn, setIsAddColumn] = useState(false);
 
-  const [multiColumnSections, setMultiColumnSections] = useState();
+  const [multiColumnSections, setMultiColumnSections] = useState([
+    initialSection,
+  ]);
+
+  let uniqueIdColumn1 = newId();
+  let uniqueIdColumn2 = newId();
+
+  const [columns, setColumns] = useState([
+    {
+      id: uniqueIdColumn1,
+      name: "Kolom",
+      content: [initialSection],
+      background,
+      width: 50,
+    },
+    {
+      id: uniqueIdColumn2,
+      name: "Kolom",
+      content: [initialSection],
+      background,
+      width: 50,
+    },
+  ]);
+  // console.log("🚀 ~ columns:", columns);
+
+  // useEffect(() => {
+  //   const currentColumnSection = multiColumnSections.find((section) => section.id === sectionIdCheck )
+  // },[])
 
   const [sectionMultiColumnBeforeEdit, setSectionMultiColumnBeforeEdit] =
     useState([]);
 
   const [isEditingMultiColumnSection, setIsEditingMultiColumnSection] =
     useState(false);
+
+  const [isAddMultiColumnSection, setIsAddMultiColumnSection] = useState(false);
 
   useEffect(() => {
     const section = previewSection.find((section) => section.id === setting.id);
@@ -97,43 +165,24 @@ const MultiColumnUpdate = ({
 
   const columnIdCheck = isEditingColumn ? selectedColumn.id : columnId;
 
-  const background = {
-    bgType: undefined,
-    bgColor: "",
-    bgImage: "",
-    blur: 0,
-    opacity: 0,
-    paddingY: 0,
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingType: "equal",
-    direction: "to right",
-    fromColor: "",
-    toColor: "",
-    isRevert: false,
-    pattern: "",
-  };
+  // const initialData = () => {
+  //   let uniqueId = createUniqueID(previewSection);
 
-  const newId = () => Math.random().toString(36).substr(2, 9);
+  //   let payload = {
+  //     id: uniqueId,
+  //     name: "multi-column",
+  //     title: "Multi Kolom",
+  //     column: columns,
+  //     wrapperStyle: {
+  //       isWidthCustom: "equal",
+  //       combineColumnInMobileView: false,
+  //     },
+  //     background,
+  //   };
 
-  const initialSection = {
-    id: newId(),
-    name: "text",
-    title: "Teks",
-    content: {
-      editorHtml: "Text 1",
-      style: {
-        textAlign: "tw-text-center",
-        color: "#face12",
-      },
-    },
-    animation: {
-      type: undefined,
-      duration: 1,
-      isReplay: false,
-    },
-    background,
-  };
+  //   setPreviewSection((prevSections) => [...prevSections, payload]);
+  //   setSetting(payload);
+  // };
 
   const initialData = () => {
     let uniqueId = createUniqueID(previewSection);
@@ -178,6 +227,21 @@ const MultiColumnUpdate = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditingSection]);
 
+  // useEffect(() => {
+  //   setPreviewSection((prevSections) =>
+  //     prevSections.map((section) =>
+  //       section.id === sectionIdCheck
+  //         ? {
+  //             ...section,
+  //             column: columns,
+  //           }
+  //         : section
+  //     )
+  //   );
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [columns]);
+
   const onAddColumnSection = () => {
     let uniqueId = createUniqueID(previewSection);
     const newColumn = {
@@ -187,6 +251,8 @@ const MultiColumnUpdate = ({
       background,
       width: 50,
     };
+
+    // setColumns((prev) => [...prev, newColumn]);
 
     setPreviewSection((prevSections) =>
       prevSections.map((section) => {
@@ -202,6 +268,44 @@ const MultiColumnUpdate = ({
     );
 
     setColumnId(uniqueId);
+  };
+
+  // const updateSectionContent = (newContent) => {
+  //   console.log("🚀 ~ updateSectionContent ~ newContent:", newContent);
+
+  //   if (typeof newContent === "function") {
+  //     console.error("Error: Fungsi ikut terkirim!");
+  //     return;
+  //   }
+
+  //   setPreviewSection((prevSections) =>
+  //     prevSections.map((section) => ({
+  //       ...section,
+  //       column: section.column.map((col) =>
+  //         col.id === columnIdCheck
+  //           ? { ...col, content: [...col.content, newContent] }
+  //           : col
+  //       ),
+  //     }))
+  //   );
+  // };
+
+  const addContentToColumn = (newContent) => {
+    setPreviewSection((prevSections) =>
+      prevSections.map((section) => {
+        if (section.column) {
+          return {
+            ...section,
+            column: section.column.map((col) =>
+              col.id === columnIdCheck
+                ? { ...col, content: [...col.content, newContent] }
+                : col
+            ),
+          };
+        }
+        return section;
+      })
+    );
   };
 
   const handleChangeWrapperStyle = (key, value) => {
@@ -224,18 +328,18 @@ const MultiColumnUpdate = ({
     (section) => {
       setCurrentSetionBeforeEdit([...previewSection]);
       setSelectedSection(section);
-      // dispatch(setIsEditingSection(true));
+      setIsEditingMultiColumnSection(true);
     },
-    [dispatch, previewSection]
+    [previewSection]
   );
 
   const editColumn = useCallback(
     (section) => {
       setCurrentColumnBeforeEdit([...previewSection]);
       setSelectedColumn(section);
-      // dispatch(setIsEditingColumn(true));
+      setIsEditingColumn(true);
     },
-    [dispatch, previewSection]
+    [previewSection]
   );
 
   const removeColumn = useCallback(
@@ -396,29 +500,37 @@ const MultiColumnUpdate = ({
     [moveSection, editSection, removeSection, handleSectionContentFocus]
   );
 
-  useEffect(() => {
-    setPreviewSection((prevSections) =>
-      prevSections.map((section) =>
-        section.id === sectionIdCheck
-          ? {
-              ...section,
-              column: section.column.map((column) =>
-                column.id === columnIdCheck
-                  ? {
-                      ...column,
-                      content: [...column.content, [...multiColumnSections]],
-                    }
-                  : column
-              ),
-            }
-          : section
-      )
-    );
+  // useEffect(() => {
+  //   setColumns((prevSections) =>
+  //     prevSections.map((col) =>
+  //       col.id === columnIdCheck
+  //         ? {
+  //             ...col,
+  //             content: multiColumnSections,
+  //           }
+  //         : col
+  //     )
+  //   );
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [multiColumnSections]);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [multiColumnSections]);
 
-  const multiColumnSection = true;
+  // useEffect(() => {
+  //   setPreviewSection((prevSections) =>
+  //     prevSections.map((section) =>
+  //       section.id === sectionIdCheck
+  //         ? {
+  //             ...section,
+  //             column: columns,
+  //           }
+  //         : section
+  //     )
+  //   );
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [columns]);
+
+  const isMultiColumnSection = true;
 
   const { renderEditSection } = useRenderEditSection({
     previewSection: multiColumnSections,
@@ -427,7 +539,7 @@ const MultiColumnUpdate = ({
     setEditing: setIsEditingMultiColumnSection,
     sectionBeforeEdit: sectionMultiColumnBeforeEdit,
     handleSectionContentFocus,
-    isPopUpSection: multiColumnSection,
+    isPopUpSection: isMultiColumnSection,
     handleColumnFocus,
   });
 
@@ -496,34 +608,88 @@ const MultiColumnUpdate = ({
     [handleChangeWidthColumn, handleSetValueWhenBlurWrapperStyle]
   );
 
+  const handleCancel = () => {
+    if (isAddColumn) {
+      setIsAddColumn(false);
+      setPreviewSection((prevSections) =>
+        prevSections.map((section) => {
+          return section.id === sectionIdCheck
+            ? {
+                ...section,
+                column: section.column.slice(0, -1),
+              }
+            : section;
+        })
+      );
+    } else if (isEditingColumn) {
+      if (activeTab === "background") {
+        setActiveTab("column");
+      }
+      setPreviewSection([...currentColumnBeforeEdit]);
+      setIsEditingColumn(false);
+    } else if (isAddMultiColumnSection) {
+      setIsAddMultiColumnSection(false);
+    } else if (isEditingSection) {
+      setIsEditingMultiColumnSection(false);
+      setPreviewSection([...sectionBeforeEdit]);
+    } else {
+      isShowContent(false);
+      setPreviewSection((prevSections) =>
+        prevSections.filter((section) => section.id !== setting.id)
+      );
+    }
+  };
+
+  const handleConfirm = () => {
+    if (isAddColumn || isEditingColumn) {
+      if (activeTab === "background") {
+        setIsSlidingOutColumn(true);
+        setTimeout(() => {
+          setActiveTab("column");
+          setIsAddColumn(false);
+          setIsEditingColumn(false);
+
+          setIsSlidingOutColumn(false);
+        }, 800);
+      } else {
+        setIsSlidingOutColumn(true);
+        setTimeout(() => {
+          setIsAddColumn(false);
+          setIsEditingColumn(false);
+          setIsSlidingOutColumn(false);
+        }, 800);
+      }
+    } else {
+      isShowContent(false);
+    }
+  };
+
   return (
     <div>
       <CRow>
         <CCol>
           <div style={{ height: 400 }}>
-            {!isAddColumnSection &&
-              !isEditingColumnSection &&
-              !isEditingSection && (
-                <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-                  <div>
-                    <CButton
-                      onClick={handleCancel}
-                      color="primary"
-                      variant="outline"
-                      className="mx-2"
-                    >
-                      Batal
-                    </CButton>
+            {!isAddMultiColumnSection && !isEditingMultiColumnSection && (
+              <div className="d-flex justify-content-end align-items-center border-bottom p-2">
+                <div>
+                  <CButton
+                    onClick={handleCancel}
+                    color="primary"
+                    variant="outline"
+                    className="mx-2"
+                  >
+                    Batal
+                  </CButton>
 
-                    <CButton onClick={handleConfirm} color="primary">
-                      Selesai
-                    </CButton>
-                  </div>
+                  <CButton onClick={handleConfirm} color="primary">
+                    Selesai
+                  </CButton>
                 </div>
-              )}
+              </div>
+            )}
 
             <CTabs activeTab={activeTab}>
-              {!isAddColumn && !isEditingColumnSection && !isEditingSection && (
+              {!isAddColumn && !isEditingMultiColumnSection && (
                 <CNav variant="tabs">
                   <CNavItem onClick={() => setActiveTab("column")}>
                     <CNavLink data-tab="column">Kolom</CNavLink>
@@ -536,9 +702,8 @@ const MultiColumnUpdate = ({
               <CTabContent
                 style={{
                   height:
-                    !isAddColumnSection &&
-                    !isEditingColumnSection &&
-                    !isEditingSection &&
+                    !isAddMultiColumnSection &&
+                    !isEditingMultiColumnSection &&
                     380,
                   overflowY: "auto",
                   overflowX: "hidden",
@@ -596,8 +761,8 @@ const MultiColumnUpdate = ({
                           <div className="my-3">
                             {previewSection
                               .filter((section) =>
-                                isEditingSectionMultiColumn
-                                  ? section.id === currentSectionMultiColumn.id
+                                isEditingSection
+                                  ? section.id === currentSection.id
                                   : section.id === setting.id
                               )
                               .map((section, i) => renderColumn(section, i))}
@@ -605,7 +770,7 @@ const MultiColumnUpdate = ({
                           <CCard
                             style={{ cursor: "pointer" }}
                             onClick={() => {
-                              dispatch(setIsAddColumn(true));
+                              setIsAddColumn(true);
                               onAddColumnSection();
                             }}
                           >
@@ -628,19 +793,22 @@ const MultiColumnUpdate = ({
 
                       {isAddColumn && (
                         <div>
-                          {isAddColumnSection ? (
-                            <ListContentMultiColumn
-                              isMultiColumn={true}
-                              previewSection={previewSection}
-                              setPreviewSection={(value) =>
-                                setPreviewSection(value)
+                          {isAddMultiColumnSection ? (
+                            <ListContent
+                              previewSection={multiColumnSections}
+                              setPreviewSection={addContentToColumn}
+                              isShowContent={(value) =>
+                                setIsAddMultiColumnSection(value)
                               }
-                              sectionId={
-                                isEditingSectionMultiColumn
-                                  ? currentSectionMultiColumn.id
-                                  : setting.id
+                              handleSectionContentFocus={
+                                handleSectionContentFocus
                               }
-                              columnId={columnId}
+                              previewFloatingSection={previewFloatingSection}
+                              setPreviewFloatingSection={(value) =>
+                                setPreviewFloatingSection(value)
+                              }
+                              handleColumnFocus={handleColumnFocus}
+                              isPopUpSection={true}
                             />
                           ) : (
                             <div className="my-3 pb-5">
@@ -654,7 +822,7 @@ const MultiColumnUpdate = ({
                               <CCard
                                 style={{ cursor: "pointer", marginBottom: 8 }}
                                 onClick={() => {
-                                  dispatch(setIsAddColumnSection(true));
+                                  setIsAddMultiColumnSection(true);
                                 }}
                               >
                                 <CCardBody className="p-1">
@@ -673,28 +841,29 @@ const MultiColumnUpdate = ({
                               </CCard>
                             </div>
                           )}
-
-                          {/* {previewFloatingSection.map((section, index) =>
-                      renderListContent(section, index)
-                    )} */}
                         </div>
                       )}
 
                       {isEditingColumn && (
                         <div>
-                          {isEditingColumnSection ? (
-                            <ListContentMultiColumn
-                              isMultiColumn={true}
-                              previewSection={previewSection}
+                          {isEditingMultiColumnSection ? (
+                            <ListContent
+                              previewSection={multiColumnSections}
                               setPreviewSection={(value) =>
-                                setPreviewSection(value)
+                                setMultiColumnSections(value)
                               }
-                              sectionId={
-                                isEditingSectionMultiColumn
-                                  ? currentSectionMultiColumn.id
-                                  : setting.id
+                              isShowContent={(value) =>
+                                setIsEditingMultiColumnSection(value)
                               }
-                              columnId={selectedColumn.id}
+                              handleSectionContentFocus={
+                                handleSectionContentFocus
+                              }
+                              previewFloatingSection={previewFloatingSection}
+                              setPreviewFloatingSection={(value) =>
+                                setPreviewFloatingSection(value)
+                              }
+                              handleColumnFocus={handleColumnFocus}
+                              isPopUpSection={true}
                             />
                           ) : (
                             <div
@@ -717,7 +886,7 @@ const MultiColumnUpdate = ({
                               <CCard
                                 style={{ cursor: "pointer", marginBottom: 8 }}
                                 onClick={() => {
-                                  dispatch(setIsEditingColumnSection(true));
+                                  setIsEditingMultiColumnSection(true);
                                 }}
                               >
                                 <CCardBody className="p-1">
@@ -736,10 +905,6 @@ const MultiColumnUpdate = ({
                               </CCard>
                             </div>
                           )}
-
-                          {/* {previewFloatingSection.map((section, index) =>
-                      renderListContent(section, index)
-                    )} */}
                         </div>
                       )}
                     </>

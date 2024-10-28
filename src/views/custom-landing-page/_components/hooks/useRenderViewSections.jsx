@@ -28,6 +28,7 @@ import ViewFloatingContent from "../view-content/ViewFloatingContent";
 import ViewFrames from "../view-content/ViewFrames";
 import ViewArrowMoved from "../view-content/ViewArrowMoved";
 import ViewSliderImage from "../view-content/ViewSliderImage";
+import ViewSalesNotification from "../view-content/ViewSalesNotifiation";
 
 export function useRenderViewSections({
   id,
@@ -417,6 +418,15 @@ export function useRenderViewSections({
             width={dimensions.width}
             setColumnRef={setColumnRef}
             focusedIndexColumn={focusedIndexColumn}
+          />
+        );
+      }
+
+      if (section.name === "sales-notification") {
+        return (
+          <ViewSalesNotification
+            content={section}
+            setPreviewFloatingSection={setPreviewFloatingSection}
           />
         );
       }

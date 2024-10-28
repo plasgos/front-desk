@@ -129,18 +129,16 @@ const UpdateStyle = ({ setPreviewSection, currentSection }) => {
             width="50"
           />
 
-          {variant !== "showcase" && (
-            <SelectOptions
-              label="Pindah Otomatis"
-              options={timeOptions}
-              onChange={(selectedOption) => {
-                setAutoScroll(selectedOption);
-                handleChangeStyle("autoScroll", selectedOption.value);
-              }}
-              value={autoScroll}
-              width="50"
-            />
-          )}
+          <SelectOptions
+            label="Pindah Otomatis"
+            options={timeOptions}
+            onChange={(selectedOption) => {
+              setAutoScroll(selectedOption);
+              handleChangeStyle("autoScroll", selectedOption.value);
+            }}
+            value={autoScroll}
+            width="50"
+          />
         </div>
 
         {(variant === "full-slider" || variant === "page-slider") && (
@@ -156,7 +154,7 @@ const UpdateStyle = ({ setPreviewSection, currentSection }) => {
           />
         )}
 
-        {variant === "full-slider" || variant === "showcase" ? null : (
+        {variant === "full-slider" ? null : (
           <div style={{ overflowX: "hidden" }}>
             <InputRangeWithNumber
               label="Lebar Maksimal"

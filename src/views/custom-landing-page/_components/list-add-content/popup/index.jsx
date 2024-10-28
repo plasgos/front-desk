@@ -36,7 +36,7 @@ const shownOnWhenOptions = [
   { value: "afterInteraction", label: "Setelah Interaksi" },
 ];
 
-const waitingPopupOptions = [
+export const waitingPopupOptions = [
   { value: 1, label: "1 detik" },
   { value: 2, label: "2 detik" },
   { value: 3, label: "3 detik" },

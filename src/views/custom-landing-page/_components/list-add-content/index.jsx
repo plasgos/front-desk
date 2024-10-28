@@ -31,6 +31,8 @@ import Video from "./video";
 import VideoText from "./video-text";
 import ArrowMoved from "./arrow-moved";
 import SliderImage from "./slider-image";
+import MultiColumnUpdate from "./multi-column-update";
+import SalesNotification from "./sales-notification";
 
 const ListContent = ({
   previewSection,
@@ -249,6 +251,14 @@ const ListContent = ({
         />
       )}
 
+      {addContent === "sales-notification" && (
+        <SalesNotification
+          previewFloatingSection={previewFloatingSection}
+          setPreviewFloatingSection={setPreviewFloatingSection}
+          isShowContent={isShowContent}
+        />
+      )}
+
       {addContent === "floating-content" && (
         <FloatingContent
           previewFloatingSection={previewFloatingSection}
@@ -293,11 +303,23 @@ const ListContent = ({
         />
       )}
 
-      {addContent === "multi-column" && (
+      {/* {addContent === "multi-column" && (
         <MultiColumn
           previewSection={previewSection}
           setPreviewSection={(value) => setPreviewSection(value)}
           isShowMultiColumn={isShowContent}
+          previewFloatingSection={previewFloatingSection}
+          setPreviewFloatingSection={setPreviewFloatingSection}
+          handleColumnFocus={handleColumnFocus}
+        />
+      )} */}
+
+      {addContent === "multi-column" && (
+        <MultiColumnUpdate
+          previewSection={previewSection}
+          setPreviewSection={(value) => setPreviewSection(value)}
+          isShowContent={isShowContent}
+          handleSectionContentFocus={handleSectionContentFocus}
           previewFloatingSection={previewFloatingSection}
           setPreviewFloatingSection={setPreviewFloatingSection}
           handleColumnFocus={handleColumnFocus}
