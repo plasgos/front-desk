@@ -10,7 +10,9 @@ const DesignTabControl = ({
   setPageSetting,
   pageSetting,
   previewSection,
+  previewFloatingSection,
   setPreviewSection,
+  setPreviewFloatingSection,
 }) => {
   const [widthPage, setWidthPage] = useState(undefined);
   const [bgColor, setBgColor] = useState(pageSetting.bgColor);
@@ -57,10 +59,11 @@ const DesignTabControl = ({
     }));
   };
 
-  const exportData = (section) => {
+  const exportData = (section, floatingSection) => {
     const combineData = {
       section,
       pageSetting,
+      floatingSection,
     };
 
     // Mengonversi array of objects ke string JSON
@@ -96,9 +99,23 @@ const DesignTabControl = ({
 
       // Parse JSON string ke array of objects
       const dataArray = JSON.parse(jsonString);
+      console.log("🚀 ~ importData ~ dataArray:", dataArray);
 
       // Gunakan dataArray sesuai kebutuhan
       setPreviewSection([...dataArray.section]);
+      const floatingSectionDelay = dataArray.floatingSection.map((section) =>
+        section.name === "sales-notification"
+          ? {
+              ...section,
+              shownOnWhen: {
+                ...section.shownOnWhen,
+                isShown: false,
+              },
+            }
+          : section
+      );
+
+      setPreviewFloatingSection([...floatingSectionDelay]);
       setPageSetting(dataArray.pageSetting);
       console.log(dataArray);
     };
@@ -128,8 +145,10 @@ const DesignTabControl = ({
 
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
         <CButton
-          disabled={previewSection.length === 0}
-          onClick={() => exportData(previewSection)}
+          // disabled={
+          //   previewSection.length === 0 || previewFloatingSection.length === 0
+          // }
+          onClick={() => exportData(previewSection, previewFloatingSection)}
           variant="outline"
           color="primary"
           className="w-50"

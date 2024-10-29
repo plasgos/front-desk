@@ -58,7 +58,7 @@ const UpdateDesign = ({ setPreviewSection, currentSection }) => {
   const [isTimeShown, setIsTimeShown] = useState(isShowOptions[0]);
 
   const [title, setTitle] = useState(
-    currentSection?.content?.title ||
+    currentSection?.showCardContent ||
       "John di Jakarta , Indonesia baru saja membeli produk ini"
   );
 
@@ -70,10 +70,7 @@ const UpdateDesign = ({ setPreviewSection, currentSection }) => {
         section.id === currentSection?.id
           ? {
               ...section,
-              content: {
-                ...section.content,
-                title: value,
-              },
+              showCardContent: value,
             }
           : section
       )
@@ -81,7 +78,7 @@ const UpdateDesign = ({ setPreviewSection, currentSection }) => {
   };
 
   useEffect(() => {
-    if (titleValue !== currentSection?.content?.title) {
+    if (titleValue !== currentSection?.showCardContent) {
       handleChangeTitle(titleValue);
     }
 

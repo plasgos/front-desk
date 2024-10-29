@@ -538,6 +538,10 @@ const CustomLandingPage = () => {
                       <DesignTabControl
                         previewSection={previewSection}
                         setPreviewSection={(value) => setPreviewSection(value)}
+                        previewFloatingSection={previewFloatingSection}
+                        setPreviewFloatingSection={(value) =>
+                          setPreviewFloatingSection(value)
+                        }
                         pageSetting={pageSetting}
                         setPageSetting={(value) => setPageSetting(value)}
                       />

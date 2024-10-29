@@ -1,5 +1,7 @@
 import {
   CButton,
+  CCard,
+  CCardBody,
   CCol,
   CNav,
   CNavItem,
@@ -9,7 +11,7 @@ import {
   CTabPane,
   CTabs,
 } from "@coreui/react";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { createUniqueID } from "../../../../../lib/unique-id";
 import SelectVariant from "../../common/SelectVariant";
@@ -17,6 +19,12 @@ import UpdateDesign from "./UpdateDesign";
 import { waitingPopupOptions } from "../popup";
 import SelectOptions from "../../common/SelectOptions";
 import VariableUpdate from "./VariableUpdate";
+import { DraggableList } from "../../common/DraggableList";
+import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
+import { useMoveSection } from "../../../../../hooks/useMoveSection";
+import { IoAdd } from "react-icons/io5";
+import image from "../../../../../assets/profile.jpg";
+import { UpdateContent } from "./UpdateContent";
 
 const shownOnWhenOptions = [
   { value: "immediately", label: "Langsung" },
@@ -31,6 +39,20 @@ const waitingHiddenOptions = [
   { value: 15, label: "15 detik" },
   { value: 20, label: "20 detik" },
   { value: 30, label: "30 detik" },
+];
+
+const nextAfterOptions = [
+  { value: undefined, label: "Tidak Ada" },
+  { value: 3, label: "3 detik" },
+  { value: 5, label: "5 detik" },
+  { value: 10, label: "10 detik" },
+  { value: 15, label: "15 detik" },
+  { value: 20, label: "20 detik" },
+  { value: 30, label: "30 detik" },
+  { value: 45, label: "45 detik" },
+  { value: 60, label: "60 detik" },
+  { value: 90, label: "90 detik" },
+  { value: 120, label: "120 detik" },
 ];
 
 const optionVariant = [
@@ -79,15 +101,23 @@ const SalesNotification = ({
       (option) => option.id === currentSection?.variant?.id
     ) || flattenedOptions[1]
   );
+  const [isAddContent, setIsAddContent] = useState(false);
+  const [isEditingContent, setIsEditingContent] = useState(false);
+  const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
+  const [selectedContent, setSelectedContent] = useState({});
+
   const [setting, setSetting] = useState({});
   const [currentVariant, setCurrentVariant] = useState({});
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
+  const [activeTab, setActiveTab] = useState("design");
 
   const [shownOnWhen, setShownOnWhen] = useState(shownOnWhenOptions[0]);
 
-  const [waitingPopup, setWaitingPopup] = useState(waitingPopupOptions[0]);
+  const [waitingPopup, setWaitingPopup] = useState(waitingPopupOptions[2]);
 
   const [hiddenOption, setHiddenOption] = useState(waitingHiddenOptions[0]);
+
+  const [nextAfter, setNextAfter] = useState(nextAfterOptions[0]);
 
   const contentIdToCheck = isEditingSection ? currentSection.id : setting.id;
 
@@ -97,6 +127,27 @@ const SalesNotification = ({
     );
     if (currentShownOnWhen) {
       setShownOnWhen(currentShownOnWhen);
+    }
+
+    const currentHidden = waitingHiddenOptions.find(
+      (opt) => opt.value === currentSection?.hidden
+    );
+    if (currentHidden) {
+      setHiddenOption(currentHidden);
+    }
+
+    const currentNextAfter = nextAfterOptions.find(
+      (opt) => opt.value === currentSection?.nextAfter
+    );
+    if (currentNextAfter) {
+      setNextAfter(currentNextAfter);
+    }
+
+    const currentWaitingPopup = waitingPopupOptions.find(
+      (opt) => opt.value === currentSection?.shownOnWhen?.waitTime
+    );
+    if (currentWaitingPopup) {
+      setWaitingPopup(currentWaitingPopup);
     }
   }, [currentSection]);
 
@@ -139,13 +190,13 @@ const SalesNotification = ({
     );
   };
 
-  const handleHiddenPopup = (value) => {
+  const handleCondition = (key, value) => {
     setPreviewFloatingSection((arr) =>
       arr.map((section) =>
         section.id === contentIdToCheck
           ? {
               ...section,
-              hidden: value,
+              [key]: value,
             }
           : section
       )
@@ -169,22 +220,22 @@ const SalesNotification = ({
             : section
         )
       );
+    } else {
+      setPreviewFloatingSection((arr) =>
+        arr.map((section) =>
+          section.id === contentIdToCheck
+            ? {
+                ...section,
+                shownOnWhen: {
+                  ...section.shownOnWhen,
+                  value: value,
+                  isShown: true,
+                },
+              }
+            : section
+        )
+      );
     }
-
-    setPreviewFloatingSection((arr) =>
-      arr.map((section) =>
-        section.id === contentIdToCheck
-          ? {
-              ...section,
-              shownOnWhen: {
-                ...section.shownOnWhen,
-                value: value,
-                isShown: true,
-              },
-            }
-          : section
-      )
-    );
   };
 
   const handleAddContent = () => {
@@ -193,15 +244,29 @@ const SalesNotification = ({
       id: uniqueId,
       name: "sales-notification",
       title: "Sales Notification",
-      content: {
-        title: "John di Jakarta , Indonesia baru saja membeli produk ini",
-      },
+      content: [
+        {
+          id: createUniqueID([]),
+          name: "boy",
+          location: "Jakarta , Indonesia",
+          time: "14:00",
+          image: image,
+        },
+        {
+          id: createUniqueID([]),
+          name: "john",
+          location: "Jakarta , Indonesia",
+          time: "14:10",
+          image: image,
+        },
+      ],
       shownOnWhen: {
         value: "immediately",
         isShown: true,
       },
       isPopupShown: true,
       hidden: undefined,
+      nextAfter: undefined,
       variant: {
         id: "2",
         group: "Variant",
@@ -212,14 +277,7 @@ const SalesNotification = ({
       },
       typeVariable: "custom",
       isRandomList: false,
-      variable: [
-        {
-          id: createUniqueID([]),
-          name: "boy",
-          location: "Jakarta , Indonesia",
-          time: "14 : 00",
-        },
-      ],
+      showCardContent: "",
     };
 
     setPreviewFloatingSection((prevSections) => [...prevSections, payload]);
@@ -314,6 +372,29 @@ const SalesNotification = ({
             : item;
         })
       );
+    } else if (isAddContent) {
+      setIsAddContent(false);
+      setIsEditingContent(false);
+      setPreviewFloatingSection((prevSections) =>
+        prevSections.map((section) => {
+          const contentIdToCheck = isEditingSection
+            ? currentSection.id
+            : setting.id;
+
+          return section.id === contentIdToCheck
+            ? {
+                ...section,
+                content: section.content.slice(0, -1),
+              }
+            : section;
+        })
+      );
+      setActiveTab("variable");
+    } else if (isEditingContent) {
+      setPreviewFloatingSection([...currentContentBeforeEdit]);
+      setIsAddContent(false);
+      setIsEditingContent(false);
+      setActiveTab("variable");
     } else if (isEditingSection) {
       isShowContent(false);
       setPreviewFloatingSection([...sectionBeforeEdit]);
@@ -330,10 +411,52 @@ const SalesNotification = ({
   const handleConfirm = () => {
     if (isSelectVariant) {
       setIsSelectVariant(false);
+      setActiveTab("design");
+    } else if (isAddContent || isEditingContent) {
+      setIsAddContent(false);
+      setIsEditingContent(false);
+      setActiveTab("variable");
     } else {
       isShowContent(false);
     }
   };
+
+  const editSection = useCallback(
+    (section) => {
+      setCurrentContentBeforeEdit([...previewFloatingSection]);
+      setSelectedContent(section);
+      setIsEditingContent(true);
+    },
+    [previewFloatingSection]
+  );
+
+  const removeSection = useRemoveSection(setPreviewFloatingSection);
+  const moveSection = useMoveSection(setPreviewFloatingSection);
+
+  const renderSection = useCallback(
+    (section) => {
+      return (
+        <div key={section.id}>
+          {section.content.map((contentItem, contentIndex) => (
+            <DraggableList
+              key={contentItem.id || contentIndex}
+              index={contentIndex}
+              id={contentItem.id}
+              showInfoText={`${contentItem?.name} - ${contentItem?.location}`}
+              showThumbnail={contentItem.image}
+              moveSection={(dragIndex, hoverIndex) =>
+                moveSection(section.id, dragIndex, hoverIndex)
+              }
+              editSection={() => editSection(contentItem)}
+              removeSection={() => removeSection(section.id, contentIndex)}
+              hiddenFocus={true}
+            />
+          ))}
+        </div>
+      );
+    },
+    [moveSection, editSection, removeSection]
+  );
 
   return (
     <div>
@@ -363,8 +486,39 @@ const SalesNotification = ({
                 selectedVariant={selectedVariant}
                 onChangeVariant={handleVariantChange}
               />
+            ) : isAddContent ? (
+              <CTabs>
+                <CTabContent
+                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
+                  className="pt-3"
+                >
+                  <UpdateContent
+                    idSection={
+                      isEditingSection ? currentSection.id : setting.id
+                    }
+                    currentContent={isEditingSection ? currentSection : setting}
+                    setPreviewSection={setPreviewFloatingSection}
+                  />
+                </CTabContent>
+              </CTabs>
+            ) : isEditingContent ? (
+              <CTabs>
+                <CTabContent
+                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
+                  className="pt-3"
+                >
+                  <UpdateContent
+                    idSection={
+                      isEditingSection ? currentSection.id : setting.id
+                    }
+                    currentContent={selectedContent}
+                    setPreviewSection={setPreviewFloatingSection}
+                    isEditingContent={true}
+                  />
+                </CTabContent>
+              </CTabs>
             ) : (
-              <CTabs activeTab="design">
+              <CTabs activeTab={activeTab}>
                 <CNav variant="tabs">
                   <CNavItem>
                     <CNavLink data-tab="design">Desain</CNavLink>
@@ -438,15 +592,30 @@ const SalesNotification = ({
                       )}
                     </div>
 
-                    <SelectOptions
-                      label="Sembunyikan Dalam"
-                      options={waitingHiddenOptions}
-                      value={hiddenOption}
-                      onChange={(selectedOption) => {
-                        setHiddenOption(selectedOption);
-                        handleHiddenPopup(selectedOption.value);
-                      }}
-                    />
+                    <div
+                      style={{ gap: 10 }}
+                      className="d-flex align-items-center"
+                    >
+                      <SelectOptions
+                        label="Sembunyikan Dalam"
+                        options={waitingHiddenOptions}
+                        value={hiddenOption}
+                        onChange={(selectedOption) => {
+                          setHiddenOption(selectedOption);
+                          handleCondition("hidden", selectedOption.value);
+                        }}
+                      />
+
+                      <SelectOptions
+                        label="Berikutnya Setelah"
+                        options={nextAfterOptions}
+                        value={nextAfter}
+                        onChange={(selectedOption) => {
+                          setNextAfter(selectedOption);
+                          handleCondition("nextAfter", selectedOption.value);
+                        }}
+                      />
+                    </div>
 
                     <CButton
                       onClick={() => handleChangeValue("isPopupShown", true)}
@@ -467,6 +636,39 @@ const SalesNotification = ({
                           : selectedCurrentSection
                       }
                     />
+
+                    {!isAddContent && !isEditingContent && (
+                      <>
+                        <div>
+                          {previewFloatingSection
+                            .filter((section) =>
+                              isEditingSection
+                                ? section.id === currentSection.id
+                                : section.id === setting.id
+                            )
+                            .map((section, i) => renderSection(section, i))}
+                        </div>
+
+                        <CCard
+                          style={{ cursor: "pointer" }}
+                          onClick={() => setIsAddContent(true)}
+                        >
+                          <CCardBody className="p-1">
+                            <div className="d-flex align-items-center ">
+                              <IoAdd
+                                style={{
+                                  cursor: "pointer",
+                                  margin: "0px 10px 0px 6px",
+                                }}
+                                size={18}
+                              />
+
+                              <div>Tambah</div>
+                            </div>
+                          </CCardBody>
+                        </CCard>
+                      </>
+                    )}
                   </CTabPane>
                 </CTabContent>
               </CTabs>
