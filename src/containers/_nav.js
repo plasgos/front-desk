@@ -81,6 +81,12 @@ export default [
   },
   {
     _tag: "CSidebarNavItem",
+    name: "Custom Landing Page Update",
+    to: "/custom-landing-page-update",
+    icon: "cil-drop",
+  },
+  {
+    _tag: "CSidebarNavItem",
     name: "Chat Help",
     to: "/chat-help",
     icon: "cil-drop",

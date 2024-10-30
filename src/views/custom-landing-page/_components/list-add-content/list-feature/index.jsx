@@ -151,7 +151,7 @@ const ListFeature = ({
     <div>
       <CRow>
         <CCol>
-          <div style={{ height: 400 }}>
+          <div>
             <div className="d-flex justify-content-end align-items-center border-bottom p-2">
               <div>
                 <CButton

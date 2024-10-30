@@ -272,7 +272,7 @@ const Buttons = ({
     <div>
       <CRow>
         <CCol>
-          <div style={{ height: 400 }}>
+          <div>
             {!isListIconVisible && (
               <div className="d-flex justify-content-end align-items-center border-bottom p-2">
                 <div>
@@ -294,10 +294,7 @@ const Buttons = ({
 
             {isAddContent ? (
               <CTabs>
-                <CTabContent
-                  style={{ height: 380, paddingRight: 5, overflowY: "auto" }}
-                  className="pt-3"
-                >
+                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
                   <UpdateContent
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
@@ -311,10 +308,7 @@ const Buttons = ({
               </CTabs>
             ) : isEditingContent ? (
               <CTabs>
-                <CTabContent
-                  style={{ height: 380, paddingRight: 5, overflowY: "auto" }}
-                  className="pt-3"
-                >
+                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
                   <UpdateContent
                     idSection={
                       isEditingSection ? currentSection.id : setting.id
@@ -337,10 +331,7 @@ const Buttons = ({
                     <CNavLink data-tab="wadah">Wadah</CNavLink>
                   </CNavItem>
                 </CNav>
-                <CTabContent
-                  style={{ height: 340, paddingRight: 5, overflowY: "auto" }}
-                  className="pt-3"
-                >
+                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
                   <CTabPane className="p-1" data-tab="konten">
                     {!isAddContent && !isEditingContent && (
                       <>

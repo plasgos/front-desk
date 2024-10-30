@@ -395,7 +395,7 @@ const PopUp = ({
     <div>
       <CRow>
         <CCol>
-          <div style={{ height: 400 }}>
+          <div>
             {!isAddContent && !isEditingContent && (
               <div className="d-flex justify-content-end align-items-center border-bottom p-2">
                 <div>
