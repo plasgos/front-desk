@@ -369,7 +369,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
   }, [imageUrl, selectedBackgroundType, selectedBgColor]);
 
   return (
-    <div className="pb-3">
+    <div style={{ height: 415 }} className="pb-3">
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
         <SelectOptions
           label="Tipe Background"

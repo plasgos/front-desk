@@ -4,7 +4,7 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 
 export const SearchForm = ({ value, placeholder, onChange }) => {
   return (
-    <div className="d-flex align-items-center my-3">
+    <div className="d-flex align-items-center  py-3">
       <input
         className="form-control"
         style={{ borderRadius: "0.5rem 0 0 0.5rem", height: 30 }}

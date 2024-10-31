@@ -55,23 +55,6 @@ const nextAfterOptions = [
   { value: 120, label: "120 detik" },
 ];
 
-const optionVariant = [
-  {
-    group: "Variant",
-    options: [
-      { id: "1", value: "simple", label: "Simple" },
-      { id: "2", value: "mini", label: "Mini" },
-    ],
-  },
-];
-
-const flattenedOptions = optionVariant.flatMap((group) =>
-  group.options.map((option) => ({
-    ...option,
-    group: group.group,
-  }))
-);
-
 //styles template
 
 const commonStyle = {
@@ -98,19 +81,12 @@ const SalesNotification = ({
   sectionBeforeEdit,
   currentSection,
 }) => {
-  const [isSelectVariant, setIsSelectVariant] = useState(false);
-  const [selectedVariant, setSelectedVariant] = useState(
-    flattenedOptions.find(
-      (option) => option.id === currentSection?.variant?.id
-    ) || flattenedOptions[1]
-  );
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
   const [currentContentBeforeEdit, setCurrentContentBeforeEdit] = useState([]);
   const [selectedContent, setSelectedContent] = useState({});
 
   const [setting, setSetting] = useState({});
-  const [currentVariant, setCurrentVariant] = useState({});
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
   const [activeTab, setActiveTab] = useState("design");
 
@@ -297,88 +273,8 @@ const SalesNotification = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditingSection]);
 
-  const openVariants = () => {
-    setIsSelectVariant(true);
-    setCurrentVariant(selectedVariant);
-  };
-
-  const styleMap = {
-    1: commonStyle,
-    2: commonStyle,
-  };
-
-  const handleVariantChange = (group, option) => {
-    const style = styleMap[option.id] || {};
-
-    setSelectedVariant({ ...option, group });
-    setPreviewFloatingSection((arr) =>
-      arr.map((item) => {
-        const contentIdToCheck = isEditingSection
-          ? currentSection.id
-          : setting.id;
-        return String(item.id) === contentIdToCheck
-          ? {
-              ...item,
-              variant: {
-                ...item.variant,
-                group,
-                id: option.id,
-                value: option.value,
-                style: {
-                  ...item.variant.style,
-                  ...style,
-                },
-              },
-            }
-          : item;
-      })
-    );
-
-    if (!isEditingSection) {
-      setSelectedCurrentSection((prev) => ({
-        ...prev,
-        variant: {
-          ...prev.variant,
-          group,
-          id: option.id,
-          value: option.value,
-          style: {
-            ...prev.variant.style,
-            ...style,
-          },
-        },
-      }));
-    }
-  };
-
   const handleCancel = () => {
-    if (isSelectVariant) {
-      setSelectedVariant(currentVariant);
-
-      const style = styleMap[currentVariant.id] || {};
-
-      setIsSelectVariant(false);
-      setPreviewFloatingSection((arr) =>
-        arr.map((item) => {
-          const contentIdToCheck = isEditingSection
-            ? currentSection.id
-            : setting.id;
-
-          return String(item.id) === contentIdToCheck
-            ? {
-                ...item,
-                variant: {
-                  ...currentVariant,
-                  style: {
-                    ...item.variant.style,
-                    ...style,
-                  },
-                },
-              }
-            : item;
-        })
-      );
-    } else if (isAddContent) {
+    if (isAddContent) {
       setIsAddContent(false);
       setIsEditingContent(false);
       setPreviewFloatingSection((prevSections) =>
@@ -415,10 +311,7 @@ const SalesNotification = ({
   };
 
   const handleConfirm = () => {
-    if (isSelectVariant) {
-      setIsSelectVariant(false);
-      setActiveTab("design");
-    } else if (isAddContent || isEditingContent) {
+    if (isAddContent || isEditingContent) {
       setIsAddContent(false);
       setIsEditingContent(false);
       setActiveTab("variable");
@@ -486,13 +379,7 @@ const SalesNotification = ({
               </div>
             </div>
 
-            {isSelectVariant ? (
-              <SelectVariant
-                optionVariant={optionVariant}
-                selectedVariant={selectedVariant}
-                onChangeVariant={handleVariantChange}
-              />
-            ) : isAddContent ? (
+            {isAddContent ? (
               <CTabs>
                 <CTabContent style={{ overflowY: "auto" }} className="pt-3">
                   <UpdateContent
@@ -532,25 +419,6 @@ const SalesNotification = ({
                 </CNav>
                 <CTabContent style={{ overflowY: "auto" }} className="pt-3">
                   <CTabPane className="p-1" data-tab="design">
-                    <div
-                      style={{
-                        boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
-                      }}
-                      className="mb-3 border-bottom pb-3"
-                    >
-                      <div style={{ fontSize: 12 }} className="mb-2">
-                        Desain
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <div className="mr-3">
-                          {selectedVariant.group} - {selectedVariant.label}
-                        </div>
-                        <CButton onClick={openVariants} color="primary">
-                          Ubah
-                        </CButton>
-                      </div>
-                    </div>
-
                     <UpdateDesign
                       setPreviewSection={setPreviewFloatingSection}
                       currentSection={
@@ -561,7 +429,11 @@ const SalesNotification = ({
                     />
                   </CTabPane>
 
-                  <CTabPane className="p-1" data-tab="condition">
+                  <CTabPane
+                    style={{ height: "100vh" }}
+                    className="p-1"
+                    data-tab="condition"
+                  >
                     <div
                       style={{ gap: 10 }}
                       className="d-flex align-items-center"

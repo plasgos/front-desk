@@ -22,6 +22,7 @@ import AnimationControl from "../../common/AnimationControl";
 import BackgroundTab from "../../common/BackgroundTab";
 import ColorPicker from "../../common/ColorPicker";
 import { CustomReactQuill } from "../../common/ReactQuill";
+import Confirmation from "../../common/Confirmation";
 
 const Text = ({
   previewSection,
@@ -167,7 +168,22 @@ const Text = ({
 
   return (
     <div>
-      <div className="d-flex justify-content-end align-items-center border-bottom p-2">
+      <div
+        style={{
+          position: "sticky", // Navbar tetap terlihat saat di-scroll
+          top: 0, // Menempel di atas container ini
+          backgroundColor: "#fff",
+          color: "#fff",
+          zIndex: 1, // Pastikan berada di atas konten list
+        }}
+      >
+        <Confirmation
+          handleCancel={handleCancel}
+          handleConfirm={handleConfirm}
+        />
+      </div>
+
+      {/* <div className="d-flex justify-content-end align-items-center border-bottom p-2">
         <div>
           <CButton
             onClick={handleCancel}
@@ -182,7 +198,7 @@ const Text = ({
             Selesai
           </CButton>
         </div>
-      </div>
+      </div> */}
 
       <CTabs activeTab="konten">
         <CNav variant="tabs">

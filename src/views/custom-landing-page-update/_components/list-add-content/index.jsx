@@ -122,34 +122,42 @@ const ListContent = ({
           top: 0, // Menempel di atas container ini
           backgroundColor: "#fff",
           color: "#fff",
-          padding: "10px",
           zIndex: 1, // Pastikan berada di atas konten list
         }}
       >
         {!addContent && (
           <>
-            <div className="d-flex justify-content-end align-items-center border-bottom  mb-2">
-              <div>
-                <CButton
-                  onClick={handleCancelAddContent}
-                  color="primary"
-                  variant="outline"
-                >
-                  Batal
-                </CButton>
+            <div>
+              <div className="d-flex justify-content-end align-items-center border-bottom p-3 ">
+                <div>
+                  <CButton
+                    onClick={handleCancelAddContent}
+                    color="primary"
+                    variant="outline"
+                  >
+                    Batal
+                  </CButton>
+                </div>
+              </div>
+
+              <div
+                style={{
+                  boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
+                }}
+                className="px-3"
+              >
+                <SearchForm
+                  placeholder="Cari"
+                  value={searchContent}
+                  onChange={(e) => handleChangeContent(e.target.value)}
+                />
               </div>
             </div>
-
-            <SearchForm
-              placeholder="Cari"
-              value={searchContent}
-              onChange={(e) => handleChangeContent(e.target.value)}
-            />
           </>
         )}
       </div>
 
-      <div style={{ width: "100%", height: "100%" }}>
+      <div style={{ width: "100%", height: "100%", padding: "0px 20px" }}>
         {addContent === "text" ? (
           <Text
             previewSection={previewSection}
@@ -430,6 +438,7 @@ const ListContent = ({
         <CTabContent
           style={{
             overflowY: "auto",
+            paddingTop: 10,
           }}
         >
           {!addContent && filteredContents.length > 0 ? (

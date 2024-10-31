@@ -76,12 +76,12 @@ const ImmediatelyPopup = ({ ref, content, setPreviewFloatingSection }) => {
 
   const viewPosition = {
     ...(position === "bottom-right"
-      ? { bottom: 5, right: 5 }
+      ? { bottom: 15, right: 15 }
       : position === "bottom-left"
-      ? { bottom: 5, left: 5 }
+      ? { bottom: 15, left: 15 }
       : position === "top-left"
-      ? { top: 5, left: 5 }
-      : { top: 5, right: 5 }),
+      ? { top: 15, left: 15 }
+      : { top: 15, right: 15 }),
   };
 
   const handleModalCloseNextAfter = (id) => {
@@ -173,6 +173,7 @@ const ImmediatelyPopup = ({ ref, content, setPreviewFloatingSection }) => {
                         }}
                       />
                     </div>
+
                     <div className="tw-p-3">
                       <div
                         style={{
@@ -185,32 +186,34 @@ const ImmediatelyPopup = ({ ref, content, setPreviewFloatingSection }) => {
                         {contentItem?.showContentCard}
                       </div>
 
-                      {isProductNameShown && (
-                        <div
-                          style={{ color: productColor }}
-                          className="tw-font-semibold"
-                        >
-                          {contentItem?.productName}
-                        </div>
-                      )}
+                      <div className="tw-flex tw-flex-col tw-gap-y-2">
+                        {isProductNameShown && (
+                          <div
+                            style={{ color: productColor }}
+                            className="tw-font-semibold"
+                          >
+                            {contentItem?.productName}
+                          </div>
+                        )}
 
-                      {isProductPriceShown && (
-                        <div
-                          style={{ color: priceColor }}
-                          className="tw-my-2 tw-font-semibold"
-                        >
-                          {formatPrice(contentItem?.price)}
-                        </div>
-                      )}
+                        {isProductPriceShown && (
+                          <div
+                            style={{ color: priceColor }}
+                            className="tw-font-semibold"
+                          >
+                            {formatPrice(contentItem?.price)}
+                          </div>
+                        )}
 
-                      {isTimeShown && (
-                        <div
-                          className="tw-text-xs"
-                          style={{ color: timeColor }}
-                        >
-                          {contentItem?.time}
-                        </div>
-                      )}
+                        {isTimeShown && (
+                          <div
+                            className="tw-text-xs"
+                            style={{ color: timeColor }}
+                          >
+                            {contentItem?.time}
+                          </div>
+                        )}
+                      </div>
                     </div>
 
                     <div
@@ -266,30 +269,33 @@ const ImmediatelyPopup = ({ ref, content, setPreviewFloatingSection }) => {
                   {contentList[0].showContentCard}
                 </div>
 
-                {isProductNameShown && (
-                  <div
-                    style={{ color: productColor }}
-                    className="tw-font-semibold"
-                  >
-                    {contentList[0].productName}
-                  </div>
-                )}
+                <div className="tw-flex tw-flex-col tw-gap-y-2">
+                  {isProductNameShown && (
+                    <div
+                      style={{ color: productColor }}
+                      className="tw-font-semibold"
+                    >
+                      {contentList[0].productName}
+                    </div>
+                  )}
 
-                {isProductPriceShown && (
-                  <div
-                    style={{ color: priceColor }}
-                    className="tw-my-2 tw-font-semibold"
-                  >
-                    {formatPrice(contentList[0].price)}
-                  </div>
-                )}
+                  {isProductPriceShown && (
+                    <div
+                      style={{ color: priceColor }}
+                      className=" tw-font-semibold"
+                    >
+                      {formatPrice(contentList[0].price)}
+                    </div>
+                  )}
 
-                {isTimeShown && (
-                  <div className="tw-text-xs" style={{ color: timeColor }}>
-                    {contentList[0].time}
-                  </div>
-                )}
+                  {isTimeShown && (
+                    <div className="tw-text-xs" style={{ color: timeColor }}>
+                      {contentList[0].time}
+                    </div>
+                  )}
+                </div>
               </div>
+
               <div
                 className="tw-absolute tw-top-1 tw-right-0 tw-w-8 tw-h-8 tw-rounded-full tw-flex tw-items-center tw-justify-center tw-cursor-pointer hover:tw-bg-gray-300 hover:tw-text-black tw-text-gray-500 tw-p-2"
                 onClick={() => handleModalCloseNextAfter(contentList[0]?.id)}

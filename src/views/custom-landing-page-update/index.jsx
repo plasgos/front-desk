@@ -2,11 +2,9 @@ import {
   CButton,
   CCard,
   CCardBody,
-  CCol,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CTabs,
@@ -25,12 +23,13 @@ import {
 import DesignTabControl from "./_components/DesignTabControl";
 import { ListSectionContent } from "./_components/ListSectionContent";
 import ModalConfirmation from "./_components/ModalConfirmation";
-import ResizableView from "./_components/ResizebleView";
 import Input from "./_components/common/Input";
 import { UnDraggabelList } from "./_components/common/UnDraggabaleList";
 import { useRenderEditSection } from "./_components/hooks/useRenderEditSection";
-import ListContent from "./_components/list-add-content/";
 import { useRenderViewSections } from "./_components/hooks/useRenderViewSections";
+import ListContent from "./_components/list-add-content/";
+
+import plgLogo from "../../assets/new_plg_logo_256.png";
 
 const landingPage = {
   detail: {
@@ -481,32 +480,22 @@ const CustomLandingPage = () => {
             }}
           >
             {!editing && !isAddContent && (
-              <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-                <div>
-                  <CButton
-                    onClick={toggleModal}
-                    color="primary"
-                    variant="outline"
-                    className="mx-2"
-                  >
-                    Kembali
-                  </CButton>
+              <>
+                <div className="d-flex justify-content-end align-items-center border-bottom p-3">
+                  <div>
+                    <CButton
+                      onClick={toggleModal}
+                      color="primary"
+                      variant="outline"
+                      className="mx-2"
+                    >
+                      Kembali
+                    </CButton>
 
-                  <CButton color="primary">Simpan xx</CButton>
+                    <CButton color="primary">Simpan</CButton>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
 
-          <div
-            style={{
-              flex: 1, // Ambil sisa ruang antara navbar dan footer
-              overflowY: "auto", // Scrollable jika kontennya panjang
-              padding: "20px",
-            }}
-          >
-            {!editing && !isAddContent && (
-              <CTabs activeTab="konten">
                 <CNav variant="tabs">
                   <CNavItem>
                     <CNavLink data-tab="konten">Kolom</CNavLink>
@@ -515,7 +504,19 @@ const CustomLandingPage = () => {
                     <CNavLink data-tab="desain">Desain</CNavLink>
                   </CNavItem>
                 </CNav>
+              </>
+            )}
+          </div>
 
+          <div
+            style={{
+              flex: 1, // Ambil sisa ruang antara navbar dan footer
+              overflowY: "auto", // Scrollable jika kontennya panjang
+              // padding: "0px 20px",
+            }}
+          >
+            {!editing && !isAddContent && (
+              <CTabs activeTab="konten">
                 <CTabContent
                   style={{
                     height: "100%",
@@ -523,7 +524,7 @@ const CustomLandingPage = () => {
                   }}
                   className="pt-2"
                 >
-                  <CTabPane data-tab="konten">
+                  <CTabPane style={{ padding: "0px 20px" }} data-tab="konten">
                     <div
                       style={{ backgroundColor: "white" }}
                       className=" w-100 px-2 pt-2 mb-3 border-bottom   "
@@ -613,7 +614,7 @@ const CustomLandingPage = () => {
               zIndex: 10,
               backgroundColor: "white",
             }}
-            className="d-flex justify-content-between align-items-center border rounded-sm p-2 mb-2 shadow-sm"
+            className="d-flex justify-content-between align-items-center border rounded-sm p-2 shadow-sm"
           >
             <div
               className="d-flex align-items-center"
@@ -640,25 +641,15 @@ const CustomLandingPage = () => {
 
         <main
           style={{
-            flex: 1, // Ambil sisa lebar layar
-            height: "100vh", // Tinggi penuh untuk konten
-            overflowY: "auto", // Scroll jika konten lebih tinggi dari layar
+            flex: 1,
+            height: "100vh",
+            overflowY: "auto",
             backgroundColor: "#f0f0f0",
             position: "relative",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          {/* <ResizableView
-            previewSection={previewSection}
-            pageSetting={pageSetting}
-            ref={containerRef}
-            dimensions={dimensions}
-            isSelectedView={isSelectedView}
-            isResizing={isResizing}
-            handleMouseDown={handleMouseDown}
-          >
-            
-          </ResizableView> */}
-
           {previewSection.map((item, index) => (
             <div key={item.id}>{renderViewSections(item, index)}</div>
           ))}
@@ -666,6 +657,30 @@ const CustomLandingPage = () => {
           {previewFloatingSection.map((item, index) => (
             <div key={item.id}>{renderViewSections(item, index)}</div>
           ))}
+
+          <div
+            style={{ flex: "1 0 auto" }}
+            className="
+    tw-flex  tw-bg-black 
+    tw-items-center tw-justify-center 
+    tw-w-full tw-pt-8 tw-pb-8"
+          >
+            <div>
+              <div className=" tw-text-white tw-text-center tw-text-xs">
+                Dibuat dengan
+              </div>
+
+              <img
+                src={plgLogo}
+                alt="logo"
+                style={{
+                  width: "80px",
+                  objectFit: "contain",
+                  marginTop: -10,
+                }}
+              />
+            </div>
+          </div>
         </main>
       </div>
 
