@@ -1,10 +1,7 @@
 import {
-  CButton,
-  CCol,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CTabs,
@@ -14,8 +11,9 @@ import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../../lib/unique-id";
 
 import BackgroundTab from "../../common/BackgroundTab";
-import UpdateText from "./UpdateText";
+import Confirmation from "../../common/Confirmation";
 import UpdateDesign from "./UpdateDesign";
+import UpdateText from "./UpdateText";
 
 const StockCounter = ({
   previewSection,
@@ -122,73 +120,52 @@ const StockCounter = ({
 
   return (
     <div>
-      <CRow>
-        <CCol>
-          <div>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
-              </div>
-            </div>
+      <CTabs activeTab="design">
+        <CNav variant="tabs">
+          <CNavItem>
+            <CNavLink data-tab="design">Desain</CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink data-tab="text">Teks</CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink data-tab="background">Background</CNavLink>
+          </CNavItem>
+        </CNav>
+        <CTabContent style={{ overflowY: "auto" }} className="p-3">
+          <CTabPane className="p-1" data-tab="design">
+            <UpdateDesign
+              setPreviewSection={setPreviewSection}
+              currentSection={
+                isEditingSection ? currentSection : selectedCurrentSection
+              }
+            />
+          </CTabPane>
 
-            <CTabs activeTab="design">
-              <CNav variant="tabs">
-                <CNavItem>
-                  <CNavLink data-tab="design">Desain</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink data-tab="text">Teks</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink data-tab="background">Background</CNavLink>
-                </CNavItem>
-              </CNav>
-              <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                <CTabPane className="p-1" data-tab="design">
-                  <UpdateDesign
-                    setPreviewSection={setPreviewSection}
-                    currentSection={
-                      isEditingSection ? currentSection : selectedCurrentSection
-                    }
-                  />
-                </CTabPane>
+          <CTabPane className="p-1" data-tab="text">
+            <UpdateText
+              setPreviewSection={setPreviewSection}
+              currentSection={
+                isEditingSection ? currentSection : selectedCurrentSection
+              }
+            />
+          </CTabPane>
 
-                <CTabPane className="p-1" data-tab="text">
-                  <UpdateText
-                    setPreviewSection={setPreviewSection}
-                    currentSection={
-                      isEditingSection ? currentSection : selectedCurrentSection
-                    }
-                  />
-                </CTabPane>
-
-                <CTabPane
-                  style={{ overflowX: "hidden", height: "100%" }}
-                  className="p-1"
-                  data-tab="background"
-                >
-                  <BackgroundTab
-                    currentSection={isEditingSection ? currentSection : setting}
-                    setPreviewSection={setPreviewSection}
-                    type={isEditingSection ? "edit" : "add"}
-                  />
-                </CTabPane>
-              </CTabContent>
-            </CTabs>
-          </div>
-        </CCol>
-      </CRow>
+          <CTabPane
+            style={{ overflowX: "hidden", height: "100%" }}
+            className="p-1"
+            data-tab="background"
+          >
+            <BackgroundTab
+              currentSection={isEditingSection ? currentSection : setting}
+              setPreviewSection={setPreviewSection}
+              type={isEditingSection ? "edit" : "add"}
+            />
+          </CTabPane>
+        </CTabContent>
+      </CTabs>
     </div>
   );
 };

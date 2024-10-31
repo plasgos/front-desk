@@ -2,11 +2,9 @@ import {
   CButton,
   CCard,
   CCardBody,
-  CCol,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CTabs,
@@ -393,235 +391,218 @@ const PopUp = ({
 
   return (
     <div>
-      <CRow>
-        <CCol>
+      {!isAddContent && !isEditingContent && (
+        <div className="d-flex justify-content-end align-items-center border-bottom p-2">
           <div>
-            {!isAddContent && !isEditingContent && (
-              <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-                <div>
-                  <CButton
-                    onClick={handleCancel}
-                    color="primary"
-                    variant="outline"
-                    className="mx-2"
-                  >
-                    Batal
-                  </CButton>
+            <CButton
+              onClick={handleCancel}
+              color="primary"
+              variant="outline"
+              className="mx-2"
+            >
+              Batal
+            </CButton>
 
-                  <CButton onClick={handleConfirm} color="primary">
-                    Selesai
-                  </CButton>
-                </div>
-              </div>
-            )}
+            <CButton onClick={handleConfirm} color="primary">
+              Selesai
+            </CButton>
+          </div>
+        </div>
+      )}
 
-            {isAddContent ? (
-              <CTabs>
-                <CTabContent
-                  style={{
-                    overflowY: "auto",
-                  }}
-                >
-                  <ListContent
-                    previewSection={popUpSections}
-                    setPreviewSection={(value) => setPopUpSections(value)}
-                    isShowContent={(value) => setIsAddContent(value)}
-                    previewFloatingSection={previewFloatingSection}
-                    setPreviewFloatingSection={(value) =>
-                      setPreviewFloatingSection(value)
-                    }
-                    handleSectionContentFocus={handleSectionContentFocus}
-                    handleColumnFocus={handleColumnFocus}
-                    isPopUpSection={true}
-                  />
-                </CTabContent>
-              </CTabs>
-            ) : isEditingContent ? (
-              <CTabs>
-                <CTabContent
-                  style={{
-                    overflowY: "auto",
-                  }}
-                >
+      {isAddContent ? (
+        <CTabs>
+          <CTabContent
+            style={{
+              overflowY: "auto",
+            }}
+          >
+            <ListContent
+              previewSection={popUpSections}
+              setPreviewSection={(value) => setPopUpSections(value)}
+              isShowContent={(value) => setIsAddContent(value)}
+              previewFloatingSection={previewFloatingSection}
+              setPreviewFloatingSection={(value) =>
+                setPreviewFloatingSection(value)
+              }
+              handleSectionContentFocus={handleSectionContentFocus}
+              handleColumnFocus={handleColumnFocus}
+              isPopUpSection={true}
+            />
+          </CTabContent>
+        </CTabs>
+      ) : isEditingContent ? (
+        <CTabs>
+          <CTabContent
+            style={{
+              overflowY: "auto",
+            }}
+          >
+            <div>
+              {previewFloatingSection
+                .filter((section) =>
+                  isEditingSection
+                    ? section.id === currentSection.id
+                    : section.id === setting.id
+                )
+                .map((section) =>
+                  section.content.map((content) => renderEditSection(content))
+                )}
+            </div>
+          </CTabContent>
+        </CTabs>
+      ) : (
+        <CTabs activeTab="content">
+          <CNav variant="tabs">
+            <CNavItem>
+              <CNavLink data-tab="content">Konten</CNavLink>
+            </CNavItem>
+
+            <CNavItem>
+              <CNavLink data-tab="background">Background</CNavLink>
+            </CNavItem>
+          </CNav>
+          <CTabContent
+            style={{
+              overflowY: "auto",
+            }}
+            className="p-3"
+          >
+            <CTabPane
+              style={{ overflowX: "hidden" }}
+              className="p-1"
+              data-tab="content"
+            >
+              {!isAddContent && !isEditingContent && (
+                <>
+                  <div>
+                    <div className="mb-2">
+                      <Input
+                        label="Nama Popup"
+                        placeholder="Newsletter Popup"
+                        value={popupName}
+                        onChange={(e) => {
+                          const { value } = e.target;
+                          setPopupName(value);
+                          handleChangeValue("popupName", value);
+                        }}
+                      />
+                    </div>
+
+                    <div
+                      style={{ gap: 10 }}
+                      className="d-flex align-items-center"
+                    >
+                      <SelectOptions
+                        label="Perlihatkan Ketika"
+                        options={shownOnWhenOptions}
+                        value={shownOnWhen}
+                        onChange={(selectedOption) => {
+                          setShownOnWhen(selectedOption);
+                          handleChangeShownOnWhen(selectedOption.value);
+                        }}
+                      />
+
+                      {shownOnWhen.value === "waitAfter" && (
+                        <SelectOptions
+                          label="Menunggu Selama"
+                          options={waitingPopupOptions}
+                          value={waitingPopup}
+                          onChange={(selectedOption) => {
+                            setWaitingPopup(selectedOption);
+                            handleChangeWaitingPopup(selectedOption.value);
+                          }}
+                        />
+                      )}
+                    </div>
+
+                    <h5>Desain</h5>
+
+                    <div
+                      style={{ gap: 10 }}
+                      className="d-flex align-items-center"
+                    >
+                      <SelectOptions
+                        label="Melingkar"
+                        options={roundedButtonOptions}
+                        value={rounded}
+                        onChange={(selectedOption) => {
+                          setRounded(selectedOption);
+                          handleChangeValue("rounded", selectedOption.value);
+                        }}
+                      />
+
+                      <CButton
+                        onClick={() => handleChangeValue("isPopupShown", true)}
+                        color="primary"
+                        variant="outline"
+                        size="md"
+                      >
+                        Perlihatkan
+                      </CButton>
+                    </div>
+
+                    <InputRangeWithNumber
+                      label="Lebar"
+                      value={width}
+                      onChange={(newValue) => {
+                        setWidth(newValue);
+                        handleChangeValue("width", newValue);
+                      }}
+                      min={120}
+                      max={1024}
+                      onBlur={() =>
+                        handleSetValueWhenBlur(width, 120, 10204, "width")
+                      }
+                    />
+                  </div>
+
                   <div>
                     {previewFloatingSection
                       .filter((section) =>
                         isEditingSection
                           ? section.id === currentSection.id
-                          : section.id === setting.id
+                          : section.id === selectedCurrentSection.id
                       )
-                      .map((section) =>
-                        section.content.map((content) =>
-                          renderEditSection(content)
-                        )
-                      )}
+                      .map((section, i) => renderSection(section, i))}
                   </div>
-                </CTabContent>
-              </CTabs>
-            ) : (
-              <CTabs activeTab="content">
-                <CNav variant="tabs">
-                  <CNavItem>
-                    <CNavLink data-tab="content">Konten</CNavLink>
-                  </CNavItem>
 
-                  <CNavItem>
-                    <CNavLink data-tab="background">Background</CNavLink>
-                  </CNavItem>
-                </CNav>
-                <CTabContent
-                  style={{
-                    overflowY: "auto",
-                  }}
-                  className="pt-3"
-                >
-                  <CTabPane
-                    style={{ overflowX: "hidden" }}
-                    className="p-1"
-                    data-tab="content"
+                  <CCard
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setIsAddContent(true)}
                   >
-                    {!isAddContent && !isEditingContent && (
-                      <>
-                        <div>
-                          <div className="mb-2">
-                            <Input
-                              label="Nama Popup"
-                              placeholder="Newsletter Popup"
-                              value={popupName}
-                              onChange={(e) => {
-                                const { value } = e.target;
-                                setPopupName(value);
-                                handleChangeValue("popupName", value);
-                              }}
-                            />
-                          </div>
+                    <CCardBody className="p-1">
+                      <div className="d-flex align-items-center ">
+                        <IoAdd
+                          style={{
+                            cursor: "pointer",
+                            margin: "0px 10px 0px 6px",
+                          }}
+                          size={18}
+                        />
 
-                          <div
-                            style={{ gap: 10 }}
-                            className="d-flex align-items-center"
-                          >
-                            <SelectOptions
-                              label="Perlihatkan Ketika"
-                              options={shownOnWhenOptions}
-                              value={shownOnWhen}
-                              onChange={(selectedOption) => {
-                                setShownOnWhen(selectedOption);
-                                handleChangeShownOnWhen(selectedOption.value);
-                              }}
-                            />
+                        <div>Tambah Konten</div>
+                      </div>
+                    </CCardBody>
+                  </CCard>
+                </>
+              )}
+            </CTabPane>
 
-                            {shownOnWhen.value === "waitAfter" && (
-                              <SelectOptions
-                                label="Menunggu Selama"
-                                options={waitingPopupOptions}
-                                value={waitingPopup}
-                                onChange={(selectedOption) => {
-                                  setWaitingPopup(selectedOption);
-                                  handleChangeWaitingPopup(
-                                    selectedOption.value
-                                  );
-                                }}
-                              />
-                            )}
-                          </div>
-
-                          <h5>Desain</h5>
-
-                          <div
-                            style={{ gap: 10 }}
-                            className="d-flex align-items-center"
-                          >
-                            <SelectOptions
-                              label="Melingkar"
-                              options={roundedButtonOptions}
-                              value={rounded}
-                              onChange={(selectedOption) => {
-                                setRounded(selectedOption);
-                                handleChangeValue(
-                                  "rounded",
-                                  selectedOption.value
-                                );
-                              }}
-                            />
-
-                            <CButton
-                              onClick={() =>
-                                handleChangeValue("isPopupShown", true)
-                              }
-                              color="primary"
-                              variant="outline"
-                              size="md"
-                            >
-                              Perlihatkan
-                            </CButton>
-                          </div>
-
-                          <InputRangeWithNumber
-                            label="Lebar"
-                            value={width}
-                            onChange={(newValue) => {
-                              setWidth(newValue);
-                              handleChangeValue("width", newValue);
-                            }}
-                            min={120}
-                            max={1024}
-                            onBlur={() =>
-                              handleSetValueWhenBlur(width, 120, 10204, "width")
-                            }
-                          />
-                        </div>
-
-                        <div>
-                          {previewFloatingSection
-                            .filter((section) =>
-                              isEditingSection
-                                ? section.id === currentSection.id
-                                : section.id === selectedCurrentSection.id
-                            )
-                            .map((section, i) => renderSection(section, i))}
-                        </div>
-
-                        <CCard
-                          style={{ cursor: "pointer" }}
-                          onClick={() => setIsAddContent(true)}
-                        >
-                          <CCardBody className="p-1">
-                            <div className="d-flex align-items-center ">
-                              <IoAdd
-                                style={{
-                                  cursor: "pointer",
-                                  margin: "0px 10px 0px 6px",
-                                }}
-                                size={18}
-                              />
-
-                              <div>Tambah Konten</div>
-                            </div>
-                          </CCardBody>
-                        </CCard>
-                      </>
-                    )}
-                  </CTabPane>
-
-                  <CTabPane
-                    style={{ overflowX: "hidden", height: "100%" }}
-                    className="p-1"
-                    data-tab="background"
-                  >
-                    <BackgroundTab
-                      currentSection={
-                        isEditingSection ? currentSection : setting
-                      }
-                      setPreviewSection={setPreviewFloatingSection}
-                      type={isEditingSection ? "edit" : "add"}
-                    />
-                  </CTabPane>
-                </CTabContent>
-              </CTabs>
-            )}
-          </div>
-        </CCol>
-      </CRow>
+            <CTabPane
+              style={{ overflowX: "hidden", height: "100%" }}
+              className="p-1"
+              data-tab="background"
+            >
+              <BackgroundTab
+                currentSection={isEditingSection ? currentSection : setting}
+                setPreviewSection={setPreviewFloatingSection}
+                type={isEditingSection ? "edit" : "add"}
+              />
+            </CTabPane>
+          </CTabContent>
+        </CTabs>
+      )}
     </div>
   );
 };

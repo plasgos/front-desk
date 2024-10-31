@@ -1,20 +1,16 @@
 import {
   CButton,
-  CCol,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CTabs,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 
-import { createUniqueID } from "../../../../../lib/unique-id";
-import FormSection from "./form-section";
-import DesignSection from "./design-section";
 import { useDispatch, useSelector } from "react-redux";
+import { createUniqueID } from "../../../../../lib/unique-id";
 import {
   setIsAddCouriers,
   setIsEditCouriers,
@@ -23,6 +19,9 @@ import {
   setSelectCourier,
   setSelectedVariant,
 } from "../../../../../redux/modules/custom-landing-page/reducer";
+import DesignSection from "./design-section";
+import FormSection from "./form-section";
+import Confirmation from "../../common/Confirmation";
 
 const FormCheckout = ({
   previewSection,
@@ -306,75 +305,54 @@ const FormCheckout = ({
 
   return (
     <div>
-      <CRow>
-        <CCol>
-          <div>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
-              </div>
-            </div>
-
-            <CTabs activeTab={activeTab}>
-              <CNav variant="tabs">
-                <CNavItem onClick={() => setActiveTab("form")}>
-                  <CNavLink data-tab="form">Formulir</CNavLink>
-                </CNavItem>
-                <CNavItem onClick={() => setActiveTab("desain")}>
-                  <CNavLink data-tab="desain">Desain</CNavLink>
-                </CNavItem>
-              </CNav>
-              <CTabContent style={{ overflowY: "auto" }}>
-                <CTabPane className="p-1" data-tab="form">
-                  <FormSection
-                    hiddenFocused={hiddenFocused}
-                    previewSection={previewSection}
-                    setPreviewSection={setPreviewSection}
-                    currentSection={isEditingSection ? currentSection : setting}
-                    setCurrentContentBeforeEdit={setCurrentContentBeforeEdit}
-                    isAddContent={isAddContent}
-                    setIsAddContent={setIsAddContent}
-                    isEditingContent={isEditingContent}
-                    setIsEditingContent={setIsEditingContent}
-                    isEditingSection={isEditingSection}
-                    handleSectionContentFocus={handleSectionContentFocus}
-                  />
-                </CTabPane>
-                <CTabPane
-                  style={{ overflowX: "hidden" }}
-                  className="p-1"
-                  data-tab="desain"
-                >
-                  <DesignSection
-                    previewSection={previewSection}
-                    setPreviewSection={setPreviewSection}
-                    currentSection={isEditingSection ? currentSection : setting}
-                    imageUrl={imageUrl}
-                    setImageUrl={setImageUrl}
-                    icon={icon}
-                    setPreviousIcon={setPreviousIcon}
-                    setIcon={setIcon}
-                    setIconBeforeEdit={setIconBeforeEdit}
-                    isListIconVisible={isListIconVisible}
-                    setIsListIconVisible={setIsListIconVisible}
-                  />
-                </CTabPane>
-              </CTabContent>
-            </CTabs>
-          </div>
-        </CCol>
-      </CRow>
+      <CTabs activeTab={activeTab}>
+        <CNav variant="tabs">
+          <CNavItem onClick={() => setActiveTab("form")}>
+            <CNavLink data-tab="form">Formulir</CNavLink>
+          </CNavItem>
+          <CNavItem onClick={() => setActiveTab("desain")}>
+            <CNavLink data-tab="desain">Desain</CNavLink>
+          </CNavItem>
+        </CNav>
+        <CTabContent style={{ overflowY: "auto" }}>
+          <CTabPane className="p-1" data-tab="form">
+            <FormSection
+              hiddenFocused={hiddenFocused}
+              previewSection={previewSection}
+              setPreviewSection={setPreviewSection}
+              currentSection={isEditingSection ? currentSection : setting}
+              setCurrentContentBeforeEdit={setCurrentContentBeforeEdit}
+              isAddContent={isAddContent}
+              setIsAddContent={setIsAddContent}
+              isEditingContent={isEditingContent}
+              setIsEditingContent={setIsEditingContent}
+              isEditingSection={isEditingSection}
+              handleSectionContentFocus={handleSectionContentFocus}
+            />
+          </CTabPane>
+          <CTabPane
+            style={{ overflowX: "hidden" }}
+            className="p-1"
+            data-tab="desain"
+          >
+            <DesignSection
+              previewSection={previewSection}
+              setPreviewSection={setPreviewSection}
+              currentSection={isEditingSection ? currentSection : setting}
+              imageUrl={imageUrl}
+              setImageUrl={setImageUrl}
+              icon={icon}
+              setPreviousIcon={setPreviousIcon}
+              setIcon={setIcon}
+              setIconBeforeEdit={setIconBeforeEdit}
+              isListIconVisible={isListIconVisible}
+              setIsListIconVisible={setIsListIconVisible}
+            />
+          </CTabPane>
+        </CTabContent>
+      </CTabs>
     </div>
   );
 };

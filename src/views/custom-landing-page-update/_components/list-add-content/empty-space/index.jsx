@@ -1,8 +1,8 @@
-import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import InputRangeWithNumber from "../../common/InputRangeWithNumber";
-import { createUniqueID } from "../../../../../lib/unique-id";
 import { useDebounce } from "use-debounce";
+import { createUniqueID } from "../../../../../lib/unique-id";
+import Confirmation from "../../common/Confirmation";
+import InputRangeWithNumber from "../../common/InputRangeWithNumber";
 
 const EmptySpace = ({
   previewSection,
@@ -97,33 +97,20 @@ const EmptySpace = ({
 
   return (
     <div>
-      <div className="d-flex justify-content-end align-items-center border-bottom p-2 mb-3">
-        <div>
-          <CButton
-            onClick={handleCancel}
-            color="primary"
-            variant="outline"
-            className="mx-2"
-          >
-            Batal
-          </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-          <CButton onClick={handleConfirm} color="primary">
-            Selesai
-          </CButton>
-        </div>
+      <div className="p-3">
+        <InputRangeWithNumber
+          label="Tinggi"
+          value={height}
+          onChange={(newValue) => {
+            setHeight(newValue);
+          }}
+          min={10}
+          max={1200}
+          onBlur={() => handleSetHeightWhenBlur(height, 10, 1200, "height")}
+        />
       </div>
-
-      <InputRangeWithNumber
-        label="Tinggi"
-        value={height}
-        onChange={(newValue) => {
-          setHeight(newValue);
-        }}
-        min={10}
-        max={1200}
-        onBlur={() => handleSetHeightWhenBlur(height, 10, 1200, "height")}
-      />
     </div>
   );
 };

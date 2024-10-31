@@ -153,7 +153,7 @@ const Shipping = ({ previewSection, setPreviewSection, currentSection }) => {
           isEditingCourier={true}
         />
       ) : (
-        <div className="my-3">
+        <div className="">
           <SelectOptions
             label="Metode Pengiriman"
             options={shippingMethodOptions}

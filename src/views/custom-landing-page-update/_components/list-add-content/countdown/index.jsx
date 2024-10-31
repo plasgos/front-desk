@@ -16,6 +16,7 @@ import BackgroundTab from "../../common/BackgroundTab";
 import SelectVariant from "../../common/SelectVariant";
 import FinishControl from "./FinishedControl";
 import UpdateContent from "./UpdateContent";
+import Confirmation from "../../common/Confirmation";
 
 const optionVariant = [
   {
@@ -277,113 +278,83 @@ const CountDown = ({
 
   return (
     <div>
-      <CRow>
-        <CCol>
-          <div>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
+      {isSelectVariant ? (
+        <SelectVariant
+          optionVariant={optionVariant}
+          selectedVariant={selectedVariant}
+          onChangeVariant={handleVariantChange}
+        />
+      ) : (
+        <CTabs activeTab="content">
+          <CNav variant="tabs">
+            <CNavItem>
+              <CNavLink data-tab="content">Konten</CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink data-tab="finish">Selesai</CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink data-tab="background">Background</CNavLink>
+            </CNavItem>
+          </CNav>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <CTabPane
+              style={{ overflowX: "hidden" }}
+              className="p-1"
+              data-tab="content"
+            >
+              <div
+                style={{
+                  boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
+                }}
+                className="mb-3 border-bottom pb-3"
+              >
+                <div style={{ fontSize: 12 }} className="mb-2">
+                  Desain
+                </div>
+                <div className="d-flex align-items-center">
+                  <div className="mr-3">
+                    {selectedVariant.group} - {selectedVariant.label}
+                  </div>
+                  <CButton onClick={openVariants} color="primary">
+                    Ubah
+                  </CButton>
+                </div>
               </div>
-            </div>
 
-            {isSelectVariant ? (
-              <SelectVariant
-                optionVariant={optionVariant}
-                selectedVariant={selectedVariant}
-                onChangeVariant={handleVariantChange}
+              <UpdateContent
+                currentSection={
+                  isEditingSection ? currentSection : selectedCurrentSection
+                }
+                setPreviewSection={setPreviewSection}
               />
-            ) : (
-              <CTabs activeTab="content">
-                <CNav variant="tabs">
-                  <CNavItem>
-                    <CNavLink data-tab="content">Konten</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="finish">Selesai</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="background">Background</CNavLink>
-                  </CNavItem>
-                </CNav>
-                <CTabContent
-                  style={{ height: 300, paddingRight: 5, overflowY: "auto" }}
-                  className="pt-3"
-                >
-                  <CTabPane
-                    style={{ overflowX: "hidden" }}
-                    className="p-1"
-                    data-tab="content"
-                  >
-                    <div
-                      style={{
-                        boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
-                      }}
-                      className="mb-3 border-bottom pb-3"
-                    >
-                      <div style={{ fontSize: 12 }} className="mb-2">
-                        Desain
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <div className="mr-3">
-                          {selectedVariant.group} - {selectedVariant.label}
-                        </div>
-                        <CButton onClick={openVariants} color="primary">
-                          Ubah
-                        </CButton>
-                      </div>
-                    </div>
+            </CTabPane>
 
-                    <UpdateContent
-                      currentSection={
-                        isEditingSection
-                          ? currentSection
-                          : selectedCurrentSection
-                      }
-                      setPreviewSection={setPreviewSection}
-                    />
-                  </CTabPane>
+            <CTabPane className="p-1" data-tab="finish">
+              <FinishControl
+                setPreviewSection={setPreviewSection}
+                currentSection={
+                  isEditingSection ? currentSection : selectedCurrentSection
+                }
+              />
+            </CTabPane>
 
-                  <CTabPane className="p-1" data-tab="finish">
-                    <FinishControl
-                      setPreviewSection={setPreviewSection}
-                      currentSection={
-                        isEditingSection
-                          ? currentSection
-                          : selectedCurrentSection
-                      }
-                    />
-                  </CTabPane>
-
-                  <CTabPane
-                    style={{ overflowX: "hidden", height: "100%" }}
-                    className="p-1"
-                    data-tab="background"
-                  >
-                    <BackgroundTab
-                      currentSection={
-                        isEditingSection ? currentSection : setting
-                      }
-                      setPreviewSection={setPreviewSection}
-                      type={isEditingSection ? "edit" : "add"}
-                    />
-                  </CTabPane>
-                </CTabContent>
-              </CTabs>
-            )}
-          </div>
-        </CCol>
-      </CRow>
+            <CTabPane
+              style={{ overflowX: "hidden", height: "100%" }}
+              className="p-1"
+              data-tab="background"
+            >
+              <BackgroundTab
+                currentSection={isEditingSection ? currentSection : setting}
+                setPreviewSection={setPreviewSection}
+                type={isEditingSection ? "edit" : "add"}
+              />
+            </CTabPane>
+          </CTabContent>
+        </CTabs>
+      )}
     </div>
   );
 };

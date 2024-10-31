@@ -2,29 +2,27 @@ import {
   CButton,
   CCard,
   CCardBody,
-  CCol,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CTabs,
 } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { createUniqueID } from "../../../../../lib/unique-id";
-import SelectVariant from "../../common/SelectVariant";
-import UpdateDesign from "./UpdateDesign";
-import { waitingPopupOptions } from "../popup";
-import SelectOptions from "../../common/SelectOptions";
-import VariableUpdate from "./VariableUpdate";
-import { DraggableList } from "../../common/DraggableList";
-import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
-import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { IoAdd } from "react-icons/io5";
 import image from "../../../../../assets/profile.jpg";
+import { useMoveSection } from "../../../../../hooks/useMoveSection";
+import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
+import { createUniqueID } from "../../../../../lib/unique-id";
+import { DraggableList } from "../../common/DraggableList";
+import SelectOptions from "../../common/SelectOptions";
+import { waitingPopupOptions } from "../popup";
 import { UpdateContent } from "./UpdateContent";
+import UpdateDesign from "./UpdateDesign";
+import VariableUpdate from "./VariableUpdate";
+import Confirmation from "../../common/Confirmation";
 
 const shownOnWhenOptions = [
   { value: "immediately", label: "Langsung" },
@@ -359,192 +357,157 @@ const SalesNotification = ({
 
   return (
     <div>
-      <CRow>
-        <CCol>
-          <div>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
+      {isAddContent ? (
+        <CTabs>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <UpdateContent
+              idSection={isEditingSection ? currentSection.id : setting.id}
+              currentContent={isEditingSection ? currentSection : setting}
+              setPreviewSection={setPreviewFloatingSection}
+            />
+          </CTabContent>
+        </CTabs>
+      ) : isEditingContent ? (
+        <CTabs>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <UpdateContent
+              idSection={isEditingSection ? currentSection.id : setting.id}
+              currentContent={selectedContent}
+              setPreviewSection={setPreviewFloatingSection}
+              isEditingContent={true}
+            />
+          </CTabContent>
+        </CTabs>
+      ) : (
+        <CTabs activeTab={activeTab}>
+          <CNav variant="tabs">
+            <CNavItem>
+              <CNavLink data-tab="design">Desain</CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink data-tab="condition">Kondisi</CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink data-tab="variable">Variabel</CNavLink>
+            </CNavItem>
+          </CNav>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <CTabPane className="p-1" data-tab="design">
+              <UpdateDesign
+                setPreviewSection={setPreviewFloatingSection}
+                currentSection={
+                  isEditingSection ? currentSection : selectedCurrentSection
+                }
+              />
+            </CTabPane>
+
+            <CTabPane
+              style={{ height: "70vh" }}
+              className="p-1"
+              data-tab="condition"
+            >
+              <div style={{ gap: 10 }} className="d-flex align-items-center">
+                <SelectOptions
+                  label="Perlihatkan Ketika"
+                  options={shownOnWhenOptions}
+                  value={shownOnWhen}
+                  onChange={(selectedOption) => {
+                    setShownOnWhen(selectedOption);
+                    handleChangeShownOnWhen(selectedOption.value);
+                  }}
+                />
+
+                {shownOnWhen.value === "waitAfter" && (
+                  <SelectOptions
+                    label="Menunggu Selama"
+                    options={waitingPopupOptions}
+                    value={waitingPopup}
+                    onChange={(selectedOption) => {
+                      setWaitingPopup(selectedOption);
+                      handleChangeWaitingPopup(selectedOption.value);
+                    }}
+                  />
+                )}
               </div>
-            </div>
 
-            {isAddContent ? (
-              <CTabs>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <UpdateContent
-                    idSection={
-                      isEditingSection ? currentSection.id : setting.id
-                    }
-                    currentContent={isEditingSection ? currentSection : setting}
-                    setPreviewSection={setPreviewFloatingSection}
-                  />
-                </CTabContent>
-              </CTabs>
-            ) : isEditingContent ? (
-              <CTabs>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <UpdateContent
-                    idSection={
-                      isEditingSection ? currentSection.id : setting.id
-                    }
-                    currentContent={selectedContent}
-                    setPreviewSection={setPreviewFloatingSection}
-                    isEditingContent={true}
-                  />
-                </CTabContent>
-              </CTabs>
-            ) : (
-              <CTabs activeTab={activeTab}>
-                <CNav variant="tabs">
-                  <CNavItem>
-                    <CNavLink data-tab="design">Desain</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="condition">Kondisi</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="variable">Variabel</CNavLink>
-                  </CNavItem>
-                </CNav>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <CTabPane className="p-1" data-tab="design">
-                    <UpdateDesign
-                      setPreviewSection={setPreviewFloatingSection}
-                      currentSection={
+              <div style={{ gap: 10 }} className="d-flex align-items-center">
+                <SelectOptions
+                  label="Sembunyikan Dalam"
+                  options={waitingHiddenOptions}
+                  value={hiddenOption}
+                  onChange={(selectedOption) => {
+                    setHiddenOption(selectedOption);
+                    handleCondition("hidden", selectedOption.value);
+                  }}
+                />
+
+                <SelectOptions
+                  label="Berikutnya Setelah"
+                  options={nextAfterOptions}
+                  value={nextAfter}
+                  onChange={(selectedOption) => {
+                    setNextAfter(selectedOption);
+                    handleCondition("nextAfter", selectedOption.value);
+                  }}
+                />
+              </div>
+
+              <CButton
+                onClick={() => handleChangeValue("isPopupShown", true)}
+                color="primary"
+                variant="outline"
+                size="md"
+              >
+                Perlihatkan
+              </CButton>
+            </CTabPane>
+
+            <CTabPane className="p-1" data-tab="variable">
+              <VariableUpdate
+                setPreviewSection={setPreviewFloatingSection}
+                currentSection={
+                  isEditingSection ? currentSection : selectedCurrentSection
+                }
+              />
+
+              {!isAddContent && !isEditingContent && (
+                <>
+                  <div>
+                    {previewFloatingSection
+                      .filter((section) =>
                         isEditingSection
-                          ? currentSection
-                          : selectedCurrentSection
-                      }
-                    />
-                  </CTabPane>
+                          ? section.id === currentSection.id
+                          : section.id === setting.id
+                      )
+                      .map((section, i) => renderSection(section, i))}
+                  </div>
 
-                  <CTabPane
-                    style={{ height: "100vh" }}
-                    className="p-1"
-                    data-tab="condition"
+                  <CCard
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setIsAddContent(true)}
                   >
-                    <div
-                      style={{ gap: 10 }}
-                      className="d-flex align-items-center"
-                    >
-                      <SelectOptions
-                        label="Perlihatkan Ketika"
-                        options={shownOnWhenOptions}
-                        value={shownOnWhen}
-                        onChange={(selectedOption) => {
-                          setShownOnWhen(selectedOption);
-                          handleChangeShownOnWhen(selectedOption.value);
-                        }}
-                      />
-
-                      {shownOnWhen.value === "waitAfter" && (
-                        <SelectOptions
-                          label="Menunggu Selama"
-                          options={waitingPopupOptions}
-                          value={waitingPopup}
-                          onChange={(selectedOption) => {
-                            setWaitingPopup(selectedOption);
-                            handleChangeWaitingPopup(selectedOption.value);
+                    <CCardBody className="p-1">
+                      <div className="d-flex align-items-center ">
+                        <IoAdd
+                          style={{
+                            cursor: "pointer",
+                            margin: "0px 10px 0px 6px",
                           }}
+                          size={18}
                         />
-                      )}
-                    </div>
 
-                    <div
-                      style={{ gap: 10 }}
-                      className="d-flex align-items-center"
-                    >
-                      <SelectOptions
-                        label="Sembunyikan Dalam"
-                        options={waitingHiddenOptions}
-                        value={hiddenOption}
-                        onChange={(selectedOption) => {
-                          setHiddenOption(selectedOption);
-                          handleCondition("hidden", selectedOption.value);
-                        }}
-                      />
-
-                      <SelectOptions
-                        label="Berikutnya Setelah"
-                        options={nextAfterOptions}
-                        value={nextAfter}
-                        onChange={(selectedOption) => {
-                          setNextAfter(selectedOption);
-                          handleCondition("nextAfter", selectedOption.value);
-                        }}
-                      />
-                    </div>
-
-                    <CButton
-                      onClick={() => handleChangeValue("isPopupShown", true)}
-                      color="primary"
-                      variant="outline"
-                      size="md"
-                    >
-                      Perlihatkan
-                    </CButton>
-                  </CTabPane>
-
-                  <CTabPane className="p-1" data-tab="variable">
-                    <VariableUpdate
-                      setPreviewSection={setPreviewFloatingSection}
-                      currentSection={
-                        isEditingSection
-                          ? currentSection
-                          : selectedCurrentSection
-                      }
-                    />
-
-                    {!isAddContent && !isEditingContent && (
-                      <>
-                        <div>
-                          {previewFloatingSection
-                            .filter((section) =>
-                              isEditingSection
-                                ? section.id === currentSection.id
-                                : section.id === setting.id
-                            )
-                            .map((section, i) => renderSection(section, i))}
-                        </div>
-
-                        <CCard
-                          style={{ cursor: "pointer" }}
-                          onClick={() => setIsAddContent(true)}
-                        >
-                          <CCardBody className="p-1">
-                            <div className="d-flex align-items-center ">
-                              <IoAdd
-                                style={{
-                                  cursor: "pointer",
-                                  margin: "0px 10px 0px 6px",
-                                }}
-                                size={18}
-                              />
-
-                              <div>Tambah</div>
-                            </div>
-                          </CCardBody>
-                        </CCard>
-                      </>
-                    )}
-                  </CTabPane>
-                </CTabContent>
-              </CTabs>
-            )}
-          </div>
-        </CCol>
-      </CRow>
+                        <div>Tambah</div>
+                      </div>
+                    </CCardBody>
+                  </CCard>
+                </>
+              )}
+            </CTabPane>
+          </CTabContent>
+        </CTabs>
+      )}
     </div>
   );
 };

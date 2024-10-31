@@ -1,35 +1,34 @@
 import React, { useCallback } from "react";
-import Text from "../list-add-content/text";
-import EmptySpace from "../list-add-content/empty-space";
-import ColumnTextAndImages from "../list-add-content/colum-text-and-image";
-import ListImages from "../list-add-content/list-images";
-import ScrollTarget from "../list-add-content/scroll-target";
-import Line from "../list-add-content/line";
-import Quote from "../list-add-content/quote";
-import ListFeature from "../list-add-content/list-feature";
+import ArrowMoved from "../list-add-content/arrow-moved";
+import Buttons from "../list-add-content/button";
 import CallToAction from "../list-add-content/call-to-action";
-import Video from "../list-add-content/video";
-import VideoText from "../list-add-content/video-text";
+import ColumnTextAndImages from "../list-add-content/colum-text-and-image";
+import CountDown from "../list-add-content/countdown";
+import EmptySpace from "../list-add-content/empty-space";
+import FAQ from "../list-add-content/faq";
+import FbPixelEvent from "../list-add-content/fb-pixel-event";
+import FloatingButton from "../list-add-content/floating-button";
+import FloatingButtonCircle from "../list-add-content/floating-button-circle";
+import FloatingContent from "../list-add-content/floating-content";
+import FormActivity from "../list-add-content/form-activity";
+import FormCheckout from "../list-add-content/form-checkout";
+import Frames from "../list-add-content/frames";
 import Image from "../list-add-content/image";
 import ImageText from "../list-add-content/image-text";
-import CountDown from "../list-add-content/countdown";
-import FormActivity from "../list-add-content/form-activity";
-import Buttons from "../list-add-content/button";
-import FAQ from "../list-add-content/faq";
-import Testimony from "../list-add-content/testimony";
-import FormCheckout from "../list-add-content/form-checkout";
-import StockCounter from "../list-add-content/stock-counter";
-import FloatingButton from "../list-add-content/floating-button";
-import FbPixelEvent from "../list-add-content/fb-pixel-event";
-import MultiColumn from "../list-add-content/multi-column";
-import FloatingButtonCircle from "../list-add-content/floating-button-circle";
-import Frame from "../list-add-content/frame";
+import Line from "../list-add-content/line";
+import ListFeature from "../list-add-content/list-feature";
+import ListImages from "../list-add-content/list-images";
+import MultiColumnUpdate from "../list-add-content/multi-column-update";
 import PopUp from "../list-add-content/popup";
-import FloatingContent from "../list-add-content/floating-content";
-import Frames from "../list-add-content/frames";
-import ArrowMoved from "../list-add-content/arrow-moved";
-import SliderImage from "../list-add-content/slider-image";
+import Quote from "../list-add-content/quote";
 import SalesNotification from "../list-add-content/sales-notification";
+import ScrollTarget from "../list-add-content/scroll-target";
+import SliderImage from "../list-add-content/slider-image";
+import StockCounter from "../list-add-content/stock-counter";
+import Testimony from "../list-add-content/testimony";
+import Text from "../list-add-content/text";
+import Video from "../list-add-content/video";
+import VideoText from "../list-add-content/video-text";
 
 export function useRenderEditSection({
   previewSection,
@@ -43,6 +42,7 @@ export function useRenderEditSection({
   sectionFloatingBeforeEdit,
   handleColumnFocus,
   isPopUpSection,
+  pageSetting,
 }) {
   const renderEditSection = useCallback(
     (section) => {
@@ -376,13 +376,18 @@ export function useRenderEditSection({
         editing.id === section.id
       ) {
         return (
-          <MultiColumn
-            currentSectionMultiColumn={section}
+          <MultiColumnUpdate
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
-            isShowMultiColumn={(value) => setEditing(value)}
-            sectionMultiColumnBeforeEdit={sectionBeforeEdit}
-            isEditingSectionMultiColumn={true}
+            currentSection={section}
+            isShowContent={(value) => setEditing(value)}
+            handleSectionContentFocus={handleSectionContentFocus}
+            previewFloatingSection={previewFloatingSection}
+            setPreviewFloatingSection={setPreviewFloatingSection}
+            handleSectionFocus={handleColumnFocus}
+            pageSetting={pageSetting}
+            isEditing={true}
+            sectionBeforeEdit={sectionBeforeEdit}
             handleColumnFocus={handleColumnFocus}
           />
         );
@@ -596,6 +601,7 @@ export function useRenderEditSection({
       handleColumnFocus,
       handleSectionContentFocus,
       isPopUpSection,
+      pageSetting,
       previewFloatingSection,
       previewSection,
       sectionBeforeEdit,

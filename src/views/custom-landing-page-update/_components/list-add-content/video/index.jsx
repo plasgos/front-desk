@@ -1,5 +1,4 @@
 import {
-  CButton,
   CNav,
   CNavItem,
   CNavLink,
@@ -11,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import AnimationControl from "../../common/AnimationControl";
 import BackgroundTab from "../../common/BackgroundTab";
+import Confirmation from "../../common/Confirmation";
 import VideoControlSetting from "./VideoControlSetting";
 
 const Video = ({
@@ -91,22 +91,7 @@ const Video = ({
 
   return (
     <div>
-      <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-        <div>
-          <CButton
-            onClick={handleCancel}
-            color="primary"
-            variant="outline"
-            className="mx-2"
-          >
-            Batal
-          </CButton>
-
-          <CButton onClick={handleConfirm} color="primary">
-            Selesai
-          </CButton>
-        </div>
-      </div>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
       <CTabs activeTab="konten">
         <CNav variant="tabs">
@@ -122,12 +107,9 @@ const Video = ({
         </CNav>
         <CTabContent
           style={{
-            height: 340,
-            paddingRight: 5,
             overflowY: "auto",
-            overflowX: "hidden",
           }}
-          className="pt-3"
+          className="p-3"
         >
           <CTabPane data-tab="konten">
             <VideoControlSetting
@@ -137,7 +119,11 @@ const Video = ({
             />
           </CTabPane>
 
-          <CTabPane className="p-1" data-tab="animation">
+          <CTabPane
+            style={{ height: "80vh" }}
+            className="p-1"
+            data-tab="animation"
+          >
             <AnimationControl
               label="Teks"
               currentSection={isEditingSection ? currentSection : setting}

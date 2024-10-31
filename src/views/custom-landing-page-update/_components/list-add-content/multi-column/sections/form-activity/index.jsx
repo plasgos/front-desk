@@ -22,6 +22,7 @@ import {
 } from "../../../../../../../redux/modules/custom-landing-page/reducer";
 import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
 import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
+import Confirmation from "../../../../common/Confirmation";
 
 const optionVariant = [
   {
@@ -229,22 +230,7 @@ const FormActivity = ({
 
   return (
     <div>
-      <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-        <div>
-          <CButton
-            onClick={handleCancel}
-            color="primary"
-            variant="outline"
-            className="mx-2"
-          >
-            Batal
-          </CButton>
-
-          <CButton onClick={handleConfirm} color="primary">
-            Selesai
-          </CButton>
-        </div>
-      </div>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
       {isSelectVariant ? (
         <SelectVariant

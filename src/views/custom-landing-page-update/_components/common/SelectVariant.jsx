@@ -9,7 +9,7 @@ const SelectVariant = ({
   verticalList,
 }) => {
   return (
-    <div>
+    <div className="px-3">
       {optionVariant.map((group, groupIndex) => (
         <CCard key={groupIndex} className="my-3 p-2">
           <div

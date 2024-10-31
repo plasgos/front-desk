@@ -75,12 +75,6 @@ export default [
   },
   {
     _tag: "CSidebarNavItem",
-    name: "Custom Landing Page",
-    to: "/custom-landing-page",
-    icon: "cil-drop",
-  },
-  {
-    _tag: "CSidebarNavItem",
     name: "Custom Landing Page Update",
     to: "/custom-landing-page-update",
     icon: "cil-drop",

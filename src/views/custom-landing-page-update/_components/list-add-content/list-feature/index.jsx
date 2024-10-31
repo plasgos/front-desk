@@ -1,20 +1,19 @@
 import {
   CButton,
-  CCol,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CTabs,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 
-import ContentTab from "./ContentTab";
 import { createUniqueID } from "../../../../../lib/unique-id";
-import IconTab from "./IconTab";
 import BackgroundTab from "../../common/BackgroundTab";
+import ContentTab from "./ContentTab";
+import IconTab from "./IconTab";
+import Confirmation from "../../common/Confirmation";
 
 const ListFeature = ({
   previewSection,
@@ -149,88 +148,67 @@ const ListFeature = ({
 
   return (
     <div>
-      <CRow>
-        <CCol>
-          <div>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
-              </div>
-            </div>
+      <CTabs activeTab="konten">
+        <CNav variant="tabs">
+          <CNavItem>
+            <CNavLink data-tab="konten">Konten</CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink data-tab="icon">Icon</CNavLink>
+          </CNavItem>
+          <CNavItem>
+            <CNavLink data-tab="wadah">Wadah</CNavLink>
+          </CNavItem>
+        </CNav>
+        <CTabContent
+          style={{
+            overflowY: "auto",
+          }}
+          className="p-3"
+        >
+          <CTabPane className="p-1" data-tab="konten">
+            <ContentTab
+              setPreviewSection={setPreviewSection}
+              currentSection={
+                isEditingSection ? currentSection : selectedCurrentSection
+              }
+            />
+          </CTabPane>
 
-            <CTabs activeTab="konten">
-              <CNav variant="tabs">
-                <CNavItem>
-                  <CNavLink data-tab="konten">Konten</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink data-tab="icon">Icon</CNavLink>
-                </CNavItem>
-                <CNavItem>
-                  <CNavLink data-tab="wadah">Wadah</CNavLink>
-                </CNavItem>
-              </CNav>
-              <CTabContent
-                style={{
-                  overflowY: "auto",
-                }}
-                className="pt-3"
-              >
-                <CTabPane className="p-1" data-tab="konten">
-                  <ContentTab
-                    setPreviewSection={setPreviewSection}
-                    currentSection={
-                      isEditingSection ? currentSection : selectedCurrentSection
-                    }
-                  />
-                </CTabPane>
+          <CTabPane className="p-1" data-tab="icon">
+            <IconTab
+              previewSection={previewSection}
+              setPreviewSection={setPreviewSection}
+              currentSection={
+                isEditingSection ? currentSection : selectedCurrentSection
+              }
+              isEditing={isEditingSection}
+              visible={listIconVisible}
+              setVisible={(value) => setListIconVisible(value)}
+              setIconBeforeEdit={(value) => setIconBeforeEdit(value)}
+              iconName={iconName}
+              setIconName={(value) => setIconName(value)}
+              imageUrl={imageUrl}
+              setImageUrl={(value) => setImageUrl(value)}
+              setPreviousIcon={setPreviousIcon}
+            />
+          </CTabPane>
 
-                <CTabPane className="p-1" data-tab="icon">
-                  <IconTab
-                    previewSection={previewSection}
-                    setPreviewSection={setPreviewSection}
-                    currentSection={
-                      isEditingSection ? currentSection : selectedCurrentSection
-                    }
-                    isEditing={isEditingSection}
-                    visible={listIconVisible}
-                    setVisible={(value) => setListIconVisible(value)}
-                    setIconBeforeEdit={(value) => setIconBeforeEdit(value)}
-                    iconName={iconName}
-                    setIconName={(value) => setIconName(value)}
-                    imageUrl={imageUrl}
-                    setImageUrl={(value) => setImageUrl(value)}
-                    setPreviousIcon={setPreviousIcon}
-                  />
-                </CTabPane>
-
-                <CTabPane
-                  style={{ overflowX: "hidden", height: "100%" }}
-                  className="p-1"
-                  data-tab="wadah"
-                >
-                  <BackgroundTab
-                    currentSection={isEditingSection ? currentSection : setting}
-                    setPreviewSection={setPreviewSection}
-                    type={isEditingSection ? "edit" : "add"}
-                  />
-                </CTabPane>
-              </CTabContent>
-            </CTabs>
-          </div>
-        </CCol>
-      </CRow>
+          <CTabPane
+            style={{ overflowX: "hidden", height: "100%" }}
+            className="p-1"
+            data-tab="wadah"
+          >
+            <BackgroundTab
+              currentSection={isEditingSection ? currentSection : setting}
+              setPreviewSection={setPreviewSection}
+              type={isEditingSection ? "edit" : "add"}
+            />
+          </CTabPane>
+        </CTabContent>
+      </CTabs>
     </div>
   );
 };

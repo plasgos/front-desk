@@ -2,8 +2,6 @@ import {
   CButton,
   CCard,
   CCardBody,
-  CCol,
-  CRow,
   CTabContent,
   CTabPane,
   CTabs,
@@ -229,137 +227,127 @@ const FloatingButtonCircle = ({
 
   return (
     <div>
-      <CRow>
-        <CCol>
+      {!isListIconVisible && (
+        <div className="d-flex justify-content-end align-items-center border-bottom p-2">
           <div>
-            {!isListIconVisible && (
-              <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-                <div>
-                  <CButton
-                    onClick={handleCancel}
-                    color="primary"
-                    variant="outline"
-                    className="mx-2"
+            <CButton
+              onClick={handleCancel}
+              color="primary"
+              variant="outline"
+              className="mx-2"
+            >
+              Batal
+            </CButton>
+
+            <CButton onClick={handleConfirm} color="primary">
+              Selesai
+            </CButton>
+          </div>
+        </div>
+      )}
+
+      {isAddContent ? (
+        <CTabs>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <UpdateContent
+              idSection={isEditingSection ? currentSection.id : setting.id}
+              currentContent={isEditingSection ? currentSection : setting}
+              setPreviewSection={setPreviewFloatingSection}
+              isListIconVisible={isListIconVisible}
+              setIsListIconVisible={setIsListIconVisible}
+            />
+          </CTabContent>
+        </CTabs>
+      ) : isEditingContent ? (
+        <CTabs>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <UpdateContent
+              idSection={isEditingSection ? currentSection.id : setting.id}
+              setPreviewSection={setPreviewFloatingSection}
+              isListIconVisible={isListIconVisible}
+              setIsListIconVisible={setIsListIconVisible}
+              currentContent={selectedContent}
+              isEditingContent={true}
+            />
+          </CTabContent>
+        </CTabs>
+      ) : (
+        <CTabs activeTab="konten">
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <CTabPane className="p-1" data-tab="konten">
+              {!isAddContent && !isEditingContent && (
+                <>
+                  <div
+                    style={{ gap: 10 }}
+                    className="d-flex align-items-center "
                   >
-                    Batal
-                  </CButton>
+                    <SelectOptions
+                      label="Jarak"
+                      options={distanceOptions}
+                      onChange={(selectedOption) => {
+                        setSelectedDistance(selectedOption);
+                        handleChangeWrapperStyle(
+                          "distance",
+                          selectedOption.value
+                        );
+                      }}
+                      value={selectedDistance}
+                      width="50"
+                    />
+                  </div>
 
-                  <CButton onClick={handleConfirm} color="primary">
-                    Selesai
-                  </CButton>
-                </div>
-              </div>
-            )}
-
-            {isAddContent ? (
-              <CTabs>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <UpdateContent
-                    idSection={
-                      isEditingSection ? currentSection.id : setting.id
+                  <InputRangeWithNumber
+                    label="Jarak"
+                    value={position}
+                    onChange={(newValue) => {
+                      setPosition(newValue);
+                      handleChangeWrapperStyle("position", newValue);
+                    }}
+                    min={0}
+                    max={600}
+                    onBlur={() =>
+                      handleSetValueWhenBlurWrapperStyle(
+                        position,
+                        0,
+                        600,
+                        "position"
+                      )
                     }
-                    currentContent={isEditingSection ? currentSection : setting}
-                    setPreviewSection={setPreviewFloatingSection}
-                    isListIconVisible={isListIconVisible}
-                    setIsListIconVisible={setIsListIconVisible}
                   />
-                </CTabContent>
-              </CTabs>
-            ) : isEditingContent ? (
-              <CTabs>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <UpdateContent
-                    idSection={
-                      isEditingSection ? currentSection.id : setting.id
-                    }
-                    setPreviewSection={setPreviewFloatingSection}
-                    isListIconVisible={isListIconVisible}
-                    setIsListIconVisible={setIsListIconVisible}
-                    currentContent={selectedContent}
-                    isEditingContent={true}
-                  />
-                </CTabContent>
-              </CTabs>
-            ) : (
-              <CTabs activeTab="konten">
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <CTabPane className="p-1" data-tab="konten">
-                    {!isAddContent && !isEditingContent && (
-                      <>
-                        <div
-                          style={{ gap: 10 }}
-                          className="d-flex align-items-center "
-                        >
-                          <SelectOptions
-                            label="Jarak"
-                            options={distanceOptions}
-                            onChange={(selectedOption) => {
-                              setSelectedDistance(selectedOption);
-                              handleChangeWrapperStyle(
-                                "distance",
-                                selectedOption.value
-                              );
-                            }}
-                            value={selectedDistance}
-                            width="50"
-                          />
-                        </div>
 
-                        <InputRangeWithNumber
-                          label="Jarak"
-                          value={position}
-                          onChange={(newValue) => {
-                            setPosition(newValue);
-                            handleChangeWrapperStyle("position", newValue);
+                  <div>
+                    {previewFloatingSection
+                      .filter((section) =>
+                        isEditingSection
+                          ? section.id === currentSection.id
+                          : section.id === setting.id
+                      )
+                      .map((section, i) => renderSection(section, i))}
+                  </div>
+                  <CCard
+                    style={{ cursor: "pointer", marginBottom: 60 }}
+                    onClick={() => setIsAddContent(true)}
+                  >
+                    <CCardBody className="p-1">
+                      <div className="d-flex align-items-center ">
+                        <IoAdd
+                          style={{
+                            cursor: "pointer",
+                            margin: "0px 10px 0px 6px",
                           }}
-                          min={0}
-                          max={600}
-                          onBlur={() =>
-                            handleSetValueWhenBlurWrapperStyle(
-                              position,
-                              0,
-                              600,
-                              "position"
-                            )
-                          }
+                          size={18}
                         />
 
-                        <div>
-                          {previewFloatingSection
-                            .filter((section) =>
-                              isEditingSection
-                                ? section.id === currentSection.id
-                                : section.id === setting.id
-                            )
-                            .map((section, i) => renderSection(section, i))}
-                        </div>
-                        <CCard
-                          style={{ cursor: "pointer", marginBottom: 60 }}
-                          onClick={() => setIsAddContent(true)}
-                        >
-                          <CCardBody className="p-1">
-                            <div className="d-flex align-items-center ">
-                              <IoAdd
-                                style={{
-                                  cursor: "pointer",
-                                  margin: "0px 10px 0px 6px",
-                                }}
-                                size={18}
-                              />
-
-                              <div>Tambah Konten</div>
-                            </div>
-                          </CCardBody>
-                        </CCard>
-                      </>
-                    )}
-                  </CTabPane>
-                </CTabContent>
-              </CTabs>
-            )}
-          </div>
-        </CCol>
-      </CRow>
+                        <div>Tambah Konten</div>
+                      </div>
+                    </CCardBody>
+                  </CCard>
+                </>
+              )}
+            </CTabPane>
+          </CTabContent>
+        </CTabs>
+      )}
     </div>
   );
 };

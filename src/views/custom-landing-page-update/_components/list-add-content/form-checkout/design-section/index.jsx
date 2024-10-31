@@ -183,7 +183,7 @@ const DesignSection = ({
           onChange={(value) => handleChangeIcon(value)}
         />
       ) : (
-        <div>
+        <div className="p-3">
           <h5>Formulir</h5>
           <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
             <ColorPicker

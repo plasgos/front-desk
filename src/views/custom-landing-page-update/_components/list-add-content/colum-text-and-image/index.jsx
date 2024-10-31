@@ -1,29 +1,28 @@
-import React, { useCallback, useEffect, useState } from "react";
 import {
   CButton,
   CCard,
   CCardBody,
-  CCol,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CTabs,
 } from "@coreui/react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import image from "../../../../../assets/action-figure.jpg";
 
 import { IoAdd } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
 
-import { DraggableList } from "../../common/DraggableList";
-import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import { useMoveSection } from "../../../../../hooks/useMoveSection";
+import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
+import BackgroundTab from "../../common/BackgroundTab";
+import { DraggableList } from "../../common/DraggableList";
 import DesignTab from "./DesignTab";
 import { UpdateContent } from "./UpdateContent";
-import BackgroundTab from "../../common/BackgroundTab";
+import Confirmation from "../../common/Confirmation";
 
 const ColumnTextAndImages = ({
   previewSection,
@@ -208,129 +207,104 @@ const ColumnTextAndImages = ({
 
   return (
     <div>
-      <CRow>
-        <CCol>
-          <div>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
-              </div>
-            </div>
+      {isAddContent ? (
+        <CTabs>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <UpdateContent
+              idSection={isEditingSection ? currentSection.id : setting.id}
+              currentContent={isEditingSection ? currentSection : setting}
+              setPreviewSection={setPreviewSection}
+            />
+          </CTabContent>
+        </CTabs>
+      ) : isEditingContent ? (
+        <CTabs>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <UpdateContent
+              idSection={isEditingSection ? currentSection.id : setting.id}
+              currentContent={selectedContent}
+              setPreviewSection={setPreviewSection}
+              isEditingContent={true}
+            />
+          </CTabContent>
+        </CTabs>
+      ) : (
+        <CTabs activeTab="kolom">
+          <CNav variant="tabs">
+            <CNavItem>
+              <CNavLink data-tab="kolom">Kolom</CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink data-tab="desain">Desain</CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink data-tab="background">Background</CNavLink>
+            </CNavItem>
+          </CNav>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <CTabPane className="p-1" data-tab="kolom">
+              {!isAddContent && !isEditingContent && (
+                <>
+                  <div>
+                    {previewSection
+                      .filter((section) =>
+                        isEditingSection
+                          ? section.id === currentSection.id
+                          : section.id === setting.id
+                      )
+                      .map((section, i) => renderSection(section, i))}
+                  </div>
 
-            {isAddContent ? (
-              <CTabs>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <UpdateContent
-                    idSection={
-                      isEditingSection ? currentSection.id : setting.id
-                    }
-                    currentContent={isEditingSection ? currentSection : setting}
-                    setPreviewSection={setPreviewSection}
-                  />
-                </CTabContent>
-              </CTabs>
-            ) : isEditingContent ? (
-              <CTabs>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <UpdateContent
-                    idSection={
-                      isEditingSection ? currentSection.id : setting.id
-                    }
-                    currentContent={selectedContent}
-                    setPreviewSection={setPreviewSection}
-                    isEditingContent={true}
-                  />
-                </CTabContent>
-              </CTabs>
-            ) : (
-              <CTabs activeTab="kolom">
-                <CNav variant="tabs">
-                  <CNavItem>
-                    <CNavLink data-tab="kolom">Kolom</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="desain">Desain</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="background">Background</CNavLink>
-                  </CNavItem>
-                </CNav>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <CTabPane className="p-1" data-tab="kolom">
-                    {!isAddContent && !isEditingContent && (
-                      <>
-                        <div>
-                          {previewSection
-                            .filter((section) =>
-                              isEditingSection
-                                ? section.id === currentSection.id
-                                : section.id === setting.id
-                            )
-                            .map((section, i) => renderSection(section, i))}
-                        </div>
-
-                        <CCard
-                          style={{ cursor: "pointer" }}
-                          onClick={() => setIsAddContent(true)}
-                        >
-                          <CCardBody className="p-1">
-                            <div className="d-flex align-items-center ">
-                              <IoAdd
-                                style={{
-                                  cursor: "pointer",
-                                  margin: "0px 10px 0px 6px",
-                                }}
-                                size={18}
-                              />
-
-                              <div>Tambah Konten</div>
-                            </div>
-                          </CCardBody>
-                        </CCard>
-                      </>
-                    )}
-                  </CTabPane>
-
-                  <CTabPane className="p-1" data-tab="desain">
-                    <DesignTab
-                      setPreviewSection={setPreviewSection}
-                      currentSection={
-                        isEditingSection ? currentSection : setting
-                      }
-                      isEditingSection={isEditingSection}
-                    />
-                  </CTabPane>
-
-                  <CTabPane
-                    style={{ overflowX: "hidden", height: "100%" }}
-                    className="p-1"
-                    data-tab="background"
+                  <CCard
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setIsAddContent(true)}
                   >
-                    <BackgroundTab
-                      currentSection={
-                        isEditingSection ? currentSection : setting
-                      }
-                      setPreviewSection={setPreviewSection}
-                      type={isEditingSection ? "edit" : "add"}
-                    />
-                  </CTabPane>
-                </CTabContent>
-              </CTabs>
-            )}
-          </div>
-        </CCol>
-      </CRow>
+                    <CCardBody className="p-1">
+                      <div className="d-flex align-items-center ">
+                        <IoAdd
+                          style={{
+                            cursor: "pointer",
+                            margin: "0px 10px 0px 6px",
+                          }}
+                          size={18}
+                        />
+
+                        <div>Tambah Konten</div>
+                      </div>
+                    </CCardBody>
+                  </CCard>
+                </>
+              )}
+            </CTabPane>
+
+            <CTabPane
+              style={{ height: "100vh" }}
+              className="p-1"
+              data-tab="desain"
+            >
+              <DesignTab
+                setPreviewSection={setPreviewSection}
+                currentSection={isEditingSection ? currentSection : setting}
+                isEditingSection={isEditingSection}
+              />
+            </CTabPane>
+
+            <CTabPane
+              style={{ overflowX: "hidden", height: "100%" }}
+              className="p-1"
+              data-tab="background"
+            >
+              <BackgroundTab
+                currentSection={isEditingSection ? currentSection : setting}
+                setPreviewSection={setPreviewSection}
+                type={isEditingSection ? "edit" : "add"}
+              />
+            </CTabPane>
+          </CTabContent>
+        </CTabs>
+      )}
     </div>
   );
 };

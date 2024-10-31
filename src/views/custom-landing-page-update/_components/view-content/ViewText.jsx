@@ -21,7 +21,7 @@ const ViewText = forwardRef(
           }),
           paddingTop: stylesBg.paddingTop,
           paddingBottom: stylesBg.paddingBottom,
-          backgroundColor: section.background.bgColor || "",
+          backgroundColor: section?.background?.bgColor || "",
           position: "relative",
           zIndex: 1,
         }}
@@ -57,7 +57,7 @@ const ViewText = forwardRef(
               color: section.content?.style?.color,
             })
           }
-          className={`${section.content?.style?.textAlign} tw-my-2`}
+          className={`${section.content?.style?.textAlign} `}
         >
           {section.content.editorHtml && (
             <div

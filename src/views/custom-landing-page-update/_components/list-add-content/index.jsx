@@ -1,6 +1,7 @@
 import { CButton, CCard, CTabContent } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { SearchForm } from "../common/SearchForm";
+import ArrowMoved from "./arrow-moved";
 import Buttons from "./button";
 import CallToAction from "./call-to-action";
 import ColumnTextAndImages from "./colum-text-and-image";
@@ -20,19 +21,17 @@ import ImageText from "./image-text";
 import Line from "./line/index";
 import ListFeature from "./list-feature";
 import ListImagesControl from "./list-images/index";
-import MultiColumn from "./multi-column";
+import MultiColumnUpdate from "./multi-column-update";
 import PopUp from "./popup";
 import Quote from "./quote";
+import SalesNotification from "./sales-notification";
 import ScrollTarget from "./scroll-target/index";
+import SliderImage from "./slider-image";
 import StockCounter from "./stock-counter";
 import Testimony from "./testimony";
 import Text from "./text/index";
 import Video from "./video";
 import VideoText from "./video-text";
-import ArrowMoved from "./arrow-moved";
-import SliderImage from "./slider-image";
-import MultiColumnUpdate from "./multi-column-update";
-import SalesNotification from "./sales-notification";
 
 const ListContent = ({
   previewSection,
@@ -45,6 +44,7 @@ const ListContent = ({
   handleColumnFocus,
   handleSectionContentFocus,
   isPopUpSection,
+  pageSetting,
 }) => {
   const [addContent, setAddContent] = useState("");
   const [searchContent, setSearchContent] = useState("");
@@ -157,7 +157,7 @@ const ListContent = ({
         )}
       </div>
 
-      <div style={{ width: "100%", height: "100%", padding: "0px 20px" }}>
+      <div style={{ width: "100%", height: "100%" }}>
         {addContent === "text" ? (
           <Text
             previewSection={previewSection}
@@ -346,7 +346,8 @@ const ListContent = ({
             handleSectionContentFocus={handleSectionContentFocus}
             previewFloatingSection={previewFloatingSection}
             setPreviewFloatingSection={setPreviewFloatingSection}
-            handleColumnFocus={handleColumnFocus}
+            handleSectionFocus={handleColumnFocus}
+            pageSetting={pageSetting}
           />
         )}
 
@@ -442,7 +443,7 @@ const ListContent = ({
           }}
         >
           {!addContent && filteredContents.length > 0 ? (
-            <div>
+            <div style={{ padding: "0px 20px" }}>
               {filteredContents.map((group, groupIndex) => {
                 return (
                   <div key={groupIndex}>

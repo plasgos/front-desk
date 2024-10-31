@@ -1,35 +1,33 @@
 import React, { useCallback } from "react";
-import ViewText from "../view-content/ViewText";
-import ViewColumnTextAndImage from "../view-content/ViewColumnTextAndImage";
-import ViewEmptySpace from "../view-content/ViewEmptySpace";
-import ViewListImages from "../view-content/ViewListImages";
-import ViewScrollTraget from "../view-content/ViewScrollTraget";
+import ViewArrowMoved from "../view-content/ViewArrowMoved";
 import ViewButtonUpdate from "../view-content/ViewButtonUpdate";
-import ViewTestimony from "../view-content/ViewTestimony";
-import ViewLine from "../view-content/ViewLine";
-import ViewListFeature from "../view-content/ViewListFeature";
-import ViewQuote from "../view-content/ViewQuote";
+import ViewCallToAction from "../view-content/ViewCallToAction";
+import ViewColumnTextAndImage from "../view-content/ViewColumnTextAndImage";
+import ViewCountDown from "../view-content/ViewCountdown";
+import ViewEmptySpace from "../view-content/ViewEmptySpace";
 import ViewFAQ from "../view-content/ViewFAQ";
-import ViewFormCheckout from "../view-content/ViewFormCheckout";
 import ViewFloatingButton from "../view-content/ViewFloatingButton";
 import ViewFloatingButtonCircle from "../view-content/ViewFloatingButtonCircle";
+import ViewFloatingContent from "../view-content/ViewFloatingContent";
+import ViewFormActivity from "../view-content/ViewFormActivity";
+import ViewFormCheckout from "../view-content/ViewFormCheckout";
+import ViewFrames from "../view-content/ViewFrames";
 import ViewImage from "../view-content/ViewImage";
 import ViewImageText from "../view-content/ViewImageText";
+import ViewLine from "../view-content/ViewLine";
+import ViewListFeature from "../view-content/ViewListFeature";
+import ViewListImages from "../view-content/ViewListImages";
 import ViewMultiColumn from "../view-content/ViewMultiColumn";
+import ViewPopUp from "../view-content/ViewPopUp";
+import ViewQuote from "../view-content/ViewQuote";
+import ViewSalesNotif from "../view-content/ViewSalesNotif";
+import ViewScrollTraget from "../view-content/ViewScrollTraget";
+import ViewSliderImage from "../view-content/ViewSliderImage";
+import ViewStockCounter from "../view-content/ViewStockCounter";
+import ViewTestimony from "../view-content/ViewTestimony";
+import ViewText from "../view-content/ViewText";
 import ViewVideo from "../view-content/ViewVideo";
 import ViewVideoText from "../view-content/ViewVideoText";
-import ViewCallToAction from "../view-content/ViewCallToAction";
-import ViewFormActivity from "../view-content/ViewFormActivity";
-import ViewCountDown from "../view-content/ViewCountdown";
-import ViewFrame from "../view-content/ViewFrame";
-import ViewStockCounter from "../view-content/ViewStockCounter";
-import ViewPopUp from "../view-content/ViewPopUp";
-import ViewFloatingContent from "../view-content/ViewFloatingContent";
-import ViewFrames from "../view-content/ViewFrames";
-import ViewArrowMoved from "../view-content/ViewArrowMoved";
-import ViewSliderImage from "../view-content/ViewSliderImage";
-import ViewSalesNotification from "../view-content/ViewSalesNotifiation";
-import ViewSalesNotif from "../view-content/ViewSalesNotif";
 
 export function useRenderViewSections({
   id,
@@ -285,6 +283,8 @@ export function useRenderViewSections({
             setPreviewSection={setPreviewSection}
             setColumnRef={setColumnRef}
             focusedIndexColumn={focusedIndexColumn}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
           />
         );
       }

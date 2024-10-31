@@ -356,10 +356,7 @@ const CountDown = ({
                     <CNavLink data-tab="background">Background</CNavLink>
                   </CNavItem>
                 </CNav>
-                <CTabContent
-                  style={{ height: 300, paddingRight: 5, overflowY: "auto" }}
-                  className="pt-3"
-                >
+                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
                   <CTabPane
                     style={{ overflowX: "hidden" }}
                     className="p-1"

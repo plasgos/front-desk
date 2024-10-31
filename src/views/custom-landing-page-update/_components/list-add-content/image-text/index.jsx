@@ -1,23 +1,22 @@
 import {
   CButton,
-  CCol,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CTabs,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
+import image from "../../../../../assets/bg.jpg";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import AnimationControl from "../../common/AnimationControl";
 import BackgroundTab from "../../common/BackgroundTab";
+import BackgroundTabFullVariant from "../../common/BackroundTabFullVariant";
 import SelectVariant from "../../common/SelectVariant";
 import ImageControl from "./ImageControl";
 import UpdateContent from "./UpdateContent";
-import image from "../../../../../assets/bg.jpg";
-import BackgroundTabFullVariant from "../../common/BackroundTabFullVariant";
+import Confirmation from "../../common/Confirmation";
 
 const initialContents = [
   {
@@ -308,182 +307,148 @@ const ImageText = ({
 
   return (
     <div>
-      <CRow>
-        <CCol>
-          <div>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
-              </div>
-            </div>
+      {isSelectVariant ? (
+        <SelectVariant
+          optionVariant={optionVariant}
+          selectedVariant={selectedVariant}
+          onChangeVariant={handleVariantChange}
+        />
+      ) : (
+        <CTabs activeTab="image">
+          <CNav variant="tabs">
+            <CNavItem>
+              <CNavLink data-tab="image">Gambar</CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink data-tab="content">Konten</CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink data-tab="animation">Animasi</CNavLink>
+            </CNavItem>
 
-            {isSelectVariant ? (
-              <SelectVariant
-                optionVariant={optionVariant}
-                selectedVariant={selectedVariant}
-                onChangeVariant={handleVariantChange}
-              />
-            ) : (
-              <CTabs activeTab="image">
-                <CNav variant="tabs">
-                  <CNavItem>
-                    <CNavLink data-tab="image">Gambar</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="content">Konten</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="animation">Animasi</CNavLink>
-                  </CNavItem>
-
-                  {selectedVariant.group !== "Frosty" && (
-                    <CNavItem>
-                      <CNavLink data-tab="background">Background</CNavLink>
-                    </CNavItem>
-                  )}
-                </CNav>
-                <CTabContent
-                  style={{ height: 300, paddingRight: 5, overflowY: "auto" }}
-                  className="pt-3"
-                >
-                  <CTabPane className="p-1" data-tab="image">
-                    <div
-                      style={{
-                        boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
-                      }}
-                      className="mb-3 border-bottom pb-3"
-                    >
-                      <div style={{ fontSize: 12 }} className="mb-2">
-                        Desain
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <div className="mr-3">
-                          {selectedVariant.group} - {selectedVariant.label}
-                        </div>
-                        <CButton onClick={openVariants} color="primary">
-                          Ubah
-                        </CButton>
-                      </div>
-                    </div>
-
-                    <ImageControl
-                      currentSection={
-                        isEditingSection
-                          ? currentSection
-                          : selectedCurrentSection
-                      }
-                      setPreviewSection={setPreviewSection}
-                      selectedVariant={selectedVariant}
-                    />
-                  </CTabPane>
-
-                  <CTabPane className="p-1" data-tab="content">
-                    <UpdateContent
-                      setPreviewSection={setPreviewSection}
-                      currentSection={
-                        isEditingSection
-                          ? currentSection
-                          : selectedCurrentSection
-                      }
-                      currentContent={
-                        isEditingSection
-                          ? currentSection?.content?.[0]
-                          : selectedCurrentSection?.content?.[0]
-                      }
-                      isEditingContent={isEditingSection}
-                    />
-                  </CTabPane>
-
-                  <CTabPane className="p-1" data-tab="animation">
-                    {selectedVariant.group === "Frosty" ? (
-                      <AnimationControl
-                        label="Konten"
-                        currentSection={
-                          isEditingSection
-                            ? currentSection
-                            : selectedCurrentSection
-                        }
-                        currentContent={
-                          isEditingSection
-                            ? currentSection?.content?.[0]
-                            : selectedCurrentSection?.content?.[0]
-                        }
-                        setPreviewSection={setPreviewSection}
-                        isForContent={true}
-                      />
-                    ) : (
-                      <div>
-                        <AnimationControl
-                          label="Gambar"
-                          currentSection={
-                            isEditingSection
-                              ? currentSection
-                              : selectedCurrentSection
-                          }
-                          setPreviewSection={setPreviewSection}
-                        />
-
-                        <AnimationControl
-                          label="Konten"
-                          currentSection={
-                            isEditingSection
-                              ? currentSection
-                              : selectedCurrentSection
-                          }
-                          currentContent={
-                            isEditingSection
-                              ? currentSection?.content?.[0]
-                              : selectedCurrentSection?.content?.[0]
-                          }
-                          setPreviewSection={setPreviewSection}
-                          isForContent={true}
-                        />
-                      </div>
-                    )}
-                  </CTabPane>
-
-                  {selectedVariant.group !== "Frosty" && (
-                    <CTabPane
-                      style={{ overflowX: "hidden", height: "100%" }}
-                      className="p-1"
-                      data-tab="background"
-                    >
-                      {selectedVariant.group === "Penuh" ? (
-                        <BackgroundTabFullVariant
-                          currentSection={
-                            isEditingSection ? currentSection : setting
-                          }
-                          setPreviewSection={setPreviewSection}
-                          type={isEditingSection ? "edit" : "add"}
-                        />
-                      ) : (
-                        <BackgroundTab
-                          currentSection={
-                            isEditingSection ? currentSection : setting
-                          }
-                          setPreviewSection={setPreviewSection}
-                          type={isEditingSection ? "edit" : "add"}
-                        />
-                      )}
-                    </CTabPane>
-                  )}
-                </CTabContent>
-              </CTabs>
+            {selectedVariant.group !== "Frosty" && (
+              <CNavItem>
+                <CNavLink data-tab="background">Background</CNavLink>
+              </CNavItem>
             )}
-          </div>
-        </CCol>
-      </CRow>
+          </CNav>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <CTabPane className="p-1" data-tab="image">
+              <div
+                style={{
+                  boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
+                }}
+                className="mb-3 border-bottom pb-3"
+              >
+                <div style={{ fontSize: 12 }} className="mb-2">
+                  Desain
+                </div>
+                <div className="d-flex align-items-center">
+                  <div className="mr-3">
+                    {selectedVariant.group} - {selectedVariant.label}
+                  </div>
+                  <CButton onClick={openVariants} color="primary">
+                    Ubah
+                  </CButton>
+                </div>
+              </div>
+
+              <ImageControl
+                currentSection={
+                  isEditingSection ? currentSection : selectedCurrentSection
+                }
+                setPreviewSection={setPreviewSection}
+                selectedVariant={selectedVariant}
+              />
+            </CTabPane>
+
+            <CTabPane className="p-1" data-tab="content">
+              <UpdateContent
+                setPreviewSection={setPreviewSection}
+                currentSection={
+                  isEditingSection ? currentSection : selectedCurrentSection
+                }
+                currentContent={
+                  isEditingSection
+                    ? currentSection?.content?.[0]
+                    : selectedCurrentSection?.content?.[0]
+                }
+                isEditingContent={isEditingSection}
+              />
+            </CTabPane>
+
+            <CTabPane
+              style={{ height: "80vh" }}
+              className="p-1"
+              data-tab="animation"
+            >
+              {selectedVariant.group === "Frosty" ? (
+                <AnimationControl
+                  label="Konten"
+                  currentSection={
+                    isEditingSection ? currentSection : selectedCurrentSection
+                  }
+                  currentContent={
+                    isEditingSection
+                      ? currentSection?.content?.[0]
+                      : selectedCurrentSection?.content?.[0]
+                  }
+                  setPreviewSection={setPreviewSection}
+                  isForContent={true}
+                />
+              ) : (
+                <div>
+                  <AnimationControl
+                    label="Gambar"
+                    currentSection={
+                      isEditingSection ? currentSection : selectedCurrentSection
+                    }
+                    setPreviewSection={setPreviewSection}
+                  />
+
+                  <AnimationControl
+                    label="Konten"
+                    currentSection={
+                      isEditingSection ? currentSection : selectedCurrentSection
+                    }
+                    currentContent={
+                      isEditingSection
+                        ? currentSection?.content?.[0]
+                        : selectedCurrentSection?.content?.[0]
+                    }
+                    setPreviewSection={setPreviewSection}
+                    isForContent={true}
+                  />
+                </div>
+              )}
+            </CTabPane>
+
+            {selectedVariant.group !== "Frosty" && (
+              <CTabPane
+                style={{ overflowX: "hidden", height: "100%" }}
+                className="p-1"
+                data-tab="background"
+              >
+                {selectedVariant.group === "Penuh" ? (
+                  <BackgroundTabFullVariant
+                    currentSection={isEditingSection ? currentSection : setting}
+                    setPreviewSection={setPreviewSection}
+                    type={isEditingSection ? "edit" : "add"}
+                  />
+                ) : (
+                  <BackgroundTab
+                    currentSection={isEditingSection ? currentSection : setting}
+                    setPreviewSection={setPreviewSection}
+                    type={isEditingSection ? "edit" : "add"}
+                  />
+                )}
+              </CTabPane>
+            )}
+          </CTabContent>
+        </CTabs>
+      )}
     </div>
   );
 };

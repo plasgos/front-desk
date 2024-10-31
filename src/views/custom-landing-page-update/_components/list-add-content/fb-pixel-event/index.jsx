@@ -4,6 +4,7 @@ import { CButton } from "@coreui/react";
 import SelectOptions from "../../common/SelectOptions";
 import { optionsFbPixelEvent, optionsFbPixelId } from "../../SelectOptions";
 import Input from "../../common/Input";
+import Confirmation from "../../common/Confirmation";
 
 const recordTimeOptions = [
   { value: "page-finished-loading", label: "Halaman Selesai Loading" },
@@ -147,101 +148,86 @@ const FbPixelEvent = ({
 
   return (
     <div>
-      <div className="d-flex justify-content-end align-items-center border-bottom p-2 mb-3">
-        <div>
-          <CButton
-            onClick={handleCancel}
-            color="primary"
-            variant="outline"
-            className="mx-2"
-          >
-            Batal
-          </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-          <CButton onClick={handleConfirm} color="primary">
-            Selesai
-          </CButton>
-        </div>
-      </div>
-
-      <SelectOptions
-        label="Rekam Saat"
-        options={recordTimeOptions}
-        onChange={(selectedOption) => {
-          setRecordTime(selectedOption);
-          handleUpdateValue("recordTime", selectedOption.value);
-        }}
-        value={recordTime}
-        width="100"
-        customStyles={customStyles}
-      />
-
-      <div style={{ gap: 10 }} className="d-flex align-items-center ">
+      <div className="p-3">
         <SelectOptions
-          label="Pixel Event"
-          options={optionsFbPixelEvent}
+          label="Rekam Saat"
+          options={recordTimeOptions}
           onChange={(selectedOption) => {
-            setPixelEvent(selectedOption);
-            handleUpdateValue("pixelEvent", selectedOption.value);
+            setRecordTime(selectedOption);
+            handleUpdateValue("recordTime", selectedOption.value);
           }}
-          value={pixelEvent}
-          width="50"
+          value={recordTime}
+          width="100"
           customStyles={customStyles}
-          positionShown="top"
         />
 
-        <SelectOptions
-          label="Pixel Id"
-          options={optionsFbPixelId}
-          onChange={(selectedOption) => {
-            setPixelId(selectedOption);
-            handleUpdateValue("pixelId", selectedOption.value);
-          }}
-          value={pixelId}
-          width="50"
-          customStyles={customStyles}
-          positionShown="top"
-        />
-      </div>
-
-      <div style={{ gap: 10 }} className="d-flex align-items-center ">
-        <Input
-          label="Content Name"
-          value={contentName}
-          placeholder="T-Shirt"
-          type="text"
-          onChange={(e) => {
-            setContentName(e.target.value);
-            handleUpdateValue("contentName", e.target.value);
-          }}
-        />
-
-        <div style={{ position: "relative" }}>
-          <div className="form-group  ">
-            <label> Pixel Value</label>
-            <input
-              value={pixelValue}
-              onChange={(e) => {
-                setPxielValue(e.target.value);
-                handleUpdateValue("pixelValue", e.target.value);
-              }}
-              type="number"
-              className="form-control text-right"
-              placeholder="0 (Harga Barang)"
-            />
-          </div>
-
-          <span
-            style={{
-              position: "absolute",
-              left: "0.75rem",
-              top: "55%",
-              transform: "translateY(-50%)",
-              color: "#4B5563",
+        <div style={{ gap: 10 }} className="d-flex align-items-center ">
+          <SelectOptions
+            label="Pixel Event"
+            options={optionsFbPixelEvent}
+            onChange={(selectedOption) => {
+              setPixelEvent(selectedOption);
+              handleUpdateValue("pixelEvent", selectedOption.value);
             }}
-          >
-            Rp
-          </span>
+            value={pixelEvent}
+            width="50"
+            customStyles={customStyles}
+          />
+
+          <SelectOptions
+            label="Pixel Id"
+            options={optionsFbPixelId}
+            onChange={(selectedOption) => {
+              setPixelId(selectedOption);
+              handleUpdateValue("pixelId", selectedOption.value);
+            }}
+            value={pixelId}
+            width="50"
+            customStyles={customStyles}
+          />
+        </div>
+
+        <div style={{ gap: 10 }} className="d-flex align-items-center ">
+          <Input
+            label="Content Name"
+            value={contentName}
+            placeholder="T-Shirt"
+            type="text"
+            onChange={(e) => {
+              setContentName(e.target.value);
+              handleUpdateValue("contentName", e.target.value);
+            }}
+          />
+
+          <div style={{ position: "relative" }}>
+            <div className="form-group  ">
+              <label> Pixel Value</label>
+              <input
+                value={pixelValue}
+                onChange={(e) => {
+                  setPxielValue(e.target.value);
+                  handleUpdateValue("pixelValue", e.target.value);
+                }}
+                type="number"
+                className="form-control text-right"
+                placeholder="0 (Harga Barang)"
+              />
+            </div>
+
+            <span
+              style={{
+                position: "absolute",
+                left: "0.75rem",
+                top: "55%",
+                transform: "translateY(-50%)",
+                color: "#4B5563",
+              }}
+            >
+              Rp
+            </span>
+          </div>
         </div>
       </div>
     </div>

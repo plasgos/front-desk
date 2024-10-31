@@ -8,6 +8,7 @@ import {
   setOptionsScrollTarget,
 } from "../../../../../redux/modules/custom-landing-page/reducer";
 import { useDebounce } from "use-debounce";
+import Confirmation from "../../common/Confirmation";
 
 const ScrollTarget = ({
   previewSection,
@@ -155,80 +156,67 @@ const ScrollTarget = ({
 
   return (
     <div>
-      <div className="d-flex justify-content-end align-items-center border-bottom p-2 mb-3">
-        <div>
-          <CButton
-            onClick={handleCancel}
-            color="primary"
-            variant="outline"
-            className="mx-2"
-          >
-            Batal
-          </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-          <CButton onClick={handleConfirm} color="primary">
-            Selesai
-          </CButton>
+      <div className="p-3">
+        <div className="p-2 rounded-lg w-100 border  bg-secondary mb-3 ">
+          "Scroll Target" akan muncul di pilihan "Tipe link" pada tombol dan
+          link dalam halaman ini`
         </div>
-      </div>
-
-      <div className="p-2 rounded-lg w-100 border  bg-secondary mb-3 ">
-        "Scroll Target" akan muncul di pilihan "Tipe link" pada tombol dan link
-        dalam halaman ini`
-      </div>
-
-      <div className="d-flex align-items-center w-100 ">
-        <div className="form-group w-100 mb-2">
-          <label>Nama</label>
-          <input
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            type="text"
-            className="form-control"
-          />
-        </div>
-      </div>
-
-      <div className="form-group w-100 mb-2">
-        <label>Anchor</label>
-        <div className="d-flex align-items-center w-100  ">
-          <input
-            readOnly
-            value={`#${name}`}
-            type="text"
-            className="form-control"
-          />
-          <CButton
-            style={{ whiteSpace: "nowrap" }}
-            onClick={copyToClipboardAnchor}
-            color="primary"
-            variant="outline"
-            className="mx-2"
-          >
-            {isCopiedAnchor ? "Sudah Tercopy" : "Copy"}
-          </CButton>
-        </div>
-      </div>
-
-      <div className="form-group w-100 mb-2">
-        <label>Link</label>
 
         <div className="d-flex align-items-center w-100 ">
-          <input
-            readOnly
-            value={baseURLandAnchor}
-            type="text"
-            className="form-control"
-          />
-          <CButton
-            style={{ whiteSpace: "nowrap" }}
-            onClick={copyToClipboardLink}
-            color="primary"
-            variant="outline"
-            className="mx-2"
-          >
-            {isCopiedLink ? "Sudah Tercopy" : "Copy"}
-          </CButton>
+          <div className="form-group w-100 mb-2">
+            <label>Nama</label>
+            <input
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              type="text"
+              className="form-control"
+            />
+          </div>
+        </div>
+
+        <div className="form-group w-100 mb-2">
+          <label>Anchor</label>
+          <div className="d-flex align-items-center w-100  ">
+            <input
+              readOnly
+              value={`#${name}`}
+              type="text"
+              className="form-control"
+            />
+            <CButton
+              style={{ whiteSpace: "nowrap" }}
+              onClick={copyToClipboardAnchor}
+              color="primary"
+              variant="outline"
+              className="mx-2"
+            >
+              {isCopiedAnchor ? "Sudah Tercopy" : "Copy"}
+            </CButton>
+          </div>
+        </div>
+
+        <div className="form-group w-100 mb-2">
+          <label>Link</label>
+
+          <div className="d-flex align-items-center w-100 ">
+            <input
+              readOnly
+              value={baseURLandAnchor}
+              type="text"
+              className="form-control"
+            />
+            <CButton
+              style={{ whiteSpace: "nowrap" }}
+              onClick={copyToClipboardLink}
+              color="primary"
+              variant="outline"
+              className="mx-2"
+            >
+              {isCopiedLink ? "Sudah Tercopy" : "Copy"}
+            </CButton>
+          </div>
         </div>
       </div>
     </div>

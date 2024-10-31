@@ -271,7 +271,7 @@ const Image = ({
                     <CNavLink data-tab="background">Background</CNavLink>
                   </CNavItem>
                 </CNav>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
+                <CTabContent style={{ overflowY: "auto" }} className="p-3">
                   <CTabPane className="p-1" data-tab="image">
                     <div
                       style={{
@@ -309,7 +309,11 @@ const Image = ({
                     />
                   </CTabPane>
 
-                  <CTabPane className="p-1" data-tab="animation">
+                  <CTabPane
+                    style={{ height: "80vh" }}
+                    className="p-1"
+                    data-tab="animation"
+                  >
                     <AnimationControlMultiColumn
                       sectionId={sectionId}
                       columnId={columnId}

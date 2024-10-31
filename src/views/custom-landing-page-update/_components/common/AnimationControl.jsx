@@ -155,7 +155,7 @@ const AnimationControl = ({
   };
 
   return (
-    <div className="mb-3">
+    <div>
       <h5>{label}</h5>
 
       <div style={{ gap: 10 }} className="d-flex align-items-center">

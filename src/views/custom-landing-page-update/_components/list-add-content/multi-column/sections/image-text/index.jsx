@@ -392,10 +392,7 @@ const ImageText = ({
                     </CNavItem>
                   )}
                 </CNav>
-                <CTabContent
-                  style={{ height: 300, paddingRight: 5, overflowY: "auto" }}
-                  className="pt-3"
-                >
+                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
                   <CTabPane className="p-1" data-tab="image">
                     <div
                       style={{
@@ -448,7 +445,11 @@ const ImageText = ({
                     />
                   </CTabPane>
 
-                  <CTabPane className="p-1" data-tab="animation">
+                  <CTabPane
+                    style={{ height: "80vh" }}
+                    className="p-1"
+                    data-tab="animation"
+                  >
                     {selectedVariant.group === "Frosty" ? (
                       <AnimationControlMultiColumn
                         sectionId={sectionId}

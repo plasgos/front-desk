@@ -46,7 +46,7 @@ const viewIcon = {
 const CustomLandingPage = () => {
   const [pageSetting, setPageSetting] = useState({
     title: "",
-    maxWidth: "1440px",
+    maxWidth: 1280,
     bgColor: "#F5F5F5",
   });
   const [isResizing, setIsResizing] = useState(false);
@@ -233,6 +233,7 @@ const CustomLandingPage = () => {
     setPreviewFloatingSection,
     sectionFloatingBeforeEdit,
     handleColumnFocus,
+    pageSetting,
   });
 
   // const handleSave = () => {
@@ -605,6 +606,7 @@ const CustomLandingPage = () => {
                 setPreviewFloatingSection={setPreviewFloatingSection}
                 handleColumnFocus={handleColumnFocus}
                 handleSectionContentFocus={handleSectionContentFocus}
+                pageSetting={pageSetting}
               />
             )}
           </div>

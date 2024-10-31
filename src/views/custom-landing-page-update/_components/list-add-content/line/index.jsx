@@ -4,6 +4,7 @@ import { FaCheck } from "react-icons/fa6";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import StripeLineControl from "./StripeLineControl";
 import BasicLineControl from "./BasicLineControl";
+import Confirmation from "../../common/Confirmation";
 
 const Line = ({
   previewSection,
@@ -160,31 +161,9 @@ const Line = ({
 
   return (
     <div>
-      <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-        <div>
-          <CButton
-            onClick={handleCancel}
-            color="primary"
-            variant="outline"
-            className="mx-2"
-          >
-            Batal
-          </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-          <CButton onClick={handleConfirm} color="primary">
-            Selesai
-          </CButton>
-        </div>
-      </div>
-
-      <CTabContent
-        style={{
-          height: 370,
-          paddingRight: 5,
-          overflowY: "auto",
-          overflowX: "hidden",
-        }}
-      >
+      <CTabContent style={{ overflowY: "auto" }} className="p-3">
         {!isEditDesign && (
           <div className="mb-3">
             <div style={{ fontSize: 12 }} className="mt-3">

@@ -108,7 +108,10 @@ const FormSection = ({
             </CNavItem>
           </CNav>
 
-          <CTabContent>
+          <CTabContent
+            style={{ overflowY: "auto", height: "70vh" }}
+            className="p-3"
+          >
             <CTabPane className="p-1" data-tab="information">
               <Information
                 setPreviewSection={setPreviewSection}
@@ -144,7 +147,7 @@ const FormSection = ({
               )}
             </CTabPane>
 
-            <CTabPane className="p-1" data-tab="shipping">
+            <CTabPane className="" data-tab="shipping">
               <Shipping
                 previewSection={previewSection}
                 setPreviewSection={setPreviewSection}

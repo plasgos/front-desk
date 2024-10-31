@@ -23,6 +23,7 @@ import BackgroundTab from "../../common/BackgroundTab";
 import ColorPicker from "../../common/ColorPicker";
 import { CustomReactQuill } from "../../common/ReactQuill";
 import Confirmation from "../../common/Confirmation";
+import NavTabsCustom from "../../common/NavTabsCustom";
 
 const Text = ({
   previewSection,
@@ -166,58 +167,19 @@ const Text = ({
     isShowContent(false);
   };
 
+  const tabsData = [
+    { value: "konten", label: "Konten" },
+    { value: "animation", label: "Animasi" },
+    { value: "background", label: "Background" },
+  ];
+
   return (
     <div>
-      <div
-        style={{
-          position: "sticky", // Navbar tetap terlihat saat di-scroll
-          top: 0, // Menempel di atas container ini
-          backgroundColor: "#fff",
-          color: "#fff",
-          zIndex: 1, // Pastikan berada di atas konten list
-        }}
-      >
-        <Confirmation
-          handleCancel={handleCancel}
-          handleConfirm={handleConfirm}
-        />
-      </div>
-
-      {/* <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-        <div>
-          <CButton
-            onClick={handleCancel}
-            color="primary"
-            variant="outline"
-            className="mx-2"
-          >
-            Batal
-          </CButton>
-
-          <CButton onClick={handleConfirm} color="primary">
-            Selesai
-          </CButton>
-        </div>
-      </div> */}
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
       <CTabs activeTab="konten">
-        <CNav variant="tabs">
-          <CNavItem>
-            <CNavLink data-tab="konten">Konten</CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink data-tab="animation">Animasi</CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink data-tab="background">Background</CNavLink>
-          </CNavItem>
-        </CNav>
-        <CTabContent
-          style={{
-            paddingBottom: 50,
-          }}
-          className="pt-3"
-        >
+        <NavTabsCustom tabs={tabsData} />
+        <CTabContent style={{ overflowY: "auto" }} className="p-3">
           <CTabPane data-tab="konten">
             <div>
               <div className="d-flex align-items-center justify-content-between">
@@ -308,7 +270,11 @@ const Text = ({
             </div>
           </CTabPane>
 
-          <CTabPane className="p-1" data-tab="animation">
+          <CTabPane
+            style={{ height: "80vh" }}
+            className="p-1"
+            data-tab="animation"
+          >
             <AnimationControl
               label="Teks"
               currentSection={isEditingSection ? currentSection : settingText}

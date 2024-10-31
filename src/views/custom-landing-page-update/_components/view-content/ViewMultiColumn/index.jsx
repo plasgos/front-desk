@@ -22,6 +22,7 @@ import ViewFormActivity from "../ViewFormActivity";
 import ViewCountDown from "../ViewCountdown";
 import ViewStockCounter from "../ViewStockCounter";
 import ViewArrowMoved from "../ViewArrowMoved";
+import ViewFrames from "../ViewFrames";
 
 const ViewMultiColumn = forwardRef(
   (
@@ -36,6 +37,8 @@ const ViewMultiColumn = forwardRef(
       setPreviewSection,
       setColumnRef,
       focusedIndexColumn,
+      setSectionContentRef,
+      focusedIndexSectionContent,
     },
     ref
   ) => {
@@ -87,7 +90,7 @@ const ViewMultiColumn = forwardRef(
             ></div>
           ) : null}
 
-          {content?.column.map((column, columnIndex) => {
+          {content?.content.map((column) => {
             const paddingTop = column.background?.paddingTop
               ? `calc(16px + ${column.background.paddingTop}px)`
               : column.background?.paddingY
@@ -170,15 +173,19 @@ const ViewMultiColumn = forwardRef(
 
             return (
               <div
-                ref={(el) => setColumnRef(el, columnIndex)}
+                ref={(el) => {
+                  if (setColumnRef) {
+                    setColumnRef(el, column?.id);
+                  }
+                }}
                 style={{
                   ...wrapperPreview,
-                  ...(focusedIndexColumn === columnIndex && {
+                  ...(focusedIndexColumn === column?.id && {
                     border: "2px solid green",
                   }),
                 }}
                 className={`${
-                  focusedIndexColumn === columnIndex
+                  focusedIndexColumn === column?.id
                     ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20  "
                     : ""
                 }`}
@@ -370,7 +377,21 @@ const ViewMultiColumn = forwardRef(
                         )}
 
                         {contentItem.name === "arrow-moved" && (
-                          <ViewArrowMoved
+                          <ViewArrowMoved content={contentItem} />
+                        )}
+
+                        {contentItem.name === "frames" && (
+                          <ViewFrames
+                            content={contentItem}
+                            setSectionContentRef={setSectionContentRef}
+                            focusedIndexSectionContent={
+                              focusedIndexSectionContent
+                            }
+                          />
+                        )}
+
+                        {contentItem.name === "multi-column" && (
+                          <ViewMultiColumn
                             setPreviewSection={setPreviewSection}
                             content={contentItem}
                           />

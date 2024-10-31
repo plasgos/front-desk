@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import {
   maxColumnFAQOptions,
   shadowOptions,
-} from "../views/custom-landing-page/_components/SelectOptions";
+} from "../views/custom-landing-page-update/_components/SelectOptions";
 
 const useSectionStyle = (currentSection) => {
   // Define state using useState

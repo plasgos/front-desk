@@ -24,6 +24,7 @@ import useAnimatedVisibility from "../../../../hooks/useAnimatedVisibility";
 import ViewMultiColumn from "./ViewMultiColumn";
 import ViewArrowMoved from "./ViewArrowMoved";
 import ViewSliderImage from "./ViewSliderImage";
+import ViewFrames from "./ViewFrames";
 const ViewFloatingContent = forwardRef(
   ({
     containerRef,
@@ -219,9 +220,14 @@ const ViewFloatingContent = forwardRef(
               )}
 
               {section.name === "arrow-moved" && (
-                <ViewArrowMoved
-                  setPreviewSection={setPreviewSection}
+                <ViewArrowMoved content={section} />
+              )}
+
+              {section.name === "frames" && (
+                <ViewFrames
                   content={section}
+                  setSectionContentRef={setSectionContentRef}
+                  focusedIndexSectionContent={focusedIndexSectionContent}
                 />
               )}
 

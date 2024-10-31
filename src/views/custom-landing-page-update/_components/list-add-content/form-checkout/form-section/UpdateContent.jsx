@@ -394,13 +394,13 @@ const UpdateContent = ({
   }, [isEditingContent]);
 
   return (
-    <div>
+    <div style={{ height: "70vh" }} className="p-3">
       <div
         style={{
           gap: 10,
           display: isSelectVariantMultiSelect ? "none" : "flex",
         }}
-        className=" align-items-center my-3"
+        className="align-items-center"
       >
         <SelectOptions
           label="Tipe"

@@ -1,14 +1,4 @@
-import {
-  CButton,
-  CCol,
-  CNav,
-  CNavItem,
-  CNavLink,
-  CRow,
-  CTabContent,
-  CTabPane,
-  CTabs,
-} from "@coreui/react";
+import { CButton, CTabContent, CTabPane, CTabs } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 
 import { createUniqueID } from "../../../../../lib/unique-id";
@@ -18,6 +8,8 @@ import SelectVariant from "../../common/SelectVariant";
 import UpdateContent from "./UpdateContent";
 
 import handPointing from "../../../../../assets/pointing-down.png";
+import Confirmation from "../../common/Confirmation";
+import NavTabsCustom from "../../common/NavTabsCustom";
 
 const optionVariant = [
   {
@@ -213,92 +205,66 @@ const ArrowMoved = ({
     }
   };
 
+  const tabsData = [
+    { value: "image", label: "Gambar" },
+    { value: "background", label: "Background" },
+  ];
+
   return (
     <div>
-      <CRow>
-        <CCol>
-          <div>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
+      {isSelectVariant ? (
+        <SelectVariant
+          optionVariant={optionVariant}
+          selectedVariant={selectedVariant}
+          onChangeVariant={handleVariantChange}
+        />
+      ) : (
+        <CTabs activeTab="image">
+          <NavTabsCustom tabs={tabsData} />
+
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <CTabPane className="p-1" data-tab="image">
+              <div
+                style={{
+                  boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
+                }}
+                className="mb-3 border-bottom pb-3"
+              >
+                <div style={{ fontSize: 12 }} className="mb-2">
+                  Desain
+                </div>
+                <div className="d-flex align-items-center">
+                  <div className="mr-3">{selectedVariant.label}</div>
+                  <CButton onClick={openVariants} color="primary">
+                    Ubah
+                  </CButton>
+                </div>
               </div>
-            </div>
 
-            {isSelectVariant ? (
-              <SelectVariant
-                optionVariant={optionVariant}
-                selectedVariant={selectedVariant}
-                onChangeVariant={handleVariantChange}
+              <UpdateContent
+                setPreviewSection={setPreviewSection}
+                currentSection={
+                  isEditingSection ? currentSection : selectedCurrentSection
+                }
               />
-            ) : (
-              <CTabs activeTab="image">
-                <CNav variant="tabs">
-                  <CNavItem>
-                    <CNavLink data-tab="image">Gambar</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="background">Background</CNavLink>
-                  </CNavItem>
-                </CNav>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <CTabPane className="p-1" data-tab="image">
-                    <div
-                      style={{
-                        boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
-                      }}
-                      className="mb-3 border-bottom pb-3"
-                    >
-                      <div style={{ fontSize: 12 }} className="mb-2">
-                        Desain
-                      </div>
-                      <div className="d-flex align-items-center">
-                        <div className="mr-3">{selectedVariant.label}</div>
-                        <CButton onClick={openVariants} color="primary">
-                          Ubah
-                        </CButton>
-                      </div>
-                    </div>
+            </CTabPane>
 
-                    <UpdateContent
-                      setPreviewSection={setPreviewSection}
-                      currentSection={
-                        isEditingSection
-                          ? currentSection
-                          : selectedCurrentSection
-                      }
-                    />
-                  </CTabPane>
-
-                  <CTabPane
-                    style={{ overflowX: "hidden", height: "100%" }}
-                    className="p-1"
-                    data-tab="background"
-                  >
-                    <BackgroundTab
-                      currentSection={
-                        isEditingSection ? currentSection : setting
-                      }
-                      setPreviewSection={setPreviewSection}
-                      type={isEditingSection ? "edit" : "add"}
-                    />
-                  </CTabPane>
-                </CTabContent>
-              </CTabs>
-            )}
-          </div>
-        </CCol>
-      </CRow>
+            <CTabPane
+              style={{ overflowX: "hidden", height: "100%" }}
+              className="p-1"
+              data-tab="background"
+            >
+              <BackgroundTab
+                currentSection={isEditingSection ? currentSection : setting}
+                setPreviewSection={setPreviewSection}
+                type={isEditingSection ? "edit" : "add"}
+              />
+            </CTabPane>
+          </CTabContent>
+        </CTabs>
+      )}
     </div>
   );
 };

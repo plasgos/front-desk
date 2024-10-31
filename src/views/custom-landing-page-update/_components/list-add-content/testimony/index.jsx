@@ -1,32 +1,30 @@
-import React, { useCallback, useEffect, useState } from "react";
 import {
-  CButton,
   CCard,
   CCardBody,
-  CCol,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
   CTabs,
 } from "@coreui/react";
+import React, { useCallback, useEffect, useState } from "react";
 
-import { IoAdd } from "react-icons/io5";
-import { createUniqueID } from "../../../../../lib/unique-id";
-import SelectOptions from "../../common/SelectOptions";
 import { FaStar } from "react-icons/fa6";
+import { IoAdd } from "react-icons/io5";
 import profilePicture from "../../../../../assets/profile.jpg";
-import DesignTab from "./DesignTab";
-import { columnTestimonyOptions } from "../../SelectOptions";
-import InputRangeWithNumber from "../../common/InputRangeWithNumber";
-import { DraggableList } from "../../common/DraggableList";
-import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import { useMoveSection } from "../../../../../hooks/useMoveSection";
+import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
+import { createUniqueID } from "../../../../../lib/unique-id";
+import { columnTestimonyOptions } from "../../SelectOptions";
 import BackgroundTab from "../../common/BackgroundTab";
+import { DraggableList } from "../../common/DraggableList";
+import InputRangeWithNumber from "../../common/InputRangeWithNumber";
+import SelectOptions from "../../common/SelectOptions";
+import DesignTab from "./DesignTab";
 import { UpdateContents } from "./UpdateContents";
 import { UpdateShapes } from "./UpdateShapes";
+import Confirmation from "../../common/Confirmation";
 
 const Testimony = ({
   previewSection,
@@ -392,287 +390,246 @@ const Testimony = ({
 
   return (
     <div>
-      <CRow>
-        <CCol>
-          <div>
-            <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-              <div>
-                <CButton
-                  onClick={handleCancel}
-                  color="primary"
-                  variant="outline"
-                  className="mx-2"
-                >
-                  Batal
-                </CButton>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-                <CButton onClick={handleConfirm} color="primary">
-                  Selesai
-                </CButton>
-              </div>
-            </div>
-
-            {isAddContent ? (
-              <CTabs>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <UpdateContents
-                    idSection={
-                      isEditingSection ? currentSection.id : setting.id
-                    }
-                    currentContent={isEditingSection ? currentSection : setting}
-                    setPreviewSection={setPreviewSection}
-                  />
-                </CTabContent>
-              </CTabs>
-            ) : isEditingContent ? (
-              <CTabs>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <UpdateContents
-                    idSection={
-                      isEditingSection ? currentSection.id : setting.id
-                    }
-                    currentContent={selectedContent}
-                    setPreviewSection={setPreviewSection}
-                    isEditingContent={true}
-                  />
-                </CTabContent>
-              </CTabs>
-            ) : isAddShape ? (
-              <CTabs>
-                <CTabContent
-                  style={{
-                    height: 340,
-                    paddingRight: 5,
-                    overflowY: "auto",
-                    overflowX: "hidden",
-                  }}
-                  className="pt-3"
-                >
-                  <UpdateShapes
-                    idSection={
-                      isEditingSection ? currentSection.id : setting.id
-                    }
-                    currentShape={[]}
-                    setPreviewSection={setPreviewSection}
-                  />
-                </CTabContent>
-              </CTabs>
-            ) : isEditingShape ? (
-              <CTabs>
-                <CTabContent
-                  style={{
-                    height: 340,
-                    paddingRight: 5,
-                    overflowY: "auto",
-                  }}
-                  className="pt-3"
-                >
-                  <UpdateShapes
-                    idSection={
-                      isEditingSection ? currentSection.id : setting.id
-                    }
-                    currentShape={selectedSectionShape}
-                    setPreviewSection={setPreviewSection}
-                    isEditingShape={true}
-                  />
-                </CTabContent>
-              </CTabs>
-            ) : (
-              <CTabs activeTab={activeTab}>
-                <CNav variant="tabs">
-                  <CNavItem>
-                    <CNavLink data-tab="konten">Konten</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="desain">Desain</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="tirai">Tirai</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="wadah">Wadah</CNavLink>
-                  </CNavItem>
-                </CNav>
-                <CTabContent style={{ overflowY: "auto" }} className="pt-3">
-                  <CTabPane className="p-1" data-tab="konten">
-                    {!isAddContent && !isEditingContent && (
-                      <>
-                        <div
-                          style={{ gap: 10 }}
-                          className="d-flex align-items-center "
-                        >
-                          <SelectOptions
-                            label="Kolom"
-                            options={columnTestimonyOptions}
-                            onChange={handleChangeColumnTestimony}
-                            value={selectedColumnTestimony}
-                            width="50"
-                          />
-                        </div>
-                        <div>
-                          {previewSection
-                            .filter((section) =>
-                              isEditingSection
-                                ? section.id === currentSection.id
-                                : section.id === setting.id
-                            )
-                            .map((section, i) => renderSection(section, i))}
-                        </div>
-                        <CCard
-                          style={{ cursor: "pointer" }}
-                          onClick={() => setIsAddContent(true)}
-                        >
-                          <CCardBody className="p-1">
-                            <div className="d-flex align-items-center ">
-                              <IoAdd
-                                style={{
-                                  cursor: "pointer",
-                                  margin: "0px 10px 0px 6px",
-                                }}
-                                size={18}
-                              />
-
-                              <div>Tambah Konten</div>
-                            </div>
-                          </CCardBody>
-                        </CCard>
-                      </>
-                    )}
-                  </CTabPane>
-                  <CTabPane
-                    style={{ overflowX: "hidden" }}
-                    className="p-1"
-                    data-tab="desain"
+      {isAddContent ? (
+        <CTabs>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <UpdateContents
+              idSection={isEditingSection ? currentSection.id : setting.id}
+              currentContent={isEditingSection ? currentSection : setting}
+              setPreviewSection={setPreviewSection}
+            />
+          </CTabContent>
+        </CTabs>
+      ) : isEditingContent ? (
+        <CTabs>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <UpdateContents
+              idSection={isEditingSection ? currentSection.id : setting.id}
+              currentContent={selectedContent}
+              setPreviewSection={setPreviewSection}
+              isEditingContent={true}
+            />
+          </CTabContent>
+        </CTabs>
+      ) : isAddShape ? (
+        <CTabs>
+          <CTabContent
+            style={{
+              height: 340,
+              paddingRight: 5,
+              overflowY: "auto",
+              overflowX: "hidden",
+            }}
+            className="pt-3"
+          >
+            <UpdateShapes
+              idSection={isEditingSection ? currentSection.id : setting.id}
+              currentShape={[]}
+              setPreviewSection={setPreviewSection}
+            />
+          </CTabContent>
+        </CTabs>
+      ) : isEditingShape ? (
+        <CTabs>
+          <CTabContent
+            style={{
+              height: 340,
+              paddingRight: 5,
+              overflowY: "auto",
+            }}
+            className="pt-3"
+          >
+            <UpdateShapes
+              idSection={isEditingSection ? currentSection.id : setting.id}
+              currentShape={selectedSectionShape}
+              setPreviewSection={setPreviewSection}
+              isEditingShape={true}
+            />
+          </CTabContent>
+        </CTabs>
+      ) : (
+        <CTabs activeTab={activeTab}>
+          <CNav variant="tabs">
+            <CNavItem>
+              <CNavLink data-tab="konten">Konten</CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink data-tab="desain">Desain</CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink data-tab="tirai">Tirai</CNavLink>
+            </CNavItem>
+            <CNavItem>
+              <CNavLink data-tab="wadah">Wadah</CNavLink>
+            </CNavItem>
+          </CNav>
+          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+            <CTabPane className="p-1" data-tab="konten">
+              {!isAddContent && !isEditingContent && (
+                <>
+                  <div
+                    style={{ gap: 10 }}
+                    className="d-flex align-items-center "
                   >
-                    {Object.keys(isEditingSection ? currentSection : setting)
-                      .length > 0 ? (
-                      <DesignTab
-                        currentSection={
-                          isEditingSection ? currentSection : setting
-                        }
-                        setPreviewSection={setPreviewSection}
-                        selectedColum={selectedColumnTestimony}
-                        setSelectedColum={(value) =>
-                          setSelectedColumnTestimony(value)
-                        }
-                        paddingTop={paddingTop}
-                        setPaddingTop={(value) => setPaddingTop(value)}
-                        paddingBottom={paddingBottom}
-                        setPaddingBottom={(value) => setPaddingBottom(value)}
-                        isEditingDesignTab={isEditingSection ? true : false}
-                      />
-                    ) : (
-                      <div>Loading...</div>
-                    )}
-                  </CTabPane>
-
-                  <CTabPane
-                    style={{ overflowX: "hidden" }}
-                    className="p-1"
-                    data-tab="tirai"
-                  >
-                    <div>
-                      <InputRangeWithNumber
-                        label="Ruang Pengisi Atas"
-                        value={paddingTop}
-                        onChange={(newValue) => {
-                          setPaddingTop(newValue);
-                          handleUpdateSectionWrapperStyle(
-                            "paddingTop",
-                            newValue
-                          );
-                        }}
-                        min={0}
-                        max={120}
-                        onBlur={() =>
-                          handleSetValueWhenBlurWrapperStyle(
-                            paddingTop,
-                            0,
-                            120,
-                            "paddingTop"
-                          )
-                        }
-                      />
-                      <InputRangeWithNumber
-                        label="Ruang Pengisi Bawah"
-                        value={paddingBottom}
-                        onChange={(newValue) => {
-                          setPaddingBottom(newValue);
-                          handleUpdateSectionWrapperStyle(
-                            "paddingBottom",
-                            newValue
-                          );
-                        }}
-                        min={0}
-                        max={120}
-                        onBlur={() =>
-                          handleSetValueWhenBlurWrapperStyle(
-                            paddingBottom,
-                            0,
-                            120,
-                            "paddingBottom"
-                          )
-                        }
-                      />
-                    </div>
-
-                    <div>
-                      {!isAddShape && !isEditingShape && (
-                        <>
-                          <div>
-                            {previewSection
-                              .filter((section) =>
-                                isEditingSection
-                                  ? section.id === currentSection.id
-                                  : section.id === setting.id
-                              )
-                              .map((section, i) =>
-                                renderSectionShape(section, i)
-                              )}
-                          </div>
-
-                          <CCard
-                            style={{ cursor: "pointer" }}
-                            onClick={() => setIsAddShape(true)}
-                          >
-                            <CCardBody className="p-1">
-                              <div className="d-flex align-items-center ">
-                                <IoAdd
-                                  style={{
-                                    cursor: "pointer",
-                                    margin: "0px 10px 0px 6px",
-                                  }}
-                                  size={18}
-                                />
-
-                                <div>Tambah Konten</div>
-                              </div>
-                            </CCardBody>
-                          </CCard>
-                        </>
-                      )}
-                    </div>
-                  </CTabPane>
-
-                  <CTabPane
-                    style={{ overflowX: "hidden", height: "100%" }}
-                    className="p-1"
-                    data-tab="wadah"
-                  >
-                    <BackgroundTab
-                      currentSection={
-                        isEditingSection ? currentSection : setting
-                      }
-                      setPreviewSection={setPreviewSection}
-                      type={isEditingSection ? "edit" : "add"}
+                    <SelectOptions
+                      label="Kolom"
+                      options={columnTestimonyOptions}
+                      onChange={handleChangeColumnTestimony}
+                      value={selectedColumnTestimony}
+                      width="50"
                     />
-                  </CTabPane>
-                </CTabContent>
-              </CTabs>
-            )}
-          </div>
-        </CCol>
-      </CRow>
+                  </div>
+                  <div>
+                    {previewSection
+                      .filter((section) =>
+                        isEditingSection
+                          ? section.id === currentSection.id
+                          : section.id === setting.id
+                      )
+                      .map((section, i) => renderSection(section, i))}
+                  </div>
+                  <CCard
+                    style={{ cursor: "pointer" }}
+                    onClick={() => setIsAddContent(true)}
+                  >
+                    <CCardBody className="p-1">
+                      <div className="d-flex align-items-center ">
+                        <IoAdd
+                          style={{
+                            cursor: "pointer",
+                            margin: "0px 10px 0px 6px",
+                          }}
+                          size={18}
+                        />
+
+                        <div>Tambah Konten</div>
+                      </div>
+                    </CCardBody>
+                  </CCard>
+                </>
+              )}
+            </CTabPane>
+            <CTabPane
+              style={{ overflowX: "hidden" }}
+              className="p-1"
+              data-tab="desain"
+            >
+              {Object.keys(isEditingSection ? currentSection : setting).length >
+              0 ? (
+                <DesignTab
+                  currentSection={isEditingSection ? currentSection : setting}
+                  setPreviewSection={setPreviewSection}
+                  selectedColum={selectedColumnTestimony}
+                  setSelectedColum={(value) =>
+                    setSelectedColumnTestimony(value)
+                  }
+                  paddingTop={paddingTop}
+                  setPaddingTop={(value) => setPaddingTop(value)}
+                  paddingBottom={paddingBottom}
+                  setPaddingBottom={(value) => setPaddingBottom(value)}
+                  isEditingDesignTab={isEditingSection ? true : false}
+                />
+              ) : (
+                <div>Loading...</div>
+              )}
+            </CTabPane>
+
+            <CTabPane
+              style={{ overflowX: "hidden" }}
+              className="p-1"
+              data-tab="tirai"
+            >
+              <div>
+                <InputRangeWithNumber
+                  label="Ruang Pengisi Atas"
+                  value={paddingTop}
+                  onChange={(newValue) => {
+                    setPaddingTop(newValue);
+                    handleUpdateSectionWrapperStyle("paddingTop", newValue);
+                  }}
+                  min={0}
+                  max={120}
+                  onBlur={() =>
+                    handleSetValueWhenBlurWrapperStyle(
+                      paddingTop,
+                      0,
+                      120,
+                      "paddingTop"
+                    )
+                  }
+                />
+                <InputRangeWithNumber
+                  label="Ruang Pengisi Bawah"
+                  value={paddingBottom}
+                  onChange={(newValue) => {
+                    setPaddingBottom(newValue);
+                    handleUpdateSectionWrapperStyle("paddingBottom", newValue);
+                  }}
+                  min={0}
+                  max={120}
+                  onBlur={() =>
+                    handleSetValueWhenBlurWrapperStyle(
+                      paddingBottom,
+                      0,
+                      120,
+                      "paddingBottom"
+                    )
+                  }
+                />
+              </div>
+
+              <div>
+                {!isAddShape && !isEditingShape && (
+                  <>
+                    <div>
+                      {previewSection
+                        .filter((section) =>
+                          isEditingSection
+                            ? section.id === currentSection.id
+                            : section.id === setting.id
+                        )
+                        .map((section, i) => renderSectionShape(section, i))}
+                    </div>
+
+                    <CCard
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setIsAddShape(true)}
+                    >
+                      <CCardBody className="p-1">
+                        <div className="d-flex align-items-center ">
+                          <IoAdd
+                            style={{
+                              cursor: "pointer",
+                              margin: "0px 10px 0px 6px",
+                            }}
+                            size={18}
+                          />
+
+                          <div>Tambah Konten</div>
+                        </div>
+                      </CCardBody>
+                    </CCard>
+                  </>
+                )}
+              </div>
+            </CTabPane>
+
+            <CTabPane
+              style={{ overflowX: "hidden", height: "100%" }}
+              className="p-1"
+              data-tab="wadah"
+            >
+              <BackgroundTab
+                currentSection={isEditingSection ? currentSection : setting}
+                setPreviewSection={setPreviewSection}
+                type={isEditingSection ? "edit" : "add"}
+              />
+            </CTabPane>
+          </CTabContent>
+        </CTabs>
+      )}
     </div>
   );
 };

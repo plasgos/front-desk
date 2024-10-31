@@ -1,5 +1,4 @@
 import {
-  CButton,
   CNav,
   CNavItem,
   CNavLink,
@@ -18,8 +17,9 @@ import {
 } from "../../../../../../../redux/modules/custom-landing-page/reducer";
 import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
 import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
-import ContentTab from "./ContentTab";
 import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import ContentTab from "./ContentTab";
+import Confirmation from "../../../../common/Confirmation";
 
 export const fontSizeQuoteOptions = [
   { value: "tw-text-base", label: "Normal" },
@@ -110,22 +110,7 @@ const Quote = ({
 
   return (
     <div>
-      <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-        <div>
-          <CButton
-            onClick={handleCancel}
-            color="primary"
-            variant="outline"
-            className="mx-2"
-          >
-            Batal
-          </CButton>
-
-          <CButton onClick={handleConfirm} color="primary">
-            Selesai
-          </CButton>
-        </div>
-      </div>
+      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
       <CTabs activeTab="konten">
         <CNav variant="tabs">
@@ -136,7 +121,7 @@ const Quote = ({
             <CNavLink data-tab="background">Background</CNavLink>
           </CNavItem>
         </CNav>
-        <CTabContent style={{ overflowY: "auto" }} className="pt-3">
+        <CTabContent style={{ overflowY: "auto" }} className="p-3">
           <CTabPane className="p-1" data-tab="konten">
             <ContentTab
               currentSection={isEditingSection ? currentSection : setting}
