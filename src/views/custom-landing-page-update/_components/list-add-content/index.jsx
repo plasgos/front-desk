@@ -450,6 +450,8 @@ const ListContent = ({
           style={{
             overflowY: "auto",
             paddingTop: 10,
+            height: "calc(100vh - 139px)",
+            paddingBottom: 50,
           }}
         >
           {!addContent && filteredContents.length > 0 ? (

@@ -19,7 +19,8 @@ const ContainerMenu = ({ children, className = "p-3" }) => {
     <div
       style={{
         width: "100%",
-        height: "100vh",
+        height: "calc(100vh - 100px)",
+        overflowY: "auto",
       }}
       className={className}
     >

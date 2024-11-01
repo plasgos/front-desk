@@ -177,7 +177,10 @@ const StockCounter = ({
                   <CNavLink data-tab="background">Background</CNavLink>
                 </CNavItem>
               </CNav>
-              <CTabContent style={{ overflowY: "auto" }} className="p-3">
+              <CTabContent
+                style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+                className="p-3"
+              >
                 <CTabPane className="p-1" data-tab="design">
                   <UpdateDesign
                     sectionId={sectionId}

@@ -511,8 +511,7 @@ const CustomLandingPage = () => {
 
           <div
             style={{
-              flex: 1, // Ambil sisa ruang antara navbar dan footer
-              overflowY: "auto",
+              flex: 1,
             }}
           >
             {!editing && !isAddContent && (
@@ -614,6 +613,9 @@ const CustomLandingPage = () => {
             style={{
               zIndex: 10,
               backgroundColor: "white",
+              width: "100%",
+              position: "absolute",
+              bottom: 0,
             }}
             className="d-flex justify-content-between align-items-center border rounded-sm p-2 shadow-sm"
           >

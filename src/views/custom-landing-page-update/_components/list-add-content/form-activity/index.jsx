@@ -206,9 +206,7 @@ const FormActivity = ({
             </CNavItem>
           </CNav>
           <CTabContent
-            style={{
-              overflowY: "auto",
-            }}
+            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
             className="p-3"
           >
             <CTabPane className="p-1" data-tab="content">

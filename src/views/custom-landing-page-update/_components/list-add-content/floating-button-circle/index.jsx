@@ -51,18 +51,6 @@ const FloatingButtonCircle = ({
 
   const [isListIconVisible, setIsListIconVisible] = useState(false);
 
-  //   useEffect(() => {
-  //     if (isEditingSection) {
-  //       const currentDistance = distanceOptions.find(
-  //         (opt) => opt.value === currentSection?.wrapperStyle?.distance
-  //       );
-
-  //       if (currentDistance) {
-  //         setSelectedDistance(currentDistance);
-  //       }
-  //     }
-  //   }, [currentSection, isEditingSection]);
-
   const handleChangeWrapperStyle = (key, value) => {
     setPreviewFloatingSection((arr) =>
       arr.map((item) => {
@@ -265,7 +253,10 @@ const FloatingButtonCircle = ({
         />
       ) : (
         <CTabs activeTab="konten">
-          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+          <CTabContent
+            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+            className="p-3"
+          >
             <CTabPane className="p-1" data-tab="konten">
               {!isAddContent && !isEditingContent && (
                 <>

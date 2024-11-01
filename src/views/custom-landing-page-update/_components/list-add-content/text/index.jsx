@@ -3,7 +3,7 @@ import {
   CLabel,
   CTabContent,
   CTabPane,
-  CTabs
+  CTabs,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -175,7 +175,10 @@ const Text = ({
 
       <CTabs activeTab="konten">
         <NavTabsCustom tabs={tabsData} />
-        <CTabContent style={{ overflowY: "auto" }} className="p-3">
+        <CTabContent
+          style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+          className="p-3"
+        >
           <CTabPane data-tab="konten">
             <div>
               <div className="d-flex align-items-center justify-content-between">

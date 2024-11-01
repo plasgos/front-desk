@@ -163,7 +163,10 @@ const Line = ({
     <div>
       <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
 
-      <CTabContent style={{ overflowY: "auto" }} className="p-3">
+      <CTabContent
+        style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+        className="p-3"
+      >
         {!isEditDesign && (
           <div className="mb-3">
             <div style={{ fontSize: 12 }} className="mt-3">

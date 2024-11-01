@@ -394,7 +394,10 @@ const Testimony = ({
 
       {isAddContent ? (
         <CTabs>
-          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+          <CTabContent
+            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+            className="p-3"
+          >
             <UpdateContents
               idSection={isEditingSection ? currentSection.id : setting.id}
               currentContent={isEditingSection ? currentSection : setting}
@@ -404,7 +407,10 @@ const Testimony = ({
         </CTabs>
       ) : isEditingContent ? (
         <CTabs>
-          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+          <CTabContent
+            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+            className="p-3"
+          >
             <UpdateContents
               idSection={isEditingSection ? currentSection.id : setting.id}
               currentContent={selectedContent}
@@ -465,7 +471,10 @@ const Testimony = ({
               <CNavLink data-tab="wadah">Wadah</CNavLink>
             </CNavItem>
           </CNav>
-          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+          <CTabContent
+            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+            className="p-3"
+          >
             <CTabPane className="p-1" data-tab="konten">
               {!isAddContent && !isEditingContent && (
                 <>

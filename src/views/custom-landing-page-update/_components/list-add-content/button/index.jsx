@@ -6,7 +6,7 @@ import {
   CNavLink,
   CTabContent,
   CTabPane,
-  CTabs
+  CTabs,
 } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -277,7 +277,10 @@ const Buttons = ({
 
       {isAddContent ? (
         <CTabs>
-          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+          <CTabContent
+            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+            className="p-3"
+          >
             <UpdateContent
               idSection={isEditingSection ? currentSection.id : setting.id}
               currentContent={isEditingSection ? currentSection : setting}
@@ -289,7 +292,10 @@ const Buttons = ({
         </CTabs>
       ) : isEditingContent ? (
         <CTabs>
-          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+          <CTabContent
+            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+            className="p-3"
+          >
             <UpdateContent
               idSection={isEditingSection ? currentSection.id : setting.id}
               currentContent={selectedContent}
@@ -310,7 +316,10 @@ const Buttons = ({
               <CNavLink data-tab="wadah">Wadah</CNavLink>
             </CNavItem>
           </CNav>
-          <CTabContent style={{ overflowY: "auto" }} className="p-3">
+          <CTabContent
+            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+            className="p-3"
+          >
             <CTabPane className="p-1" data-tab="konten">
               {!isAddContent && !isEditingContent && (
                 <>
