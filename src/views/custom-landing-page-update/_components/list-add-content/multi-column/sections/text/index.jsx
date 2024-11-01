@@ -1,5 +1,4 @@
 import {
-  CButton,
   CFormGroup,
   CLabel,
   CNav,
@@ -7,7 +6,7 @@ import {
   CNavLink,
   CTabContent,
   CTabPane,
-  CTabs,
+  CTabs
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -25,12 +24,12 @@ import {
   setIsEditingSection,
 } from "../../../../../../../redux/modules/custom-landing-page/reducer";
 import ColorPicker from "../../../../common/ColorPicker";
+import Confirmation from "../../../../common/Confirmation";
 import { CustomReactQuill } from "../../../../common/ReactQuill";
 import AnimationControlMultiColumn from "../../common/AnimationControlMultiColumn";
 import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
 import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
-import Confirmation from "../../../../common/Confirmation";
 
 const Text = ({
   previewSection,

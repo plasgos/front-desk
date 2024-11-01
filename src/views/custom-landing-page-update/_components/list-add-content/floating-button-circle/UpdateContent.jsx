@@ -17,6 +17,7 @@ import WhatsAppInput from "../../common/WhatAppsInput";
 import FacebookPixel from "../../FacebookPixel";
 import { shadowOptions } from "../../SelectOptions";
 import { setIsOpenPopup } from "../../../../../redux/modules/custom-landing-page/reducer";
+import Confirmation from "../../common/Confirmation";
 
 export const variantButton = [
   { value: "fill", label: "Fill" },
@@ -54,6 +55,7 @@ const UpdateContent = ({
       ? currentContent?.icon
       : { prefix: "fab", iconName: "whatsapp" }
   );
+
   const [imageUrl, setImageUrl] = useState(
     isEditingContent ? currentContent?.image : ""
   );
@@ -505,22 +507,10 @@ const UpdateContent = ({
     <>
       {isListIconVisible ? (
         <div>
-          <div className="d-flex justify-content-end align-items-center border-bottom p-2 mb-3">
-            <div>
-              <CButton
-                onClick={handleCancel}
-                color="primary"
-                variant="outline"
-                className="mx-2"
-              >
-                Batal
-              </CButton>
-
-              <CButton onClick={handleConfirm} color="primary">
-                Selesai
-              </CButton>
-            </div>
-          </div>
+          <Confirmation
+            handleCancel={handleCancel}
+            handleConfirm={handleConfirm}
+          />
 
           <IconPicker
             value={icon}
@@ -528,7 +518,7 @@ const UpdateContent = ({
           />
         </div>
       ) : (
-        <div>
+        <div className="p-3">
           <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
             <ColorPicker
               initialColor={selectedColorButton}

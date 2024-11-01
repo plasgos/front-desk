@@ -2,9 +2,6 @@ import {
   CButton,
   CCard,
   CCardBody,
-  CNav,
-  CNavItem,
-  CNavLink,
   CTabContent,
   CTabPane,
   CTabs,
@@ -15,12 +12,12 @@ import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import BackgroundTab from "../../common/BackgroundTab";
+import Confirmation from "../../common/Confirmation";
 import { DraggableList } from "../../common/DraggableList";
+import NavTabsCustom from "../../common/NavTabsCustom";
 import SelectVariant from "../../common/SelectVariant";
 import DesignTab from "./DesignTab";
 import UpdateContent from "./UpdateContent";
-import Confirmation from "../../common/Confirmation";
-import NavTabsCustom from "../../common/NavTabsCustom";
 
 const optionVariant = [
   { group: "Plain", options: [{ id: "1", value: "simple", label: "Simple" }] },
@@ -517,7 +514,10 @@ const FAQ = ({
               )}
             </CTabPane>
             <CTabPane
-              style={{ overflowX: "hidden" }}
+              style={{
+                overflowX: "hidden",
+                height: "calc(100vh - 139px)",
+              }}
               className="p-1"
               data-tab="desain"
             >

@@ -1,22 +1,20 @@
 import {
   CButton,
-  CCol,
   CNav,
   CNavItem,
   CNavLink,
-  CRow,
   CTabContent,
   CTabPane,
-  CTabs,
+  CTabs
 } from "@coreui/react";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import BackgroundTab from "../../common/BackgroundTab";
+import Confirmation from "../../common/Confirmation";
 import SelectVariant from "../../common/SelectVariant";
 import FinishControl from "./FinishedControl";
 import UpdateContent from "./UpdateContent";
-import Confirmation from "../../common/Confirmation";
 
 const optionVariant = [
   {

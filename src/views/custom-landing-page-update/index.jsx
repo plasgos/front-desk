@@ -512,8 +512,7 @@ const CustomLandingPage = () => {
           <div
             style={{
               flex: 1, // Ambil sisa ruang antara navbar dan footer
-              overflowY: "auto", // Scrollable jika kontennya panjang
-              // padding: "0px 20px",
+              overflowY: "auto",
             }}
           >
             {!editing && !isAddContent && (

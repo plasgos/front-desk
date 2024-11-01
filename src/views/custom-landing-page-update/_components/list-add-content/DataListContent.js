@@ -29,7 +29,7 @@ import {
 } from "react-icons/pi";
 import { RxButton, RxSwitch, RxTimer } from "react-icons/rx";
 import { TfiLayoutAccordionSeparated } from "react-icons/tfi";
-import { VscSymbolInterface } from "react-icons/vsc";
+import { VscFileSubmodule, VscSymbolInterface } from "react-icons/vsc";
 
 export const dataListContent = [
   {
@@ -203,6 +203,12 @@ export const dataListContent = [
         title: "Bingkai",
         icon: <PiFrameCornersThin style={{ marginRight: 5 }} size={24} />,
         action: (setAddContent) => setAddContent("frames"),
+      },
+      {
+        name: "tabs",
+        title: "Tabs",
+        icon: <VscFileSubmodule style={{ marginRight: 5 }} size={24} />,
+        action: (setAddContent) => setAddContent("tabs"),
       },
     ],
   },

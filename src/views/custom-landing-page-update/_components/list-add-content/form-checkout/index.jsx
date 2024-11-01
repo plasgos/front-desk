@@ -1,11 +1,10 @@
 import {
-  CButton,
   CNav,
   CNavItem,
   CNavLink,
   CTabContent,
   CTabPane,
-  CTabs,
+  CTabs
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 
@@ -19,9 +18,9 @@ import {
   setSelectCourier,
   setSelectedVariant,
 } from "../../../../../redux/modules/custom-landing-page/reducer";
+import Confirmation from "../../common/Confirmation";
 import DesignSection from "./design-section";
 import FormSection from "./form-section";
-import Confirmation from "../../common/Confirmation";
 
 const FormCheckout = ({
   previewSection,

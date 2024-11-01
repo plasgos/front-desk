@@ -32,6 +32,7 @@ import Testimony from "./testimony";
 import Text from "./text/index";
 import Video from "./video";
 import VideoText from "./video-text";
+import Tabs from "./tabs";
 
 const ListContent = ({
   previewSection,
@@ -436,6 +437,15 @@ const ListContent = ({
           />
         )}
 
+        {addContent === "tabs" && (
+          <Tabs
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={isShowContent}
+            handleSectionFocus={handleColumnFocus}
+          />
+        )}
+
         <CTabContent
           style={{
             overflowY: "auto",
@@ -449,14 +459,21 @@ const ListContent = ({
                   <div key={groupIndex}>
                     <div className="mb-2 font-weight-bold">{group.group}</div>
                     {group.sections.map((section, index) => {
-                      const existFloatingSectionSelected =
-                        previewFloatingSection
-                          .map((prevSection) => prevSection)
-                          .some(
-                            (prevSection) =>
-                              prevSection.name.includes("floating-button") &&
-                              prevSection.name === section.name
-                          );
+                      if (isPopUpSection) {
+                      }
+
+                      const existFloatingSectionSelected = isPopUpSection
+                        ? null
+                        : previewFloatingSection
+                            .map((prevSection) => prevSection)
+                            .some(
+                              (prevSection) =>
+                                (prevSection.name.includes("floating-button") ||
+                                  prevSection.name.includes(
+                                    "sales-notification"
+                                  )) &&
+                                prevSection.name === section.name
+                            );
 
                       return (
                         <CCard

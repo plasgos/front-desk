@@ -29,6 +29,7 @@ import Testimony from "../list-add-content/testimony";
 import Text from "../list-add-content/text";
 import Video from "../list-add-content/video";
 import VideoText from "../list-add-content/video-text";
+import Tabs from "../list-add-content/tabs";
 
 export function useRenderEditSection({
   previewSection,
@@ -386,6 +387,28 @@ export function useRenderEditSection({
             setPreviewFloatingSection={setPreviewFloatingSection}
             handleSectionFocus={handleColumnFocus}
             pageSetting={pageSetting}
+            isEditing={true}
+            sectionBeforeEdit={sectionBeforeEdit}
+            handleColumnFocus={handleColumnFocus}
+          />
+        );
+      }
+
+      if (
+        editing.name === "tabs" &&
+        section.name === "tabs" &&
+        editing.id === section.id
+      ) {
+        return (
+          <Tabs
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            currentSection={section}
+            isShowContent={(value) => setEditing(value)}
+            handleSectionContentFocus={handleSectionContentFocus}
+            previewFloatingSection={previewFloatingSection}
+            setPreviewFloatingSection={setPreviewFloatingSection}
+            handleSectionFocus={handleColumnFocus}
             isEditing={true}
             sectionBeforeEdit={sectionBeforeEdit}
             handleColumnFocus={handleColumnFocus}

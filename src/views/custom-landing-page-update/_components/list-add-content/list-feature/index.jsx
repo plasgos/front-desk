@@ -1,19 +1,18 @@
 import {
-  CButton,
   CNav,
   CNavItem,
   CNavLink,
   CTabContent,
   CTabPane,
-  CTabs,
+  CTabs
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 
 import { createUniqueID } from "../../../../../lib/unique-id";
 import BackgroundTab from "../../common/BackgroundTab";
+import Confirmation from "../../common/Confirmation";
 import ContentTab from "./ContentTab";
 import IconTab from "./IconTab";
-import Confirmation from "../../common/Confirmation";
 
 const ListFeature = ({
   previewSection,

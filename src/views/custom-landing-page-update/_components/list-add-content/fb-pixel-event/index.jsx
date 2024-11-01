@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../../lib/unique-id";
-import { CButton } from "@coreui/react";
+import Confirmation from "../../common/Confirmation";
+import Input from "../../common/Input";
 import SelectOptions from "../../common/SelectOptions";
 import { optionsFbPixelEvent, optionsFbPixelId } from "../../SelectOptions";
-import Input from "../../common/Input";
-import Confirmation from "../../common/Confirmation";
 
 const recordTimeOptions = [
   { value: "page-finished-loading", label: "Halaman Selesai Loading" },

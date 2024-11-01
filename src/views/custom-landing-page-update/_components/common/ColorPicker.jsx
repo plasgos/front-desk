@@ -76,7 +76,7 @@ const ColorPicker = ({
         }}
         className="rounded border"
       />
-      <div className="mb-1 ml-2" style={{ fontFamily: "Arial" }}>
+      <div className="mb-1 ml-2" style={{ fontFamily: "Arial", width: 75 }}>
         {label}
       </div>
 

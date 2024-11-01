@@ -247,30 +247,22 @@ const FloatingButtonCircle = ({
       )}
 
       {isAddContent ? (
-        <CTabs>
-          <CTabContent style={{ overflowY: "auto" }} className="p-3">
-            <UpdateContent
-              idSection={isEditingSection ? currentSection.id : setting.id}
-              currentContent={isEditingSection ? currentSection : setting}
-              setPreviewSection={setPreviewFloatingSection}
-              isListIconVisible={isListIconVisible}
-              setIsListIconVisible={setIsListIconVisible}
-            />
-          </CTabContent>
-        </CTabs>
+        <UpdateContent
+          idSection={isEditingSection ? currentSection.id : setting.id}
+          currentContent={isEditingSection ? currentSection : setting}
+          setPreviewSection={setPreviewFloatingSection}
+          isListIconVisible={isListIconVisible}
+          setIsListIconVisible={setIsListIconVisible}
+        />
       ) : isEditingContent ? (
-        <CTabs>
-          <CTabContent style={{ overflowY: "auto" }} className="p-3">
-            <UpdateContent
-              idSection={isEditingSection ? currentSection.id : setting.id}
-              setPreviewSection={setPreviewFloatingSection}
-              isListIconVisible={isListIconVisible}
-              setIsListIconVisible={setIsListIconVisible}
-              currentContent={selectedContent}
-              isEditingContent={true}
-            />
-          </CTabContent>
-        </CTabs>
+        <UpdateContent
+          idSection={isEditingSection ? currentSection.id : setting.id}
+          setPreviewSection={setPreviewFloatingSection}
+          isListIconVisible={isListIconVisible}
+          setIsListIconVisible={setIsListIconVisible}
+          currentContent={selectedContent}
+          isEditingContent={true}
+        />
       ) : (
         <CTabs activeTab="konten">
           <CTabContent style={{ overflowY: "auto" }} className="p-3">

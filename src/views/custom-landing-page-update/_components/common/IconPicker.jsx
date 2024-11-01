@@ -38,40 +38,38 @@ const IconPicker = ({ value, onChange }) => {
   });
 
   return (
-    <div>
-      <div placement="bottom">
-        <div className="iconPicker__popoverContainer">
-          <div className="iconPicker__popoverHeader">
-            <CInputGroup>
-              <CInput
-                type="text"
-                placeholder="Search"
-                onChange={(e) => setSearchText(e.target.value)}
-              />
-              <CInputGroupAppend>
-                <CInputGroupText className={""}>
-                  <FontAwesomeIcon icon={["fas", "search"]} />
-                </CInputGroupText>
-              </CInputGroupAppend>
-            </CInputGroup>
-          </div>
-          <div className="iconPicker__iconsContainer">
-            {iconsFiltered.map((icon) => (
-              <div className="iconPicker__iconWrapper" key={icon.iconName}>
-                <button
-                  className={`iconPicker__iconItem ${
-                    icon.iconName === value.iconName ? "selected" : ""
-                  }`}
-                  title={icon.iconName}
-                  onClick={() =>
-                    onChange?.({ prefix: icon.prefix, iconName: icon.iconName })
-                  }
-                >
-                  <FontAwesomeIcon icon={[icon.prefix, icon.iconName]} />
-                </button>
-              </div>
-            ))}
-          </div>
+    <div placement="bottom p-3">
+      <div className="iconPicker__popoverContainer">
+        <div className="iconPicker__popoverHeader">
+          <CInputGroup>
+            <CInput
+              type="text"
+              placeholder="Search"
+              onChange={(e) => setSearchText(e.target.value)}
+            />
+            <CInputGroupAppend>
+              <CInputGroupText className={""}>
+                <FontAwesomeIcon icon={["fas", "search"]} />
+              </CInputGroupText>
+            </CInputGroupAppend>
+          </CInputGroup>
+        </div>
+        <div className="iconPicker__iconsContainer">
+          {iconsFiltered.map((icon) => (
+            <div className="iconPicker__iconWrapper" key={icon.iconName}>
+              <button
+                className={`iconPicker__iconItem ${
+                  icon.iconName === value.iconName ? "selected" : ""
+                }`}
+                title={icon.iconName}
+                onClick={() =>
+                  onChange?.({ prefix: icon.prefix, iconName: icon.iconName })
+                }
+              >
+                <FontAwesomeIcon icon={[icon.prefix, icon.iconName]} />
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>

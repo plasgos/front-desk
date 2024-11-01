@@ -28,6 +28,7 @@ import ViewTestimony from "../view-content/ViewTestimony";
 import ViewText from "../view-content/ViewText";
 import ViewVideo from "../view-content/ViewVideo";
 import ViewVideoText from "../view-content/ViewVideoText";
+import ViewTabs from "../view-content/ViewTabs";
 
 export function useRenderViewSections({
   id,
@@ -272,6 +273,26 @@ export function useRenderViewSections({
       if (section.name === "multi-column") {
         return (
           <ViewMultiColumn
+            containerRef={containerRef}
+            isDragging={isDragging && section.id === id}
+            content={section}
+            isResizing={isResizing}
+            ref={(el) => setRef(el, section.id)}
+            isFocused={focusedIndex === section.id}
+            width={dimensions.width}
+            isPreview={isPreview}
+            setPreviewSection={setPreviewSection}
+            setColumnRef={setColumnRef}
+            focusedIndexColumn={focusedIndexColumn}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
+          />
+        );
+      }
+
+      if (section.name === "tabs") {
+        return (
+          <ViewTabs
             containerRef={containerRef}
             isDragging={isDragging && section.id === id}
             content={section}

@@ -1,5 +1,4 @@
 import {
-  CButton,
   CCard,
   CCardBody,
   CNav,
@@ -7,7 +6,7 @@ import {
   CNavLink,
   CTabContent,
   CTabPane,
-  CTabs,
+  CTabs
 } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -19,10 +18,10 @@ import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import AnimationControl from "../../common/AnimationControl";
 import BackgroundTab from "../../common/BackgroundTab";
+import Confirmation from "../../common/Confirmation";
 import { useRenderEditSection } from "../../hooks/useRenderEditSection";
 import { ListSectionContent } from "../../ListSectionContent";
 import FrameControl from "./FrameControl";
-import Confirmation from "../../common/Confirmation";
 
 const newId = () => Math.random().toString(36).substr(2, 9);
 

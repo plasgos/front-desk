@@ -1,13 +1,9 @@
 import {
-  CButton,
   CFormGroup,
   CLabel,
-  CNav,
-  CNavItem,
-  CNavLink,
   CTabContent,
   CTabPane,
-  CTabs,
+  CTabs
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -21,9 +17,9 @@ import { createUniqueID } from "../../../../../lib/unique-id";
 import AnimationControl from "../../common/AnimationControl";
 import BackgroundTab from "../../common/BackgroundTab";
 import ColorPicker from "../../common/ColorPicker";
-import { CustomReactQuill } from "../../common/ReactQuill";
 import Confirmation from "../../common/Confirmation";
 import NavTabsCustom from "../../common/NavTabsCustom";
+import { CustomReactQuill } from "../../common/ReactQuill";
 
 const Text = ({
   previewSection,

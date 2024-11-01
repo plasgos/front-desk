@@ -1,5 +1,4 @@
 import {
-  CButton,
   CCard,
   CCardBody,
   CNav,
@@ -7,7 +6,7 @@ import {
   CNavLink,
   CTabContent,
   CTabPane,
-  CTabs,
+  CTabs
 } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -19,10 +18,10 @@ import { createUniqueID } from "../../../../../lib/unique-id";
 import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import BackgroundTab from "../../common/BackgroundTab";
+import Confirmation from "../../common/Confirmation";
 import { DraggableList } from "../../common/DraggableList";
 import DesignTab from "./DesignTab";
 import { UpdateContent } from "./UpdateContent";
-import Confirmation from "../../common/Confirmation";
 
 const ColumnTextAndImages = ({
   previewSection,

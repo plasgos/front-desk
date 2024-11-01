@@ -1,5 +1,4 @@
 import {
-  CButton,
   CCard,
   CCardBody,
   CNav,
@@ -7,7 +6,7 @@ import {
   CNavLink,
   CTabContent,
   CTabPane,
-  CTabs,
+  CTabs
 } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -16,11 +15,11 @@ import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import BackgroundTab from "../../common/BackgroundTab";
+import Confirmation from "../../common/Confirmation";
 import { DraggableList } from "../../common/DraggableList";
 import SelectOptions from "../../common/SelectOptions";
 import { alignOptions } from "../../SelectOptions";
 import UpdateContent from "../floating-button/UpdateContent";
-import Confirmation from "../../common/Confirmation";
 
 export const distanceOptions = [
   { value: "0", label: "0" },

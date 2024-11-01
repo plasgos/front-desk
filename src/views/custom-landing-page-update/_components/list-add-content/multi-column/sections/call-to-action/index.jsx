@@ -1,15 +1,12 @@
 import {
-  CButton,
   CNav,
   CNavItem,
   CNavLink,
   CTabContent,
   CTabPane,
-  CTabs,
+  CTabs
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import UpdateContent from "./UpdateContent";
-import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
 import { useDispatch, useSelector } from "react-redux";
 import { createUniqueID } from "../../../../../../../lib/unique-id";
 import {
@@ -17,9 +14,11 @@ import {
   setIsEditingColumnSection,
   setIsEditingSection,
 } from "../../../../../../../redux/modules/custom-landing-page/reducer";
-import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
-import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 import Confirmation from "../../../../common/Confirmation";
+import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import UpdateContent from "./UpdateContent";
 
 const CallToAction = ({
   previewSection,

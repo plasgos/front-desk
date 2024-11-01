@@ -1,26 +1,25 @@
 import {
-  CButton,
   CNav,
   CNavItem,
   CNavLink,
   CTabContent,
   CTabPane,
-  CTabs,
+  CTabs
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import VideoControlSetting from "./VideoControlSetting";
-import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
-import AnimationControlMultiColumn from "../../common/AnimationControlMultiColumn";
-import { createUniqueID } from "../../../../../../../lib/unique-id";
 import { useDispatch, useSelector } from "react-redux";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
 import {
   setIsAddColumnSection,
   setIsEditingColumnSection,
   setIsEditingSection,
 } from "../../../../../../../redux/modules/custom-landing-page/reducer";
-import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
-import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 import Confirmation from "../../../../common/Confirmation";
+import AnimationControlMultiColumn from "../../common/AnimationControlMultiColumn";
+import BackgroundTabMultiColumnContent from "../../common/BackgroundTabMultiColumnContent";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
+import VideoControlSetting from "./VideoControlSetting";
 
 const Video = ({
   previewSection,

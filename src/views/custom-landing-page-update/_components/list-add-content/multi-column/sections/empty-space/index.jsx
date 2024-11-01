@@ -1,17 +1,16 @@
-import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import { useDebounce } from "use-debounce";
 import { useDispatch, useSelector } from "react-redux";
+import { useDebounce } from "use-debounce";
+import { createUniqueID } from "../../../../../../../lib/unique-id";
 import {
   setIsAddColumnSection,
   setIsEditingColumnSection,
   setIsEditingSection,
 } from "../../../../../../../redux/modules/custom-landing-page/reducer";
-import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
-import { createUniqueID } from "../../../../../../../lib/unique-id";
-import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
-import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
 import Confirmation from "../../../../common/Confirmation";
+import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
+import { addSectionMultiColumn } from "../../helper/addSectionMultiColumn";
+import { cancelSectionMultiColumn } from "../../helper/cancelSectionMultiColumn";
 
 const EmptySpace = ({
   previewSection,
