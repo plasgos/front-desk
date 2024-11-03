@@ -276,36 +276,22 @@ const Buttons = ({
       )}
 
       {isAddContent ? (
-        <CTabs>
-          <CTabContent
-            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
-            className="p-3"
-          >
-            <UpdateContent
-              idSection={isEditingSection ? currentSection.id : setting.id}
-              currentContent={isEditingSection ? currentSection : setting}
-              setPreviewSection={setPreviewSection}
-              isListIconVisible={isListIconVisible}
-              setIsListIconVisible={setIsListIconVisible}
-            />
-          </CTabContent>
-        </CTabs>
+        <UpdateContent
+          idSection={isEditingSection ? currentSection.id : setting.id}
+          currentContent={isEditingSection ? currentSection : setting}
+          setPreviewSection={setPreviewSection}
+          isListIconVisible={isListIconVisible}
+          setIsListIconVisible={setIsListIconVisible}
+        />
       ) : isEditingContent ? (
-        <CTabs>
-          <CTabContent
-            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
-            className="p-3"
-          >
-            <UpdateContent
-              idSection={isEditingSection ? currentSection.id : setting.id}
-              currentContent={selectedContent}
-              setPreviewSection={setPreviewSection}
-              isListIconVisible={isListIconVisible}
-              setIsListIconVisible={setIsListIconVisible}
-              isEditingContent={true}
-            />
-          </CTabContent>
-        </CTabs>
+        <UpdateContent
+          idSection={isEditingSection ? currentSection.id : setting.id}
+          currentContent={selectedContent}
+          setPreviewSection={setPreviewSection}
+          isListIconVisible={isListIconVisible}
+          setIsListIconVisible={setIsListIconVisible}
+          isEditingContent={true}
+        />
       ) : (
         <CTabs activeTab="konten">
           <CNav variant="tabs">

@@ -761,6 +761,7 @@ const UpdateContent = ({
               onChange={handleChangeOptions}
               value={selectedOption}
               width="100"
+              positionShown="top"
             />
 
             {selectedOption?.value === "url" && (

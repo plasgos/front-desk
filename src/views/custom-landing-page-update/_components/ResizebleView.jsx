@@ -1,5 +1,4 @@
 import React, { forwardRef } from "react";
-import plgLogo from "../../../assets/new_plg_logo_256.png";
 
 const ResizableView = forwardRef(
   (
@@ -19,9 +18,9 @@ const ResizableView = forwardRef(
         style={{
           position: "relative",
           width: dimensions.width,
-          maxWidth: 1024,
+          maxWidth: pageSetting?.maxWidth ? pageSetting?.maxWidth : 1920,
           height: dimensions.height,
-          maxHeight: "98%",
+          maxHeight: "100%",
           overflowY: "auto",
           flex: isSelectedView === "laptop" ? "1 1 0%" : "initial",
           transition: "transform 0.4s ease 0s",
@@ -41,35 +40,9 @@ const ResizableView = forwardRef(
             margin: "auto",
             overflowY: "auto",
             overflowX: "hidden",
-            display: "flex",
-            flexDirection: "column",
           }}
         >
           {children}
-
-          <div
-            style={{ flex: "1 0 auto" }}
-            className="
-    tw-flex  tw-bg-black 
-    tw-items-center tw-justify-center 
-    tw-w-full tw-pt-8 tw-pb-8"
-          >
-            <div>
-              <div className=" tw-text-white tw-text-center tw-text-xs">
-                Dibuat dengan
-              </div>
-
-              <img
-                src={plgLogo}
-                alt="logo"
-                style={{
-                  width: "80px",
-                  objectFit: "contain",
-                  marginTop: -10,
-                }}
-              />
-            </div>
-          </div>
 
           {isSelectedView !== "laptop" && (
             <>

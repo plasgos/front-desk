@@ -46,7 +46,7 @@ const viewIcon = {
 const CustomLandingPage = () => {
   const [pageSetting, setPageSetting] = useState({
     title: "",
-    maxWidth: 1280,
+    maxWidth: "1280px",
     bgColor: "#F5F5F5",
   });
   const [isResizing, setIsResizing] = useState(false);
@@ -78,8 +78,8 @@ const CustomLandingPage = () => {
 
   const getInitialDimensions = (view) => {
     return {
-      width: view === "laptop" ? "100%" : view === "tablet" ? 640 : 320,
-      height: 780,
+      width: view === "laptop" ? "100%" : view === "tablet" ? 600 : 320,
+      height: "100vh",
     };
   };
 
@@ -496,15 +496,6 @@ const CustomLandingPage = () => {
                     <CButton color="primary">Simpan</CButton>
                   </div>
                 </div>
-
-                <CNav variant="tabs">
-                  <CNavItem>
-                    <CNavLink data-tab="konten">Kolom</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="desain">Desain</CNavLink>
-                  </CNavItem>
-                </CNav>
               </>
             )}
           </div>
@@ -516,6 +507,15 @@ const CustomLandingPage = () => {
           >
             {!editing && !isAddContent && (
               <CTabs activeTab="konten">
+                <CNav variant="tabs">
+                  <CNavItem>
+                    <CNavLink data-tab="konten">Kolom</CNavLink>
+                  </CNavItem>
+                  <CNavItem>
+                    <CNavLink data-tab="desain">Desain</CNavLink>
+                  </CNavItem>
+                </CNav>
+
                 <CTabContent
                   style={{
                     height: "100%",

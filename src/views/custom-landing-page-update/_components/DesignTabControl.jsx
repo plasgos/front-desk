@@ -124,16 +124,17 @@ const DesignTabControl = ({
   };
 
   return (
-    <div className="p-1">
+    <div className="p-3">
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
         <SelectOptions
           label="Lebar Halaman"
           options={widthPageOptions}
           onChange={handleChangeWidthPage}
           value={widthPage}
-          width="50"
+          width="0"
         />
-
+        {/* <div style={{ marginTop: 8 }}>
+        </div> */}
         <ColorPicker
           initialColor={bgColor}
           onChange={handleChangeBgColor}
