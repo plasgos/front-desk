@@ -95,13 +95,13 @@ const fullSlider = {
 const pageSlider = {
   ...commonStyle,
   transition: "scroll",
-  width: 600,
+  width: 800,
 };
 
 const perspectiveCard = {
   aspectRatio: 5 / 2,
   autoScroll: undefined,
-  width: 600,
+  width: 800,
 };
 
 const SliderImage = ({
@@ -163,9 +163,7 @@ const SliderImage = ({
         group: "Variant",
         value: "page-slider",
         style: {
-          aspectRatio: 5 / 2,
-          autoScroll: undefined,
-          transition: "scroll",
+          ...pageSlider,
         },
       },
     };

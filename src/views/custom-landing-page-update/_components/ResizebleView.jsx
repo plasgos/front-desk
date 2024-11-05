@@ -20,7 +20,7 @@ const ResizableView = forwardRef(
           width: dimensions.width,
           maxWidth: pageSetting?.maxWidth ? pageSetting?.maxWidth : 1920,
           height: dimensions.height,
-          maxHeight: "100%",
+          maxHeight: dimensions.height,
           overflowY: "auto",
           flex: isSelectedView === "laptop" ? "1 1 0%" : "initial",
           transition: "transform 0.4s ease 0s",
@@ -40,6 +40,8 @@ const ResizableView = forwardRef(
             margin: "auto",
             overflowY: "auto",
             overflowX: "hidden",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           {children}
@@ -55,6 +57,7 @@ const ResizableView = forwardRef(
                   left: 0,
                   top: 0,
                   cursor: isResizing ? "not-allowed" : "w-resize",
+                  zIndex: 99999,
                 }}
                 onMouseDown={(e) => handleMouseDown(e, "left")}
               ></div>
@@ -67,6 +70,7 @@ const ResizableView = forwardRef(
                   right: 0,
                   top: 0,
                   cursor: isResizing ? "not-allowed" : "e-resize",
+                  zIndex: 99999,
                 }}
                 onMouseDown={(e) => handleMouseDown(e, "right")}
               ></div>
@@ -79,6 +83,7 @@ const ResizableView = forwardRef(
                   left: 0,
                   top: 0,
                   cursor: isResizing ? "not-allowed" : "n-resize",
+                  zIndex: 99999,
                 }}
                 onMouseDown={(e) => handleMouseDown(e, "top")}
               ></div>
@@ -91,6 +96,7 @@ const ResizableView = forwardRef(
                   left: 0,
                   bottom: 0,
                   cursor: isResizing ? "not-allowed" : "s-resize",
+                  zIndex: 99999,
                 }}
                 onMouseDown={(e) => handleMouseDown(e, "bottom")}
               ></div>
@@ -103,6 +109,7 @@ const ResizableView = forwardRef(
                   right: 0,
                   bottom: 0,
                   cursor: isResizing ? "not-allowed" : "se-resize",
+                  zIndex: 99999,
                 }}
                 onMouseDown={(e) => handleMouseDown(e, "bottomRight")}
               ></div>
@@ -115,6 +122,7 @@ const ResizableView = forwardRef(
                   left: 0,
                   bottom: 0,
                   cursor: isResizing ? "not-allowed" : "sw-resize",
+                  zIndex: 99999,
                 }}
                 onMouseDown={(e) => handleMouseDown(e, "bottomLeft")}
               ></div>
@@ -127,6 +135,7 @@ const ResizableView = forwardRef(
                   left: 0,
                   top: 0,
                   cursor: isResizing ? "not-allowed" : "nw-resize",
+                  zIndex: 99999,
                 }}
                 onMouseDown={(e) => handleMouseDown(e, "topLeft")}
               ></div>
@@ -139,6 +148,7 @@ const ResizableView = forwardRef(
                   right: 0,
                   top: 0,
                   cursor: isResizing ? "not-allowed" : "ne-resize",
+                  zIndex: 99999,
                 }}
                 onMouseDown={(e) => handleMouseDown(e, "topRight")}
               ></div>

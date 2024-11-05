@@ -560,6 +560,7 @@ const Multicolumn = ({
           previewFloatingSection={previewFloatingSection}
           setPreviewFloatingSection={setPreviewFloatingSection}
           handleSectionContentFocus={handleSectionContentFocus}
+          handleColumnFocus={handleColumnFocus}
         />
       )}
 

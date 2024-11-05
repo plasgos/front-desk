@@ -29,6 +29,17 @@ const ViewSliderImage = forwardRef(
       transition === "fade" || transition === "slide-button" ? true : false;
 
     const effectOption = transition === "fade" ? "fade" : "slide";
+    const paddingTop = content.background?.paddingTop
+      ? `calc(0px + ${content.background.paddingTop}px)`
+      : content.background?.paddingY
+      ? `calc(0px + ${content.background.paddingY}px)`
+      : "0px";
+
+    const paddingBottom = content.background?.paddingBottom
+      ? `calc(0px + ${content.background.paddingBottom}px)`
+      : content.background?.paddingY
+      ? `calc(0px + ${content.background.paddingY}px)`
+      : "0px";
 
     return (
       <div
@@ -37,8 +48,8 @@ const ViewSliderImage = forwardRef(
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
           ...(isFocused && { border: "2px solid green" }),
-          paddingTop: variant === "full-slider" ? 0 : stylesBg.paddingTop,
-          paddingBottom: variant === "full-slider" ? 0 : stylesBg.paddingBottom,
+          paddingTop: variant === "full-slider" ? 0 : paddingTop,
+          paddingBottom: variant === "full-slider" ? 0 : paddingBottom,
           backgroundColor: content.background.bgColor || "",
           position: "relative",
           zIndex: 1,
@@ -71,11 +82,9 @@ const ViewSliderImage = forwardRef(
         {(variant === "page-slider" || variant === "full-slider") && (
           <div
             style={{
-              width: "100%",
-              maxWidth:
-                variant === "full-slider" || variant === "showcase"
-                  ? "100%"
-                  : width,
+              width: variant === "full-slider" ? "100%" : width,
+
+              maxWidth: "100%",
               margin: "0 auto",
             }}
           >
@@ -131,6 +140,7 @@ const ViewSliderImage = forwardRef(
                   ? "100%"
                   : width,
               margin: "0 auto",
+              padding: "10px 0px",
             }}
           >
             <Swiper
@@ -193,6 +203,7 @@ const ViewSliderImage = forwardRef(
                   ? "100%"
                   : width,
               margin: "0 auto",
+              padding: "10px 0px",
             }}
           >
             <Swiper

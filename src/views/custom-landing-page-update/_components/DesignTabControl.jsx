@@ -133,8 +133,7 @@ const DesignTabControl = ({
           value={widthPage}
           width="0"
         />
-        {/* <div style={{ marginTop: 8 }}>
-        </div> */}
+
         <ColorPicker
           initialColor={bgColor}
           onChange={handleChangeBgColor}

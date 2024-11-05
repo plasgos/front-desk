@@ -19,6 +19,7 @@ import { DraggableList } from "../../common/DraggableList";
 import SelectOptions from "../../common/SelectOptions";
 import { shadowOptions } from "../../SelectOptions";
 import UpdateContent from "./UpdateContent";
+import Confirmation from "../../common/Confirmation";
 
 export const distanceOptions = [
   { value: "0", label: "0" },
@@ -238,22 +239,10 @@ const FloatingButton = ({
   return (
     <div>
       {!isListIconVisible && (
-        <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-          <div>
-            <CButton
-              onClick={handleCancel}
-              color="primary"
-              variant="outline"
-              className="mx-2"
-            >
-              Batal
-            </CButton>
-
-            <CButton onClick={handleConfirm} color="primary">
-              Selesai
-            </CButton>
-          </div>
-        </div>
+        <Confirmation
+          handleCancel={handleCancel}
+          handleConfirm={handleConfirm}
+        />
       )}
 
       {isAddContent ? (

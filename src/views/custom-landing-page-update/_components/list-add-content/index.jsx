@@ -158,7 +158,13 @@ const ListContent = ({
         )}
       </div>
 
-      <div style={{ width: "100%", height: "100%" }}>
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          backgroundColor: !addContent ? "#F5F5F5" : "#fff",
+        }}
+      >
         {addContent === "text" ? (
           <Text
             previewSection={previewSection}
@@ -328,17 +334,6 @@ const ListContent = ({
           />
         )}
 
-        {/* {addContent === "multi-column" && (
-        <MultiColumn
-          previewSection={previewSection}
-          setPreviewSection={(value) => setPreviewSection(value)}
-          isShowMultiColumn={isShowContent}
-          previewFloatingSection={previewFloatingSection}
-          setPreviewFloatingSection={setPreviewFloatingSection}
-          handleColumnFocus={handleColumnFocus}
-        />
-      )} */}
-
         {addContent === "multi-column" && (
           <MultiColumnUpdate
             previewSection={previewSection}
@@ -349,6 +344,7 @@ const ListContent = ({
             setPreviewFloatingSection={setPreviewFloatingSection}
             handleSectionFocus={handleColumnFocus}
             pageSetting={pageSetting}
+            handleColumnFocus={handleColumnFocus}
           />
         )}
 
@@ -443,15 +439,18 @@ const ListContent = ({
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
             handleSectionFocus={handleColumnFocus}
+            handleSectionContentFocus={handleSectionContentFocus}
           />
         )}
 
         <CTabContent
           style={{
+            ...(!addContent && {
+              height: `calc(100vh - 139px)`,
+              paddingBottom: 50,
+              paddingTop: 15,
+            }),
             overflowY: "auto",
-            paddingTop: 10,
-            height: "calc(100vh - 139px)",
-            paddingBottom: 50,
           }}
         >
           {!addContent && filteredContents.length > 0 ? (

@@ -58,10 +58,10 @@ const UpdateStyle = ({ setPreviewSection, currentSection }) => {
   const [transition, setTransition] = useState(transitionOptions[0]);
 
   const [width, setWidth] = useState(
-    currentSection?.variant?.style?.width || 600
+    currentSection?.variant?.style?.width || 800
   );
 
-  const variant = currentSection?.variant?.value;
+  const variant = currentSection?.variant?.value || "page-slider";
   console.log("🚀 ~ UpdateStyle ~ variant:", variant);
 
   useEffect(() => {

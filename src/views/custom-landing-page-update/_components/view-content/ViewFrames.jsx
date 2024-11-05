@@ -1,29 +1,7 @@
 import React, { forwardRef } from "react";
 import useAnimatedVisibility from "../../../../hooks/useAnimatedVisibility";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
-import ViewButtonUpdate from "./ViewButtonUpdate";
-import ViewCallToAction from "./ViewCallToAction";
-import ViewColumnTextAndImage from "./ViewColumnTextAndImage";
-import ViewCountDown from "./ViewCountdown";
-import ViewEmptySpace from "./ViewEmptySpace";
-import ViewFAQ from "./ViewFAQ";
-import ViewFormActivity from "./ViewFormActivity";
-import ViewFormCheckout from "./ViewFormCheckout";
-import ViewImage from "./ViewImage";
-import ViewImageText from "./ViewImageText";
-import ViewLine from "./ViewLine";
-import ViewListFeature from "./ViewListFeature";
-import ViewListImages from "./ViewListImages";
-import ViewQuote from "./ViewQuote";
-import ViewScrollTraget from "./ViewScrollTraget";
-import ViewStockCounter from "./ViewStockCounter";
-import ViewTestimony from "./ViewTestimony";
-import ViewText from "./ViewText";
-import ViewVideo from "./ViewVideo";
-import ViewVideoText from "./ViewVideoText";
-import ViewMultiColumn from "./ViewMultiColumn";
-import ViewArrowMoved from "./ViewArrowMoved";
-import ViewSliderImage from "./ViewSliderImage";
+import { ViewMultipleContent } from "./ViewMultipleContent";
 
 const ViewFrames = forwardRef(
   (
@@ -194,151 +172,18 @@ const ViewFrames = forwardRef(
 
           {content.content.map((section) => {
             return (
-              <div
-                style={{
-                  ...(focusedIndexSectionContent === section.id && {
-                    border: "2px solid green",
-                  }),
-                }}
-                ref={(el) => setSectionContentRef(el, section.id)}
+              <ViewMultipleContent
+                content={section}
+                focusedIndexColumn={focusedIndexColumn}
+                setSectionContentRef={setSectionContentRef}
+                containerRef={containerRef}
+                focusedIndexSectionContent={focusedIndexSectionContent}
+                isPreview={isPreview}
+                setColumnRef={setColumnRef}
+                setPreviewSection={setPreviewSection}
+                width={width}
                 key={section.id}
-                className={`${
-                  focusedIndexSectionContent === section.id
-                    ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20  "
-                    : ""
-                }`}
-              >
-                {section.name === "text" && <ViewText section={section} />}
-
-                {section.name === "empty-space" && (
-                  <ViewEmptySpace content={section.content} />
-                )}
-
-                {section.name === "column-text-and-image" && (
-                  <ViewColumnTextAndImage
-                    containerRef={containerRef}
-                    content={section}
-                    isPreview={isPreview}
-                    width={content?.wrapperStyle?.width}
-                  />
-                )}
-
-                {section.name === "list-images" && (
-                  <ViewListImages
-                    containerRef={containerRef}
-                    content={section}
-                    isPreview={isPreview}
-                    width={content?.wrapperStyle?.width}
-                  />
-                )}
-
-                {section.name === "slider-image" && (
-                  <ViewSliderImage
-                    containerRef={containerRef}
-                    content={section}
-                  />
-                )}
-
-                {section.name === "scroll-target" && (
-                  <ViewScrollTraget content={section} />
-                )}
-
-                {section.name === "line" && (
-                  <ViewLine content={section.content} />
-                )}
-
-                {section.name === "quote" && <ViewQuote content={section} />}
-
-                {section.name === "list-feature" && (
-                  <ViewListFeature content={section} />
-                )}
-
-                {section.name === "call-to-action" && (
-                  <ViewCallToAction
-                    containerRef={containerRef}
-                    content={section}
-                  />
-                )}
-
-                {section.name === "video" && <ViewVideo content={section} />}
-
-                {section.name === "video-text" && (
-                  <ViewVideoText
-                    isPreview={isPreview}
-                    width={content?.wrapperStyle?.width}
-                    content={section}
-                  />
-                )}
-
-                {section.name === "image" && (
-                  <ViewImage containerRef={containerRef} content={section} />
-                )}
-
-                {section.name === "image-text" && (
-                  <ViewImageText
-                    isPreview={isPreview}
-                    width={content?.wrapperStyle?.width}
-                    content={section}
-                  />
-                )}
-
-                {section.name === "countdown" && (
-                  <ViewCountDown content={section} />
-                )}
-
-                {section.name === "form-activity" && (
-                  <ViewFormActivity content={section} />
-                )}
-
-                {section.name === "button" && (
-                  <ViewButtonUpdate
-                    containerRef={containerRef}
-                    content={section}
-                  />
-                )}
-
-                {section.name === "faq" && <ViewFAQ content={section} />}
-
-                {section.name === "testimony" && (
-                  <ViewTestimony
-                    content={section}
-                    isPreview={isPreview}
-                    width={content?.wrapperStyle?.width}
-                  />
-                )}
-
-                {section.name === "form-checkout" && (
-                  <ViewFormCheckout
-                    setPreviewSection={setPreviewSection}
-                    content={section}
-                  />
-                )}
-
-                {section.name === "stock-counter" && (
-                  <ViewStockCounter
-                    setPreviewSection={setPreviewSection}
-                    content={section}
-                  />
-                )}
-
-                {section.name === "arrow-moved" && (
-                  <ViewArrowMoved
-                    setPreviewSection={setPreviewSection}
-                    content={section}
-                  />
-                )}
-                {section.name === "multi-column" && (
-                  <ViewMultiColumn
-                    containerRef={containerRef}
-                    content={section}
-                    isPreview={isPreview}
-                    width={content?.wrapperStyle?.width}
-                    setPreviewSection={setPreviewSection}
-                    setColumnRef={setColumnRef}
-                    focusedIndexColumn={focusedIndexColumn}
-                  />
-                )}
-              </div>
+              />
             );
           })}
         </div>

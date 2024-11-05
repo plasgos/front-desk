@@ -1,28 +1,7 @@
 import React, { forwardRef } from "react";
 
 import { useBackgroundStyles } from "../../../../../hooks/useBackgroundStyles";
-import ViewButtonUpdate from "../ViewButtonUpdate";
-import ViewColumnTextAndImage from "../ViewColumnTextAndImage";
-import ViewEmptySpace from "../ViewEmptySpace";
-import ViewFAQ from "../ViewFAQ";
-import ViewFormCheckout from "../ViewFormCheckout";
-import ViewImage from "../ViewImage";
-import ViewImageText from "../ViewImageText";
-import ViewLine from "../ViewLine";
-import ViewListFeature from "../ViewListFeature";
-import ViewListImages from "../ViewListImages";
-import ViewQuote from "../ViewQuote";
-import ViewScrollTraget from "../ViewScrollTraget";
-import ViewTestimony from "../ViewTestimony";
-import ViewText from "../ViewText";
-import ViewVideo from "../ViewVideo";
-import ViewVideoText from "../ViewVideoText";
-import ViewCallToAction from "../ViewCallToAction";
-import ViewFormActivity from "../ViewFormActivity";
-import ViewCountDown from "../ViewCountdown";
-import ViewStockCounter from "../ViewStockCounter";
-import ViewArrowMoved from "../ViewArrowMoved";
-import ViewFrames from "../ViewFrames";
+import { ViewMultipleContent } from "../ViewMultipleContent";
 
 const ViewMultiColumn = forwardRef(
   (
@@ -225,178 +204,18 @@ const ViewMultiColumn = forwardRef(
 
                   {column.content.map((contentItem) => {
                     return (
-                      <div key={contentItem.id}>
-                        {contentItem.name === "text" && (
-                          <ViewText
-                            section={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "column-text-and-image" && (
-                          <ViewColumnTextAndImage
-                            containerRef={containerRef}
-                            content={contentItem}
-                            isResizing={isResizing}
-                            isPreview={isPreview}
-                            width={width}
-                          />
-                        )}
-
-                        {contentItem.name === "empty-space" && (
-                          <ViewEmptySpace
-                            content={contentItem.content}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "list-images" && (
-                          <ViewListImages
-                            containerRef={containerRef}
-                            content={contentItem}
-                            isResizing={isResizing}
-                            isPreview={isPreview}
-                            width={width}
-                          />
-                        )}
-
-                        {contentItem.name === "scroll-target" && (
-                          <ViewScrollTraget
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "quote" && (
-                          <ViewQuote
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "image" && (
-                          <ViewImage
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "image-text" && (
-                          <ViewImageText
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "line" && (
-                          <ViewLine
-                            content={contentItem.content}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "list-feature" && (
-                          <ViewListFeature
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "testimony" && (
-                          <ViewTestimony
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "button" && (
-                          <ViewButtonUpdate
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "faq" && (
-                          <ViewFAQ
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "form-checkout" && (
-                          <ViewFormCheckout
-                            setPreviewSection={setPreviewSection}
-                            content={contentItem}
-                            isResizing={isResizing}
-                            sectionId={content.id}
-                            columnId={column.id}
-                            isMultiColumn={true}
-                          />
-                        )}
-
-                        {contentItem.name === "video" && (
-                          <ViewVideo
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "video-text" && (
-                          <ViewVideoText
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "call-to-action" && (
-                          <ViewCallToAction
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "form-activity" && (
-                          <ViewFormActivity
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "countdown" && (
-                          <ViewCountDown
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "stock-counter" && (
-                          <ViewStockCounter
-                            content={contentItem}
-                            isResizing={isResizing}
-                          />
-                        )}
-
-                        {contentItem.name === "arrow-moved" && (
-                          <ViewArrowMoved content={contentItem} />
-                        )}
-
-                        {contentItem.name === "frames" && (
-                          <ViewFrames
-                            content={contentItem}
-                            setSectionContentRef={setSectionContentRef}
-                            focusedIndexSectionContent={
-                              focusedIndexSectionContent
-                            }
-                          />
-                        )}
-
-                        {contentItem.name === "multi-column" && (
-                          <ViewMultiColumn
-                            setPreviewSection={setPreviewSection}
-                            content={contentItem}
-                          />
-                        )}
-                      </div>
+                      <ViewMultipleContent
+                        content={contentItem}
+                        focusedIndexColumn={focusedIndexColumn}
+                        setSectionContentRef={setSectionContentRef}
+                        containerRef={containerRef}
+                        focusedIndexSectionContent={focusedIndexSectionContent}
+                        isPreview={isPreview}
+                        setColumnRef={setColumnRef}
+                        setPreviewSection={setPreviewSection}
+                        width={width}
+                        key={contentItem.id}
+                      />
                     );
                   })}
                 </div>

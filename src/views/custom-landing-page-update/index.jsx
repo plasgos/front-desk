@@ -29,7 +29,14 @@ import { useRenderEditSection } from "./_components/hooks/useRenderEditSection";
 import { useRenderViewSections } from "./_components/hooks/useRenderViewSections";
 import ListContent from "./_components/list-add-content/";
 
+import { FaChevronLeft } from "react-icons/fa6";
 import plgLogo from "../../assets/new_plg_logo_256.png";
+import ResizableView from "./_components/ResizebleView";
+import FooterAndNavbarControl from "./_components/common/FooterAndNavbarControl";
+import Footer, {
+  initialFooterSection,
+} from "./_components/list-add-content/footer";
+import { useRenderViewFooter } from "./_components/hooks/useRenderViewFooter";
 
 const landingPage = {
   detail: {
@@ -50,6 +57,11 @@ const CustomLandingPage = () => {
     bgColor: "#F5F5F5",
   });
   const [isResizing, setIsResizing] = useState(false);
+  const [footerIsVisble, setFooterIsVisble] = useState(false);
+  const [isEditFooter, setIsEditFooter] = useState(false);
+  const [previewFooter, setPreviewFooter] = useState(initialFooterSection);
+  console.log("🚀 ~ CustomLandingPage ~ previewFooter:", previewFooter);
+  const [isHideSideBar, setIsHideSideBar] = useState(false);
   const [isPreview, setIsPreview] = useState(true);
   // const [shouldSave, setShouldSave] = useState(false);
   const [isSelectedView, setIsSelectedView] = useState("laptop");
@@ -220,6 +232,7 @@ const CustomLandingPage = () => {
     setColumnRef,
     focusedIndexColumn,
     setPreviewFloatingSection,
+    pageSetting,
   });
 
   const { renderEditSection } = useRenderEditSection({
@@ -234,6 +247,22 @@ const CustomLandingPage = () => {
     sectionFloatingBeforeEdit,
     handleColumnFocus,
     pageSetting,
+  });
+
+  const { renderViewFooter } = useRenderViewFooter({
+    id,
+    setPreviewSection,
+    isDragging,
+    isResizing,
+    setRef,
+    focusedIndex,
+    focusedIndexSectionContent,
+    isPreview,
+    dimensions,
+    containerRef,
+    setSectionContentRef,
+    setColumnRef,
+    focusedIndexColumn,
   });
 
   // const handleSave = () => {
@@ -453,6 +482,22 @@ const CustomLandingPage = () => {
     }));
   };
 
+  const handleHideSideBar = () => {
+    setIsHideSideBar((prev) => !prev);
+  };
+  const handleToggleFooter = () => {
+    const newFooterVisibility = !footerIsVisble;
+
+    setFooterIsVisble(newFooterVisibility);
+
+    setPreviewFooter((arr) =>
+      arr.map((section) => ({
+        ...section,
+        isShowFooter: newFooterVisibility,
+      }))
+    );
+  };
+
   return (
     <>
       <div
@@ -463,16 +508,20 @@ const CustomLandingPage = () => {
         }}
       >
         <aside
+          className={`${
+            !isHideSideBar ? "" : "animate__animated animate__slideOutLeft"
+          }`}
           style={{
-            width: "400px",
+            width: isHideSideBar ? "0px" : "400px",
+            transition: "width 0.3s ease",
             backgroundColor: "#fff",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between", // Navbar di atas, footer di bawah
-            position: "relative", // Tetap di kiri
+            justifyContent: "space-between",
+            position: "relative",
             top: 0,
             left: 0,
-            height: "100vh", // Tinggi penuh layar
+            height: "100vh",
           }}
         >
           <div
@@ -480,7 +529,7 @@ const CustomLandingPage = () => {
               backgroundColor: "#fff",
             }}
           >
-            {!editing && !isAddContent && (
+            {!editing && !isAddContent && !isEditFooter && (
               <>
                 <div className="d-flex justify-content-end align-items-center border-bottom p-3">
                   <div>
@@ -505,7 +554,7 @@ const CustomLandingPage = () => {
               flex: 1,
             }}
           >
-            {!editing && !isAddContent && (
+            {!editing && !isAddContent && !isEditFooter && (
               <CTabs activeTab="konten">
                 <CNav variant="tabs">
                   <CNavItem>
@@ -518,15 +567,18 @@ const CustomLandingPage = () => {
 
                 <CTabContent
                   style={{
-                    height: "100%",
                     overflowY: "auto",
+                    height: "calc(100vh - 140px)",
+                    backgroundColor: "#F5F5F5",
                   }}
-                  className="pt-2"
                 >
-                  <CTabPane style={{ padding: "0px 20px" }} data-tab="konten">
+                  <CTabPane data-tab="konten">
                     <div
-                      style={{ backgroundColor: "white" }}
-                      className=" w-100 px-2 pt-2 mb-3 border-bottom   "
+                      style={{
+                        backgroundColor: "white",
+                        boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
+                      }}
+                      className=" w-100 p-3 mb-3 border-bottom   "
                     >
                       <Input
                         label="Nama halaman"
@@ -537,32 +589,44 @@ const CustomLandingPage = () => {
                       />
                     </div>
 
-                    {previewSection.map((section, index) =>
-                      renderListContent(section, index)
-                    )}
+                    <div style={{ padding: "0px 20px" }}>
+                      {previewSection.map((section, index) =>
+                        renderListContent(section, index)
+                      )}
 
-                    <CCard
-                      style={{ cursor: "pointer", marginBottom: 8 }}
-                      onClick={handleAddContent}
-                    >
-                      <CCardBody className="p-1">
-                        <div className="d-flex align-items-center ">
-                          <IoAdd
-                            style={{
-                              cursor: "pointer",
-                              margin: "0px 10px 0px 6px",
-                            }}
-                            size={18}
-                          />
+                      <CCard
+                        style={{ cursor: "pointer", marginBottom: 8 }}
+                        onClick={handleAddContent}
+                      >
+                        <CCardBody className="p-1">
+                          <div className="d-flex align-items-center ">
+                            <IoAdd
+                              style={{
+                                cursor: "pointer",
+                                margin: "0px 10px 0px 6px",
+                              }}
+                              size={18}
+                            />
 
-                          <div>Tambah Konten</div>
-                        </div>
-                      </CCardBody>
-                    </CCard>
+                            <div>Tambah Konten</div>
+                          </div>
+                        </CCardBody>
+                      </CCard>
 
-                    {previewFloatingSection.map((section, index) =>
-                      renderListSectionFloating(section, index)
-                    )}
+                      <FooterAndNavbarControl
+                        label="Footer"
+                        isVisible={footerIsVisble}
+                        toggleVisible={handleToggleFooter}
+                        editSection={() => setIsEditFooter(true)}
+                        handleFocus={() =>
+                          handleContentFocus(previewFooter[0]?.id)
+                        }
+                      />
+
+                      {previewFloatingSection.map((section, index) =>
+                        renderListSectionFloating(section, index)
+                      )}
+                    </div>
                   </CTabPane>
                   <CTabPane data-tab="desain">
                     <DesignTabControl
@@ -576,7 +640,6 @@ const CustomLandingPage = () => {
                       setPageSetting={(value) => setPageSetting(value)}
                     />
                   </CTabPane>
-                  <CTabPane data-tab="test2"></CTabPane>
                 </CTabContent>
               </CTabs>
             )}
@@ -607,6 +670,19 @@ const CustomLandingPage = () => {
                 pageSetting={pageSetting}
               />
             )}
+
+            {isEditFooter && (
+              <div>
+                <Footer
+                  previewSection={previewFooter}
+                  setPreviewSection={setPreviewFooter}
+                  isShowContent={(value) => setIsEditFooter(value)}
+                  pageSetting={pageSetting}
+                  setPageSetting={(value) => setPageSetting(value)}
+                  handleSectionContentFocus={handleSectionContentFocus}
+                />
+              </div>
+            )}
           </div>
 
           <div
@@ -617,10 +693,10 @@ const CustomLandingPage = () => {
               position: "absolute",
               bottom: 0,
             }}
-            className="d-flex justify-content-between align-items-center border rounded-sm p-2 shadow-sm"
+            className="d-flex justify-content-between align-items-center border rounded-sm p-2 shadow-sm "
           >
             <div
-              className="d-flex align-items-center"
+              className="d-flex align-items-center "
               style={{ cursor: "pointer" }}
             >
               {viewTypes.map((view) => (
@@ -639,51 +715,128 @@ const CustomLandingPage = () => {
                 </div>
               ))}
             </div>
+            <CButton
+              onClick={handleHideSideBar}
+              active={isHideSideBar}
+              variant="outline"
+              color="primary"
+            >
+              <FaChevronLeft size={14} />
+            </CButton>
           </div>
         </aside>
+
+        {isHideSideBar && (
+          <div
+            style={{
+              position: "absolute",
+              left: 20,
+              bottom: 20,
+              zIndex: 9999,
+            }}
+          >
+            <CButton
+              onClick={handleHideSideBar}
+              active={isHideSideBar}
+              variant="outline"
+              color="primary"
+            >
+              <FaChevronLeft size={14} />
+            </CButton>
+          </div>
+        )}
 
         <main
           style={{
             flex: 1,
-            height: "100vh",
-            overflowY: "auto",
             backgroundColor: "#f0f0f0",
             position: "relative",
             display: "flex",
             flexDirection: "column",
+            overflow: "hidden",
           }}
         >
-          {previewSection.map((item, index) => (
-            <div key={item.id}>{renderViewSections(item, index)}</div>
-          ))}
+          <ResizableView
+            previewSection={previewSection}
+            pageSetting={pageSetting}
+            ref={containerRef}
+            dimensions={dimensions}
+            isSelectedView={isSelectedView}
+            isResizing={isResizing}
+            handleMouseDown={handleMouseDown}
+          >
+            {previewSection.map((item, index) => (
+              <div key={item.id}>{renderViewSections(item, index)}</div>
+            ))}
 
-          {previewFloatingSection.map((item, index) => (
-            <div key={item.id}>{renderViewSections(item, index)}</div>
-          ))}
+            {previewFloatingSection.map((item, index) => (
+              <div key={item.id}>{renderViewSections(item, index)}</div>
+            ))}
 
-          <div
-            style={{ flex: "1 0 auto" }}
-            className="
+            <div
+              style={{
+                border: `1px solid ${previewFooter[0]?.variant?.style?.outline}`,
+                backgroundColor: previewFooter[0]?.variant?.style?.bgColor,
+                maxWidth: "100%",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              {previewFooter.map(
+                (section) =>
+                  section.isShowFooter && (
+                    <div
+                      className={` tw-p-3   ${
+                        focusedIndex === section.id &&
+                        "animate__animated  animate__headShake animate__fast tw-bg-green-300/20"
+                      } `}
+                      ref={(el) => setRef(el, section.id)}
+                      style={{
+                        ...(focusedIndex === section.id && {
+                          border: "2px solid green",
+                        }),
+                        display: "flex",
+                        justifyContent: "center",
+                        width: previewFooter[0].variant?.style?.widthFooter,
+                        flexWrap: "wrap",
+                        gap: 20,
+                      }}
+                      key={section.id}
+                    >
+                      {section.content.map((content) => (
+                        <div key={content.id}>
+                          {renderViewFooter(section, content)}
+                        </div>
+                      ))}
+                    </div>
+                  )
+              )}
+            </div>
+
+            <div
+              style={{ flex: "1 0 auto" }}
+              className="
     tw-flex  tw-bg-black 
     tw-items-center tw-justify-center 
     tw-w-full tw-pt-8 tw-pb-8"
-          >
-            <div>
-              <div className=" tw-text-white tw-text-center tw-text-xs">
-                Dibuat dengan
-              </div>
+            >
+              <div>
+                <div className=" tw-text-white tw-text-center tw-text-xs">
+                  Dibuat dengan
+                </div>
 
-              <img
-                src={plgLogo}
-                alt="logo"
-                style={{
-                  width: "80px",
-                  objectFit: "contain",
-                  marginTop: -10,
-                }}
-              />
+                <img
+                  src={plgLogo}
+                  alt="logo"
+                  style={{
+                    width: "80px",
+                    objectFit: "contain",
+                    marginTop: -10,
+                  }}
+                />
+              </div>
             </div>
-          </div>
+          </ResizableView>
         </main>
       </div>
 

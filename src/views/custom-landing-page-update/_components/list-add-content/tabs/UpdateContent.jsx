@@ -5,14 +5,14 @@ import { useDispatch } from "react-redux";
 
 import AddContent from "..";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack";
 import { removeOptionScrollTarget } from "../../../../../redux/modules/custom-landing-page/reducer";
 import Confirmation from "../../common/Confirmation";
-import { DraggableList } from "../../common/DraggableList";
-import { useRenderEditSection } from "../../hooks/useRenderEditSection";
-import Input from "../../common/Input";
-import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import IconPicker from "../../common/IconPicker";
+import Input from "../../common/Input";
+import { useRenderEditSection } from "../../hooks/useRenderEditSection";
+import { ListSectionContent } from "../../ListSectionContent";
 
 const ContainerMenu = ({ children, className = "p-3" }) => {
   return (
@@ -222,7 +222,7 @@ const UpdateContent = ({
     (section, index) => {
       return (
         <div key={section.id}>
-          <DraggableList
+          <ListSectionContent
             key={section.id || index}
             index={index}
             id={section.id}

@@ -7,8 +7,8 @@ import AddContent from "..";
 
 import { removeOptionScrollTarget } from "../../../../../redux/modules/custom-landing-page/reducer";
 import Confirmation from "../../common/Confirmation";
-import { DraggableList } from "../../common/DraggableList";
 import { useRenderEditSection } from "../../hooks/useRenderEditSection";
+import { ListSectionContent } from "../../ListSectionContent";
 
 const ContainerMenu = ({ children, className = "p-3" }) => {
   return (
@@ -36,6 +36,7 @@ const UpdateContent = ({
   previewFloatingSection,
   setPreviewFloatingSection,
   handleSectionContentFocus,
+  handleColumnFocus,
 }) => {
   const dispatch = useDispatch();
   const [editing, setEditing] = useState(false);
@@ -89,7 +90,7 @@ const UpdateContent = ({
     (section, index) => {
       return (
         <div key={section.id}>
-          <DraggableList
+          <ListSectionContent
             key={section.id || index}
             index={index}
             id={section.id}
@@ -156,6 +157,7 @@ const UpdateContent = ({
           setPreviewFloatingSection={setPreviewFloatingSection}
           previewFloatingSection={previewFloatingSection}
           isPopUpSection={true}
+          handleColumnFocus={handleColumnFocus}
         />
       ) : editing ? (
         <div>

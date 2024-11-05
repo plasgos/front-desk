@@ -45,6 +45,7 @@ export function useRenderViewSections({
   setSectionContentRef,
   setColumnRef,
   focusedIndexColumn,
+  pageSetting,
 }) {
   const renderViewSections = useCallback(
     (section) => {
@@ -226,6 +227,7 @@ export function useRenderViewSections({
             isResizing={isResizing}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
+            width={dimensions.width}
           />
         );
       }
@@ -474,6 +476,7 @@ export function useRenderViewSections({
             ref={(el) => setRef(el, section.id)}
             isFocused={focusedIndex === section.id}
             width={dimensions.width}
+            pageSetting={pageSetting}
           />
         );
       }
@@ -490,6 +493,7 @@ export function useRenderViewSections({
       isDragging,
       isPreview,
       isResizing,
+      pageSetting,
       setColumnRef,
       setPreviewFloatingSection,
       setPreviewSection,

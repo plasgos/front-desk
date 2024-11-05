@@ -13,6 +13,7 @@ const ViewFloatingButton = forwardRef(
       isResizing,
       setSectionContentRef,
       focusedIndexSectionContent,
+      width,
     },
     ref
   ) => {
@@ -94,7 +95,9 @@ const ViewFloatingButton = forwardRef(
           backgroundColor: content.background.bgColor || "",
           position: "absolute",
           bottom: 0,
-          width: "100%",
+          maxWidth: "100%",
+          maxHeight: "100%",
+          width,
           zIndex: 999,
         }}
         className={`tw-flex ${

@@ -1,181 +1,10 @@
 import React, { forwardRef, useEffect, useState } from "react";
-import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
-import ViewText from "./ViewText";
 import { IoMdClose } from "react-icons/io";
-import ViewEmptySpace from "./ViewEmptySpace";
-import ViewColumnTextAndImage from "./ViewColumnTextAndImage";
-import ViewListImages from "./ViewListImages";
-import ViewScrollTraget from "./ViewScrollTraget";
-import ViewLine from "./ViewLine";
-import ViewQuote from "./ViewQuote";
-import ViewListFeature from "./ViewListFeature";
-import ViewCallToAction from "./ViewCallToAction";
-import ViewVideo from "./ViewVideo";
-import ViewVideoText from "./ViewVideoText";
-import ViewImage from "./ViewImage";
-import ViewImageText from "./ViewImageText";
-import ViewCountDown from "./ViewCountdown";
-import ViewFormActivity from "./ViewFormActivity";
-import ViewButtonUpdate from "./ViewButtonUpdate";
-import ViewFAQ from "./ViewFAQ";
-import ViewTestimony from "./ViewTestimony";
-import ViewFormCheckout from "./ViewFormCheckout";
-import ViewStockCounter from "./ViewStockCounter";
+import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
+
 import { useDispatch, useSelector } from "react-redux";
 import { setClosePopup } from "../../../../redux/modules/custom-landing-page/reducer";
-import ViewMultiColumn from "./ViewMultiColumn";
-import ViewArrowMoved from "./ViewArrowMoved";
-import ViewSliderImage from "./ViewSliderImage";
-
-const ContentMultipleSection = ({
-  content,
-  focusedIndexSectionContent,
-  setSectionContentRef,
-  containerRef,
-  setPreviewSection,
-  isPreview,
-  focusedIndexColumn,
-  setColumnRef,
-}) => {
-  return (
-    <>
-      {content.content.map((section) => (
-        <div
-          ref={(el) => {
-            if (setSectionContentRef) {
-              setSectionContentRef(el, section.id);
-            }
-          }}
-          key={section.id}
-          className={`${
-            focusedIndexSectionContent === section.id
-              ? "animate__animated  animate__headShake animate__fast  tw-bg-green-300/20  "
-              : ""
-          }`}
-        >
-          {section.name === "text" && <ViewText section={section} />}
-
-          {section.name === "empty-space" && (
-            <ViewEmptySpace content={section.content} />
-          )}
-
-          {section.name === "column-text-and-image" && (
-            <ViewColumnTextAndImage
-              containerRef={containerRef}
-              content={section}
-              isPreview={isPreview}
-              width={content?.width}
-            />
-          )}
-
-          {section.name === "list-images" && (
-            <ViewListImages
-              containerRef={containerRef}
-              content={section}
-              isPreview={isPreview}
-              width={content?.width}
-            />
-          )}
-
-          {section.name === "scroll-target" && (
-            <ViewScrollTraget content={section} />
-          )}
-
-          {section.name === "line" && <ViewLine content={section.content} />}
-
-          {section.name === "quote" && <ViewQuote content={section} />}
-
-          {section.name === "list-feature" && (
-            <ViewListFeature content={section} />
-          )}
-
-          {section.name === "call-to-action" && (
-            <ViewCallToAction containerRef={containerRef} content={section} />
-          )}
-
-          {section.name === "video" && <ViewVideo content={section} />}
-
-          {section.name === "video-text" && (
-            <ViewVideoText
-              isPreview={isPreview}
-              width={content?.width}
-              content={section}
-            />
-          )}
-
-          {section.name === "image" && (
-            <ViewImage containerRef={containerRef} content={section} />
-          )}
-
-          {section.name === "image-text" && (
-            <ViewImageText
-              isPreview={isPreview}
-              width={content?.width}
-              content={section}
-            />
-          )}
-
-          {section.name === "slider-image" && (
-            <ViewSliderImage containerRef={containerRef} content={section} />
-          )}
-
-          {section.name === "countdown" && <ViewCountDown content={section} />}
-
-          {section.name === "form-activity" && (
-            <ViewFormActivity content={section} />
-          )}
-
-          {section.name === "button" && (
-            <ViewButtonUpdate containerRef={containerRef} content={section} />
-          )}
-
-          {section.name === "faq" && <ViewFAQ content={section} />}
-
-          {section.name === "testimony" && (
-            <ViewTestimony
-              content={section}
-              isPreview={isPreview}
-              width={content?.width}
-            />
-          )}
-
-          {section.name === "form-checkout" && (
-            <ViewFormCheckout
-              setPreviewSection={setPreviewSection}
-              content={section}
-            />
-          )}
-
-          {section.name === "stock-counter" && (
-            <ViewStockCounter
-              setPreviewSection={setPreviewSection}
-              content={section}
-            />
-          )}
-
-          {section.name === "arrow-moved" && (
-            <ViewArrowMoved
-              setPreviewSection={setPreviewSection}
-              content={section}
-            />
-          )}
-
-          {section.name === "multi-column" && (
-            <ViewMultiColumn
-              containerRef={containerRef}
-              content={section}
-              isPreview={isPreview}
-              width={content?.wrapperStyle?.width}
-              setPreviewSection={setPreviewSection}
-              setColumnRef={setColumnRef}
-              focusedIndexColumn={focusedIndexColumn}
-            />
-          )}
-        </div>
-      ))}
-    </>
-  );
-};
+import { ViewMultipleContent } from "./ViewMultipleContent";
 
 const ViewPopUp = forwardRef(
   (
@@ -340,16 +169,20 @@ const ViewPopUp = forwardRef(
                   msOverflowStyle: "none", // IE/Edge
                 }}
               >
-                <ContentMultipleSection
-                  containerRef={containerRef}
-                  content={content}
-                  focusedIndexColumn={focusedIndexColumn}
-                  focusedIndexSectionContent={focusedIndexSectionContent}
-                  isPreview={isPreview}
-                  setColumnRef={setColumnRef}
-                  setPreviewSection={setPreviewSection}
-                  setSectionContentRef={setSectionContentRef}
-                />
+                {content.content.map((section) => (
+                  <ViewMultipleContent
+                    content={section}
+                    focusedIndexColumn={focusedIndexColumn}
+                    setSectionContentRef={setSectionContentRef}
+                    containerRef={containerRef}
+                    focusedIndexSectionContent={focusedIndexSectionContent}
+                    isPreview={isPreview}
+                    setColumnRef={setColumnRef}
+                    setPreviewSection={setPreviewSection}
+                    width={content?.width}
+                    key={content.id}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -407,16 +240,20 @@ const ViewPopUp = forwardRef(
                   msOverflowStyle: "none", // IE/Edge
                 }}
               >
-                <ContentMultipleSection
-                  containerRef={containerRef}
-                  content={content}
-                  focusedIndexColumn={focusedIndexColumn}
-                  focusedIndexSectionContent={focusedIndexSectionContent}
-                  isPreview={isPreview}
-                  setColumnRef={setColumnRef}
-                  setPreviewSection={setPreviewSection}
-                  setSectionContentRef={setSectionContentRef}
-                />
+                {content.content.map((section) => (
+                  <ViewMultipleContent
+                    content={section}
+                    focusedIndexColumn={focusedIndexColumn}
+                    setSectionContentRef={setSectionContentRef}
+                    containerRef={containerRef}
+                    focusedIndexSectionContent={focusedIndexSectionContent}
+                    isPreview={isPreview}
+                    setColumnRef={setColumnRef}
+                    setPreviewSection={setPreviewSection}
+                    width={content?.width}
+                    key={content.id}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -482,18 +319,22 @@ const ViewPopUp = forwardRef(
                           msOverflowStyle: "none", // IE/Edge
                         }}
                       >
-                        <ContentMultipleSection
-                          containerRef={containerRef}
-                          content={content}
-                          focusedIndexColumn={focusedIndexColumn}
-                          focusedIndexSectionContent={
-                            focusedIndexSectionContent
-                          }
-                          isPreview={isPreview}
-                          setColumnRef={setColumnRef}
-                          setPreviewSection={setPreviewSection}
-                          setSectionContentRef={setSectionContentRef}
-                        />
+                        {content.content.map((section) => (
+                          <ViewMultipleContent
+                            content={section}
+                            focusedIndexColumn={focusedIndexColumn}
+                            setSectionContentRef={setSectionContentRef}
+                            containerRef={containerRef}
+                            focusedIndexSectionContent={
+                              focusedIndexSectionContent
+                            }
+                            isPreview={isPreview}
+                            setColumnRef={setColumnRef}
+                            setPreviewSection={setPreviewSection}
+                            width={content?.width}
+                            key={content.id}
+                          />
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -562,18 +403,22 @@ const ViewPopUp = forwardRef(
                           msOverflowStyle: "none", // IE/Edge
                         }}
                       >
-                        <ContentMultipleSection
-                          containerRef={containerRef}
-                          content={content}
-                          focusedIndexColumn={focusedIndexColumn}
-                          focusedIndexSectionContent={
-                            focusedIndexSectionContent
-                          }
-                          isPreview={isPreview}
-                          setColumnRef={setColumnRef}
-                          setPreviewSection={setPreviewSection}
-                          setSectionContentRef={setSectionContentRef}
-                        />
+                        {content.content.map((section) => (
+                          <ViewMultipleContent
+                            content={section}
+                            focusedIndexColumn={focusedIndexColumn}
+                            setSectionContentRef={setSectionContentRef}
+                            containerRef={containerRef}
+                            focusedIndexSectionContent={
+                              focusedIndexSectionContent
+                            }
+                            isPreview={isPreview}
+                            setColumnRef={setColumnRef}
+                            setPreviewSection={setPreviewSection}
+                            width={content?.width}
+                            key={content.id}
+                          />
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -639,16 +484,20 @@ const ViewPopUp = forwardRef(
                   msOverflowStyle: "none", // IE/Edge
                 }}
               >
-                <ContentMultipleSection
-                  containerRef={containerRef}
-                  content={content}
-                  focusedIndexColumn={focusedIndexColumn}
-                  focusedIndexSectionContent={focusedIndexSectionContent}
-                  isPreview={isPreview}
-                  setColumnRef={setColumnRef}
-                  setPreviewSection={setPreviewSection}
-                  setSectionContentRef={setSectionContentRef}
-                />
+                {content.content.map((section) => (
+                  <ViewMultipleContent
+                    content={section}
+                    focusedIndexColumn={focusedIndexColumn}
+                    setSectionContentRef={setSectionContentRef}
+                    containerRef={containerRef}
+                    focusedIndexSectionContent={focusedIndexSectionContent}
+                    isPreview={isPreview}
+                    setColumnRef={setColumnRef}
+                    setPreviewSection={setPreviewSection}
+                    width={content?.width}
+                    key={content.id}
+                  />
+                ))}
               </div>
             </div>
           </div>
@@ -706,16 +555,20 @@ const ViewPopUp = forwardRef(
                   msOverflowStyle: "none", // IE/Edge
                 }}
               >
-                <ContentMultipleSection
-                  containerRef={containerRef}
-                  content={content}
-                  focusedIndexColumn={focusedIndexColumn}
-                  focusedIndexSectionContent={focusedIndexSectionContent}
-                  isPreview={isPreview}
-                  setColumnRef={setColumnRef}
-                  setPreviewSection={setPreviewSection}
-                  setSectionContentRef={setSectionContentRef}
-                />
+                {content.content.map((section) => (
+                  <ViewMultipleContent
+                    content={section}
+                    focusedIndexColumn={focusedIndexColumn}
+                    setSectionContentRef={setSectionContentRef}
+                    containerRef={containerRef}
+                    focusedIndexSectionContent={focusedIndexSectionContent}
+                    isPreview={isPreview}
+                    setColumnRef={setColumnRef}
+                    setPreviewSection={setPreviewSection}
+                    width={content?.width}
+                    key={content.id}
+                  />
+                ))}
               </div>
             </div>
           </div>
