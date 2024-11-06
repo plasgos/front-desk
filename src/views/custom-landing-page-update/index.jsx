@@ -779,7 +779,6 @@ const CustomLandingPage = () => {
                 backgroundColor: previewFooter[0]?.variant?.style?.bgColor,
                 maxWidth: "100%",
                 display: "flex",
-                justifyContent: "center",
               }}
             >
               {previewFooter.map(
@@ -796,7 +795,7 @@ const CustomLandingPage = () => {
                           border: "2px solid green",
                         }),
                         display: "flex",
-                        justifyContent: "center",
+                        // justifyContent: "center",
                         width: previewFooter[0].variant?.style?.widthFooter,
                         flexWrap: "wrap",
                         gap: 20,

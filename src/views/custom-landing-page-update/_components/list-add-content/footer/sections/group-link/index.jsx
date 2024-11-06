@@ -1,23 +1,21 @@
+import { CButton, CCard, CCardBody } from "@coreui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { useFontAwesomeIconPack } from "../../../../../../../hooks/useFontAwesomePack";
 import { createUniqueID } from "../../../../../../../lib/unique-id";
-import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
-import { CButton, CCard, CCardBody } from "@coreui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Input from "../../../../common/Input";
-import IconPicker from "../../../../common/IconPicker";
 import Confirmation from "../../../../common/Confirmation";
+import IconPicker from "../../../../common/IconPicker";
+import Input from "../../../../common/Input";
+import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 
-import jnt from "../../../../../../../assets/jnt.png";
-import jne from "../../../../../../../assets/jne-logo.png";
-import { DraggableList } from "../../../../common/DraggableList";
-import { useRemoveSection } from "../../hooks/useRemoveSection";
-import { useMoveSection } from "../../hooks/useMoveSection";
 import { IoAdd } from "react-icons/io5";
-import UpdateContent from "./UpdateContent";
+import { DraggableList } from "../../../../common/DraggableList";
+import { useMoveSection } from "../../hooks/useMoveSection";
+import { useRemoveSection } from "../../hooks/useRemoveSection";
+import UpdateContent from "./UpadateContent";
 
-const ListLogo = ({
+const GroupLink = ({
   previewSection,
   setPreviewSection,
   isShowContent,
@@ -32,11 +30,7 @@ const ListLogo = ({
   const [selectedContent, setSelectedContent] = useState({});
 
   const [title, setTitle] = useState(
-    currentContent?.wrapperStyle?.title || "Metode Pengiriman"
-  );
-
-  const [maxWidth, setMaxWidth] = useState(
-    currentContent?.wrapperStyle?.maxWidth || 300
+    currentContent?.wrapperStyle?.title || "Link"
   );
 
   const [iconSize, setIconSize] = useState(
@@ -60,6 +54,9 @@ const ListLogo = ({
   );
 
   const [isListIconVisible, setIsListIconVisible] = useState(false);
+
+  const [isListIconContentVisible, setIsListIconContentVisible] =
+    useState(false);
 
   const contentIdToCheck = isEditingSection ? currentContent.id : setting.id;
 
@@ -215,15 +212,30 @@ const ListLogo = ({
     let uniqueId = createUniqueID(currentSection?.content);
     let payload = {
       id: uniqueId,
-      name: "list-logo",
-      title: "Daftar Logo",
+      name: "group-link",
+      title: "Grup Link",
       content: [
-        { id: createUniqueID([]), image: jnt, target: {} },
-        { id: createUniqueID([]), image: jne, target: {} },
+        {
+          id: createUniqueID([]),
+          text: "Home",
+          icon: "",
+          iconSize: 20,
+          image: "",
+          imageSize: 50,
+          target: {},
+        },
+        {
+          id: createUniqueID([]),
+          text: "Blog",
+          icon: "",
+          iconSize: 20,
+          image: "",
+          imageSize: 50,
+          target: {},
+        },
       ],
       wrapperStyle: {
-        title: "Metode Pengiriman",
-        maxWidth: 300,
+        title: "Link",
         icon: "",
         iconSize: 20,
         image: "",
@@ -322,9 +334,7 @@ const ListLogo = ({
 
   const handleSetValueWhenBlur = (value, min, max, key) => {
     const newValue = Math.min(Math.max(value, min), max);
-    if (key === "maxWidth") {
-      setMaxWidth(newValue);
-    } else if (key === "iconSize") {
+    if (key === "iconSize") {
       setIconSize(newValue);
     } else if (key === "imageSize") {
       setImageSize(newValue);
@@ -358,7 +368,7 @@ const ListLogo = ({
                       key={contentItem.id || `contentItem-${contentIndex}`}
                       index={contentIndex}
                       id={contentItem.id}
-                      showThumbnail={contentItem?.image}
+                      showInfoText={`Link - ${contentItem?.text}`}
                       moveSection={(dragIndex, hoverIndex) =>
                         moveSection(
                           section.id,
@@ -386,7 +396,12 @@ const ListLogo = ({
   );
   return (
     <div>
-      <Confirmation handleCancel={handleCancel} handleConfirm={handleConfirm} />
+      {!isListIconContentVisible && (
+        <Confirmation
+          handleCancel={handleCancel}
+          handleConfirm={handleConfirm}
+        />
+      )}
 
       {isListIconVisible ? (
         <IconPicker
@@ -399,6 +414,8 @@ const ListLogo = ({
           currentContent={isEditingSection ? currentContent : setting}
           selectedContent={null}
           setPreviewSection={setPreviewSection}
+          isListIconContentVisible={isListIconContentVisible}
+          setIsListIconContentVisible={setIsListIconContentVisible}
         />
       ) : isEditingContent ? (
         <UpdateContent
@@ -407,6 +424,8 @@ const ListLogo = ({
           selectedContent={selectedContent}
           setPreviewSection={setPreviewSection}
           isEditingContent={true}
+          isListIconContentVisible={isListIconContentVisible}
+          setIsListIconContentVisible={setIsListIconContentVisible}
         />
       ) : (
         <div
@@ -419,18 +438,6 @@ const ListLogo = ({
             onChange={(e) => {
               setTitle(e.target.value);
             }}
-          />
-
-          <InputRangeWithNumber
-            label="Lebar Maksimal"
-            value={maxWidth}
-            onChange={(newValue) => {
-              setMaxWidth(newValue);
-              handleChangeContent("maxWidth", newValue);
-            }}
-            min={80}
-            max={600}
-            onBlur={() => handleSetValueWhenBlur(maxWidth, 80, 600, "maxWidth")}
           />
 
           <div className="mb-3">
@@ -561,4 +568,4 @@ const ListLogo = ({
   );
 };
 
-export default ListLogo;
+export default GroupLink;

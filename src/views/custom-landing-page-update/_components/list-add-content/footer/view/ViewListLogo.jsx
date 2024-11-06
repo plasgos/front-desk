@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { forwardRef, useEffect, useState } from "react";
 import { useFontAwesomeIconPack } from "../../../../../../hooks/useFontAwesomePack";
+import { useHandleClickTarget } from "../../../../../../hooks/useHandleClickTarget";
 
-const ViewText = forwardRef(
+const ViewListLogo = forwardRef(
   (
     {
       isDragging,
@@ -11,15 +12,11 @@ const ViewText = forwardRef(
       content,
       focusedIndexSectionContent,
       setSectionContentRef,
+      containerRef,
     },
     ref
   ) => {
-    const { titleColor, contentColor, innerOutline } =
-      section?.variant?.style || {};
-
-    const cleanContent = content?.content?.text
-      .replace(/<p>/g, "<div>")
-      .replace(/<\/p>/g, "</div>");
+    const { titleColor } = section?.variant?.style || {};
 
     const iconPack = useFontAwesomeIconPack();
     const [icon, setIcon] = useState(null);
@@ -80,7 +77,7 @@ const ViewText = forwardRef(
             >
               <FontAwesomeIcon
                 icon={[`${icon.prefix}`, icon.iconName]}
-                style={{ fontSize: content.content?.iconSize }}
+                style={{ fontSize: content.wrapperStyle?.iconSize }}
               />
             </div>
           )}
@@ -110,25 +107,34 @@ const ViewText = forwardRef(
           </div>
         </div>
 
-        <div
-          style={{
-            borderTop: `1px solid ${innerOutline} `,
-            paddingTop: 10,
-          }}
-          className={`${content.content?.textAlign} ${content?.content?.fontSize} `}
-        >
-          {content.content.text && (
+        <div className="tw-flex tw-flex-wrap tw-items-center tw-gap-3">
+          {content?.content?.map((contentItem) => (
             <div
+              key={contentItem?.id}
               style={{
-                color: contentColor,
+                ...(Object.keys(contentItem.target).length > 0
+                  ? { cursor: "pointer" }
+                  : {}),
               }}
-              dangerouslySetInnerHTML={{ __html: cleanContent }}
-            />
-          )}
+              onClick={() =>
+                useHandleClickTarget(contentItem.target, containerRef)
+              }
+              className={`tw-max-w-24`}
+            >
+              <img
+                src={contentItem?.image}
+                alt={"logo"}
+                style={{
+                  width: "100%",
+                  objectFit: "contain",
+                }}
+              />
+            </div>
+          ))}
         </div>
       </div>
     );
   }
 );
 
-export default ViewText;
+export default ViewListLogo;

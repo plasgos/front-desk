@@ -3,6 +3,7 @@ import React, { useCallback } from "react";
 import Text from "../sections/Text";
 import Newsletter from "../sections/NewsLetter";
 import ListLogo from "../sections/list-logo";
+import GroupLink from "../sections/group-link";
 
 export function useRenderEditSection({
   previewSection,
@@ -55,7 +56,26 @@ export function useRenderEditSection({
       ) {
         return (
           <ListLogo
-            currentSection={content}
+            previewSection={previewSection}
+            currentSection={section}
+            currentContent={content}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "group-link" &&
+        content.name === "group-link" &&
+        editing.id === content.id
+      ) {
+        return (
+          <GroupLink
+            previewSection={previewSection}
+            currentSection={section}
             currentContent={content}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={(value) => setEditing(value)}
@@ -67,7 +87,14 @@ export function useRenderEditSection({
 
       return null;
     },
-    [editing.id, editing.name, sectionBeforeEdit, setEditing, setPreviewSection]
+    [
+      editing.id,
+      editing.name,
+      previewSection,
+      sectionBeforeEdit,
+      setEditing,
+      setPreviewSection,
+    ]
   );
 
   return { renderEditSection };

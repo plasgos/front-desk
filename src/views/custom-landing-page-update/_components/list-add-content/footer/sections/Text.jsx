@@ -54,6 +54,10 @@ const Text = ({
 
   const contentIdToCheck = isEditingSection ? currentContent.id : setting.id;
 
+  const isIconSizeAndImageSizeVisible = isEditingSection
+    ? currentContent?.wrapperStyle
+    : setting?.wrapperStyle;
+
   useEffect(() => {
     if (imageUrl !== "") {
       setIcon({});
@@ -86,6 +90,17 @@ const Text = ({
   };
 
   const handleChangeImageUrl = (value) => {
+    if (!isEditingSection) {
+      setSetting((prev) => ({
+        ...prev,
+        wrapperStyle: {
+          ...prev.wrapperStyle,
+          image: value,
+          icon: "",
+        },
+      }));
+    }
+
     setPreviewSection((arr) =>
       arr.map((section) =>
         section.id === currentSection?.id
@@ -95,10 +110,10 @@ const Text = ({
                 contentItem.id === contentIdToCheck
                   ? {
                       ...contentItem,
-                      content: {
-                        ...contentItem.content,
-                        icon: "",
+                      wrapperStyle: {
+                        ...contentItem.wrapperStyle,
                         image: value,
+                        icon: "",
                       },
                     }
                   : contentItem
@@ -112,6 +127,17 @@ const Text = ({
   const handleChangeIcon = (value) => {
     setIcon(value);
 
+    if (!isEditingSection) {
+      setSetting((prev) => ({
+        ...prev,
+        wrapperStyle: {
+          ...prev.wrapperStyle,
+          image: "",
+          icon: value,
+        },
+      }));
+    }
+
     setPreviewSection((arr) =>
       arr.map((section) =>
         section.id === currentSection?.id
@@ -121,10 +147,10 @@ const Text = ({
                 contentItem.id === contentIdToCheck
                   ? {
                       ...contentItem,
-                      content: {
-                        ...contentItem.content,
-                        icon: value,
+                      wrapperStyle: {
+                        ...contentItem.wrapperStyle,
                         image: "",
+                        icon: value,
                       },
                     }
                   : contentItem
@@ -141,13 +167,23 @@ const Text = ({
     }
 
     if (titleValue !== currentContent?.content?.title) {
-      handleChangeContent("title", titleValue);
+      handleChangeWrapperStyle("title", titleValue);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editorHtmlValue, titleValue]);
 
   const handleChangeContent = (key, value) => {
+    if (!isEditingSection) {
+      setSetting((prev) => ({
+        ...prev,
+        content: {
+          ...prev.content,
+          [key]: value,
+        },
+      }));
+    }
+
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === currentSection?.id
@@ -178,9 +214,11 @@ const Text = ({
       title: "Teks",
       content: {
         text: "Misi kami adalah untuk memajukan peradaban manusia dimulai dengan melayani pelanggan kami sebagai raja",
+        fontSize: "tw-text-md",
+      },
+      wrapperStyle: {
         title: "Misi Kami",
         maxWidth: 300,
-        fontSize: "tw-text-md",
         icon: "",
         iconSize: 20,
         image: "",
@@ -259,6 +297,39 @@ const Text = ({
     handleChangeContent(key, newValue);
   };
 
+  const handleChangeWrapperStyle = (key, value) => {
+    if (!isEditingSection) {
+      setSetting((prev) => ({
+        ...prev,
+        wrapperStyle: {
+          ...prev.wrapperStyle,
+          [key]: value,
+        },
+      }));
+    }
+
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === currentSection?.id
+          ? {
+              ...item,
+              content: item.content.map((contentItem) => {
+                return String(contentItem.id) === String(contentIdToCheck)
+                  ? {
+                      ...contentItem,
+                      wrapperStyle: {
+                        ...contentItem.wrapperStyle,
+                        [key]: value,
+                      },
+                    }
+                  : contentItem;
+              }),
+            }
+          : item
+      )
+    );
+  };
+
   return (
     <>
       <div>
@@ -290,7 +361,7 @@ const Text = ({
               value={maxWidth}
               onChange={(newValue) => {
                 setMaxWidth(newValue);
-                handleChangeContent("maxWidth", newValue);
+                handleChangeWrapperStyle("maxWidth", newValue);
               }}
               min={80}
               max={1200}
@@ -362,13 +433,13 @@ const Text = ({
               </div>
             </div>
 
-            {currentContent?.content?.icon && (
+            {isIconSizeAndImageSizeVisible?.icon && (
               <InputRangeWithNumber
                 label="Ukuran Icon"
                 value={iconSize}
                 onChange={(newValue) => {
                   setIconSize(newValue);
-                  handleChangeContent("iconSize", newValue);
+                  handleChangeWrapperStyle("iconSize", newValue);
                 }}
                 min={10}
                 max={100}
@@ -378,13 +449,13 @@ const Text = ({
               />
             )}
 
-            {currentContent?.content?.image && (
+            {isIconSizeAndImageSizeVisible?.image && (
               <InputRangeWithNumber
                 label="Ukuran Gambar"
                 value={imageSize}
                 onChange={(newValue) => {
                   setImageSize(newValue);
-                  handleChangeContent("imageSize", newValue);
+                  handleChangeWrapperStyle("imageSize", newValue);
                 }}
                 min={10}
                 max={100}

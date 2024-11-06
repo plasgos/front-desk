@@ -8,6 +8,7 @@ import { SlEnvolopeLetter } from "react-icons/sl";
 import Newsletter from "./sections/NewsLetter";
 import Text from "./sections/Text";
 import ListLogo from "./sections/list-logo";
+import GroupLink from "./sections/group-link";
 
 const listContentsFooterOption = [
   {
@@ -127,7 +128,16 @@ const ListContentFooter = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
-            // currentSection={currentSection}
+            currentSection={currentSection}
+          />
+        )}
+
+        {addContent === "group-link" && (
+          <GroupLink
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={isShowContent}
+            currentSection={currentSection}
           />
         )}
 

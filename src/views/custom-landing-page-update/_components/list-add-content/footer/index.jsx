@@ -71,9 +71,11 @@ const initialContent = [
     title: "Teks",
     content: {
       text: "Misi kami adalah untuk memajukan peradaban manusia dimulai dengan melayani pelanggan kami sebagai raja",
+      fontSize: "tw-text-md",
+    },
+    wrapperStyle: {
       title: "Misi Kami",
       maxWidth: 300,
-      fontSize: "tw-text-md",
       icon: "",
       iconSize: 20,
       image: "",
@@ -288,7 +290,7 @@ const Footer = ({
               key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              showInfoText={`${contentItem.title} - ${contentItem.content?.title}`}
+              showInfoText={`${contentItem.title} - ${contentItem?.wrapperStyle?.title}`}
               moveSection={(dragIndex, hoverIndex) =>
                 moveSection(section.id, dragIndex, hoverIndex)
               }
@@ -352,6 +354,7 @@ const Footer = ({
         />
       ) : isAddContent ? (
         <ListContentFooter
+          previewSection={previewSection}
           setPreviewSection={setPreviewSection}
           currentSection={
             isEditingSection ? currentSection : selectedCurrentSection
