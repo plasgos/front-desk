@@ -9,15 +9,15 @@ import IconPicker from "../../../../common/IconPicker";
 import Input from "../../../../common/Input";
 import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 
-import { IoAdd } from "react-icons/io5";
-import jne from "../../../../../../../assets/jne-logo.png";
-import jnt from "../../../../../../../assets/jnt.png";
+import { FaPhone } from "react-icons/fa6";
+import { IoAdd, IoLocationSharp } from "react-icons/io5";
 import { DraggableSections } from "../../common/DraggbleSections";
 import { useMoveSection } from "../../hooks/useMoveSection";
 import { useRemoveSection } from "../../hooks/useRemoveSection";
 import UpdateContent from "./UpdateContent";
+import { MdEmail } from "react-icons/md";
 
-const ListLogo = ({
+const Address = ({
   previewSection,
   setPreviewSection,
   isShowContent,
@@ -32,11 +32,7 @@ const ListLogo = ({
   const [selectedContent, setSelectedContent] = useState({});
 
   const [title, setTitle] = useState(
-    currentContent?.wrapperStyle?.title || "Metode Pengiriman"
-  );
-
-  const [maxWidth, setMaxWidth] = useState(
-    currentContent?.wrapperStyle?.maxWidth || 300
+    currentContent?.wrapperStyle?.title || "Link"
   );
 
   const [iconSize, setIconSize] = useState(
@@ -215,15 +211,39 @@ const ListLogo = ({
     let uniqueId = createUniqueID(currentSection?.content);
     let payload = {
       id: uniqueId,
-      name: "list-logo",
-      title: "Daftar Logo",
+      name: "address",
+      title: "Alamat",
       content: [
-        { id: createUniqueID([]), image: jnt, target: {} },
-        { id: createUniqueID([]), image: jne, target: {} },
+        {
+          id: createUniqueID([]),
+          type: {
+            value: "phone",
+            label: "Telepon",
+            icon: <FaPhone />,
+            text: "0892-2211-4332",
+          },
+        },
+        {
+          id: createUniqueID([]),
+          type: {
+            value: "address",
+            label: "Alamat",
+            icon: <IoLocationSharp />,
+            text: "Jl Layur 31 Jakarta Timur",
+          },
+        },
+        {
+          id: createUniqueID([]),
+          type: {
+            value: "email",
+            label: "Email",
+            icon: <MdEmail />,
+            text: "support@email.com",
+          },
+        },
       ],
       wrapperStyle: {
-        title: "Metode Pengiriman",
-        maxWidth: 300,
+        title: "Alamat",
         icon: "",
         iconSize: 20,
         image: "",
@@ -322,9 +342,7 @@ const ListLogo = ({
 
   const handleSetValueWhenBlur = (value, min, max, key) => {
     const newValue = Math.min(Math.max(value, min), max);
-    if (key === "maxWidth") {
-      setMaxWidth(newValue);
-    } else if (key === "iconSize") {
+    if (key === "iconSize") {
       setIconSize(newValue);
     } else if (key === "imageSize") {
       setImageSize(newValue);
@@ -359,7 +377,8 @@ const ListLogo = ({
                       key={contentItem.id || `${contentIndex}`}
                       index={contentIndex}
                       id={contentItem.id}
-                      showThumbnail={contentItem?.image}
+                      titleContent={contentItem?.type?.label}
+                      titleContentItem={contentItem.type.text}
                       moveSection={(dragIndex, hoverIndex) =>
                         moveSection(
                           section.id,
@@ -420,18 +439,6 @@ const ListLogo = ({
             onChange={(e) => {
               setTitle(e.target.value);
             }}
-          />
-
-          <InputRangeWithNumber
-            label="Lebar Maksimal"
-            value={maxWidth}
-            onChange={(newValue) => {
-              setMaxWidth(newValue);
-              handleChangeContent("maxWidth", newValue);
-            }}
-            min={80}
-            max={600}
-            onBlur={() => handleSetValueWhenBlur(maxWidth, 80, 600, "maxWidth")}
           />
 
           <div className="mb-3">
@@ -562,4 +569,4 @@ const ListLogo = ({
   );
 };
 
-export default ListLogo;
+export default Address;

@@ -1,9 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { forwardRef, useEffect, useState } from "react";
 import { useFontAwesomeIconPack } from "../../../../../../hooks/useFontAwesomePack";
-import { useHandleClickTarget } from "../../../../../../hooks/useHandleClickTarget";
 
-const ViewListLogo = forwardRef(
+const ViewSocialLink = forwardRef(
   (
     {
       isDragging,
@@ -12,15 +11,14 @@ const ViewListLogo = forwardRef(
       content,
       focusedIndexSectionContent,
       setSectionContentRef,
-      containerRef,
     },
     ref
   ) => {
-    const { titleColor } = section?.variant?.style || {};
+    const { titleColor, innerOutline, contentColor } =
+      section?.variant?.style || {};
 
     const iconPack = useFontAwesomeIconPack();
     const [icon, setIcon] = useState(null);
-
     useEffect(() => {
       if (iconPack && iconPack.length > 0) {
         const iconToSet = content?.wrapperStyle?.icon;
@@ -43,6 +41,11 @@ const ViewListLogo = forwardRef(
       }
     }, [content.wrapperStyle.image]);
 
+    const onClickTarget = (target) => {
+      console.log("🚀 ~ onClickTarget ~ target:", target);
+      window.open(target, "_blank", "noopener noreferrer");
+    };
+
     return (
       <div
         ref={(el) => {
@@ -56,7 +59,7 @@ const ViewListLogo = forwardRef(
           }),
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
-          // maxWidth: content?.wrapperStyle?.maxWidth,
+          width: content?.wrapperStyle?.maxWidth,
           padding: 10,
         }}
         key={content.id}
@@ -109,37 +112,39 @@ const ViewListLogo = forwardRef(
 
         <div
           style={{
-            maxWidth: content?.wrapperStyle?.maxWidth,
+            borderTop: `1px solid ${innerOutline} `,
+            paddingTop: 10,
           }}
-          className="tw-flex tw-flex-wrap tw-items-center tw-gap-3"
+          className="tw-flex  tw-flex-wrap  tw-gap-3"
         >
-          {content?.content?.map((contentItem) => (
-            <div
-              key={contentItem?.id}
-              style={{
-                ...(Object.keys(contentItem.target).length > 0
-                  ? { cursor: "pointer" }
-                  : {}),
-              }}
-              onClick={() =>
-                useHandleClickTarget(contentItem.target, containerRef)
-              }
-              className={`tw-max-w-24`}
-            >
-              <img
-                src={contentItem?.image}
-                alt={"logo"}
+          {content?.content?.map((contentItem) => {
+            return (
+              <div
+                key={contentItem?.id}
+                onClick={() =>
+                  onClickTarget(
+                    `${contentItem?.type?.link}${contentItem?.type?.path}`
+                  )
+                }
                 style={{
-                  width: "100%",
-                  objectFit: "contain",
+                  color: contentColor,
+                  cursor: "pointer",
                 }}
-              />
-            </div>
-          ))}
+              >
+                <div
+                  style={{
+                    fontSize: 20,
+                  }}
+                >
+                  {contentItem?.type?.icon}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     );
   }
 );
 
-export default ViewListLogo;
+export default ViewSocialLink;

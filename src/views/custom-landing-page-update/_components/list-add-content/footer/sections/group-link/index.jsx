@@ -10,7 +10,7 @@ import Input from "../../../../common/Input";
 import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 
 import { IoAdd } from "react-icons/io5";
-import { DraggableList } from "../../../../common/DraggableList";
+import { DraggableSections } from "../../common/DraggbleSections";
 import { useMoveSection } from "../../hooks/useMoveSection";
 import { useRemoveSection } from "../../hooks/useRemoveSection";
 import UpdateContent from "./UpadateContent";
@@ -233,6 +233,24 @@ const GroupLink = ({
           imageSize: 50,
           target: {},
         },
+        {
+          id: createUniqueID([]),
+          text: "Daftar Produk",
+          icon: "",
+          iconSize: 20,
+          image: "",
+          imageSize: 50,
+          target: {},
+        },
+        {
+          id: createUniqueID([]),
+          text: "Konfirmasi Pembayaran",
+          icon: "",
+          iconSize: 20,
+          image: "",
+          imageSize: 50,
+          target: {},
+        },
       ],
       wrapperStyle: {
         title: "Link",
@@ -364,11 +382,13 @@ const GroupLink = ({
               return (
                 <div key={content.id}>
                   {content.content.map((contentItem, contentIndex) => (
-                    <DraggableList
+                    <DraggableSections
+                      section={contentItem}
                       key={contentItem.id || `contentItem-${contentIndex}`}
                       index={contentIndex}
                       id={contentItem.id}
-                      showInfoText={`Link - ${contentItem?.text}`}
+                      titleContent={"Link"}
+                      titleContentItem={`${contentItem?.text}`}
                       moveSection={(dragIndex, hoverIndex) =>
                         moveSection(
                           section.id,
@@ -422,6 +442,7 @@ const GroupLink = ({
           currentSection={currentSection}
           currentContent={isEditingSection ? currentContent : setting}
           selectedContent={selectedContent}
+          setSelectedContent={setSelectedContent}
           setPreviewSection={setPreviewSection}
           isEditingContent={true}
           isListIconContentVisible={isListIconContentVisible}

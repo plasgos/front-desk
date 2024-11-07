@@ -312,7 +312,10 @@ const UpdateContent = ({
   };
 
   return (
-    <div className="p-3">
+    <div
+      style={{ overflowY: "auto", height: "calc(100vh - 110px)" }}
+      className="p-3"
+    >
       <div className="mb-2">
         <div
           style={{

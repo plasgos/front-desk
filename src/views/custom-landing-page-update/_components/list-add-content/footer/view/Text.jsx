@@ -80,7 +80,7 @@ const ViewText = forwardRef(
             >
               <FontAwesomeIcon
                 icon={[`${icon.prefix}`, icon.iconName]}
-                style={{ fontSize: content.content?.iconSize }}
+                style={{ fontSize: content.wrapperStyle?.iconSize }}
               />
             </div>
           )}

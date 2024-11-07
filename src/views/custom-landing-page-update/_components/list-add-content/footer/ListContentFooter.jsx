@@ -9,8 +9,10 @@ import Newsletter from "./sections/NewsLetter";
 import Text from "./sections/Text";
 import ListLogo from "./sections/list-logo";
 import GroupLink from "./sections/group-link";
+import Address from "./sections/address";
+import SocialLink from "./sections/social-link";
 
-const listContentsFooterOption = [
+export const listContentsFooterOption = [
   {
     name: "text",
     title: "Teks",
@@ -134,6 +136,24 @@ const ListContentFooter = ({
 
         {addContent === "group-link" && (
           <GroupLink
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={isShowContent}
+            currentSection={currentSection}
+          />
+        )}
+
+        {addContent === "address" && (
+          <Address
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={isShowContent}
+            currentSection={currentSection}
+          />
+        )}
+
+        {addContent === "social-link" && (
+          <SocialLink
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}

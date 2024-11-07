@@ -14,7 +14,7 @@ const Copyright = ({ setPreviewSection, currentSection }) => {
     currentSection?.copyright?.title || ""
   );
   const [color, setColor] = useState(
-    currentSection?.copyright?.color || "#000000"
+    currentSection?.copyright?.color || "#757575"
   );
 
   const [textAlign, setTextAlign] = useState(
@@ -43,7 +43,7 @@ const Copyright = ({ setPreviewSection, currentSection }) => {
 
   useEffect(() => {
     if (editorHtmlValue) {
-      handleChangeCopyright("title", editorHtmlValue);
+      handleChangeCopyright("customText", editorHtmlValue);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,6 +82,7 @@ const Copyright = ({ setPreviewSection, currentSection }) => {
                 backgroundColor: "rgba(255, 255, 255, 0.7)",
                 backdropFilter: "blur(3px)",
                 pointerEvents: "none",
+                opacity: 0.4,
                 zIndex: 9999,
                 position: "relative",
               }

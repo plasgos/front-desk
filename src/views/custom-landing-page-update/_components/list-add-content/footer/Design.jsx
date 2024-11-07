@@ -12,6 +12,7 @@ const Design = ({
   pageSetting,
   setPageSetting,
 }) => {
+  console.log("🚀 ~ currentSection:", currentSection);
   const [bgColor, setBgColor] = useState(
     currentSection?.variant?.style?.bgColor || "#000000"
   );
@@ -33,6 +34,7 @@ const Design = ({
   );
 
   useEffect(() => {
+    console.log("RUNNNNN");
     const currentWidthPageOption = widthPageOptions
       .flatMap((opts) => opts.options)
       .find((opt) => opt.value === currentSection?.variant?.style?.widthFooter);
@@ -60,13 +62,9 @@ const Design = ({
     );
   };
 
-  const exportData = (section, floatingSection) => {
-    const combineData = {
-      section,
-    };
-
+  const exportData = (section) => {
     // Mengonversi array of objects ke string JSON
-    const jsonString = JSON.stringify(combineData);
+    const jsonString = JSON.stringify(section);
 
     // Meng-encode string JSON ke Base64
     const base64String = btoa(jsonString);
@@ -98,13 +96,10 @@ const Design = ({
 
       // Parse JSON string ke array of objects
       const dataArray = JSON.parse(jsonString);
-      console.log("🚀 ~ importData ~ dataArray:", dataArray);
-
       // Gunakan dataArray sesuai kebutuhan
-      setPreviewSection([...dataArray.section]);
+      setPreviewSection([...dataArray]);
 
-      setPageSetting(dataArray.pageSetting);
-      console.log(dataArray);
+      // setPageSetting(dataArray.pageSetting);
     };
 
     reader.readAsText(file);

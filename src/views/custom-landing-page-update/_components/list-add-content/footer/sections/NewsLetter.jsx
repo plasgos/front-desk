@@ -32,9 +32,12 @@ const Newsletter = ({
   const [placeholder, setPlaceholder] = useState(
     currentContent?.content?.placeholder || "Masukan email di sini"
   );
-
-  const [iconSize, setIconSize] = useState(currentContent?.iconSize || 20);
-  const [imageSize, setImageSize] = useState(currentContent?.imageSize || 50);
+  const [iconSize, setIconSize] = useState(
+    currentContent?.wrapperStyle?.iconSize || 20
+  );
+  const [imageSize, setImageSize] = useState(
+    currentContent?.wrapperStyle?.imageSize || 50
+  );
   const [setting, setSetting] = useState({});
 
   const [textBtnValue] = useDebounce(textBtn, 300);
@@ -46,16 +49,19 @@ const Newsletter = ({
   const [previousIcon, setPreviousIcon] = useState("");
 
   const [icon, setIcon] = useState(
-    isEditingSection ? currentContent?.icon : ""
+    isEditingSection ? currentContent?.wrapperStyle?.icon : ""
   );
 
   const [imageUrl, setImageUrl] = useState(
-    isEditingSection ? currentContent?.image : ""
+    isEditingSection ? currentContent?.wrapperStyle?.image : ""
   );
-
   const [isListIconVisible, setIsListIconVisible] = useState(false);
 
   const contentIdToCheck = isEditingSection ? currentContent.id : setting.id;
+
+  const isIconSizeAndImageSizeVisible = isEditingSection
+    ? currentContent?.wrapperStyle
+    : setting?.wrapperStyle;
 
   useEffect(() => {
     if (imageUrl !== "") {
@@ -88,63 +94,13 @@ const Newsletter = ({
     setIsListIconVisible(true);
   };
 
-  const handleChangeImageUrl = (value) => {
-    setPreviewSection((arr) =>
-      arr.map((section) =>
-        section.id === currentSection?.id
-          ? {
-              ...section,
-              content: section.content.map((contentItem) =>
-                contentItem.id === contentIdToCheck
-                  ? {
-                      ...contentItem,
-                      content: {
-                        ...contentItem.content,
-                        icon: "",
-                        image: value,
-                      },
-                    }
-                  : contentItem
-              ),
-            }
-          : section
-      )
-    );
-  };
-
-  const handleChangeIcon = (value) => {
-    setIcon(value);
-
-    setPreviewSection((arr) =>
-      arr.map((section) =>
-        section.id === currentSection?.id
-          ? {
-              ...section,
-              content: section.content.map((contentItem) =>
-                contentItem.id === contentIdToCheck
-                  ? {
-                      ...contentItem,
-                      content: {
-                        ...contentItem.content,
-                        icon: value,
-                        image: "",
-                      },
-                    }
-                  : contentItem
-              ),
-            }
-          : section
-      )
-    );
-  };
-
   useEffect(() => {
     if (textBtnValue !== currentContent?.content?.textBtn) {
       handleChangeContent("textBtn", textBtnValue);
     }
 
     if (titleValue !== currentContent?.content?.title) {
-      handleChangeContent("title", titleValue);
+      handleChangeWrapperStyle("title", titleValue);
     }
 
     if (placeholderValue !== currentContent?.content?.placeholder) {
@@ -155,6 +111,16 @@ const Newsletter = ({
   }, [textBtnValue, titleValue, placeholderValue]);
 
   const handleChangeContent = (key, value) => {
+    if (!isEditingSection) {
+      setSetting((prev) => ({
+        ...prev,
+        content: {
+          ...prev.content,
+          [key]: value,
+        },
+      }));
+    }
+
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === currentSection?.id
@@ -184,10 +150,12 @@ const Newsletter = ({
       name: "newsletter",
       title: "Berlangganan Newsletter",
       content: {
-        title: "Berita Newsletter",
         textBtn: "Berlangganan",
         placeholder: "Masukan email di sini",
         btnColor: "#fa541c",
+      },
+      wrapperStyle: {
+        title: "Berita Newsletter",
         icon: "",
         iconSize: 20,
         image: "",
@@ -211,6 +179,39 @@ const Newsletter = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditingSection]);
+
+  const handleChangeWrapperStyle = (key, value) => {
+    if (!isEditingSection) {
+      setSetting((prev) => ({
+        ...prev,
+        wrapperStyle: {
+          ...prev.wrapperStyle,
+          [key]: value,
+        },
+      }));
+    }
+
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === currentSection?.id
+          ? {
+              ...item,
+              content: item.content.map((contentItem) => {
+                return String(contentItem.id) === String(contentIdToCheck)
+                  ? {
+                      ...contentItem,
+                      wrapperStyle: {
+                        ...contentItem.wrapperStyle,
+                        [key]: value,
+                      },
+                    }
+                  : contentItem;
+              }),
+            }
+          : item
+      )
+    );
+  };
 
   const handleCancel = () => {
     if (isListIconVisible) {
@@ -261,7 +262,79 @@ const Newsletter = ({
     } else if (key === "imageSize") {
       setImageSize(newValue);
     }
-    handleChangeContent(key, newValue);
+    handleChangeWrapperStyle(key, newValue);
+  };
+
+  const handleChangeImageUrl = (value) => {
+    if (!isEditingSection) {
+      setSetting((prev) => ({
+        ...prev,
+        wrapperStyle: {
+          ...prev.wrapperStyle,
+          image: value,
+          icon: "",
+        },
+      }));
+    }
+
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        section.id === currentSection?.id
+          ? {
+              ...section,
+              content: section.content.map((contentItem) =>
+                contentItem.id === contentIdToCheck
+                  ? {
+                      ...contentItem,
+                      wrapperStyle: {
+                        ...contentItem.wrapperStyle,
+                        image: value,
+                        icon: "",
+                      },
+                    }
+                  : contentItem
+              ),
+            }
+          : section
+      )
+    );
+  };
+
+  const handleChangeIcon = (value) => {
+    setIcon(value);
+
+    if (!isEditingSection) {
+      setSetting((prev) => ({
+        ...prev,
+        wrapperStyle: {
+          ...prev.wrapperStyle,
+          image: "",
+          icon: value,
+        },
+      }));
+    }
+
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        section.id === currentSection?.id
+          ? {
+              ...section,
+              content: section.content.map((contentItem) =>
+                contentItem.id === contentIdToCheck
+                  ? {
+                      ...contentItem,
+                      wrapperStyle: {
+                        ...contentItem.wrapperStyle,
+                        image: "",
+                        icon: value,
+                      },
+                    }
+                  : contentItem
+              ),
+            }
+          : section
+      )
+    );
   };
 
   return (
@@ -296,7 +369,6 @@ const Newsletter = ({
                 value={title}
                 onChange={(e) => {
                   setTitle(e.target.value);
-                  handleChangeContent("title", e.target.value);
                 }}
               />
 
@@ -363,13 +435,13 @@ const Newsletter = ({
                 </div>
               </div>
 
-              {currentContent?.content?.icon && (
+              {isIconSizeAndImageSizeVisible?.icon && (
                 <InputRangeWithNumber
                   label="Ukuran Icon"
                   value={iconSize}
                   onChange={(newValue) => {
                     setIconSize(newValue);
-                    handleChangeContent("iconSize", newValue);
+                    handleChangeWrapperStyle("iconSize", newValue);
                   }}
                   min={10}
                   max={100}
@@ -379,13 +451,13 @@ const Newsletter = ({
                 />
               )}
 
-              {currentContent?.content?.image && (
+              {isIconSizeAndImageSizeVisible?.image && (
                 <InputRangeWithNumber
                   label="Ukuran Gambar"
                   value={imageSize}
                   onChange={(newValue) => {
                     setImageSize(newValue);
-                    handleChangeContent("imageSize", newValue);
+                    handleChangeWrapperStyle("imageSize", newValue);
                   }}
                   min={10}
                   max={100}

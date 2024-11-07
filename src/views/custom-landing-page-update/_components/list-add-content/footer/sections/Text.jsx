@@ -31,8 +31,12 @@ const Text = ({
     currentContent?.content?.maxWidth || 300
   );
 
-  const [iconSize, setIconSize] = useState(currentContent?.iconSize || 20);
-  const [imageSize, setImageSize] = useState(currentContent?.imageSize || 50);
+  const [iconSize, setIconSize] = useState(
+    currentContent?.wrapperStyle?.iconSize || 20
+  );
+  const [imageSize, setImageSize] = useState(
+    currentContent?.wrapperStyle?.imageSize || 50
+  );
   const [fontSize, setFontSize] = useState(fontSizeOptions[2]);
   const [setting, setSetting] = useState({});
   const [titleValue] = useDebounce(title, 300);
@@ -43,11 +47,11 @@ const Text = ({
   const [previousIcon, setPreviousIcon] = useState("");
 
   const [icon, setIcon] = useState(
-    isEditingSection ? currentContent?.icon : ""
+    isEditingSection ? currentContent?.wrapperStyle?.icon : ""
   );
 
   const [imageUrl, setImageUrl] = useState(
-    isEditingSection ? currentContent?.image : ""
+    isEditingSection ? currentContent?.wrapperStyle?.image : ""
   );
 
   const [isListIconVisible, setIsListIconVisible] = useState(false);
@@ -294,7 +298,7 @@ const Text = ({
     } else if (key === "imageSize") {
       setImageSize(newValue);
     }
-    handleChangeContent(key, newValue);
+    handleChangeWrapperStyle(key, newValue);
   };
 
   const handleChangeWrapperStyle = (key, value) => {

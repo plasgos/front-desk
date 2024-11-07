@@ -9,15 +9,17 @@ import IconPicker from "../../../../common/IconPicker";
 import Input from "../../../../common/Input";
 import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 
+import { AiFillInstagram } from "react-icons/ai";
+import { BsTwitterX } from "react-icons/bs";
+import { FaFacebookSquare } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
-import jne from "../../../../../../../assets/jne-logo.png";
-import jnt from "../../../../../../../assets/jnt.png";
 import { DraggableSections } from "../../common/DraggbleSections";
 import { useMoveSection } from "../../hooks/useMoveSection";
 import { useRemoveSection } from "../../hooks/useRemoveSection";
 import UpdateContent from "./UpdateContent";
+import { FaYoutube } from "react-icons/fa6";
 
-const ListLogo = ({
+const SocialLink = ({
   previewSection,
   setPreviewSection,
   isShowContent,
@@ -32,11 +34,7 @@ const ListLogo = ({
   const [selectedContent, setSelectedContent] = useState({});
 
   const [title, setTitle] = useState(
-    currentContent?.wrapperStyle?.title || "Metode Pengiriman"
-  );
-
-  const [maxWidth, setMaxWidth] = useState(
-    currentContent?.wrapperStyle?.maxWidth || 300
+    currentContent?.wrapperStyle?.title || "Social Media"
   );
 
   const [iconSize, setIconSize] = useState(
@@ -215,15 +213,52 @@ const ListLogo = ({
     let uniqueId = createUniqueID(currentSection?.content);
     let payload = {
       id: uniqueId,
-      name: "list-logo",
-      title: "Daftar Logo",
+      name: "social-link",
+      title: "Link Sosial",
       content: [
-        { id: createUniqueID([]), image: jnt, target: {} },
-        { id: createUniqueID([]), image: jne, target: {} },
+        {
+          id: createUniqueID([]),
+          type: {
+            value: "facebook",
+            label: "Facebook",
+            icon: <FaFacebookSquare />,
+            link: "https://www.facebook.com/",
+            path: "",
+          },
+        },
+        {
+          id: createUniqueID([]),
+          type: {
+            value: "twitter-X",
+            label: "Twitter X",
+            icon: <BsTwitterX />,
+            link: "https://twitter.com/",
+            path: "",
+          },
+        },
+        {
+          id: createUniqueID([]),
+          type: {
+            value: "instagram",
+            label: "Instagram",
+            icon: <AiFillInstagram />,
+            link: "https://www.instagram.com/",
+            path: "",
+          },
+        },
+        {
+          id: createUniqueID([]),
+          type: {
+            value: "youtube",
+            label: "Youtube",
+            icon: <FaYoutube />,
+            link: "https://www.youtube.com/channel/",
+            path: "",
+          },
+        },
       ],
       wrapperStyle: {
-        title: "Metode Pengiriman",
-        maxWidth: 300,
+        title: "Social Media",
         icon: "",
         iconSize: 20,
         image: "",
@@ -322,9 +357,7 @@ const ListLogo = ({
 
   const handleSetValueWhenBlur = (value, min, max, key) => {
     const newValue = Math.min(Math.max(value, min), max);
-    if (key === "maxWidth") {
-      setMaxWidth(newValue);
-    } else if (key === "iconSize") {
+    if (key === "iconSize") {
       setIconSize(newValue);
     } else if (key === "imageSize") {
       setImageSize(newValue);
@@ -359,7 +392,8 @@ const ListLogo = ({
                       key={contentItem.id || `${contentIndex}`}
                       index={contentIndex}
                       id={contentItem.id}
-                      showThumbnail={contentItem?.image}
+                      titleContent={contentItem?.type?.label}
+                      titleContentItem={contentItem.type.path}
                       moveSection={(dragIndex, hoverIndex) =>
                         moveSection(
                           section.id,
@@ -420,18 +454,6 @@ const ListLogo = ({
             onChange={(e) => {
               setTitle(e.target.value);
             }}
-          />
-
-          <InputRangeWithNumber
-            label="Lebar Maksimal"
-            value={maxWidth}
-            onChange={(newValue) => {
-              setMaxWidth(newValue);
-              handleChangeContent("maxWidth", newValue);
-            }}
-            min={80}
-            max={600}
-            onBlur={() => handleSetValueWhenBlur(maxWidth, 80, 600, "maxWidth")}
           />
 
           <div className="mb-3">
@@ -562,4 +584,4 @@ const ListLogo = ({
   );
 };
 
-export default ListLogo;
+export default SocialLink;

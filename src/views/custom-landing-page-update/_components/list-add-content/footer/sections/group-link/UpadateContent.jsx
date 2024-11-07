@@ -23,6 +23,7 @@ const UpdateContent = ({
   currentSection,
   currentContent,
   selectedContent,
+  setSelectedContent,
   setPreviewSection,
   isEditingContent,
   isListIconContentVisible,
@@ -55,6 +56,10 @@ const UpdateContent = ({
   const isIconSizeAndImageSizeVisible = isEditingContent
     ? selectedContent
     : setting;
+  console.log(
+    "🚀 ~ isIconSizeAndImageSizeVisible:",
+    isIconSizeAndImageSizeVisible
+  );
 
   useEffect(() => {
     if (!isEditingContent) {
@@ -364,6 +369,12 @@ const UpdateContent = ({
         image: "",
         icon: value,
       }));
+    } else {
+      setSelectedContent((prev) => ({
+        ...prev,
+        image: "",
+        icon: value,
+      }));
     }
 
     setPreviewSection((arr) =>
@@ -432,6 +443,12 @@ const UpdateContent = ({
         image: value,
         icon: "",
       }));
+    } else {
+      setSelectedContent((prev) => ({
+        ...prev,
+        image: value,
+        icon: "",
+      }));
     }
 
     setPreviewSection((arr) =>
@@ -487,7 +504,10 @@ const UpdateContent = ({
           />
         </>
       ) : (
-        <div className="p-3">
+        <div
+          style={{ overflowY: "auto", height: "calc(100vh - 110px)" }}
+          className="p-3"
+        >
           <Input
             label="Teks"
             value={text}

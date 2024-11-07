@@ -145,7 +145,7 @@ const ViewGroupLinks = forwardRef(
                 onClick={() =>
                   useHandleClickTarget(contentItem.target, containerRef)
                 }
-                className={`tw-max-w-24`}
+                className={`tw-max-w-40`}
               >
                 <div className="tw-flex tw-items-center">
                   <div>

@@ -32,7 +32,7 @@ const ViewNewsletter = forwardRef(
 
     useEffect(() => {
       if (iconPack && iconPack.length > 0) {
-        const iconToSet = content?.content?.icon;
+        const iconToSet = content?.wrapperStyle?.icon;
 
         if (iconToSet && Object.keys(iconToSet).length > 0) {
           const iconExists = iconPack.some(
@@ -47,10 +47,10 @@ const ViewNewsletter = forwardRef(
     }, [iconPack, content]);
 
     useEffect(() => {
-      if (content.content?.image) {
+      if (content.wrapperStyle?.image) {
         setIcon(null);
       }
-    }, [content.content.image]);
+    }, [content.wrapperStyle.image]);
 
     return (
       <div
@@ -86,7 +86,7 @@ const ViewNewsletter = forwardRef(
             >
               <FontAwesomeIcon
                 icon={[`${icon.prefix}`, icon.iconName]}
-                style={{ fontSize: content.content?.iconSize }}
+                style={{ fontSize: content.wrapperStyle?.iconSize }}
               />
             </div>
           )}
@@ -96,11 +96,11 @@ const ViewNewsletter = forwardRef(
               style={{
                 position: "relative",
                 marginRight: 8,
-                width: content.content?.imageSize,
+                width: content.wrapperStyle?.imageSize,
               }}
             >
               <img
-                src={content?.content?.image}
+                src={content?.wrapperStyle?.image}
                 alt="icon"
                 style={{ width: "100%", objectFit: "contain" }}
               />
@@ -112,7 +112,7 @@ const ViewNewsletter = forwardRef(
               color: titleColor,
             }}
           >
-            {content?.content?.title}
+            {content?.wrapperStyle?.title}
           </div>
         </div>
 

@@ -8,19 +8,27 @@ import {
 } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { IoAdd } from "react-icons/io5";
+import { IoAdd, IoLocationSharp } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
 
 import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import Confirmation from "../../common/Confirmation";
-import { DraggableList } from "../../common/DraggableList";
 import NavTabsCustom from "../../common/NavTabsCustom";
 import SelectVariant from "../../common/SelectVariant";
 import Copyright from "./Copyright";
 import Design from "./Design";
 import ListContentFooter from "./ListContentFooter";
+import { DraggableSections } from "./common/DraggbleSections";
 import { useRenderEditSection } from "./hooks/useRenderEditSection";
+
+import jne from "../../../../../assets/jne-logo.png";
+import jnt from "../../../../../assets/jnt.png";
+import { FaPhone, FaYoutube } from "react-icons/fa6";
+import { AiFillInstagram } from "react-icons/ai";
+import { BsTwitterX } from "react-icons/bs";
+import { FaFacebookSquare } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
 
 const optionVariant = [
   {
@@ -66,16 +74,161 @@ const shadeStyle = {
 
 const initialContent = [
   {
-    id: `text-${createUniqueID([])}`,
-    name: "text",
-    title: "Teks",
-    content: {
-      text: "Misi kami adalah untuk memajukan peradaban manusia dimulai dengan melayani pelanggan kami sebagai raja",
-      fontSize: "tw-text-md",
-    },
+    id: `list-logo-${createUniqueID([])}`,
+    name: "list-logo",
+    title: "Daftar Logo",
+    content: [
+      { id: createUniqueID([]), image: jnt, target: {} },
+      { id: createUniqueID([]), image: jne, target: {} },
+    ],
     wrapperStyle: {
-      title: "Misi Kami",
+      title: "Metode Pengiriman",
       maxWidth: 300,
+      icon: "",
+      iconSize: 20,
+      image: "",
+      imageSize: 50,
+    },
+  },
+  {
+    id: `group-link-${createUniqueID([])}`,
+    name: "group-link",
+    title: "Grup Link",
+    content: [
+      {
+        id: createUniqueID([]),
+        text: "Home",
+        icon: "",
+        iconSize: 20,
+        image: "",
+        imageSize: 50,
+        target: {},
+      },
+      {
+        id: createUniqueID([]),
+        text: "Blog",
+        icon: "",
+        iconSize: 20,
+        image: "",
+        imageSize: 50,
+        target: {},
+      },
+      {
+        id: createUniqueID([]),
+        text: "Daftar Produk",
+        icon: "",
+        iconSize: 20,
+        image: "",
+        imageSize: 50,
+        target: {},
+      },
+      {
+        id: createUniqueID([]),
+        text: "Konfirmasi Pembayaran",
+        icon: "",
+        iconSize: 20,
+        image: "",
+        imageSize: 50,
+        target: {},
+      },
+    ],
+    wrapperStyle: {
+      title: "Link",
+      icon: "",
+      iconSize: 20,
+      image: "",
+      imageSize: 50,
+    },
+  },
+  {
+    id: `social-link-${createUniqueID([])}`,
+    name: "social-link",
+    title: "Link Sosial",
+    content: [
+      {
+        id: createUniqueID([]),
+        type: {
+          value: "facebook",
+          label: "Facebook",
+          icon: <FaFacebookSquare />,
+          link: "https://www.facebook.com/",
+          path: "",
+        },
+      },
+      {
+        id: createUniqueID([]),
+        type: {
+          value: "twitter-X",
+          label: "Twitter X",
+          icon: <BsTwitterX />,
+          link: "https://twitter.com/",
+          path: "",
+        },
+      },
+      {
+        id: createUniqueID([]),
+        type: {
+          value: "instagram",
+          label: "Instagram",
+          icon: <AiFillInstagram />,
+          link: "https://www.instagram.com/",
+          path: "",
+        },
+      },
+      {
+        id: createUniqueID([]),
+        type: {
+          value: "youtube",
+          label: "Youtube",
+          icon: <FaYoutube />,
+          link: "https://www.youtube.com/channel/",
+          path: "",
+        },
+      },
+    ],
+    wrapperStyle: {
+      title: "Social Media",
+      icon: "",
+      iconSize: 20,
+      image: "",
+      imageSize: 50,
+    },
+  },
+  {
+    id: `address-${createUniqueID([])}`,
+    name: "address",
+    title: "Alamat",
+    content: [
+      {
+        id: createUniqueID([]),
+        type: {
+          value: "phone",
+          label: "Telepon",
+          icon: <FaPhone />,
+          text: "0892-2211-4332",
+        },
+      },
+      {
+        id: createUniqueID([]),
+        type: {
+          value: "address",
+          label: "Alamat",
+          icon: <IoLocationSharp />,
+          text: "Jl Layur 31 Jakarta Timur",
+        },
+      },
+      {
+        id: createUniqueID([]),
+        type: {
+          value: "email",
+          label: "Email",
+          icon: <MdEmail />,
+          text: "support@email.com",
+        },
+      },
+    ],
+    wrapperStyle: {
+      title: "Alamat",
       icon: "",
       iconSize: 20,
       image: "",
@@ -101,9 +254,9 @@ export const initialFooterSection = [
     },
     copyright: {
       default: "@plasgos 2024",
-      custom: "",
+      customText: "",
       textAlign: "tw-text-center",
-      color: "#000000",
+      color: "#757575",
       fontSize: "tw-text-xs",
       isCustom: false,
     },
@@ -142,8 +295,10 @@ const Footer = ({
   const sectionIdToCheck = isEditingSection ? currentSection.id : setting.id;
 
   useEffect(() => {
-    const section = previewSection.find((section) => section.id === setting.id);
-
+    const section = previewSection.find((section) => {
+      return section.id === setting.id;
+    });
+    console.log("🚀 ~ useEffect ~ section:", section);
     if (section) {
       setSelectedCurrentSection(section);
     }
@@ -245,7 +400,6 @@ const Footer = ({
   const handleConfirm = () => {
     if (isSelectVariant) {
       setActiveTab("design");
-
       setIsSelectVariant(false);
     } else if (isAddContent || isEditingContent) {
       setIsAddContent(false);
@@ -286,17 +440,19 @@ const Footer = ({
       return (
         <div key={section.id}>
           {section.content.map((contentItem, contentIndex) => (
-            <DraggableList
+            <DraggableSections
+              section={contentItem}
               key={contentItem.id || contentIndex}
               index={contentIndex}
               id={contentItem.id}
-              showInfoText={`${contentItem.title} - ${contentItem?.wrapperStyle?.title}`}
+              titleContent={contentItem?.title}
+              titleContentItem={contentItem?.wrapperStyle?.title}
               moveSection={(dragIndex, hoverIndex) =>
                 moveSection(section.id, dragIndex, hoverIndex)
               }
               editSection={() => editSection(contentItem)}
               removeSection={() => removeSection(section.id, contentIndex)}
-              handleFocus={() => handleSectionContentFocus(contentItem.id)}
+              focusContent={() => handleSectionContentFocus(contentItem.id)}
             />
           ))}
         </div>

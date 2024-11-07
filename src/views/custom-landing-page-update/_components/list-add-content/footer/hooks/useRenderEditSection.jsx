@@ -4,6 +4,8 @@ import Text from "../sections/Text";
 import Newsletter from "../sections/NewsLetter";
 import ListLogo from "../sections/list-logo";
 import GroupLink from "../sections/group-link";
+import Address from "../sections/address";
+import SocialLink from "../sections/social-link";
 
 export function useRenderEditSection({
   previewSection,
@@ -74,6 +76,42 @@ export function useRenderEditSection({
       ) {
         return (
           <GroupLink
+            previewSection={previewSection}
+            currentSection={section}
+            currentContent={content}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "address" &&
+        content.name === "address" &&
+        editing.id === content.id
+      ) {
+        return (
+          <Address
+            previewSection={previewSection}
+            currentSection={section}
+            currentContent={content}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={(value) => setEditing(value)}
+            sectionBeforeEdit={sectionBeforeEdit}
+            isEditingSection={true}
+          />
+        );
+      }
+
+      if (
+        editing.name === "social-link" &&
+        content.name === "social-link" &&
+        editing.id === content.id
+      ) {
+        return (
+          <SocialLink
             previewSection={previewSection}
             currentSection={section}
             currentContent={content}

@@ -37,6 +37,7 @@ import Footer, {
   initialFooterSection,
 } from "./_components/list-add-content/footer";
 import { useRenderViewFooter } from "./_components/hooks/useRenderViewFooter";
+import ViewFooter from "./_components/view-content/ViewFooter";
 
 const landingPage = {
   detail: {
@@ -773,68 +774,12 @@ const CustomLandingPage = () => {
               <div key={item.id}>{renderViewSections(item, index)}</div>
             ))}
 
-            <div
-              style={{
-                border: `1px solid ${previewFooter[0]?.variant?.style?.outline}`,
-                backgroundColor: previewFooter[0]?.variant?.style?.bgColor,
-                maxWidth: "100%",
-                display: "flex",
-              }}
-            >
-              {previewFooter.map(
-                (section) =>
-                  section.isShowFooter && (
-                    <div
-                      className={` tw-p-3   ${
-                        focusedIndex === section.id &&
-                        "animate__animated  animate__headShake animate__fast tw-bg-green-300/20"
-                      } `}
-                      ref={(el) => setRef(el, section.id)}
-                      style={{
-                        ...(focusedIndex === section.id && {
-                          border: "2px solid green",
-                        }),
-                        display: "flex",
-                        // justifyContent: "center",
-                        width: previewFooter[0].variant?.style?.widthFooter,
-                        flexWrap: "wrap",
-                        gap: 20,
-                      }}
-                      key={section.id}
-                    >
-                      {section.content.map((content) => (
-                        <div key={content.id}>
-                          {renderViewFooter(section, content)}
-                        </div>
-                      ))}
-                    </div>
-                  )
-              )}
-            </div>
-
-            <div
-              style={{ flex: "1 0 auto" }}
-              className="
-    tw-flex  tw-bg-black 
-    tw-items-center tw-justify-center 
-    tw-w-full tw-pt-8 tw-pb-8"
-            >
-              <div>
-                <div className=" tw-text-white tw-text-center tw-text-xs">
-                  Dibuat dengan
-                </div>
-
-                <img
-                  src={plgLogo}
-                  alt="logo"
-                  style={{
-                    width: "80px",
-                    objectFit: "contain",
-                    marginTop: -10,
-                  }}
-                />
-              </div>
-            </div>
+            <ViewFooter
+              previewFooter={previewFooter}
+              focusedIndex={focusedIndex}
+              setRef={setRef}
+              renderViewFooter={renderViewFooter}
+            />
           </ResizableView>
         </main>
       </div>
