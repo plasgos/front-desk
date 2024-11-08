@@ -104,20 +104,24 @@ const UpdateContent = ({
 
   return (
     <div>
-      <div style={{ gap: 10 }} className="d-flex align-items-center">
-        <TextAlignSelect
-          initialValue={selectAlign}
-          onChange={(key, value) => {
-            setSelectAlign(value);
-            handleChangeStyle(key, value);
-          }}
-        />
+      <div
+        style={{ gap: 10 }}
+        className="d-flex align-items-center justify-content-between"
+      >
         <ColorPicker
           initialColor={textColor}
           label="Warna Teks"
           onChange={(color) => {
             setTextColor(color);
             handleChangeStyle("textColor", color);
+          }}
+        />
+
+        <TextAlignSelect
+          initialValue={selectAlign}
+          onChange={(key, value) => {
+            setSelectAlign(value);
+            handleChangeStyle(key, value);
           }}
         />
       </div>

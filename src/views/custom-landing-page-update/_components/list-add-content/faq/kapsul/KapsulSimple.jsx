@@ -40,7 +40,11 @@ const KapsulSimple = ({ currentSection, handleChangeStyle }) => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        height: "60vh",
+      }}
+    >
       <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
         <ColorPicker
           initialColor={colorTitle}
@@ -69,6 +73,7 @@ const KapsulSimple = ({ currentSection, handleChangeStyle }) => {
             setBgColor(color);
             handleChangeStyle("bgColor", color);
           }}
+          width="w-0"
         />
 
         <ColorPicker
@@ -78,6 +83,7 @@ const KapsulSimple = ({ currentSection, handleChangeStyle }) => {
             setBorderColor(color);
             handleChangeStyle("borderColor", color);
           }}
+          width="w-0"
         />
       </div>
 

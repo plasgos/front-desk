@@ -32,7 +32,7 @@ const ViewQuote = forwardRef(
           position: "relative",
           zIndex: 1,
         }}
-        className={` tw-my-2 ${
+        className={`  ${
           isFocused &&
           "animate__animated  animate__headShake animate__fast tw-bg-green-300/20 "
         } `}

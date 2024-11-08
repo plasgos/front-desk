@@ -176,7 +176,7 @@ const Text = ({
       <CTabs activeTab="konten">
         <NavTabsCustom tabs={tabsData} />
         <CTabContent
-          style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+          style={{ overflowY: "auto", height: "calc(100vh - 110px)" }}
           className="p-3"
         >
           <CTabPane data-tab="konten">
@@ -270,7 +270,7 @@ const Text = ({
           </CTabPane>
 
           <CTabPane
-            style={{ height: "80vh" }}
+            style={{ height: "70vh" }}
             className="p-1"
             data-tab="animation"
           >
@@ -281,11 +281,7 @@ const Text = ({
             />
           </CTabPane>
 
-          <CTabPane
-            style={{ overflowX: "hidden", height: "100%" }}
-            className="p-1"
-            data-tab="background"
-          >
+          <CTabPane className="p-1" data-tab="background">
             <BackgroundTab
               currentSection={isEditingSection ? currentSection : settingText}
               setPreviewSection={setPreviewSection}

@@ -1,5 +1,4 @@
 import {
-  CButton,
   CCard,
   CCardBody,
   CNav,
@@ -19,11 +18,11 @@ import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import AnimationControl from "../../common/AnimationControl";
 import BackgroundTab from "../../common/BackgroundTab";
+import Confirmation from "../../common/Confirmation";
 import SelectOptions from "../../common/SelectOptions";
 import { useRenderEditSection } from "../../hooks/useRenderEditSection";
 import { ListSectionContent } from "../../ListSectionContent";
 import { shadowOptions } from "../../SelectOptions";
-import Confirmation from "../../common/Confirmation";
 
 const positionOptions = [
   { value: "top", label: "Atas" },
@@ -346,6 +345,7 @@ const FloatingContent = ({
             className="p-3"
             style={{
               overflowY: "auto",
+              height: "calc(100vh - 110px)",
             }}
           >
             <CTabPane className="p-1" data-tab="content">
@@ -428,11 +428,7 @@ const FloatingContent = ({
               />
             </CTabPane>
 
-            <CTabPane
-              style={{ overflowX: "hidden", height: "100%" }}
-              className="p-1"
-              data-tab="background"
-            >
+            <CTabPane className="p-1" data-tab="background">
               <BackgroundTab
                 currentSection={isEditingSection ? currentSection : setting}
                 setPreviewSection={setPreviewFloatingSection}

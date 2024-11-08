@@ -118,12 +118,11 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
   };
 
   return (
-    <div>
+    <div style={{ paddingBottom: 30 }}>
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
         <SelectOptions
           label="Jenis Font"
           options={[{ value: "default", label: "Default" }]}
-          //   onChange={}
           value={{ value: "default", label: "Default" }}
           width="50"
         />

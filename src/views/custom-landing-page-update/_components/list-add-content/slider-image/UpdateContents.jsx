@@ -321,7 +321,7 @@ const UpdateContents = ({
   }, [isEditingContent]);
 
   return (
-    <div>
+    <div className="p-3">
       <div className="mb-2">
         <div
           style={{

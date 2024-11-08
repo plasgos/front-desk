@@ -20,8 +20,6 @@ const Line = ({
   const [isEditDesign, setIsEditDesign] = useState(false);
   const [designBeforeEdit, setDesignBeforeEdit] = useState("");
   const [setting, setSetting] = useState({});
-  console.log("🚀 ~ setting:", setting);
-
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
     let payload = {

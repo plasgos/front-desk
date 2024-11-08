@@ -4,7 +4,7 @@ import {
   CNavLink,
   CTabContent,
   CTabPane,
-  CTabs
+  CTabs,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 
@@ -315,7 +315,13 @@ const FormCheckout = ({
             <CNavLink data-tab="desain">Desain</CNavLink>
           </CNavItem>
         </CNav>
-        <CTabContent style={{ overflowY: "auto" }}>
+        <CTabContent
+          style={{
+            overflowY: "auto",
+
+            height: "calc(100vh - 110px)",
+          }}
+        >
           <CTabPane className="p-1" data-tab="form">
             <FormSection
               hiddenFocused={hiddenFocused}
@@ -333,7 +339,7 @@ const FormCheckout = ({
           </CTabPane>
           <CTabPane
             style={{ overflowX: "hidden" }}
-            className="p-1"
+            className="px-1"
             data-tab="desain"
           >
             <DesignSection

@@ -135,7 +135,7 @@ const StockCounter = ({
           </CNavItem>
         </CNav>
         <CTabContent
-          style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+          style={{ overflowY: "auto", height: "calc(100vh - 110px)" }}
           className="p-3"
         >
           <CTabPane className="p-1" data-tab="design">
@@ -156,11 +156,7 @@ const StockCounter = ({
             />
           </CTabPane>
 
-          <CTabPane
-            style={{ overflowX: "hidden", height: "100%" }}
-            className="p-1"
-            data-tab="background"
-          >
+          <CTabPane className="p-1" data-tab="background">
             <BackgroundTab
               currentSection={isEditingSection ? currentSection : setting}
               setPreviewSection={setPreviewSection}

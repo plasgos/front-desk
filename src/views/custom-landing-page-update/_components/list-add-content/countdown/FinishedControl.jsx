@@ -141,7 +141,19 @@ const FinishControl = ({ setPreviewSection, currentSection }) => {
           </CButton>
         </div>
       </div>
-      <div style={{ gap: 10 }} className="d-flex align-items-center">
+      <div
+        style={{ gap: 10 }}
+        className="d-flex align-items-center justify-content-between"
+      >
+        <ColorPicker
+          initialColor={textColor}
+          label="Warna Teks"
+          onChange={(color) => {
+            setTextColor(color);
+            handleChangeTitle("textColor", color);
+          }}
+        />
+
         <SelectOptions
           label="Align"
           options={alignOptions}
@@ -151,15 +163,6 @@ const FinishControl = ({ setPreviewSection, currentSection }) => {
           }}
           value={selectAlign}
           width="50"
-        />
-
-        <ColorPicker
-          initialColor={textColor}
-          label="Warna Teks"
-          onChange={(color) => {
-            setTextColor(color);
-            handleChangeTitle("textColor", color);
-          }}
         />
       </div>
 

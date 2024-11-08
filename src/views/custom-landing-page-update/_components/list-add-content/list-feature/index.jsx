@@ -4,7 +4,7 @@ import {
   CNavLink,
   CTabContent,
   CTabPane,
-  CTabs
+  CTabs,
 } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 
@@ -164,6 +164,7 @@ const ListFeature = ({
         <CTabContent
           style={{
             overflowY: "auto",
+            height: "calc(100vh - 110px)",
           }}
           className="p-3"
         >
@@ -195,11 +196,7 @@ const ListFeature = ({
             />
           </CTabPane>
 
-          <CTabPane
-            style={{ overflowX: "hidden", height: "100%" }}
-            className="p-1"
-            data-tab="wadah"
-          >
+          <CTabPane className="p-1" data-tab="wadah">
             <BackgroundTab
               currentSection={isEditingSection ? currentSection : setting}
               setPreviewSection={setPreviewSection}

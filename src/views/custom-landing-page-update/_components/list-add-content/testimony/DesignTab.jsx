@@ -353,6 +353,7 @@ const DesignTab = ({
             setSelectedBackgroundColor(color);
             handleUpdateSectionCardStyle("bgColor", color);
           }}
+          width="w-0"
         />
 
         <ColorPicker
@@ -362,6 +363,7 @@ const DesignTab = ({
             setSelectedBorderCardColor(color);
             handleUpdateSectionCardStyle("borderColor", color);
           }}
+          width="w-0"
         />
       </div>
       <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">

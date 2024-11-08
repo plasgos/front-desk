@@ -97,14 +97,18 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
   };
 
   return (
-    <div>
-      <div style={{ gap: 10 }} className="d-flex align-items-center  ">
+    <div style={{ paddingBottom: 30 }}>
+      <div
+        style={{ gap: 10, width: "85%" }}
+        className="d-flex align-items-center mb-3 "
+      >
         <ColorPicker
           initialColor={quoteTextColor}
           label="Quote Teks"
           onChange={(color) => {
             setQuoteTextColor(color);
           }}
+          width="w-0"
         />
 
         <ColorPicker
@@ -113,6 +117,7 @@ const ContentTab = ({ setPreviewSection, currentSection, isEditing }) => {
           onChange={(color) => {
             setQuoteTagColor(color);
           }}
+          width="w-0"
         />
       </div>
 

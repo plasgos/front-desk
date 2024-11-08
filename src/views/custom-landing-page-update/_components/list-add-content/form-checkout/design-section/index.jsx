@@ -391,7 +391,10 @@ const DesignSection = ({
                   </div>
                 )}
 
-              <div style={{ gap: 5 }} className="d-flex align-items-center">
+              <div
+                style={{ gap: 5, paddingBottom: 30 }}
+                className="d-flex align-items-center"
+              >
                 <ColorPicker
                   initialColor={iconColor}
                   onChange={(color) => {

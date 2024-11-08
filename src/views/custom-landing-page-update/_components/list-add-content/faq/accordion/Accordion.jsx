@@ -228,15 +228,6 @@ const Accordion = ({
           )}
 
           <div style={{ gap: 5 }} className="d-flex align-items-center">
-            <ColorPicker
-              initialColor={iconColor}
-              onChange={(color) => {
-                setIconColor(color);
-                handleChangeStyle("iconColor", color);
-              }}
-              width="w-0"
-            />
-
             <CButton
               onClick={handleFileUpload}
               color="primary"

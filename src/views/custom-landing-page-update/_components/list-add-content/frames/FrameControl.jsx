@@ -403,6 +403,7 @@ const FrameControl = ({ currentSection, setPreviewSection, type }) => {
           }}
           value={selectedBackgroundType}
           width="50"
+          positionShown="top"
         />
 
         <SelectOptions
@@ -474,6 +475,8 @@ const FrameControl = ({ currentSection, setPreviewSection, type }) => {
               handleUpdateBackground("bgColor", color);
             }}
             type="rgba"
+            isCustomPosition={true}
+            bottom={40}
           />
         </div>
       )}
@@ -545,6 +548,8 @@ const FrameControl = ({ currentSection, setPreviewSection, type }) => {
                 handleUpdateBackground("fromColor", color);
               }}
               type="rgba"
+              isCustomPosition={true}
+              bottom={40}
             />
 
             <ColorPicker
@@ -555,6 +560,8 @@ const FrameControl = ({ currentSection, setPreviewSection, type }) => {
                 handleUpdateBackground("toColor", color);
               }}
               type="rgba"
+              isCustomPosition={true}
+              bottom={40}
             />
           </div>
 

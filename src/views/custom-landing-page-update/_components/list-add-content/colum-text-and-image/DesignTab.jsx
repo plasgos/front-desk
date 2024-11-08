@@ -108,6 +108,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
             setSelectedColorTitle(color);
             handleChangeColor("colorTitle", color);
           }}
+          width="w-0"
         />
 
         <ColorPicker
@@ -117,6 +118,7 @@ const DesignTab = ({ currentSection, setPreviewSection, isEditingSection }) => {
             setSelectedColorDesc(color);
             handleChangeColor("colorDescription", color);
           }}
+          width="w-0"
         />
       </div>
 

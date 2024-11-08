@@ -335,7 +335,7 @@ const ImageText = ({
             )}
           </CNav>
           <CTabContent
-            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+            style={{ overflowY: "auto", height: "calc(100vh - 110px)" }}
             className="p-3"
           >
             <CTabPane className="p-1" data-tab="image">
@@ -383,7 +383,7 @@ const ImageText = ({
             </CTabPane>
 
             <CTabPane
-              style={{ height: "80vh" }}
+              style={{ height: "70vh" }}
               className="p-1"
               data-tab="animation"
             >
@@ -429,11 +429,7 @@ const ImageText = ({
             </CTabPane>
 
             {selectedVariant.group !== "Frosty" && (
-              <CTabPane
-                style={{ overflowX: "hidden", height: "100%" }}
-                className="p-1"
-                data-tab="background"
-              >
+              <CTabPane className="p-1" data-tab="background">
                 {selectedVariant.group === "Penuh" ? (
                   <BackgroundTabFullVariant
                     currentSection={isEditingSection ? currentSection : setting}

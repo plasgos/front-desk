@@ -5,13 +5,14 @@ const ColorPicker = ({
   label,
   initialColor,
   onChange,
-  width = "w-50",
+  width = "w-0",
   flexEnd = false,
   bottom,
   left,
   right,
-  top,
+  top = 40,
   type,
+  isCustomPosition,
 }) => {
   const [selectedColor, setSelectedColor] = useState(initialColor);
   const [showColorPicker, setShowColorPicker] = useState(false);
@@ -45,10 +46,20 @@ const ColorPicker = ({
     setSelectedColor(initialColor);
   }, [initialColor, selectedColor]);
 
+  const customPosition = isCustomPosition
+    ? {
+        bottom,
+        left,
+        right,
+      }
+    : {
+        top: 40,
+      };
+
   const popover = {
     position: "absolute",
     zIndex: "99999",
-    top: 40,
+    ...customPosition,
   };
 
   const cover = {

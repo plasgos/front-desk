@@ -369,7 +369,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
   }, [imageUrl, selectedBackgroundType, selectedBgColor]);
 
   return (
-    <div style={{ height: 415 }} className="pb-3">
+    <div style={{ height: "70vh" }} className="pb-3">
       <div style={{ gap: 10 }} className="d-flex align-items-center ">
         <SelectOptions
           label="Tipe Background"
@@ -513,7 +513,10 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
 
       {selectedBackgroundType?.value === "gradient" && (
         <>
-          <div style={{ gap: 10 }} className="d-flex align-items-center mb-2">
+          <div
+            style={{ gap: 20, width: "85%" }}
+            className="d-flex align-items-center mb-3 "
+          >
             <ColorPicker
               initialColor={fromColor}
               label="Warna 1"
@@ -522,6 +525,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
                 handleUpdateBackground("fromColor", color);
               }}
               type="rgba"
+              width="w-0"
             />
 
             <ColorPicker
@@ -532,6 +536,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
                 handleUpdateBackground("toColor", color);
               }}
               type="rgba"
+              width="w-0"
             />
           </div>
 
@@ -601,7 +606,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
           style={{ gap: 10 }}
           className="d-flex align-items-center mb-5 flex-wrap px-1"
         >
-          {patterns.map((pattern) => {
+          {patterns.map((pattern, index) => {
             const handleSelectPattern = () => {
               setSelectedPattern(pattern.img);
               handleUpdateBackground("pattern", pattern.img);
@@ -611,6 +616,7 @@ const BackgroundTab = ({ currentSection, setPreviewSection, type }) => {
 
             return (
               <div
+                key={index}
                 style={{
                   flex: "1 1 calc(50% - 10px)",
                   maxWidth: "calc(50% - 10px)",

@@ -272,7 +272,7 @@ const UpdateContent = ({
   };
 
   return (
-    <div>
+    <div style={{ paddingBottom: 30 }}>
       <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
         <ColorPicker
           initialColor={textColor}
@@ -385,7 +385,6 @@ const UpdateContent = ({
           }}
           value={fontSize}
           width="50"
-          positionShown="top"
         />
 
         <SelectOptions
@@ -397,7 +396,6 @@ const UpdateContent = ({
           }}
           value={align}
           width="50"
-          positionShown="top"
         />
       </div>
 

@@ -94,6 +94,17 @@ const VideoControlSetting = ({
         type="text"
       />
 
+      <SelectOptions
+        label="Rasio Gambar"
+        options={aspectRatioVideoOptions}
+        onChange={(selectedOption) => {
+          setRatio(selectedOption);
+          handleChangeContent("ratio", selectedOption.value);
+        }}
+        value={ratio}
+        width="50"
+      />
+
       <InputRangeWithNumber
         label="Lebar"
         value={width}
@@ -106,17 +117,6 @@ const VideoControlSetting = ({
         onBlur={() =>
           handleChangeContentValueWhenBlur(width, 100, 1200, "width")
         }
-      />
-
-      <SelectOptions
-        label="Rasio Gambar"
-        options={aspectRatioVideoOptions}
-        onChange={(selectedOption) => {
-          setRatio(selectedOption);
-          handleChangeContent("ratio", selectedOption.value);
-        }}
-        value={ratio}
-        width="50"
       />
 
       <div style={{ gap: 8 }} className="d-flex flex-column mb-2">

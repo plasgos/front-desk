@@ -1,5 +1,4 @@
 import {
-  CButton,
   CCard,
   CCardBody,
   CNav,
@@ -15,11 +14,11 @@ import { useMoveSection } from "../../../../../hooks/useMoveSection";
 import { useRemoveSection } from "../../../../../hooks/useRemoveSection";
 import { createUniqueID } from "../../../../../lib/unique-id";
 import BackgroundTab from "../../common/BackgroundTab";
+import Confirmation from "../../common/Confirmation";
 import { DraggableList } from "../../common/DraggableList";
 import SelectOptions from "../../common/SelectOptions";
 import { shadowOptions } from "../../SelectOptions";
 import UpdateContent from "./UpdateContent";
-import Confirmation from "../../common/Confirmation";
 
 export const distanceOptions = [
   { value: "0", label: "0" },
@@ -273,7 +272,7 @@ const FloatingButton = ({
             </CNavItem>
           </CNav>
           <CTabContent
-            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+            style={{ overflowY: "auto", height: "calc(100vh - 110px)" }}
             className="p-3"
           >
             <CTabPane className="p-1" data-tab="konten">
@@ -350,11 +349,7 @@ const FloatingButton = ({
                 </>
               )}
             </CTabPane>
-            <CTabPane
-              style={{ overflowX: "hidden", height: "100%" }}
-              className="p-1"
-              data-tab="wadah"
-            >
+            <CTabPane className="p-1" data-tab="wadah">
               <BackgroundTab
                 currentSection={isEditingSection ? currentSection : setting}
                 setPreviewSection={setPreviewFloatingSection}

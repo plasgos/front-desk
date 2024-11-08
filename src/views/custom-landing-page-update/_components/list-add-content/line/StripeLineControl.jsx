@@ -55,7 +55,10 @@ const StripeLineControl = ({ setPreviewSection, currentSection }) => {
 
   return (
     <div>
-      <div style={{ gap: 10 }} className="d-flex align-items-center my-3">
+      <div
+        style={{ gap: 20, width: "85%" }}
+        className="d-flex align-items-center mb-3 "
+      >
         <ColorPicker
           initialColor={color1}
           label="Garis"
@@ -64,6 +67,7 @@ const StripeLineControl = ({ setPreviewSection, currentSection }) => {
             handleUpdateValue("color1", color);
           }}
           type="rgba"
+          width="w-0"
         />
 
         <ColorPicker
@@ -74,6 +78,7 @@ const StripeLineControl = ({ setPreviewSection, currentSection }) => {
             handleUpdateValue("color2", color);
           }}
           type="rgba"
+          width="w-0"
         />
       </div>
 

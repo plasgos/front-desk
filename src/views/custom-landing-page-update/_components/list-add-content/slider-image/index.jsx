@@ -355,36 +355,22 @@ const SliderImage = ({
           verticalList={true}
         />
       ) : isAddContent ? (
-        <CTabs>
-          <CTabContent
-            style={{ height: 360, paddingRight: 5, overflowY: "auto" }}
-            className="pt-3"
-          >
-            <UpdateContents
-              currentSection={
-                isEditingSection ? currentSection : selectedCurrentSection
-              }
-              currentContent={isEditingSection ? currentSection : setting}
-              setPreviewSection={setPreviewSection}
-            />
-          </CTabContent>
-        </CTabs>
+        <UpdateContents
+          currentSection={
+            isEditingSection ? currentSection : selectedCurrentSection
+          }
+          currentContent={isEditingSection ? currentSection : setting}
+          setPreviewSection={setPreviewSection}
+        />
       ) : isEditingContent ? (
-        <CTabs>
-          <CTabContent
-            style={{ height: 360, paddingRight: 5, overflowY: "auto" }}
-            className="pt-3"
-          >
-            <UpdateContents
-              currentSection={
-                isEditingSection ? currentSection : selectedCurrentSection
-              }
-              currentContent={selectedContent}
-              setPreviewSection={setPreviewSection}
-              isEditingContent={true}
-            />
-          </CTabContent>
-        </CTabs>
+        <UpdateContents
+          currentSection={
+            isEditingSection ? currentSection : selectedCurrentSection
+          }
+          currentContent={selectedContent}
+          setPreviewSection={setPreviewSection}
+          isEditingContent={true}
+        />
       ) : (
         <CTabs activeTab="content">
           <CNav variant="tabs">
@@ -396,7 +382,7 @@ const SliderImage = ({
             </CNavItem>
           </CNav>
           <CTabContent
-            style={{ overflowY: "auto", height: "calc(100vh - 139px)" }}
+            style={{ overflowY: "auto", height: "calc(100vh - 110px)" }}
             className="p-3"
           >
             <CTabPane className="p-1" data-tab="content">
@@ -456,11 +442,7 @@ const SliderImage = ({
               </CCard>
             </CTabPane>
 
-            <CTabPane
-              style={{ overflowX: "hidden", height: "100%" }}
-              className="p-1"
-              data-tab="background"
-            >
+            <CTabPane className="p-1" data-tab="background">
               <BackgroundTab
                 currentSection={isEditingSection ? currentSection : setting}
                 setPreviewSection={setPreviewSection}

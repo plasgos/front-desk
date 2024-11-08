@@ -25,7 +25,11 @@ const PlainSimple = ({ currentSection, handleChangeStyle }) => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        height: "60vh",
+      }}
+    >
       <div style={{ gap: 10 }} className="d-flex align-items-center mb-3">
         <ColorPicker
           initialColor={colorTitle}
@@ -34,6 +38,7 @@ const PlainSimple = ({ currentSection, handleChangeStyle }) => {
             setColorTitle(color);
             handleChangeStyle("colorTitle", color);
           }}
+          width="w-0"
         />
 
         <ColorPicker
@@ -43,6 +48,7 @@ const PlainSimple = ({ currentSection, handleChangeStyle }) => {
             setColorContent(color);
             handleChangeStyle("colorContent", color);
           }}
+          width="w-0"
         />
       </div>
 

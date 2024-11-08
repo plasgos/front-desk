@@ -384,7 +384,7 @@ const ImageContent = ({
   ]);
 
   return (
-    <div style={{ overflowX: "hidden" }}>
+    <div style={{ paddingBottom: 30 }}>
       {selectedVariant.value === "center" && (
         <div className="mb-2">
           <ColorPicker
