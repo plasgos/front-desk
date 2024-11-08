@@ -11,7 +11,7 @@ const Copyright = ({ setPreviewSection, currentSection }) => {
   const [isCustom, setIsCustom] = useState(false);
 
   const [editorHtml, setEditorHtml] = useState(
-    currentSection?.copyright?.title || ""
+    currentSection?.copyright?.customText || ""
   );
   const [color, setColor] = useState(
     currentSection?.copyright?.color || "#757575"
@@ -20,7 +20,6 @@ const Copyright = ({ setPreviewSection, currentSection }) => {
   const [textAlign, setTextAlign] = useState(
     currentSection?.copyright?.textAlign || "tw-text-center"
   );
-
   const [fontSize, setFontSize] = useState(fontSizeOptions[0]);
 
   const [editorHtmlValue] = useDebounce(editorHtml, 300);
@@ -50,6 +49,11 @@ const Copyright = ({ setPreviewSection, currentSection }) => {
   }, [editorHtmlValue]);
 
   useEffect(() => {
+    setIsCustom(currentSection.copyright?.isCustom || false);
+    setEditorHtml(currentSection.copyright?.customText || "");
+    setColor(currentSection.copyright?.color || "#757575");
+    setTextAlign(currentSection.copyright?.textAlign || "tw-text-center");
+
     const currentFontSizeOption = fontSizeOptions.find(
       (opt) => opt.value === currentSection?.copyright?.fontSize
     );

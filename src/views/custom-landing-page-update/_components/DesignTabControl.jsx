@@ -99,7 +99,6 @@ const DesignTabControl = ({
 
       // Parse JSON string ke array of objects
       const dataArray = JSON.parse(jsonString);
-      console.log("🚀 ~ importData ~ dataArray:", dataArray);
 
       // Gunakan dataArray sesuai kebutuhan
       setPreviewSection([...dataArray.section]);
@@ -117,7 +116,6 @@ const DesignTabControl = ({
 
       setPreviewFloatingSection([...floatingSectionDelay]);
       setPageSetting(dataArray.pageSetting);
-      console.log(dataArray);
     };
 
     reader.readAsText(file);

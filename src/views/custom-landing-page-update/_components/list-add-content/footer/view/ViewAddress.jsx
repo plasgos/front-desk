@@ -19,6 +19,9 @@ const ViewAddress = forwardRef(
 
     const iconPack = useFontAwesomeIconPack();
     const [icon, setIcon] = useState(null);
+
+    const [iconContent, setIconContent] = useState(null);
+
     useEffect(() => {
       if (iconPack && iconPack.length > 0) {
         const iconToSet = content?.wrapperStyle?.icon;
@@ -41,6 +44,22 @@ const ViewAddress = forwardRef(
       }
     }, [content.wrapperStyle.image]);
 
+    const getIconForSection = (icon) => {
+      if (iconPack) {
+        // Pastikan 'icon' bukan undefined atau null
+        const iconToSet = icon || "";
+
+        // Pastikan iconToSet memiliki properti iconName
+        if (iconToSet.iconName) {
+          const iconExists = iconPack.some(
+            (iconItem) => iconItem.iconName === iconToSet?.iconName
+          );
+          return iconExists ? iconToSet : null;
+        }
+      }
+      return null;
+    };
+
     return (
       <div
         ref={(el) => {
@@ -54,7 +73,6 @@ const ViewAddress = forwardRef(
           }),
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
-          width: content?.wrapperStyle?.maxWidth,
           padding: 10,
         }}
         key={content.id}
@@ -113,6 +131,8 @@ const ViewAddress = forwardRef(
           className="tw-flex tw-flex-col tw-flex-wrap  tw-gap-3"
         >
           {content?.content?.map((contentItem) => {
+            const iconContent = getIconForSection(contentItem?.type?.icon);
+
             return (
               <div key={contentItem?.id} className={``}>
                 <div className="tw-flex tw-items-center">
@@ -122,12 +142,24 @@ const ViewAddress = forwardRef(
                       marginRight: 8,
                     }}
                   >
-                    <div
-                      style={{
-                        fontSize: 16,
-                      }}
-                    >
-                      {contentItem?.type?.icon}
+                    <div>
+                      {iconContent &&
+                        iconContent.prefix &&
+                        iconContent.iconName && (
+                          <div
+                            style={{
+                              color: contentColor,
+                            }}
+                          >
+                            <FontAwesomeIcon
+                              style={{ fontSize: 16 }}
+                              icon={[
+                                `${iconContent.prefix}`,
+                                iconContent.iconName,
+                              ]}
+                            />
+                          </div>
+                        )}
                     </div>
                   </div>
 

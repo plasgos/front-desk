@@ -56,7 +56,6 @@ const ViewListLogo = forwardRef(
           }),
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           ...(isDragging ? { border: "2px solid green" } : {}),
-          // maxWidth: content?.wrapperStyle?.maxWidth,
           padding: 10,
         }}
         key={content.id}

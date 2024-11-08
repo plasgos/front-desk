@@ -11,8 +11,8 @@ const Design = ({
   currentSection,
   pageSetting,
   setPageSetting,
+  isShowContent,
 }) => {
-  console.log("🚀 ~ currentSection:", currentSection);
   const [bgColor, setBgColor] = useState(
     currentSection?.variant?.style?.bgColor || "#000000"
   );
@@ -34,7 +34,12 @@ const Design = ({
   );
 
   useEffect(() => {
-    console.log("RUNNNNN");
+    setBgColor(currentSection?.variant?.style?.bgColor || "#000000");
+    setTitleColor(currentSection?.variant?.style?.titleColor || "#EEEEEE");
+    setContentColor(currentSection?.variant?.style?.contentColor || "#757575");
+    setInnerOutline(currentSection?.variant?.style?.innerOutline || "");
+    setOutline(currentSection?.variant?.style?.outline || "");
+
     const currentWidthPageOption = widthPageOptions
       .flatMap((opts) => opts.options)
       .find((opt) => opt.value === currentSection?.variant?.style?.widthFooter);
@@ -76,12 +81,11 @@ const Design = ({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${pageSetting.title}.txt`; // Nama file yang diunduh
+    a.download = `footer-${pageSetting.title}.txt`; // Nama file yang diunduh
     a.click();
     URL.revokeObjectURL(url);
   };
 
-  // Fungsi untuk mengimpor data
   const importData = (file) => {
     const reader = new FileReader();
 
@@ -100,6 +104,7 @@ const Design = ({
       setPreviewSection([...dataArray]);
 
       // setPageSetting(dataArray.pageSetting);
+      isShowContent(false);
     };
 
     reader.readAsText(file);

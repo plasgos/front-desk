@@ -56,11 +56,6 @@ const UpdateContent = ({
   const isIconSizeAndImageSizeVisible = isEditingContent
     ? selectedContent
     : setting;
-  console.log(
-    "🚀 ~ isIconSizeAndImageSizeVisible:",
-    isIconSizeAndImageSizeVisible
-  );
-
   useEffect(() => {
     if (!isEditingContent) {
       handleAddContent();

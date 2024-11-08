@@ -8,7 +8,7 @@ import {
 } from "@coreui/react";
 import React, { useCallback, useEffect, useState } from "react";
 
-import { IoAdd, IoLocationSharp } from "react-icons/io5";
+import { IoAdd } from "react-icons/io5";
 import { createUniqueID } from "../../../../../lib/unique-id";
 
 import { useMoveSection } from "../../../../../hooks/useMoveSection";
@@ -24,11 +24,6 @@ import { useRenderEditSection } from "./hooks/useRenderEditSection";
 
 import jne from "../../../../../assets/jne-logo.png";
 import jnt from "../../../../../assets/jnt.png";
-import { FaPhone, FaYoutube } from "react-icons/fa6";
-import { AiFillInstagram } from "react-icons/ai";
-import { BsTwitterX } from "react-icons/bs";
-import { FaFacebookSquare } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
 
 const optionVariant = [
   {
@@ -150,7 +145,10 @@ const initialContent = [
         type: {
           value: "facebook",
           label: "Facebook",
-          icon: <FaFacebookSquare />,
+          icon: {
+            iconName: "square-facebook",
+            prefix: "fab",
+          },
           link: "https://www.facebook.com/",
           path: "",
         },
@@ -160,7 +158,10 @@ const initialContent = [
         type: {
           value: "twitter-X",
           label: "Twitter X",
-          icon: <BsTwitterX />,
+          icon: {
+            iconName: "square-x-twitter",
+            prefix: "fab",
+          },
           link: "https://twitter.com/",
           path: "",
         },
@@ -170,7 +171,10 @@ const initialContent = [
         type: {
           value: "instagram",
           label: "Instagram",
-          icon: <AiFillInstagram />,
+          icon: {
+            iconName: "square-instagram",
+            prefix: "fab",
+          },
           link: "https://www.instagram.com/",
           path: "",
         },
@@ -180,7 +184,10 @@ const initialContent = [
         type: {
           value: "youtube",
           label: "Youtube",
-          icon: <FaYoutube />,
+          icon: {
+            iconName: "youtube",
+            prefix: "fab",
+          },
           link: "https://www.youtube.com/channel/",
           path: "",
         },
@@ -204,7 +211,10 @@ const initialContent = [
         type: {
           value: "phone",
           label: "Telepon",
-          icon: <FaPhone />,
+          icon: {
+            iconName: "phone",
+            prefix: "fas",
+          },
           text: "0892-2211-4332",
         },
       },
@@ -213,7 +223,10 @@ const initialContent = [
         type: {
           value: "address",
           label: "Alamat",
-          icon: <IoLocationSharp />,
+          icon: {
+            iconName: "location-dot",
+            prefix: "fas",
+          },
           text: "Jl Layur 31 Jakarta Timur",
         },
       },
@@ -222,7 +235,10 @@ const initialContent = [
         type: {
           value: "email",
           label: "Email",
-          icon: <MdEmail />,
+          icon: {
+            iconName: "envelope",
+            prefix: "fas",
+          },
           text: "support@email.com",
         },
       },
@@ -298,11 +314,14 @@ const Footer = ({
     const section = previewSection.find((section) => {
       return section.id === setting.id;
     });
-    console.log("🚀 ~ useEffect ~ section:", section);
     if (section) {
       setSelectedCurrentSection(section);
     }
   }, [previewSection, setting.id]);
+
+  // useEffect(() => {
+
+  // },[])
 
   const handleVariantChange = (group, option) => {
     const style = styleMap[option.id] || {};
@@ -574,7 +593,7 @@ const Footer = ({
                 </div>
                 <div className="d-flex align-items-center">
                   <div className="mr-3">
-                    {selectedVariant.group} - {selectedVariant.label}
+                    {selectedVariant?.group} - {selectedVariant?.label}
                   </div>
                   <CButton onClick={openVariants} color="primary">
                     Ubah
@@ -584,13 +603,14 @@ const Footer = ({
 
               <Design
                 previewSection={previewSection}
-                setPreviewSection={setPreviewSection}
+                setPreviewSection={(value) => setPreviewSection(value)}
                 currentSection={
                   isEditingSection ? currentSection : selectedCurrentSection
                 }
                 isEditingSection={isEditingSection}
                 setPageSetting={setPageSetting}
                 pageSetting={pageSetting}
+                isShowContent={isShowContent}
               />
             </CTabPane>
 

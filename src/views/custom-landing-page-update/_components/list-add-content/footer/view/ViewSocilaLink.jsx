@@ -46,6 +46,22 @@ const ViewSocialLink = forwardRef(
       window.open(target, "_blank", "noopener noreferrer");
     };
 
+    const getIconForSection = (icon) => {
+      if (iconPack) {
+        // Pastikan 'icon' bukan undefined atau null
+        const iconToSet = icon || "";
+
+        // Pastikan iconToSet memiliki properti iconName
+        if (iconToSet.iconName) {
+          const iconExists = iconPack.some(
+            (iconItem) => iconItem.iconName === iconToSet?.iconName
+          );
+          return iconExists ? iconToSet : null;
+        }
+      }
+      return null;
+    };
+
     return (
       <div
         ref={(el) => {
@@ -118,6 +134,8 @@ const ViewSocialLink = forwardRef(
           className="tw-flex  tw-flex-wrap  tw-gap-3"
         >
           {content?.content?.map((contentItem) => {
+            const iconContent = getIconForSection(contentItem?.type?.icon);
+
             return (
               <div
                 key={contentItem?.id}
@@ -131,12 +149,21 @@ const ViewSocialLink = forwardRef(
                   cursor: "pointer",
                 }}
               >
-                <div
-                  style={{
-                    fontSize: 20,
-                  }}
-                >
-                  {contentItem?.type?.icon}
+                <div>
+                  {iconContent &&
+                    iconContent.prefix &&
+                    iconContent.iconName && (
+                      <div
+                        style={{
+                          color: contentColor,
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          style={{ fontSize: 20 }}
+                          icon={[`${iconContent.prefix}`, iconContent.iconName]}
+                        />
+                      </div>
+                    )}
                 </div>
               </div>
             );

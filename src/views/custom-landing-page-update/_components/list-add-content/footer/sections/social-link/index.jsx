@@ -9,15 +9,11 @@ import IconPicker from "../../../../common/IconPicker";
 import Input from "../../../../common/Input";
 import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 
-import { AiFillInstagram } from "react-icons/ai";
-import { BsTwitterX } from "react-icons/bs";
-import { FaFacebookSquare } from "react-icons/fa";
 import { IoAdd } from "react-icons/io5";
 import { DraggableSections } from "../../common/DraggbleSections";
 import { useMoveSection } from "../../hooks/useMoveSection";
 import { useRemoveSection } from "../../hooks/useRemoveSection";
 import UpdateContent from "./UpdateContent";
-import { FaYoutube } from "react-icons/fa6";
 
 const SocialLink = ({
   previewSection,
@@ -221,7 +217,10 @@ const SocialLink = ({
           type: {
             value: "facebook",
             label: "Facebook",
-            icon: <FaFacebookSquare />,
+            icon: {
+              iconName: "square-facebook",
+              prefix: "fab",
+            },
             link: "https://www.facebook.com/",
             path: "",
           },
@@ -231,7 +230,10 @@ const SocialLink = ({
           type: {
             value: "twitter-X",
             label: "Twitter X",
-            icon: <BsTwitterX />,
+            icon: {
+              iconName: "square-x-twitter",
+              prefix: "fab",
+            },
             link: "https://twitter.com/",
             path: "",
           },
@@ -241,7 +243,10 @@ const SocialLink = ({
           type: {
             value: "instagram",
             label: "Instagram",
-            icon: <AiFillInstagram />,
+            icon: {
+              iconName: "square-instagram",
+              prefix: "fab",
+            },
             link: "https://www.instagram.com/",
             path: "",
           },
@@ -251,7 +256,10 @@ const SocialLink = ({
           type: {
             value: "youtube",
             label: "Youtube",
-            icon: <FaYoutube />,
+            icon: {
+              iconName: "youtube",
+              prefix: "fab",
+            },
             link: "https://www.youtube.com/channel/",
             path: "",
           },

@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../../../../lib/unique-id";
 
-import { AiFillInstagram } from "react-icons/ai";
-import { BsTwitterX } from "react-icons/bs";
 import { FaFacebookSquare } from "react-icons/fa";
-import { FaTelegram, FaYoutube } from "react-icons/fa6";
 import { useDebounce } from "use-debounce";
 import Input from "../../../../common/Input";
 import SelectOptions from "../../../../common/SelectOptions";
@@ -14,31 +11,46 @@ const typeOptions = [
     value: "facebook",
     label: "Facebook",
     link: "https://www.facebook.com/",
-    icon: <FaFacebookSquare />,
+    icon: {
+      iconName: "square-facebook",
+      prefix: "fab",
+    },
   },
   {
     value: "twitter-X",
     label: "Twitter X",
     link: "https://twitter.com/",
-    icon: <BsTwitterX />,
+    icon: {
+      iconName: "square-x-twitter",
+      prefix: "fab",
+    },
   },
   {
     value: "instagram",
     label: "Instagram",
     link: "https://www.instagram.com/",
-    icon: <AiFillInstagram />,
+    icon: {
+      iconName: "square-instagram",
+      prefix: "fab",
+    },
   },
   {
     value: "youtube",
     label: "Youtube",
     link: "https://www.youtube.com/channel/",
-    icon: <FaYoutube />,
+    icon: {
+      iconName: "youtube",
+      prefix: "fab",
+    },
   },
   {
     value: "telegram",
     label: "Telegram",
     link: "https://t.me/",
-    icon: <FaTelegram />,
+    icon: {
+      iconName: "telegram",
+      prefix: "fab",
+    },
   },
 ];
 

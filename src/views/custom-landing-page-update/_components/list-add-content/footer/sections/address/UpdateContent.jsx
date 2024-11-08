@@ -1,18 +1,44 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createUniqueID } from "../../../../../../../lib/unique-id";
 
+import { FaPhone } from "react-icons/fa6";
 import { useDebounce } from "use-debounce";
 import Input from "../../../../common/Input";
-import { IoLocationSharp, IoLogoWhatsapp } from "react-icons/io5";
-import { FaPhone } from "react-icons/fa6";
-import { MdEmail } from "react-icons/md";
 import SelectOptions from "../../../../common/SelectOptions";
 
 const typeOptions = [
-  { value: "address", label: "Alamat", icon: <IoLocationSharp /> },
-  { value: "phone", label: "Telepon", icon: <FaPhone /> },
-  { value: "email", label: "Email", icon: <MdEmail /> },
-  { value: "whatapps", label: "WhatApps", icon: <IoLogoWhatsapp /> },
+  {
+    value: "address",
+    label: "Alamat",
+    icon: {
+      iconName: "location-dot",
+      prefix: "fas",
+    },
+  },
+  {
+    value: "phone",
+    label: "Telepon",
+    icon: {
+      iconName: "phone",
+      prefix: "fas",
+    },
+  },
+  {
+    value: "email",
+    label: "Email",
+    icon: {
+      iconName: "envelope",
+      prefix: "fas",
+    },
+  },
+  {
+    value: "whatapps",
+    label: "WhatApps",
+    icon: {
+      iconName: "whatsapp",
+      prefix: "fab",
+    },
+  },
 ];
 
 const UpdateContent = ({
@@ -97,7 +123,10 @@ const UpdateContent = ({
       type: {
         value: "phone",
         label: "Telepon",
-        icon: <FaPhone />,
+        icon: {
+          iconName: "phone",
+          prefix: "fas",
+        },
         text: "",
       },
     };

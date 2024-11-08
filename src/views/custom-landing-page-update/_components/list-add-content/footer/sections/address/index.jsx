@@ -9,13 +9,11 @@ import IconPicker from "../../../../common/IconPicker";
 import Input from "../../../../common/Input";
 import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 
-import { FaPhone } from "react-icons/fa6";
-import { IoAdd, IoLocationSharp } from "react-icons/io5";
+import { IoAdd } from "react-icons/io5";
 import { DraggableSections } from "../../common/DraggbleSections";
 import { useMoveSection } from "../../hooks/useMoveSection";
 import { useRemoveSection } from "../../hooks/useRemoveSection";
 import UpdateContent from "./UpdateContent";
-import { MdEmail } from "react-icons/md";
 
 const Address = ({
   previewSection,
@@ -219,7 +217,10 @@ const Address = ({
           type: {
             value: "phone",
             label: "Telepon",
-            icon: <FaPhone />,
+            icon: {
+              iconName: "phone",
+              prefix: "fas",
+            },
             text: "0892-2211-4332",
           },
         },
@@ -228,7 +229,10 @@ const Address = ({
           type: {
             value: "address",
             label: "Alamat",
-            icon: <IoLocationSharp />,
+            icon: {
+              iconName: "location-dot",
+              prefix: "fas",
+            },
             text: "Jl Layur 31 Jakarta Timur",
           },
         },
@@ -237,7 +241,10 @@ const Address = ({
           type: {
             value: "email",
             label: "Email",
-            icon: <MdEmail />,
+            icon: {
+              iconName: "envelope",
+              prefix: "fas",
+            },
             text: "support@email.com",
           },
         },

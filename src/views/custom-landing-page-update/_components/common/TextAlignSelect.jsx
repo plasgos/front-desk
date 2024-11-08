@@ -1,5 +1,5 @@
 import { CFormGroup, CLabel } from "@coreui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaAlignCenter,
   FaAlignJustify,
@@ -9,6 +9,10 @@ import {
 
 const TextAlignSelect = ({ initialValue, onChange }) => {
   const [selectAlign, setSelectAlign] = useState(initialValue);
+
+  useEffect(() => {
+    setSelectAlign(initialValue);
+  }, [initialValue]);
 
   return (
     <div>
