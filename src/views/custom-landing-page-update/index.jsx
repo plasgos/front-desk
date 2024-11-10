@@ -765,6 +765,10 @@ const CustomLandingPage = () => {
             isSelectedView={isSelectedView}
             isResizing={isResizing}
             handleMouseDown={handleMouseDown}
+            previewFooter={previewFooter}
+            focusedIndex={focusedIndex}
+            setRef={setRef}
+            renderViewFooter={renderViewFooter}
           >
             {previewSection.map((item, index) => (
               <div key={item.id}>{renderViewSections(item, index)}</div>
@@ -773,13 +777,6 @@ const CustomLandingPage = () => {
             {previewFloatingSection.map((item, index) => (
               <div key={item.id}>{renderViewSections(item, index)}</div>
             ))}
-
-            <ViewFooter
-              previewFooter={previewFooter}
-              focusedIndex={focusedIndex}
-              setRef={setRef}
-              renderViewFooter={renderViewFooter}
-            />
           </ResizableView>
         </main>
       </div>

@@ -110,7 +110,7 @@ const ViewVideoText = forwardRef(
 
           <div
             ref={elementRefContent}
-            className={`${getClassNameContent()} tw-w-full  `}
+            className={`${getClassNameContent()}  `}
             style={{
               "--animation-duration": `${durationContent}s`,
             }}

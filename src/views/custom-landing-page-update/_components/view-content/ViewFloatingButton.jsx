@@ -95,9 +95,8 @@ const ViewFloatingButton = forwardRef(
           backgroundColor: content.background.bgColor || "",
           position: "absolute",
           bottom: 0,
-          maxWidth: "100%",
-          maxHeight: "100%",
-          width,
+          left: 0,
+          right: 0,
           zIndex: 999,
         }}
         className={`tw-flex ${

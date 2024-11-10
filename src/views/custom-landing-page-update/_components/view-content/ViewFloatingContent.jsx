@@ -3,21 +3,24 @@ import useAnimatedVisibility from "../../../../hooks/useAnimatedVisibility";
 import { useBackgroundStyles } from "../../../../hooks/useBackgroundStyles";
 import { ViewMultipleContent } from "./ViewMultipleContent";
 const ViewFloatingContent = forwardRef(
-  ({
-    containerRef,
-    isDragging,
-    width,
-    isResizing,
-    content,
-    isFocused,
-    isPreview,
-    setSectionContentRef = null,
-    focusedIndexSectionContent = null,
-    setPreviewFloatingSection,
-    setPreviewSection,
-    setColumnRef,
-    focusedIndexColumn,
-  }) => {
+  (
+    {
+      containerRef,
+      isDragging,
+      width,
+      isResizing,
+      content,
+      isFocused,
+      isPreview,
+      setSectionContentRef = null,
+      focusedIndexSectionContent = null,
+      setPreviewFloatingSection,
+      setPreviewSection,
+      setColumnRef,
+      focusedIndexColumn,
+    },
+    ref
+  ) => {
     const stylesBg = useBackgroundStyles(content);
 
     const { elementRef, getClassName, duration } =
@@ -36,9 +39,8 @@ const ViewFloatingContent = forwardRef(
           paddingBottom: stylesBg.paddingBottom,
           backgroundColor: content.background.bgColor || "",
           position: "absolute",
-          maxWidth: "100%",
-          maxHeight: "100%",
-          width,
+          left: 0,
+          right: 0,
           zIndex: 999,
           "--animation-duration": `${duration}s`,
         }}

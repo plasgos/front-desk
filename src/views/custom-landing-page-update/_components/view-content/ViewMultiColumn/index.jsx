@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect, useRef, useState } from "react";
 
 import { useBackgroundStyles } from "../../../../../hooks/useBackgroundStyles";
 import { ViewMultipleContent } from "../ViewMultipleContent";
@@ -25,6 +25,35 @@ const ViewMultiColumn = forwardRef(
 
     const { combineColumnInMobileView } = content.wrapperStyle;
 
+    const parentMultiColumnRef = useRef(null); // Referensi ke elemen parent
+    console.log("🚀 ~ parentMultiColumnRef:", parentMultiColumnRef);
+    const [containerWidthMultiColumn, setContainerWidthMultiColumn] =
+      useState(0);
+
+    useEffect(() => {
+      const updateWidth = () => {
+        if (parentMultiColumnRef.current) {
+          setContainerWidthMultiColumn(
+            parentMultiColumnRef.current.offsetWidth * 0.5
+          ); // Mengatur lebar dari parent
+        }
+      };
+      updateWidth();
+
+      // Menggunakan ResizeObserver untuk mendeteksi perubahan lebar
+      const resizeObserver = new ResizeObserver(updateWidth);
+      if (parentMultiColumnRef.current) {
+        resizeObserver.observe(parentMultiColumnRef.current);
+      }
+
+      return () => {
+        if (parentMultiColumnRef.current) {
+          // eslint-disable-next-line react-hooks/exhaustive-deps
+          resizeObserver.unobserve(parentMultiColumnRef.current);
+        }
+      };
+    }, []);
+
     return (
       <>
         <div
@@ -38,7 +67,6 @@ const ViewMultiColumn = forwardRef(
             backgroundColor: content.background.bgColor || "",
             position: "relative",
             zIndex: 1,
-            maxWidth: "100%",
             flexWrap:
               isPreview && combineColumnInMobileView && width < 420
                 ? "wrap"
@@ -161,6 +189,8 @@ const ViewMultiColumn = forwardRef(
                   ...wrapperPreview,
                   ...(focusedIndexColumn === column?.id && {
                     border: "2px solid green",
+                    maxWidth: "100%",
+                    position: "relative",
                   }),
                 }}
                 className={`${
@@ -204,6 +234,8 @@ const ViewMultiColumn = forwardRef(
 
                   {column.content.map((contentItem) => {
                     return (
+                      // <div ref={parentMultiColumnRef}>
+                      // </div>
                       <ViewMultipleContent
                         content={contentItem}
                         focusedIndexColumn={focusedIndexColumn}
@@ -215,6 +247,8 @@ const ViewMultiColumn = forwardRef(
                         setPreviewSection={setPreviewSection}
                         width={width}
                         key={contentItem.id}
+                        parentMultiColumnRef={parentMultiColumnRef}
+                        containerWidthMultiColumn={containerWidthMultiColumn}
                       />
                     );
                   })}

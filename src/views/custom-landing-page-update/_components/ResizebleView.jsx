@@ -1,4 +1,5 @@
 import React, { forwardRef } from "react";
+import ViewFooter from "./view-content/ViewFooter";
 
 const ResizableView = forwardRef(
   (
@@ -9,6 +10,10 @@ const ResizableView = forwardRef(
       isSelectedView,
       isResizing,
       handleMouseDown,
+      previewFooter,
+      focusedIndex,
+      setRef,
+      renderViewFooter,
     },
     ref
   ) => {
@@ -18,7 +23,6 @@ const ResizableView = forwardRef(
         style={{
           position: "relative",
           width: dimensions.width,
-          maxWidth: pageSetting?.maxWidth ? pageSetting?.maxWidth : 1920,
           height: dimensions.height,
           maxHeight: dimensions.height,
           overflowY: "auto",
@@ -35,7 +39,6 @@ const ResizableView = forwardRef(
           ref={ref}
           style={{
             width: "100%",
-            maxWidth: pageSetting.maxWidth, //
             height: "100%",
             margin: "auto",
             overflowY: "auto",
@@ -44,7 +47,22 @@ const ResizableView = forwardRef(
             flexDirection: "column",
           }}
         >
-          {children}
+          <div
+            style={{
+              width: "100%",
+              maxWidth: pageSetting.maxWidth,
+              margin: "0px auto",
+            }}
+          >
+            {children}
+          </div>
+
+          <ViewFooter
+            previewFooter={previewFooter}
+            focusedIndex={focusedIndex}
+            setRef={setRef}
+            renderViewFooter={renderViewFooter}
+          />
 
           {isSelectedView !== "laptop" && (
             <>

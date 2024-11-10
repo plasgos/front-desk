@@ -288,6 +288,7 @@ export function useRenderViewSections({
             focusedIndexColumn={focusedIndexColumn}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
+            pageSetting={pageSetting}
           />
         );
       }
@@ -308,6 +309,7 @@ export function useRenderViewSections({
             focusedIndexColumn={focusedIndexColumn}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
+            pageSetting={pageSetting}
           />
         );
       }

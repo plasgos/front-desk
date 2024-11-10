@@ -14,9 +14,12 @@ const ViewSliderImage = forwardRef(
       content,
       isFocused,
       width: widthProps,
+      parentMultiColumnRef,
+      containerWidthMultiColumn,
     },
     ref
   ) => {
+    console.log("🚀 ~ containerWidthMultiColumn:", containerWidthMultiColumn);
     const stylesBg = useBackgroundStyles(content);
     const variant = content?.variant?.value;
     const variantStyle = variant !== "page-slider" ? "tw-p-0" : "tw-px-3";
@@ -53,6 +56,7 @@ const ViewSliderImage = forwardRef(
           backgroundColor: content.background.bgColor || "",
           position: "relative",
           zIndex: 1,
+          width: "100%",
         }}
         className={`tw-flex tw-flex-row tw-justify-center tw-items-center tw-flex-wrap  tw-gap-y-3 ${
           isFocused &&
@@ -79,55 +83,136 @@ const ViewSliderImage = forwardRef(
           ></div>
         ) : null}
 
-        {(variant === "page-slider" || variant === "full-slider") && (
+        {variant === "page-slider" && (
           <div
             style={{
-              width: variant === "full-slider" ? "100%" : width,
-
-              maxWidth: "100%",
-              margin: "0 auto",
+              width: "100%",
+              position: "relative",
+              overflow: "hidden",
+              flex: 1,
             }}
           >
-            <Swiper
+            <div
               style={{
-                ...(widthProps < 420 && { "--swiper-navigation-size": "20px" }),
+                width: "100%",
+                maxWidth: width,
+                margin: "0 auto",
+                aspectRatio,
+                position: "relative",
+                overflow: "hidden",
               }}
-              key={`swiper-${delay}-${effectOption}`}
-              modules={[Autoplay, EffectFade, Navigation]}
-              effect={effectOption}
-              fadeEffect={{ crossFade: true }}
-              autoplay={
-                delay && !isNaN(delay)
-                  ? {
-                      delay: delay,
-                      disableOnInteraction: false,
-                      pauseOnMouseEnter: true,
-                    }
-                  : false
-              }
-              speed={1000} // Durasi transisi dalam milidetik (1 detik)
-              navigation={navigationOption}
-              loop={true}
-              slidesPerView={1}
             >
-              {content.content.map((section) => (
-                <SwiperSlide key={section.id}>
-                  <img
-                    onClick={() =>
-                      useHandleClickTarget(section.target, containerRef)
-                    }
-                    src={section?.content?.image}
-                    alt="slider-img"
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      aspectRatio,
-                      objectFit: "cover",
-                    }}
-                  />
-                </SwiperSlide>
-              ))}
-            </Swiper>
+              <Swiper
+                style={{
+                  width: "100%",
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  ...(widthProps < 420 && {
+                    "--swiper-navigation-size": "20px",
+                  }),
+                }}
+                key={`swiper-${delay}-${effectOption}`}
+                modules={[Autoplay, EffectFade, Navigation]}
+                effect={effectOption}
+                fadeEffect={{ crossFade: true }}
+                autoplay={
+                  delay && !isNaN(delay)
+                    ? {
+                        delay: delay,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true,
+                      }
+                    : false
+                }
+                speed={1000}
+                navigation={navigationOption}
+                loop={true}
+                slidesPerView={1}
+              >
+                {content.content.map((section) => (
+                  <SwiperSlide key={section.id}>
+                    <img
+                      onClick={() =>
+                        useHandleClickTarget(section.target, containerRef)
+                      }
+                      src={section?.content?.image}
+                      alt="slider-img"
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        objectFit: "cover",
+                        maxWidth: "100%",
+                        aspectRatio,
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+          </div>
+        )}
+
+        {variant === "full-slider" && (
+          <div
+            style={{
+              width: "100%",
+              position: "relative",
+              overflow: "hidden",
+              aspectRatio,
+            }}
+          >
+            <div
+              style={{
+                width: "100%",
+                position: "absolute",
+                top: 0,
+                left: 0,
+              }}
+            >
+              <Swiper
+                style={{
+                  ...(widthProps < 420 && {
+                    "--swiper-navigation-size": "20px",
+                  }),
+                }}
+                key={`swiper-${delay}-${effectOption}`}
+                modules={[Autoplay, EffectFade, Navigation]}
+                effect={effectOption}
+                fadeEffect={{ crossFade: true }}
+                autoplay={
+                  delay && !isNaN(delay)
+                    ? {
+                        delay: delay,
+                        disableOnInteraction: false,
+                        pauseOnMouseEnter: true,
+                      }
+                    : false
+                }
+                speed={1000}
+                navigation={navigationOption}
+                loop={true}
+                slidesPerView={1}
+              >
+                {content.content.map((section) => (
+                  <SwiperSlide key={section.id}>
+                    <img
+                      onClick={() =>
+                        useHandleClickTarget(section.target, containerRef)
+                      }
+                      src={section?.content?.image}
+                      alt="slider-img"
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        aspectRatio,
+                        objectFit: "cover",
+                      }}
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
           </div>
         )}
 

@@ -92,7 +92,6 @@ const ViewTabs = forwardRef(
             backgroundColor: content.background.bgColor || "",
             position: "relative",
             zIndex: 1,
-            maxWidth: "100%",
           }}
           className={`    ${
             isFocused &&

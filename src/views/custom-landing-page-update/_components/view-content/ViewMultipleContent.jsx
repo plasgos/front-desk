@@ -26,17 +26,22 @@ import ViewSliderImage from "./ViewSliderImage";
 import ViewTabs from "./ViewTabs";
 import ViewFrames from "./ViewFrames";
 
-export const ViewMultipleContent = ({
-  content,
-  focusedIndexSectionContent,
-  setSectionContentRef,
-  containerRef,
-  setPreviewSection,
-  isPreview,
-  focusedIndexColumn,
-  setColumnRef,
-  width,
-}) => {
+export const ViewMultipleContent = (
+  {
+    content,
+    focusedIndexSectionContent,
+    setSectionContentRef,
+    containerRef,
+    setPreviewSection,
+    isPreview,
+    focusedIndexColumn,
+    setColumnRef,
+    width,
+    parentMultiColumnRef,
+    containerWidthMultiColumn,
+  },
+  ref
+) => {
   return (
     <>
       <div
@@ -120,7 +125,12 @@ export const ViewMultipleContent = ({
         )}
 
         {content.name === "slider-image" && (
-          <ViewSliderImage containerRef={containerRef} content={content} />
+          <ViewSliderImage
+            containerRef={containerRef}
+            content={content}
+            parentMultiColumnRef={parentMultiColumnRef}
+            containerWidthMultiColumn={containerWidthMultiColumn}
+          />
         )}
 
         {content.name === "countdown" && <ViewCountDown content={content} />}

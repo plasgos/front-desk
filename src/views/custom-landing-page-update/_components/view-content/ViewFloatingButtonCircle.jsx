@@ -60,9 +60,9 @@ const ViewFloatingButtonCircle = forwardRef(
           ...(isResizing ? { cursor: "not-allowed" } : {}),
           backgroundColor: content.background.bgColor || "",
           position: "absolute",
-          bottom: 10 + content.wrapperStyle.position,
+          bottom: 20 + content.wrapperStyle.position,
           zIndex: 999,
-          right: 10,
+          right: 30,
         }}
         className={`  tw-p-1 tw-flex tw-flex-col tw-items-center  `}
       >

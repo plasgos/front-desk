@@ -159,7 +159,7 @@ const SliderImage = ({
         pattern: "",
       },
       variant: {
-        id: "1",
+        id: "2",
         group: "Variant",
         value: "page-slider",
         style: {
