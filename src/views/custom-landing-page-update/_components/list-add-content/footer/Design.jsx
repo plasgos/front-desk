@@ -17,7 +17,7 @@ const Design = ({
     currentSection?.variant?.style?.bgColor || "#000000"
   );
   const [titleColor, setTitleColor] = useState(
-    currentSection?.variant?.style?.titleColor || "EEEEEE"
+    currentSection?.variant?.style?.titleColor || "#EEEEEE"
   );
   const [contentColor, setContentColor] = useState(
     currentSection?.variant?.style?.contentColor || "#757575"

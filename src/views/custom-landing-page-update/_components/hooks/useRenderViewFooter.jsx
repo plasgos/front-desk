@@ -8,12 +8,9 @@ import ViewSocialLink from "../list-add-content/footer/view/ViewSocilaLink";
 
 export const useRenderViewFooter = ({
   id,
-  setPreviewSection,
   isDragging,
   isResizing,
   focusedIndexSectionContent,
-  isPreview,
-  dimensions,
   containerRef,
   setSectionContentRef,
 }) => {

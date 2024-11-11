@@ -233,3 +233,34 @@ export const optionsFbPixelEvent = [
     ],
   },
 ];
+
+export const localPageTarget = [
+  { label: "Utama", options: [{ value: "", label: "" }] },
+  {
+    label: "Shopping",
+    options: [
+      { value: "product-detail", label: "Detail Produk" },
+      { value: "product-category", label: "Kategori Produk" },
+      { value: "shopping-cart", label: "Keranjang Belanja" },
+      { value: "payment-confirmation", label: "Konfirmasi Pembayaran" },
+    ],
+  },
+  {
+    label: "Content",
+    options: [
+      { value: "blog-post", label: "Blog Post" },
+      { value: "blog-post-list", label: "Daftar Blog Post" },
+      { value: "blog-post-category", label: "Kategori Blog Post" },
+      { value: "additional-page", label: "Halaman Tambahan" },
+    ],
+  },
+  {
+    label: "Session",
+    options: [
+      { value: "login", label: "Login" },
+      { value: "register", label: "Daftar Baru" },
+      { value: "my-account", label: "Akun Saya" },
+      { value: "logout", label: "Logout" },
+    ],
+  },
+];

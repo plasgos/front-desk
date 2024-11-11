@@ -5,6 +5,7 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoCloseOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
 
 import { listContentsFooterOption } from "../ListContentFooter";
+import { listContentsNavbarOption } from "../../navbar/ListContentNavbar";
 
 export const ItemTypes = {
   CARD: "card",
@@ -22,6 +23,7 @@ export const DraggableSections = ({
   titleContentItem,
   showThumbnail,
   hiddenFocus,
+  isNavbar,
 }) => {
   const ref = useRef(null);
   const [{ handlerId }, drop] = useDrop({
@@ -86,15 +88,19 @@ export const DraggableSections = ({
 
   const [icon, setIcon] = useState(undefined);
 
+  const sourceIcon = isNavbar
+    ? listContentsNavbarOption
+    : listContentsFooterOption;
+
   useEffect(() => {
-    const selectedIcon = listContentsFooterOption.filter(
+    const selectedIcon = sourceIcon.filter(
       (icon) => icon.name === section.name
     );
 
     if (selectedIcon) {
       setIcon(selectedIcon[0]); // Set icon yang ditemukan
     }
-  }, [section.name]);
+  }, [section.name, sourceIcon]);
 
   return (
     <div style={{ opacity }} ref={ref} data-handler-id={handlerId}>

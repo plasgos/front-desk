@@ -31,6 +31,7 @@ export const directionGradientOptions = [
   { value: "to right bottom", label: "Ke Kanan Bawah" },
   { value: "to right top", label: "Ke Kanan Atas" },
 ];
+
 export const gradients = [
   { from: "#FF6F61", to: "#6B5B95" },
   { from: "#88B04B", to: "#F7CAC9" },

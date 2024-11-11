@@ -342,6 +342,9 @@ const DesignSection = ({
                 setBtnSubmitColor(color);
                 handleChangeFormValue("btnSubmitColor", color);
               }}
+              isCustomPosition={true}
+              bottom={40}
+              right={0}
             />
           </div>
 
@@ -401,7 +404,8 @@ const DesignSection = ({
                     setIconColor(color);
                     handleChangeFormValue("iconColor", color);
                   }}
-                  width="w-0"
+                  isCustomPosition={true}
+                  bottom={40}
                 />
 
                 <CButton

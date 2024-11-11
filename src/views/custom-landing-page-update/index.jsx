@@ -30,14 +30,18 @@ import { useRenderViewSections } from "./_components/hooks/useRenderViewSections
 import ListContent from "./_components/list-add-content/";
 
 import { FaChevronLeft } from "react-icons/fa6";
-import plgLogo from "../../assets/new_plg_logo_256.png";
 import ResizableView from "./_components/ResizebleView";
 import FooterAndNavbarControl from "./_components/common/FooterAndNavbarControl";
+import { useRenderViewFooter } from "./_components/hooks/useRenderViewFooter";
 import Footer, {
   initialFooterSection,
 } from "./_components/list-add-content/footer";
-import { useRenderViewFooter } from "./_components/hooks/useRenderViewFooter";
+import Navbar, {
+  initialNavbarSection,
+} from "./_components/list-add-content/navbar";
 import ViewFooter from "./_components/view-content/ViewFooter";
+import ViewNavbar from "./_components/view-content/ViewNavbar";
+import { useRenderViewNavbar } from "./_components/hooks/useRenderViewNavbar";
 
 const landingPage = {
   detail: {
@@ -58,10 +62,14 @@ const CustomLandingPage = () => {
     bgColor: "#F5F5F5",
   });
   const [isResizing, setIsResizing] = useState(false);
+  const [previewNavbar, setPreviewNavbar] = useState(initialNavbarSection);
+  console.log("🚀 ~ CustomLandingPage ~ previewNavbar:", previewNavbar);
+  const [navbarIsVisible, setNavbarIsVisible] = useState(false);
+  const [isEditNavbar, setIsEditNavbar] = useState(false);
+
   const [footerIsVisble, setFooterIsVisble] = useState(false);
   const [isEditFooter, setIsEditFooter] = useState(false);
   const [previewFooter, setPreviewFooter] = useState(initialFooterSection);
-  console.log("🚀 ~ CustomLandingPage ~ previewFooter:", previewFooter);
   const [isHideSideBar, setIsHideSideBar] = useState(false);
   const [isPreview, setIsPreview] = useState(true);
   // const [shouldSave, setShouldSave] = useState(false);
@@ -70,12 +78,7 @@ const CustomLandingPage = () => {
   const [editing, setEditing] = useState("");
   const [isAddContent, setIsAddContent] = useState(false);
   const [previewSection, setPreviewSection] = useState([]);
-  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
   const [previewFloatingSection, setPreviewFloatingSection] = useState([]);
-  console.log(
-    "🚀 ~ CustomLandingPage ~ previewFloatingSection:",
-    previewFloatingSection
-  );
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
   const [sectionFloatingBeforeEdit, setSectionFloatingBeforeEdit] = useState(
     []
@@ -252,18 +255,21 @@ const CustomLandingPage = () => {
 
   const { renderViewFooter } = useRenderViewFooter({
     id,
+    isDragging,
+    isResizing,
+    focusedIndexSectionContent,
+    containerRef,
+    setSectionContentRef,
+  });
+
+  const { renderViewNavbar } = useRenderViewNavbar({
+    id,
     setPreviewSection,
     isDragging,
     isResizing,
-    setRef,
-    focusedIndex,
     focusedIndexSectionContent,
-    isPreview,
-    dimensions,
     containerRef,
     setSectionContentRef,
-    setColumnRef,
-    focusedIndexColumn,
   });
 
   // const handleSave = () => {
@@ -486,6 +492,7 @@ const CustomLandingPage = () => {
   const handleHideSideBar = () => {
     setIsHideSideBar((prev) => !prev);
   };
+
   const handleToggleFooter = () => {
     const newFooterVisibility = !footerIsVisble;
 
@@ -495,6 +502,19 @@ const CustomLandingPage = () => {
       arr.map((section) => ({
         ...section,
         isShowFooter: newFooterVisibility,
+      }))
+    );
+  };
+
+  const handleToggleNavbar = () => {
+    const newNavbarVisibility = !navbarIsVisible;
+
+    setNavbarIsVisible(newNavbarVisibility);
+
+    setPreviewNavbar((arr) =>
+      arr.map((section) => ({
+        ...section,
+        isShowNavbar: newNavbarVisibility,
       }))
     );
   };
@@ -513,7 +533,7 @@ const CustomLandingPage = () => {
             !isHideSideBar ? "" : "animate__animated animate__slideOutLeft"
           }`}
           style={{
-            width: isHideSideBar ? "0px" : "400px",
+            width: isHideSideBar ? "0px" : "410px",
             transition: "width 0.3s ease",
             backgroundColor: "#fff",
             display: "flex",
@@ -530,7 +550,7 @@ const CustomLandingPage = () => {
               backgroundColor: "#fff",
             }}
           >
-            {!editing && !isAddContent && !isEditFooter && (
+            {!editing && !isAddContent && !isEditFooter && !isEditNavbar && (
               <>
                 <div className="d-flex justify-content-end align-items-center border-bottom p-3">
                   <div>
@@ -555,7 +575,7 @@ const CustomLandingPage = () => {
               flex: 1,
             }}
           >
-            {!editing && !isAddContent && !isEditFooter && (
+            {!editing && !isAddContent && !isEditFooter && !isEditNavbar && (
               <CTabs activeTab="konten">
                 <CNav variant="tabs">
                   <CNavItem>
@@ -591,6 +611,16 @@ const CustomLandingPage = () => {
                     </div>
 
                     <div style={{ padding: "0px 20px" }}>
+                      <FooterAndNavbarControl
+                        label="Navigasi"
+                        isVisible={navbarIsVisible}
+                        toggleVisible={handleToggleNavbar}
+                        editSection={() => setIsEditNavbar(true)}
+                        handleFocus={() =>
+                          handleContentFocus(previewNavbar[0]?.id)
+                        }
+                      />
+
                       {previewSection.map((section, index) =>
                         renderListContent(section, index)
                       )}
@@ -670,6 +700,19 @@ const CustomLandingPage = () => {
                 handleSectionContentFocus={handleSectionContentFocus}
                 pageSetting={pageSetting}
               />
+            )}
+
+            {isEditNavbar && (
+              <div>
+                <Navbar
+                  previewSection={previewNavbar}
+                  setPreviewSection={setPreviewNavbar}
+                  isShowContent={(value) => setIsEditNavbar(value)}
+                  pageSetting={pageSetting}
+                  setPageSetting={(value) => setPageSetting(value)}
+                  handleSectionContentFocus={handleSectionContentFocus}
+                />
+              </div>
             )}
 
             {isEditFooter && (
@@ -765,18 +808,35 @@ const CustomLandingPage = () => {
             isSelectedView={isSelectedView}
             isResizing={isResizing}
             handleMouseDown={handleMouseDown}
-            previewFooter={previewFooter}
-            focusedIndex={focusedIndex}
-            setRef={setRef}
-            renderViewFooter={renderViewFooter}
           >
-            {previewSection.map((item, index) => (
-              <div key={item.id}>{renderViewSections(item, index)}</div>
-            ))}
+            <ViewNavbar
+              previewNavbar={previewNavbar}
+              focusedIndex={focusedIndex}
+              setRef={setRef}
+              renderViewNavbar={renderViewNavbar}
+            />
+            <div
+              style={{
+                width: "100%",
+                maxWidth: pageSetting.maxWidth,
+                margin: "0px auto",
+              }}
+            >
+              {previewSection.map((item, index) => (
+                <div key={item.id}>{renderViewSections(item, index)}</div>
+              ))}
 
-            {previewFloatingSection.map((item, index) => (
-              <div key={item.id}>{renderViewSections(item, index)}</div>
-            ))}
+              {previewFloatingSection.map((item, index) => (
+                <div key={item.id}>{renderViewSections(item, index)}</div>
+              ))}
+            </div>
+
+            <ViewFooter
+              previewFooter={previewFooter}
+              focusedIndex={focusedIndex}
+              setRef={setRef}
+              renderViewFooter={renderViewFooter}
+            />
           </ResizableView>
         </main>
       </div>
