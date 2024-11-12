@@ -599,3 +599,21 @@ div.horizontal-scrolling-menu::-webkit-scrollbar-thumb:hover {
 .tabs-hover-text:hover {
   color: var(--tabs-hover-color);
 }
+
+.navbarMenuPopOver {
+  background-color: transparent;
+  color: var(--text-color);
+}
+
+.navbarMenuPopOver:hover {
+  background-color: var(--bg-hover-color);
+  color: var(--text-hover-color);
+}
+
+.navbarHeaderTextColor {
+  color: var(--text-color-header);
+}
+
+.navbarHeaderTextColor:hover {
+  color: var(--text-color-hover-header);
+}

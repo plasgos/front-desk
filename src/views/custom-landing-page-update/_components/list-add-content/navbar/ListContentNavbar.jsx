@@ -6,6 +6,9 @@ import { LuSpace } from "react-icons/lu";
 import { RiMenuAddLine } from "react-icons/ri";
 import { SlMagnifier } from "react-icons/sl";
 import { TiThMenuOutline } from "react-icons/ti";
+import Link from "./sections/Link";
+import Divider from "./sections/Divider";
+import Menu from "./sections/menu";
 
 export const listContentsNavbarOption = [
   {
@@ -102,14 +105,32 @@ const ListContentNavbar = ({
           height: "100%",
         }}
       >
-        {/* {addContent === "text" && (
-          <Text
+        {addContent === "link" && (
+          <Link
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
             currentSection={currentSection}
           />
-        )} */}
+        )}
+
+        {addContent === "divider" && (
+          <Divider
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={isShowContent}
+            currentSection={currentSection}
+          />
+        )}
+
+        {addContent === "menu" && (
+          <Menu
+            previewSection={previewSection}
+            setPreviewSection={(value) => setPreviewSection(value)}
+            isShowContent={isShowContent}
+            currentSection={currentSection}
+          />
+        )}
 
         <CTabContent
           className="p-3"

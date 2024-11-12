@@ -1,10 +1,13 @@
 import React from "react";
+import ViewSideBar from "../list-add-content/navbar/view/ViewSideBar";
 
 const ViewNavbar = ({
   previewNavbar,
+  setPreviewNavbar,
   focusedIndex,
   setRef,
   renderViewNavbar,
+  widthContainer,
 }) => {
   const { shadow, widthNavbar, position, shape, background } =
     previewNavbar[0]?.variant?.style || {};
@@ -72,13 +75,28 @@ const ViewNavbar = ({
                       />
                     </div>
 
-                    <div className="tw-flex-1 tw-h-full tw-bg-red-300">
-                      <div className="tw-flex tw-gap-x-3 tw-items-center">
+                    <div
+                      className={`tw-flex-1 tw-h-full ${
+                        widthContainer <= 725 ? "tw-hidden" : "tw-block"
+                      } `}
+                    >
+                      <div className="tw-flex tw-gap-x-3 tw-items-center ">
                         {section.content.map((content) => (
-                          <div>{renderViewNavbar(section, content)}</div>
+                          <div key={content?.id}>
+                            {renderViewNavbar(section, content)}
+                          </div>
                         ))}
                       </div>
                     </div>
+
+                    {widthContainer <= 725 && (
+                      <div className="tw-ml-auto tw-pr-3">
+                        <ViewSideBar
+                          sidebar={section?.sidebar}
+                          setPreviewNavbar={setPreviewNavbar}
+                        />
+                      </div>
+                    )}
                   </div>
                 </nav>
               )

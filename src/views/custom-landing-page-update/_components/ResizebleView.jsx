@@ -40,6 +40,7 @@ const ResizableView = forwardRef(
             overflowX: "hidden",
             display: "flex",
             flexDirection: "column",
+            // position: "relative",
           }}
         >
           {children}

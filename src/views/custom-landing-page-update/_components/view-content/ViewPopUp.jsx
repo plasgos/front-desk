@@ -118,7 +118,7 @@ const ViewPopUp = forwardRef(
         {shownOnWhen?.value === "immediately" && shownOnWhen?.isShown ? (
           <div
             ref={ref}
-            className="tw-absolute tw-inset-0 tw-bg-black/50 tw-flex tw-flex-col tw-items-center tw-justify-center tw-z-50 "
+            className="tw-absolute tw-inset-0 tw-bg-black/50 tw-flex tw-flex-col tw-items-center tw-justify-center tw-z-50"
           >
             <div
               style={{

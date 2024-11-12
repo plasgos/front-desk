@@ -18,11 +18,12 @@ import NavTabsCustom from "../../common/NavTabsCustom";
 import SelectVariant from "../../common/SelectVariant";
 import Design from "./Design";
 import { DraggableSections } from "../footer/common/DraggbleSections";
-import { useRenderEditSection } from "../footer/hooks/useRenderEditSection";
+
 import ListContentNavbar from "./ListContentNavbar";
 import Logo from "./Logo";
 import plgLogo from "../../../../../assets/new_plg_logo_256.png";
 import Sidebar from "./Sidebar";
+import { useRenderEditSection } from "./hooks/useRenderEditSection";
 
 const optionVariant = [
   {
@@ -39,7 +40,7 @@ const flattenedOptions = optionVariant.flatMap((group) =>
 );
 
 const simpleStyle = {
-  titleColor: "#EEEEEE",
+  titleColor: "#000000",
   hoverTitleColor: "#fa541c",
   contentColor: "#757575",
 };
@@ -70,6 +71,11 @@ const initialContent = [
         id: createUniqueID([]),
         shownOnWhen: "alwaysVisible",
         typeView: "link",
+        btnColor: "#fa541c",
+        icon: "",
+        iconSize: 20,
+        image: "",
+        imageSize: 50,
         target: {},
       },
     ],
@@ -86,6 +92,11 @@ const initialContent = [
         id: createUniqueID([]),
         shownOnWhen: "alwaysVisible",
         typeView: "link",
+        btnColor: "#fa541c",
+        icon: "",
+        iconSize: 20,
+        image: "",
+        imageSize: 50,
         target: {},
       },
     ],

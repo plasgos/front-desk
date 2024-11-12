@@ -1,5 +1,7 @@
 import React, { useCallback } from "react";
 import ViewLink from "../list-add-content/navbar/view/ViewLink";
+import ViewDivider from "../list-add-content/navbar/view/ViewDivider";
+import ViewMenu from "../list-add-content/navbar/view/ViewMenu";
 
 export const useRenderViewNavbar = ({
   id,
@@ -20,6 +22,34 @@ export const useRenderViewNavbar = ({
             isResizing={isResizing}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
+            containerRef={containerRef}
+          />
+        );
+      }
+
+      if (content.name === "divider") {
+        return (
+          <ViewDivider
+            isDragging={isDragging && content.id === id}
+            section={section}
+            content={content}
+            isResizing={isResizing}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
+          />
+        );
+      }
+
+      if (content.name === "menu") {
+        return (
+          <ViewMenu
+            isDragging={isDragging && content.id === id}
+            section={section}
+            content={content}
+            isResizing={isResizing}
+            setSectionContentRef={setSectionContentRef}
+            focusedIndexSectionContent={focusedIndexSectionContent}
+            containerRef={containerRef}
           />
         );
       }

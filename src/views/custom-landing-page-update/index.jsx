@@ -42,6 +42,7 @@ import Navbar, {
 import ViewFooter from "./_components/view-content/ViewFooter";
 import ViewNavbar from "./_components/view-content/ViewNavbar";
 import { useRenderViewNavbar } from "./_components/hooks/useRenderViewNavbar";
+import SidebarMenu from "./_components/list-add-content/navbar/view/SidebarMenu";
 
 const landingPage = {
   detail: {
@@ -519,6 +520,20 @@ const CustomLandingPage = () => {
     );
   };
 
+  const isSidebarOpen = previewNavbar[0]?.sidebar?.isShowSidebar;
+
+  const toggleSidebar = (value) => {
+    setPreviewNavbar((arr) =>
+      arr.map((section) => ({
+        ...section,
+        sidebar: {
+          ...section.sidebar,
+          isShowSidebar: value,
+        },
+      }))
+    );
+  };
+
   return (
     <>
       <div
@@ -809,11 +824,20 @@ const CustomLandingPage = () => {
             isResizing={isResizing}
             handleMouseDown={handleMouseDown}
           >
+            {previewNavbar[0]?.sidebar?.isShowSidebar && (
+              <SidebarMenu
+                isSidebarOpen={isSidebarOpen}
+                toggleSidebar={toggleSidebar}
+              />
+            )}
+
             <ViewNavbar
               previewNavbar={previewNavbar}
+              setPreviewNavbar={setPreviewNavbar}
               focusedIndex={focusedIndex}
               setRef={setRef}
               renderViewNavbar={renderViewNavbar}
+              widthContainer={dimensions.width}
             />
             <div
               style={{

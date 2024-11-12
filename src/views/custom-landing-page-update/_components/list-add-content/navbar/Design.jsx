@@ -14,7 +14,7 @@ const bgTypeOptions = [
 
 const navbarPostionOptions = [
   { value: "static", label: "Statik" },
-  { value: "fixedTop", label: "Menempel Di Atas" },
+  { value: "fixed", label: "Menempel Di Atas" },
   { value: "floating", label: "Floating" },
   { value: "floating-sticky", label: "Floating Sticky" },
 ];
