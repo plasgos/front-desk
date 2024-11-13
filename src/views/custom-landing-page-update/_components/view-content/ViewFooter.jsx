@@ -32,7 +32,7 @@ const ViewFooter = ({
                     }),
                   }}
                   className={`
-   tw-flex  tw-bg-black 
+   tw-flex tw-flex-col  tw-bg-black 
    tw-items-center tw-justify-center 
    tw-w-full tw-py-4  ${
      focusedIndex === section.id &&
@@ -43,8 +43,8 @@ const ViewFooter = ({
                     style={{
                       maxWidth: "100%",
                       display: "flex",
-                      justifyContent: "center",
-                      flexDirection: "column",
+                      // justifyContent: "center",
+                      // flexDirection: "column",
                     }}
                   >
                     <div
@@ -64,40 +64,40 @@ const ViewFooter = ({
                         </div>
                       ))}
                     </div>
+                  </div>
 
-                    <div className="tw-my-3" style={{ textAlign: "center" }}>
-                      <div>
-                        <div className=" tw-text-white tw-text-center tw-text-xs">
-                          Dibuat dengan
-                        </div>
-
-                        <img
-                          src={plgLogo}
-                          alt="logo"
-                          style={{
-                            width: "80px",
-                            objectFit: "contain",
-                            marginTop: -10,
-                          }}
-                        />
+                  <div className="tw-my-3" style={{ textAlign: "center" }}>
+                    <div>
+                      <div className=" tw-text-white tw-text-center tw-text-xs">
+                        Dibuat dengan
                       </div>
 
-                      {footerCopyright?.isCustom ? (
-                        <div
-                          className={` tw-px-3 ${footerCopyright?.textAlign} ${footerCopyright?.fontSize}`}
-                          style={{
-                            color: footerCopyright?.color,
-                          }}
-                          dangerouslySetInnerHTML={{
-                            __html: cleanContent,
-                          }}
-                        />
-                      ) : (
-                        <div style={{ color: "#757575" }}>
-                          {footerCopyright?.default}
-                        </div>
-                      )}
+                      <img
+                        src={plgLogo}
+                        alt="logo"
+                        style={{
+                          width: "80px",
+                          objectFit: "contain",
+                          marginTop: -10,
+                        }}
+                      />
                     </div>
+
+                    {footerCopyright?.isCustom ? (
+                      <div
+                        className={` tw-px-3 ${footerCopyright?.textAlign} ${footerCopyright?.fontSize}`}
+                        style={{
+                          color: footerCopyright?.color,
+                        }}
+                        dangerouslySetInnerHTML={{
+                          __html: cleanContent,
+                        }}
+                      />
+                    ) : (
+                      <div style={{ color: "#757575" }}>
+                        {footerCopyright?.default}
+                      </div>
+                    )}
                   </div>
                 </div>
               )

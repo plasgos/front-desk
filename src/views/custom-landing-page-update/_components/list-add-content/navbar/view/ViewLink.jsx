@@ -13,6 +13,7 @@ const ViewLink = forwardRef(
       focusedIndexSectionContent,
       setSectionContentRef,
       containerRef,
+      mobileView,
     },
     ref
   ) => {
@@ -78,8 +79,11 @@ const ViewLink = forwardRef(
                 >
                   <div
                     style={{
-                      "--text-color-header": titleColor,
+                      "--text-color-header": mobileView?.value
+                        ? mobileView?.textColor
+                        : titleColor,
                       "--text-color-hover-header": hoverTitleColor,
+                      fontSize: mobileView?.value ? 18 : 15,
                     }}
                     className="navbarHeaderTextColor"
                   >

@@ -10,6 +10,7 @@ const initialState = {
     {
       label: "Web",
       options: [
+        { value: "local-page", label: "Halaman Lokal" },
         { value: "url", label: "URL" },
         { value: "scroll-target", label: "Scroll Target" },
       ],

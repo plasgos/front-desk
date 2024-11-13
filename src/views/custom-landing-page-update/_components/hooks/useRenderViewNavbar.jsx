@@ -12,7 +12,7 @@ export const useRenderViewNavbar = ({
   setSectionContentRef,
 }) => {
   const renderViewNavbar = useCallback(
-    (section, content) => {
+    (section, content, mobileView) => {
       if (content.name === "link") {
         return (
           <ViewLink
@@ -23,11 +23,12 @@ export const useRenderViewNavbar = ({
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
             containerRef={containerRef}
+            mobileView={mobileView}
           />
         );
       }
 
-      if (content.name === "divider") {
+      if (content.name === "divider" && !mobileView?.value) {
         return (
           <ViewDivider
             isDragging={isDragging && content.id === id}
@@ -49,7 +50,7 @@ export const useRenderViewNavbar = ({
             isResizing={isResizing}
             setSectionContentRef={setSectionContentRef}
             focusedIndexSectionContent={focusedIndexSectionContent}
-            containerRef={containerRef}
+            mobileView={mobileView}
           />
         );
       }

@@ -234,8 +234,8 @@ export const optionsFbPixelEvent = [
   },
 ];
 
-export const localPageTarget = [
-  { label: "Utama", options: [{ value: "", label: "" }] },
+export const localPageTargetOptions = [
+  { label: "Utama", options: [{ value: "home", label: "Home" }] },
   {
     label: "Shopping",
     options: [

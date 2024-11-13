@@ -25,6 +25,16 @@ const ViewNavbar = ({
         }
       : gradientStyle;
 
+  const positionStyle =
+    position === "absolute"
+      ? {
+          position: "absolute",
+          top: 0,
+          left: 0,
+          zIndex: 99,
+        }
+      : {};
+
   return (
     <>
       {previewNavbar[0].isShowNavbar ? (
@@ -40,6 +50,8 @@ const ViewNavbar = ({
                     ...(focusedIndex === section.id && {
                       border: "2px solid green",
                     }),
+                    minHeight: 70,
+                    ...positionStyle,
                   }}
                   className={`
   
@@ -76,11 +88,11 @@ const ViewNavbar = ({
                     </div>
 
                     <div
-                      className={`tw-flex-1 tw-h-full ${
+                      className={`tw-flex-1 tw-px-3 tw-h-full ${
                         widthContainer <= 725 ? "tw-hidden" : "tw-block"
                       } `}
                     >
-                      <div className="tw-flex tw-gap-x-3 tw-items-center ">
+                      <div className="tw-flex tw-gap-x-6 tw-items-center ">
                         {section.content.map((content) => (
                           <div key={content?.id}>
                             {renderViewNavbar(section, content)}

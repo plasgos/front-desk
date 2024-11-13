@@ -520,8 +520,6 @@ const CustomLandingPage = () => {
     );
   };
 
-  const isSidebarOpen = previewNavbar[0]?.sidebar?.isShowSidebar;
-
   const toggleSidebar = (value) => {
     setPreviewNavbar((arr) =>
       arr.map((section) => ({
@@ -826,7 +824,10 @@ const CustomLandingPage = () => {
           >
             {previewNavbar[0]?.sidebar?.isShowSidebar && (
               <SidebarMenu
-                isSidebarOpen={isSidebarOpen}
+                previewNavbar={previewNavbar}
+                renderViewNavbar={renderViewNavbar}
+                sidebar={previewNavbar[0]?.sidebar}
+                logo={previewNavbar[0]?.logo}
                 toggleSidebar={toggleSidebar}
               />
             )}
@@ -844,6 +845,10 @@ const CustomLandingPage = () => {
                 width: "100%",
                 maxWidth: pageSetting.maxWidth,
                 margin: "0px auto",
+                paddingTop:
+                  previewNavbar[0]?.variant?.style?.position === "absolute"
+                    ? 70
+                    : 0,
               }}
             >
               {previewSection.map((item, index) => (

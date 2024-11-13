@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { useDebounce } from "use-debounce";
-import { createUniqueID } from "../../../../../../lib/unique-id";
-import Confirmation from "../../../common/Confirmation";
-import Input from "../../../common/Input";
-import SelectOptions from "../../../common/SelectOptions";
-import { useSelector } from "react-redux";
-import { useUrlChange } from "../../footer/hooks/useUrlChange";
-import { useWhatAppsChange } from "../../footer/hooks/useWhatAppsChange";
-import { useScrollTargetChange } from "../../footer/hooks/useScrollTargetChange";
-import FacebookPixel from "../../../FacebookPixel";
-import ScrollTargetInput from "../../../common/ScrollTargetSelect";
-import WhatsAppInput from "../../../common/WhatAppsInput";
-import UrlInput from "../../../common/UrlInput";
-import ColorPicker from "../../../common/ColorPicker";
-import { useFontAwesomeIconPack } from "../../../../../../hooks/useFontAwesomePack";
 import { CButton } from "@coreui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDebounce } from "use-debounce";
+import { useFontAwesomeIconPack } from "../../../../../../hooks/useFontAwesomePack";
+import { createUniqueID } from "../../../../../../lib/unique-id";
+import ColorPicker from "../../../common/ColorPicker";
+import Confirmation from "../../../common/Confirmation";
 import IconPicker from "../../../common/IconPicker";
+import Input from "../../../common/Input";
 import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
+import ScrollTargetInput from "../../../common/ScrollTargetSelect";
+import SelectOptions from "../../../common/SelectOptions";
+import UrlInput from "../../../common/UrlInput";
+import WhatsAppInput from "../../../common/WhatAppsInput";
+import FacebookPixel from "../../../FacebookPixel";
+import { localPageTargetOptions } from "../../../SelectOptions";
+import { useScrollTargetChange } from "../../footer/hooks/useScrollTargetChange";
+import { useUrlChange } from "../../footer/hooks/useUrlChange";
+import { useWhatAppsChange } from "../../footer/hooks/useWhatAppsChange";
 
 export const shownOnWhenOptions = [
   { value: "alwaysShown", label: "Selalu Terlihat" },
@@ -80,6 +81,10 @@ const Link = ({
   );
   const [imageSize, setImageSize] = useState(
     contentItemIdToCheck?.imageSize || 50
+  );
+
+  const [localPageTarget, setLocalPageTarget] = useState(
+    localPageTargetOptions[0]
   );
 
   const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChange(
@@ -302,7 +307,8 @@ const Link = ({
           return (
             (targetType?.scrollTarget && opt.value === "scroll-target") ||
             (targetType?.url && opt.value === "url") ||
-            (targetType?.whatApps && opt.value === "whatApps")
+            (targetType?.whatApps && opt.value === "whatApps") ||
+            (targetType?.localPage && opt.value === "local-page")
           );
         });
 
@@ -400,7 +406,7 @@ const Link = ({
 
   useEffect(() => {
     const currentShowOnWhen = shownOnWhenOptions.find(
-      (opt) => opt.value === currentContent?.content[0]?.shownOnWhen
+      (opt) => opt.value === contentItemIdToCheck?.shownOnWhen
     );
 
     if (currentShowOnWhen) {
@@ -408,13 +414,23 @@ const Link = ({
     }
 
     const currentTypeView = typeViewOptions.find(
-      (opt) => opt.value === currentContent?.content[0]?.typeView
+      (opt) => opt.value === contentItemIdToCheck?.typeView
     );
 
     if (currentTypeView) {
       setTypeView(currentTypeView);
     }
-  }, [currentContent]);
+
+    const currentlocalPageTarget = localPageTargetOptions
+      .flatMap((group) => group.options)
+      .find(
+        (opt) => opt.value === contentItemIdToCheck?.target?.localPage?.value
+      );
+
+    if (currentlocalPageTarget) {
+      setLocalPageTarget(currentlocalPageTarget);
+    }
+  }, [contentItemIdToCheck, currentContent]);
 
   const handleChangeOptions = (selectedOptionValue) => {
     setSelectedOption(selectedOptionValue);
@@ -619,6 +635,80 @@ const Link = ({
     handleChangeContent(key, newValue);
   };
 
+  useEffect(() => {
+    if (
+      (!isEditingSection &&
+        selectedOption &&
+        selectedOption.value === "local-page") ||
+      (isEditingSection &&
+        selectedOption &&
+        selectedOption.value === "local-page" &&
+        !contentItemIdToCheck.target?.localPage?.value)
+    ) {
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === currentSection?.id
+            ? {
+                ...item,
+                content: item.content.map((content) =>
+                  content.id === contentIdToCheck
+                    ? {
+                        ...content,
+                        content: content.content.map((contentItem) => {
+                          return String(contentItem.id) ===
+                            String(contentItemIdToCheck?.id)
+                            ? {
+                                ...contentItem,
+                                target: {
+                                  localPage:
+                                    localPageTargetOptions[0].options[0].value,
+                                },
+                              }
+                            : contentItem;
+                        }),
+                      }
+                    : content
+                ),
+              }
+            : item
+        )
+      );
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOption]);
+
+  const handleChangeLocalPage = (value) => {
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === currentSection?.id
+          ? {
+              ...item,
+              content: item.content.map((content) =>
+                String(content.id) === String(contentIdToCheck)
+                  ? {
+                      ...content,
+                      content: content.content.map((contentItem) =>
+                        contentItem.id === contentItemIdToCheck.id
+                          ? {
+                              ...contentItem,
+                              target: {
+                                localPage: {
+                                  value,
+                                },
+                              },
+                            }
+                          : contentItem
+                      ),
+                    }
+                  : content
+              ),
+            }
+          : item
+      )
+    );
+  };
+
   return (
     <>
       <div>
@@ -782,13 +872,28 @@ const Link = ({
             <h5>Link</h5>
 
             <form>
-              <SelectOptions
-                label="Target"
-                options={optionsTarget}
-                onChange={handleChangeOptions}
-                value={selectedOption}
-                width="100"
-              />
+              <div style={{ gap: 10 }} className="d-flex align-items-center">
+                <SelectOptions
+                  label="Target"
+                  options={optionsTarget}
+                  onChange={handleChangeOptions}
+                  value={selectedOption}
+                  width="50"
+                />
+
+                {selectedOption?.value === "local-page" && (
+                  <SelectOptions
+                    label="Link Ke"
+                    options={localPageTargetOptions}
+                    onChange={(selectedOption) => {
+                      setLocalPageTarget(selectedOption);
+                      handleChangeLocalPage(selectedOption.value);
+                    }}
+                    value={localPageTarget}
+                    width="50"
+                  />
+                )}
+              </div>
 
               {selectedOption?.value === "url" && (
                 <UrlInput

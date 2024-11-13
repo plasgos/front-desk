@@ -36,7 +36,7 @@ const Menu = ({
   );
 
   const [title, setTitle] = useState(
-    currentContent?.wrapperStyle?.title || "Link"
+    currentContent?.wrapperStyle?.title || "Popover"
   );
 
   const [shownOnWhen, setShownOnWhen] = useState(shownOnWhenOptions[0]);
@@ -166,7 +166,7 @@ const Menu = ({
         bgHoverColor: "#fa541c",
         textColor: "#000000",
         textColorHover: "#ffffff",
-        isPreviewContent: true,
+        isPreviewContent: false,
       },
     };
 

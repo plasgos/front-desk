@@ -3,8 +3,7 @@ import { useFontAwesomeIconPack } from "../../../../../../hooks/useFontAwesomePa
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ViewSideBar = ({ sidebar, setPreviewNavbar }) => {
-  const { bgColor, lineColor, textColor, isShowSidebar, iconColor } =
-    sidebar || {};
+  const { iconColor } = sidebar || {};
 
   const toggleSidebar = (value) => {
     setPreviewNavbar((arr) =>

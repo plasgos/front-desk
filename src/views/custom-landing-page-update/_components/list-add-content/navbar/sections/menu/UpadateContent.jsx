@@ -19,6 +19,7 @@ import { useUrlChange } from "../../../footer/hooks/useUrlChange";
 import { useWhatAppsChange } from "../../../footer/hooks/useWhatAppsChange";
 import { useScrollTargetChange } from "../../../footer/hooks/useScrollTargetChange";
 import { shownOnWhenOptions } from "../Link";
+import { localPageTargetOptions } from "../../../../SelectOptions";
 
 const UpdateContent = ({
   currentSection,
@@ -54,6 +55,10 @@ const UpdateContent = ({
 
   const [setting, setSetting] = useState({});
 
+  const [localPageTarget, setLocalPageTarget] = useState(
+    localPageTargetOptions[0]
+  );
+
   const isIconSizeAndImageSizeVisible = isEditingContent
     ? selectedContent
     : setting;
@@ -86,6 +91,14 @@ const UpdateContent = ({
 
     if (currentShowOnWhen) {
       setShownOnWhen(currentShowOnWhen);
+    }
+
+    const currentlocalPageTarget = localPageTargetOptions
+      .flatMap((group) => group.options)
+      .find((opt) => opt.value === selectedContent?.target?.localPage?.value);
+
+    if (currentlocalPageTarget) {
+      setLocalPageTarget(currentlocalPageTarget);
     }
   }, [selectedContent]);
 
@@ -223,7 +236,8 @@ const UpdateContent = ({
           return (
             (targetType?.scrollTarget && opt.value === "scroll-target") ||
             (targetType?.url && opt.value === "url") ||
-            (targetType?.whatApps && opt.value === "whatApps")
+            (targetType?.whatApps && opt.value === "whatApps") ||
+            (targetType?.localPage && opt.value === "local-page")
           );
         });
 
@@ -232,6 +246,49 @@ const UpdateContent = ({
       }
     }
   }, [isEditingContent, selectedContent, optionsTarget]);
+
+  useEffect(() => {
+    if (
+      (!isEditingContent &&
+        selectedOption &&
+        selectedOption.value === "local-page") ||
+      (isEditingContent &&
+        selectedOption &&
+        selectedOption.value === "local-page" &&
+        !selectedContent.target?.localPage?.value)
+    ) {
+      setPreviewSection((arr) =>
+        arr.map((item) =>
+          String(item.id) === currentSection?.id
+            ? {
+                ...item,
+                content: item.content.map((content) =>
+                  content.id === currentContent?.id
+                    ? {
+                        ...content,
+                        content: content.content.map((contentItem) => {
+                          return String(contentItem.id) ===
+                            String(contentIdToCheck)
+                            ? {
+                                ...contentItem,
+                                target: {
+                                  localPage:
+                                    localPageTargetOptions[0].options[0].value,
+                                },
+                              }
+                            : contentItem;
+                        }),
+                      }
+                    : content
+                ),
+              }
+            : item
+        )
+      );
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedOption]);
 
   useEffect(() => {
     if (
@@ -495,6 +552,37 @@ const UpdateContent = ({
     handleChangeContent(key, newValue);
   };
 
+  const handleChangeLocalPage = (value) => {
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === currentSection?.id
+          ? {
+              ...item,
+              content: item.content.map((content) =>
+                String(content.id) === String(currentContent?.id)
+                  ? {
+                      ...content,
+                      content: content.content.map((contentItem) =>
+                        contentItem.id === contentIdToCheck
+                          ? {
+                              ...contentItem,
+                              target: {
+                                localPage: {
+                                  value,
+                                },
+                              },
+                            }
+                          : contentItem
+                      ),
+                    }
+                  : content
+              ),
+            }
+          : item
+      )
+    );
+  };
+
   return (
     <>
       {isListIconContentVisible ? (
@@ -534,13 +622,28 @@ const UpdateContent = ({
           />
 
           <form>
-            <SelectOptions
-              label="Target"
-              options={optionsTarget}
-              onChange={handleChangeOptions}
-              value={selectedOption}
-              width="100"
-            />
+            <div style={{ gap: 10 }} className="d-flex align-items-center">
+              <SelectOptions
+                label="Target"
+                options={optionsTarget}
+                onChange={handleChangeOptions}
+                value={selectedOption}
+                width="50"
+              />
+
+              {selectedOption?.value === "local-page" && (
+                <SelectOptions
+                  label="Link Ke"
+                  options={localPageTargetOptions}
+                  onChange={(selectedOption) => {
+                    setLocalPageTarget(selectedOption);
+                    handleChangeLocalPage(selectedOption.value);
+                  }}
+                  value={localPageTarget}
+                  width="50"
+                />
+              )}
+            </div>
 
             {selectedOption?.value === "url" && (
               <UrlInput

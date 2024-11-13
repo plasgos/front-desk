@@ -14,9 +14,7 @@ const bgTypeOptions = [
 
 const navbarPostionOptions = [
   { value: "static", label: "Statik" },
-  { value: "fixed", label: "Menempel Di Atas" },
-  { value: "floating", label: "Floating" },
-  { value: "floating-sticky", label: "Floating Sticky" },
+  { value: "absolute", label: "Menempel Di Atas" },
 ];
 
 const shapeOptions = [
@@ -201,7 +199,7 @@ const Design = ({
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `footer-${pageSetting.title}.txt`; // Nama file yang diunduh
+    a.download = `navbar-${pageSetting.title}.txt`; // Nama file yang diunduh
     a.click();
     URL.revokeObjectURL(url);
   };
