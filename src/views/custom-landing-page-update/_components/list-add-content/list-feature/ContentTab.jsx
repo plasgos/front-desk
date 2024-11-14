@@ -127,15 +127,6 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
           width="50"
         />
 
-        <ColorPicker
-          initialColor={selectedTextColor}
-          onChange={(color) => {
-            setSelectedTextColor(color);
-            handleUpdateValue("textColor", color);
-          }}
-          width="w-0"
-        />
-
         <div>
           <CFormGroup>
             <CLabel className="mb-2">Align</CLabel>
@@ -176,6 +167,17 @@ const ContentTab = ({ setPreviewSection, currentSection }) => {
             </div>
           </CFormGroup>
         </div>
+      </div>
+
+      <div className="mb-3">
+        <ColorPicker
+          initialColor={selectedTextColor}
+          onChange={(color) => {
+            setSelectedTextColor(color);
+            handleUpdateValue("textColor", color);
+          }}
+          width="w-0"
+        />
       </div>
 
       <div style={{ overflowX: "hidden" }}>

@@ -87,9 +87,12 @@ const ColorPicker = ({
         }}
         className="rounded border"
       />
-      <div className="mb-1 ml-2" style={{ fontFamily: "Arial", width: 75 }}>
-        {label}
-      </div>
+
+      {label && (
+        <div className="mb-1 ml-2" style={{ fontFamily: "Arial", width: 75 }}>
+          {label}
+        </div>
+      )}
 
       {showColorPicker && (
         <div style={popover}>

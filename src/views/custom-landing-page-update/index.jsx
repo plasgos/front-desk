@@ -64,7 +64,6 @@ const CustomLandingPage = () => {
   });
   const [isResizing, setIsResizing] = useState(false);
   const [previewNavbar, setPreviewNavbar] = useState(initialNavbarSection);
-  console.log("🚀 ~ CustomLandingPage ~ previewNavbar:", previewNavbar);
   const [navbarIsVisible, setNavbarIsVisible] = useState(false);
   const [isEditNavbar, setIsEditNavbar] = useState(false);
 
@@ -111,7 +110,6 @@ const CustomLandingPage = () => {
     isDragging: monitor.isDragging(),
     id: monitor.getItem()?.id,
   }));
-
   const previewRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(null);
   const [focusedIndexColumn, setFocusedIndexColumn] = useState(null);
@@ -211,7 +209,6 @@ const CustomLandingPage = () => {
     },
     [timers]
   );
-
   useEffect(() => {
     return () => {
       Object.values(timers).forEach(clearTimeout);
@@ -336,7 +333,7 @@ const CustomLandingPage = () => {
 
       setDimensions({
         width: newWidth > 100 ? newWidth : 100,
-        height: newHeight > 100 ? newHeight : 100,
+        height: newHeight > 100 ? newHeight : "100vh",
       });
     };
 
@@ -814,6 +811,7 @@ const CustomLandingPage = () => {
           }}
         >
           <ResizableView
+            id={id}
             previewSection={previewSection}
             pageSetting={pageSetting}
             ref={containerRef}
@@ -821,6 +819,8 @@ const CustomLandingPage = () => {
             isSelectedView={isSelectedView}
             isResizing={isResizing}
             handleMouseDown={handleMouseDown}
+            isDragging={isDragging}
+            handleContentFocus={handleContentFocus}
           >
             {previewNavbar[0]?.sidebar?.isShowSidebar && (
               <SidebarMenu

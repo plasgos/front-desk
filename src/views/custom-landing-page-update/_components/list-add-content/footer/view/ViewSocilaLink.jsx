@@ -36,13 +36,18 @@ const ViewSocialLink = forwardRef(
     }, [iconPack, content]);
 
     useEffect(() => {
+      if (!content.wrapperStyle.icon) {
+        setIcon(null);
+      }
+    }, [content.wrapperStyle.icon]);
+
+    useEffect(() => {
       if (content.wrapperStyle?.image) {
         setIcon(null);
       }
     }, [content.wrapperStyle.image]);
 
     const onClickTarget = (target) => {
-      console.log("🚀 ~ onClickTarget ~ target:", target);
       window.open(target, "_blank", "noopener noreferrer");
     };
 

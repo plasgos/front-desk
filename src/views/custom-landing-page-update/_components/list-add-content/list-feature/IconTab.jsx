@@ -1,11 +1,9 @@
-import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import ColorPicker from "../../common/ColorPicker";
-import SelectOptions from "../../common/SelectOptions";
-import InputRangeWithNumber from "../../common/InputRangeWithNumber";
-import IconPicker from "../../common/IconPicker";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack";
+import IconPicker from "../../common/IconPicker";
+import IconUploader from "../../common/IconUploader";
+import InputRangeWithNumber from "../../common/InputRangeWithNumber";
+import SelectOptions from "../../common/SelectOptions";
 
 const shadowOptions = [
   { value: "", label: "Tidak Ada" },
@@ -108,6 +106,23 @@ const IconTab = ({
     );
   };
 
+  const handleUpdateColorIcon = (value) => {
+    setColorIcon(value);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === currentSection.id
+          ? {
+              ...item,
+              iconStyle: {
+                ...item.iconStyle,
+                color: value,
+              },
+            }
+          : item
+      )
+    );
+  };
+
   const handleSetValueWhenBlurValue = (value, min, max, key) => {
     const newValue = Math.min(Math.max(value, min), max);
     if (key === "iconSize") {
@@ -177,74 +192,15 @@ const IconTab = ({
         />
       ) : (
         <div>
-          <div className="d-flex align-items-center mb-2 ">
-            <div className="">
-              {imageUrl && (
-                <div
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    width: 146,
-                    height: 40,
-                    overflow: "hidden",
-                  }}
-                  className="mx-auto mb-2"
-                >
-                  <img
-                    style={{ objectFit: "contain", width: "100%", height: 100 }}
-                    src={imageUrl}
-                    alt="img"
-                  />
-                </div>
-              )}
-
-              {iconPack &&
-                iconPack.length > 0 &&
-                Object.keys(iconName).length > 0 && (
-                  <div
-                    style={{
-                      backgroundColor: "#F5F5F5",
-                      width: "100%",
-                      overflow: "hidden",
-                    }}
-                    className="mx-auto mb-2 p-2"
-                  >
-                    <div>
-                      <FontAwesomeIcon
-                        icon={[`${iconName.prefix}`, iconName.iconName]}
-                        size="xl"
-                      />
-                    </div>
-                  </div>
-                )}
-
-              <div style={{ gap: 5 }} className="d-flex align-items-center">
-                <ColorPicker
-                  initialColor={colorIcon}
-                  onChange={(color) => {
-                    setColorIcon(color);
-                    handleUpdateValue("color", color);
-                  }}
-                  width="w-0"
-                />
-
-                <CButton
-                  onClick={handleFileUpload}
-                  color="primary"
-                  variant="outline"
-                >
-                  Upload
-                </CButton>
-
-                <CButton
-                  onClick={() => handleSearchIcon(iconName)}
-                  color="primary"
-                  variant="outline"
-                >
-                  Cari
-                </CButton>
-              </div>
-            </div>
-          </div>
+          <IconUploader
+            iconPack={iconPack}
+            icon={iconName}
+            imageUrl={imageUrl}
+            handleFileUpload={handleFileUpload}
+            handleSearchIcon={handleSearchIcon}
+            handleUpdateColorIcon={handleUpdateColorIcon}
+            colorIcon={colorIcon}
+          />
 
           <SelectOptions
             label="Bayangan"

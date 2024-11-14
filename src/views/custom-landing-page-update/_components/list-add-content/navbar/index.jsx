@@ -110,6 +110,53 @@ const initialContent = [
     title: "Pemisah",
     margin: 50,
   },
+  {
+    id: `menu-${createUniqueID([])}`,
+    name: "menu",
+    title: "Menu",
+    content: [
+      {
+        id: createUniqueID([]),
+        text: "Link 1",
+        icon: "",
+        iconSize: 20,
+        image: "",
+        imageSize: 50,
+        target: {},
+        shownOnWhen: "alwaysVisible",
+      },
+      {
+        id: createUniqueID([]),
+        text: "Link 2",
+        icon: "",
+        iconSize: 20,
+        image: "",
+        imageSize: 50,
+        target: {},
+        shownOnWhen: "alwaysVisible",
+      },
+      {
+        id: createUniqueID([]),
+        text: "Link 3",
+        icon: "",
+        iconSize: 20,
+        image: "",
+        imageSize: 50,
+        target: {},
+        shownOnWhen: "alwaysVisible",
+      },
+    ],
+    wrapperStyle: {
+      title: "Popover",
+      shownOnWhen: "alwaysVisible",
+      column: 1,
+      bgColor: "#ffffff",
+      bgHoverColor: "#fa541c",
+      textColor: "#000000",
+      textColorHover: "#ffffff",
+      isPreviewContent: false,
+    },
+  },
 ];
 
 export const initialNavbarSection = [

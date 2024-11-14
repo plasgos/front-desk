@@ -1,5 +1,3 @@
-import { CButton } from "@coreui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
@@ -8,6 +6,7 @@ import { createUniqueID } from "../../../../../../lib/unique-id";
 import ColorPicker from "../../../common/ColorPicker";
 import Confirmation from "../../../common/Confirmation";
 import IconPicker from "../../../common/IconPicker";
+import IconUploader from "../../../common/IconUploader";
 import Input from "../../../common/Input";
 import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
 import ScrollTargetInput from "../../../common/ScrollTargetSelect";
@@ -709,6 +708,64 @@ const Link = ({
     );
   };
 
+  const handleRemoveIcon = () => {
+    const hasIcon =
+      iconPack && iconPack.length > 0 && Object.keys(icon).length > 0;
+
+    setIcon("");
+    setImageUrl("");
+
+    const updateIcon = hasIcon
+      ? {
+          icon: "",
+        }
+      : imageUrl
+      ? {
+          image: "",
+        }
+      : {};
+
+    if (!isEditingSection) {
+      setSelectedCurrentSection((prev) => ({
+        ...prev,
+        content: prev.content.map((contentItem) =>
+          contentItem.id === contentItemIdToCheck?.id
+            ? {
+                ...contentItem,
+                ...updateIcon,
+              }
+            : contentItem
+        ),
+      }));
+    }
+
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === currentSection?.id
+          ? {
+              ...item,
+              content: item.content.map((content) =>
+                content.id === contentIdToCheck
+                  ? {
+                      ...content,
+                      content: content.content.map((contentItem) => {
+                        return String(contentItem.id) ===
+                          String(contentItemIdToCheck?.id)
+                          ? {
+                              ...contentItem,
+                              ...updateIcon,
+                            }
+                          : contentItem;
+                      }),
+                    }
+                  : content
+              ),
+            }
+          : item
+      )
+    );
+  };
+
   return (
     <>
       <div>
@@ -772,68 +829,14 @@ const Link = ({
                   />
                 </div>
 
-                <div className="mb-3">
-                  <label>Icon</label>
-                  {imageUrl && (
-                    <div
-                      style={{
-                        backgroundColor: "#F5F5F5",
-                        width: 146,
-                        height: 40,
-                        overflow: "hidden",
-                      }}
-                      className="mx-auto mb-2"
-                    >
-                      <img
-                        style={{
-                          objectFit: "contain",
-                          width: "100%",
-                          height: 100,
-                        }}
-                        src={imageUrl}
-                        alt="img"
-                      />
-                    </div>
-                  )}
-
-                  {iconPack &&
-                    iconPack.length > 0 &&
-                    Object.keys(icon).length > 0 && (
-                      <div
-                        style={{
-                          backgroundColor: "#F5F5F5",
-                          width: "100%",
-                          overflow: "hidden",
-                        }}
-                        className="mx-auto mb-2 p-2"
-                      >
-                        <div>
-                          <FontAwesomeIcon
-                            icon={[`${icon.prefix}`, icon.iconName]}
-                            size="xl"
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                  <div style={{ gap: 5 }} className="d-flex align-items-center">
-                    <CButton
-                      onClick={handleFileUpload}
-                      color="primary"
-                      variant="outline"
-                    >
-                      Upload
-                    </CButton>
-
-                    <CButton
-                      onClick={() => handleSearchIcon(icon)}
-                      color="primary"
-                      variant="outline"
-                    >
-                      Cari
-                    </CButton>
-                  </div>
-                </div>
+                <IconUploader
+                  iconPack={iconPack}
+                  icon={icon}
+                  imageUrl={imageUrl}
+                  handleFileUpload={handleFileUpload}
+                  handleSearchIcon={handleSearchIcon}
+                  handleRemoveIcon={handleRemoveIcon}
+                />
 
                 {contentItemIdToCheck?.icon && (
                   <InputRangeWithNumber

@@ -55,6 +55,12 @@ const ViewGroupLinks = forwardRef(
     }, [iconPack, content]);
 
     useEffect(() => {
+      if (!content.wrapperStyle.icon) {
+        setIcon(null);
+      }
+    }, [content.wrapperStyle.icon]);
+
+    useEffect(() => {
       if (content.wrapperStyle?.image) {
         setIcon(null);
       }

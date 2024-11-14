@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
+import { useFontAwesomeIconPack } from "../../../../../../hooks/useFontAwesomePack";
 import { createUniqueID } from "../../../../../../lib/unique-id";
 import Confirmation from "../../../common/Confirmation";
-import { fontSizeOptions } from "../../../SelectOptions";
-import { useDebounce } from "use-debounce";
+import IconPicker from "../../../common/IconPicker";
+import IconUploader from "../../../common/IconUploader";
 import Input from "../../../common/Input";
+import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
 import { CustomReactQuill } from "../../../common/ReactQuill";
 import SelectOptions from "../../../common/SelectOptions";
-import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
-import { CButton } from "@coreui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useFontAwesomeIconPack } from "../../../../../../hooks/useFontAwesomePack";
-import IconPicker from "../../../common/IconPicker";
+import { fontSizeOptions } from "../../../SelectOptions";
 
 const Text = ({
   setPreviewSection,
@@ -91,6 +90,55 @@ const Text = ({
   const handleSearchIcon = (prevIcon) => {
     setPreviousIcon(prevIcon);
     setIsListIconVisible(true);
+  };
+
+  const handleRemoveIcon = () => {
+    const hasIcon =
+      iconPack && iconPack.length > 0 && Object.keys(icon).length > 0;
+
+    setIcon("");
+    setImageUrl("");
+
+    const updateIcon = hasIcon
+      ? {
+          icon: "",
+        }
+      : imageUrl
+      ? {
+          image: "",
+        }
+      : {};
+
+    if (!isEditingSection) {
+      setSetting((prev) => ({
+        ...prev,
+        wrapperStyle: {
+          ...prev.wrapperStyle,
+          ...updateIcon,
+        },
+      }));
+    }
+
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        section.id === currentSection?.id
+          ? {
+              ...section,
+              content: section.content.map((contentItem) =>
+                contentItem.id === contentIdToCheck
+                  ? {
+                      ...contentItem,
+                      wrapperStyle: {
+                        ...contentItem.wrapperStyle,
+                        ...updateIcon,
+                      },
+                    }
+                  : contentItem
+              ),
+            }
+          : section
+      )
+    );
   };
 
   const handleChangeImageUrl = (value) => {
@@ -374,68 +422,14 @@ const Text = ({
               }
             />
 
-            <div className="mb-3">
-              <label>Icon</label>
-              {imageUrl && (
-                <div
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    width: 146,
-                    height: 40,
-                    overflow: "hidden",
-                  }}
-                  className="mx-auto mb-2"
-                >
-                  <img
-                    style={{
-                      objectFit: "contain",
-                      width: "100%",
-                      height: 100,
-                    }}
-                    src={imageUrl}
-                    alt="img"
-                  />
-                </div>
-              )}
-
-              {iconPack &&
-                iconPack.length > 0 &&
-                Object.keys(icon).length > 0 && (
-                  <div
-                    style={{
-                      backgroundColor: "#F5F5F5",
-                      width: "100%",
-                      overflow: "hidden",
-                    }}
-                    className="mx-auto mb-2 p-2"
-                  >
-                    <div>
-                      <FontAwesomeIcon
-                        icon={[`${icon.prefix}`, icon.iconName]}
-                        size="xl"
-                      />
-                    </div>
-                  </div>
-                )}
-
-              <div style={{ gap: 5 }} className="d-flex align-items-center">
-                <CButton
-                  onClick={handleFileUpload}
-                  color="primary"
-                  variant="outline"
-                >
-                  Upload
-                </CButton>
-
-                <CButton
-                  onClick={() => handleSearchIcon(icon)}
-                  color="primary"
-                  variant="outline"
-                >
-                  Cari
-                </CButton>
-              </div>
-            </div>
+            <IconUploader
+              iconPack={iconPack}
+              icon={icon}
+              imageUrl={imageUrl}
+              handleFileUpload={handleFileUpload}
+              handleSearchIcon={handleSearchIcon}
+              handleRemoveIcon={handleRemoveIcon}
+            />
 
             {isIconSizeAndImageSizeVisible?.icon && (
               <InputRangeWithNumber

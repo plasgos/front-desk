@@ -8,6 +8,7 @@ import { useFontAwesomeIconPack } from "../../../../../../hooks/useFontAwesomePa
 import { CButton } from "@coreui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import IconPicker from "../../../common/IconPicker";
+import IconUploader from "../../../common/IconUploader";
 
 const DesignSection = ({
   previewSection,
@@ -117,7 +118,7 @@ const DesignSection = ({
     setIsListIconVisible(true);
   };
 
-  const handleChangeFormValue = (key, selectedOption) => {
+  const handleChangeFormValue = (key, value) => {
     setPreviewSection((arr) =>
       arr.map((item) =>
         String(item.id) === currentSection.id
@@ -127,7 +128,27 @@ const DesignSection = ({
                 ...item.form,
                 style: {
                   ...item.form.style,
-                  [key]: selectedOption,
+                  [key]: value,
+                },
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  const handleUpdateColorIcon = (value) => {
+    setIconColor(value);
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === currentSection.id
+          ? {
+              ...item,
+              form: {
+                ...item.form,
+                style: {
+                  ...item.form.style,
+                  iconColor: value,
                 },
               },
             }
@@ -149,6 +170,41 @@ const DesignSection = ({
                   ...item.form.style,
                   icon: value,
                   image: "",
+                },
+              },
+            }
+          : item
+      )
+    );
+  };
+
+  const handleRemoveIcon = () => {
+    const hasIcon =
+      iconPack && iconPack.length > 0 && Object.keys(icon).length > 0;
+
+    setIcon("");
+    setImageUrl("");
+
+    const updateIcon = hasIcon
+      ? {
+          icon: "",
+        }
+      : imageUrl
+      ? {
+          image: "",
+        }
+      : {};
+
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === currentSection.id
+          ? {
+              ...item,
+              form: {
+                ...item.form,
+                style: {
+                  ...item.form.style,
+                  ...updateIcon,
                 },
               },
             }
@@ -347,84 +403,18 @@ const DesignSection = ({
               right={0}
             />
           </div>
-
-          <div className="mb-2">Icon</div>
-
-          <div className="d-flex align-items-center mb-2 ">
-            <div className="">
-              {imageUrl && (
-                <div
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    width: 146,
-                    height: 40,
-                    overflow: "hidden",
-                  }}
-                  className="mx-auto mb-2"
-                >
-                  <img
-                    style={{
-                      objectFit: "contain",
-                      width: "100%",
-                      height: 100,
-                    }}
-                    src={imageUrl}
-                    alt="img"
-                  />
-                </div>
-              )}
-
-              {iconPack &&
-                iconPack.length > 0 &&
-                Object.keys(icon).length > 0 && (
-                  <div
-                    style={{
-                      backgroundColor: "#F5F5F5",
-                      width: "100%",
-                      overflow: "hidden",
-                    }}
-                    className="mx-auto mb-2 p-2"
-                  >
-                    <div>
-                      <FontAwesomeIcon
-                        icon={[`${icon.prefix}`, icon.iconName]}
-                        size="xl"
-                      />
-                    </div>
-                  </div>
-                )}
-
-              <div
-                style={{ gap: 5, paddingBottom: 30 }}
-                className="d-flex align-items-center"
-              >
-                <ColorPicker
-                  initialColor={iconColor}
-                  onChange={(color) => {
-                    setIconColor(color);
-                    handleChangeFormValue("iconColor", color);
-                  }}
-                  isCustomPosition={true}
-                  bottom={40}
-                />
-
-                <CButton
-                  onClick={handleFileUpload}
-                  color="primary"
-                  variant="outline"
-                >
-                  Upload
-                </CButton>
-
-                <CButton
-                  onClick={() => handleSearchIcon(icon)}
-                  color="primary"
-                  variant="outline"
-                >
-                  Cari
-                </CButton>
-              </div>
-            </div>
+          <div style={{ paddingBottom: 20 }}>
+            <IconUploader
+              iconPack={iconPack}
+              icon={icon}
+              imageUrl={imageUrl}
+              handleFileUpload={handleFileUpload}
+              handleSearchIcon={handleSearchIcon}
+              handleUpdateColorIcon={handleUpdateColorIcon}
+              colorIcon={iconColor}
+              handleRemoveIcon={handleRemoveIcon}
+              isCustomPositionColor={true}
+            />
           </div>
         </div>
       )}

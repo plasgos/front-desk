@@ -23,7 +23,6 @@ const ViewText = forwardRef(
 
     const iconPack = useFontAwesomeIconPack();
     const [icon, setIcon] = useState(null);
-
     useEffect(() => {
       if (iconPack && iconPack.length > 0) {
         const iconToSet = content?.wrapperStyle?.icon;
@@ -39,6 +38,12 @@ const ViewText = forwardRef(
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [iconPack, content]);
+
+    useEffect(() => {
+      if (!content.wrapperStyle.icon) {
+        setIcon(null);
+      }
+    }, [content.wrapperStyle.icon]);
 
     useEffect(() => {
       if (content.wrapperStyle?.image) {

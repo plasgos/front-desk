@@ -47,6 +47,12 @@ const ViewNewsletter = forwardRef(
     }, [iconPack, content]);
 
     useEffect(() => {
+      if (!content.wrapperStyle.icon) {
+        setIcon(null);
+      }
+    }, [content.wrapperStyle.icon]);
+
+    useEffect(() => {
       if (content.wrapperStyle?.image) {
         setIcon(null);
       }
@@ -91,7 +97,7 @@ const ViewNewsletter = forwardRef(
             </div>
           )}
 
-          {content?.content?.image && (
+          {content?.wrapperStyle?.image && (
             <div
               style={{
                 position: "relative",

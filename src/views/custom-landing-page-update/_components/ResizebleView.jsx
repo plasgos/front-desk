@@ -1,17 +1,32 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 
 const ResizableView = forwardRef(
   (
     {
+      id,
       pageSetting,
       children,
       dimensions,
       isSelectedView,
       isResizing,
       handleMouseDown,
+      isDragging,
+      handleContentFocus,
     },
     ref
   ) => {
+    const [idSection, setIdSection] = useState(undefined);
+
+    useEffect(() => {
+      if (isDragging && id) {
+        setIdSection(id);
+      } else if (!isDragging && idSection !== undefined) {
+        handleContentFocus(idSection);
+      }
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isDragging, id, idSection]);
+
     return (
       <div
         className="mx-auto border"
@@ -24,9 +39,10 @@ const ResizableView = forwardRef(
           flex: isSelectedView === "laptop" ? "1 1 0%" : "initial",
           transition: "transform 0.4s ease 0s",
           transformOrigin: "center top",
-          minHeight: isSelectedView === "phone" ? "100%" : "initial",
+          minHeight: isDragging ? "200%" : "100%",
           border: "1px solid black",
-          backgroundColor: pageSetting.bgColor, //
+          backgroundColor: pageSetting.bgColor,
+          transform: isDragging ? "scale(0.5)" : "scale(1)",
         }}
       >
         <div
@@ -40,7 +56,6 @@ const ResizableView = forwardRef(
             overflowX: "hidden",
             display: "flex",
             flexDirection: "column",
-            // position: "relative",
           }}
         >
           {children}

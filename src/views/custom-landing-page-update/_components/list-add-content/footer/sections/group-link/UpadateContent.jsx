@@ -3,7 +3,12 @@ import { createUniqueID } from "../../../../../../../lib/unique-id";
 
 import { useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
+import { useFontAwesomeIconPack } from "../../../../../../../hooks/useFontAwesomePack";
+import Confirmation from "../../../../common/Confirmation";
+import IconPicker from "../../../../common/IconPicker";
+import IconUploader from "../../../../common/IconUploader";
 import Input from "../../../../common/Input";
+import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 import ScrollTargetInput from "../../../../common/ScrollTargetSelect";
 import SelectOptions from "../../../../common/SelectOptions";
 import UrlInput from "../../../../common/UrlInput";
@@ -12,12 +17,6 @@ import FacebookPixel from "../../../../FacebookPixel";
 import { useScrollTargetChange } from "../../hooks/useScrollTargetChange";
 import { useUrlChange } from "../../hooks/useUrlChange";
 import { useWhatAppsChange } from "../../hooks/useWhatAppsChange";
-import Confirmation from "../../../../common/Confirmation";
-import IconPicker from "../../../../common/IconPicker";
-import { useFontAwesomeIconPack } from "../../../../../../../hooks/useFontAwesomePack";
-import { CButton } from "@coreui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 
 const UpdateContent = ({
   currentSection,
@@ -474,6 +473,62 @@ const UpdateContent = ({
     );
   };
 
+  const handleRemoveIcon = () => {
+    const hasIcon =
+      iconPack && iconPack.length > 0 && Object.keys(icon).length > 0;
+
+    setIcon("");
+    setImageUrl("");
+
+    const updateIcon = hasIcon
+      ? {
+          icon: "",
+        }
+      : imageUrl
+      ? {
+          image: "",
+        }
+      : {};
+
+    if (!isEditingContent) {
+      setSetting((prev) => ({
+        ...prev,
+        ...updateIcon,
+      }));
+    } else {
+      setSelectedContent((prev) => ({
+        ...prev,
+        ...updateIcon,
+      }));
+    }
+
+    setPreviewSection((arr) =>
+      arr.map((item) =>
+        String(item.id) === currentSection?.id
+          ? {
+              ...item,
+              content: item.content.map((content) =>
+                content.id === currentContent?.id
+                  ? {
+                      ...content,
+                      content: content.content.map((contentItem) => {
+                        return String(contentItem.id) ===
+                          String(contentIdToCheck)
+                          ? {
+                              ...contentItem,
+                              ...updateIcon,
+                            }
+                          : contentItem;
+                      }),
+                    }
+                  : content
+              ),
+            }
+          : item
+      )
+    );
+  };
+
   const handleSetValueWhenBlur = (value, min, max, key) => {
     const newValue = Math.min(Math.max(value, min), max);
     if (key === "iconSize") {
@@ -565,68 +620,14 @@ const UpdateContent = ({
 
           {selectedOption.value !== undefined && <FacebookPixel />}
 
-          <div className="my-3">
-            <label>Icon</label>
-            {imageUrl && (
-              <div
-                style={{
-                  backgroundColor: "#F5F5F5",
-                  width: 146,
-                  height: 40,
-                  overflow: "hidden",
-                }}
-                className="mx-auto mb-2"
-              >
-                <img
-                  style={{
-                    objectFit: "contain",
-                    width: "100%",
-                    height: 100,
-                  }}
-                  src={imageUrl}
-                  alt="img"
-                />
-              </div>
-            )}
-
-            {iconPack &&
-              iconPack.length > 0 &&
-              Object.keys(icon).length > 0 && (
-                <div
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    width: "100%",
-                    overflow: "hidden",
-                  }}
-                  className="mx-auto mb-2 p-2"
-                >
-                  <div>
-                    <FontAwesomeIcon
-                      icon={[`${icon.prefix}`, icon.iconName]}
-                      size="xl"
-                    />
-                  </div>
-                </div>
-              )}
-
-            <div style={{ gap: 5 }} className="d-flex align-items-center">
-              <CButton
-                onClick={handleFileUpload}
-                color="primary"
-                variant="outline"
-              >
-                Upload
-              </CButton>
-
-              <CButton
-                onClick={() => handleSearchIcon(icon)}
-                color="primary"
-                variant="outline"
-              >
-                Cari
-              </CButton>
-            </div>
-          </div>
+          <IconUploader
+            iconPack={iconPack}
+            icon={icon}
+            imageUrl={imageUrl}
+            handleFileUpload={handleFileUpload}
+            handleSearchIcon={handleSearchIcon}
+            handleRemoveIcon={handleRemoveIcon}
+          />
 
           {isIconSizeAndImageSizeVisible?.icon && (
             <InputRangeWithNumber
