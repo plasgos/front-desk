@@ -57,7 +57,7 @@ const ListFeature = ({
     let payload = {
       id,
       name: "list-feature",
-      title: "List Fitur",
+      title: "Daftar Fitur",
       content: {
         typeFont: "",
         textAlign: "tw-justify-center",

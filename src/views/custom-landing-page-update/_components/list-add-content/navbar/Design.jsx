@@ -301,7 +301,7 @@ const Design = ({
           value={position}
         />
 
-        <SelectOptions
+        {/* <SelectOptions
           label="Wadah"
           options={shapeOptions}
           onChange={(selectedOption) => {
@@ -309,7 +309,7 @@ const Design = ({
             handleChangeVariantStyle("shape", selectedOption.value);
           }}
           value={shape}
-        />
+        /> */}
       </div>
 
       <h6>Background</h6>

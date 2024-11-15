@@ -1,16 +1,9 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import ColorPicker from "../../common/ColorPicker";
-import IconPicker from "../../common/IconPicker";
+import React, { useEffect, useState } from "react";
 import { useFontAwesomeIconPack } from "../../../../../hooks/useFontAwesomePack";
-import { CButton } from "@coreui/react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ColorPicker from "../../common/ColorPicker";
 import Confirmation from "../../common/Confirmation";
-
-// icon: {
-//     iconName: "list-ul",
-//     prefix: "fas",
-//   },
+import IconPicker from "../../common/IconPicker";
+import IconUploader from "../../common/IconUploader";
 
 const Sidebar = ({
   setPreviewSection,
@@ -150,7 +143,7 @@ const Sidebar = ({
     setBgColor(currentSection?.sidebar?.bgColor || "#ffffff");
     setLineColor(currentSection?.sidebar?.lineColor || "#E0E0E0");
     setTextColor(currentSection?.sidebar?.textColor || "#616161");
-    // setIsShowSidebar(currentSection?.sidebar?.isShowSidebar || false);
+    setIconColor(currentSection?.sidebar?.iconColor || "#000000");
   }, [currentSection]);
 
   const handleChangeSidebar = (key, value) => {
@@ -162,6 +155,23 @@ const Sidebar = ({
               sidebar: {
                 ...section.sidebar,
                 [key]: value,
+              },
+            }
+          : section
+      )
+    );
+  };
+
+  const handleUpdateColorIcon = (value) => {
+    setIconColor(value);
+    setPreviewSection((arr) =>
+      arr.map((section) =>
+        section.id === currentSection?.id
+          ? {
+              ...section,
+              sidebar: {
+                ...section.sidebar,
+                iconColor: value,
               },
             }
           : section
@@ -232,77 +242,15 @@ const Sidebar = ({
             />
           </div>
 
-          <div className="mb-3">
-            <label>Icon Menu</label>
-            {imageUrl && (
-              <div
-                style={{
-                  backgroundColor: "#F5F5F5",
-                  width: 146,
-                  height: 40,
-                  overflow: "hidden",
-                }}
-                className="mx-auto mb-2"
-              >
-                <img
-                  style={{
-                    objectFit: "contain",
-                    width: "100%",
-                    height: 100,
-                  }}
-                  src={imageUrl}
-                  alt="img"
-                />
-              </div>
-            )}
-
-            {iconPack &&
-              iconPack.length > 0 &&
-              Object.keys(icon).length > 0 && (
-                <div
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    width: "100%",
-                    overflow: "hidden",
-                  }}
-                  className="mx-auto mb-2 p-2"
-                >
-                  <div>
-                    <FontAwesomeIcon
-                      icon={[`${icon.prefix}`, icon.iconName]}
-                      size="xl"
-                    />
-                  </div>
-                </div>
-              )}
-
-            <div style={{ gap: 5 }} className="d-flex align-items-center">
-              <ColorPicker
-                initialColor={iconColor}
-                onChange={(color) => {
-                  setIconColor(color);
-                  handleChangeSidebar("iconColor", color);
-                }}
-                width="w-0"
-              />
-
-              <CButton
-                onClick={handleFileUpload}
-                color="primary"
-                variant="outline"
-              >
-                Upload
-              </CButton>
-
-              <CButton
-                onClick={() => handleSearchIcon(icon)}
-                color="primary"
-                variant="outline"
-              >
-                Cari
-              </CButton>
-            </div>
-          </div>
+          <IconUploader
+            iconPack={iconPack}
+            icon={icon}
+            imageUrl={imageUrl}
+            handleFileUpload={handleFileUpload}
+            handleSearchIcon={handleSearchIcon}
+            handleUpdateColorIcon={handleUpdateColorIcon}
+            colorIcon={iconColor}
+          />
         </div>
       )}
     </>
