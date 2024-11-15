@@ -22,13 +22,19 @@ const VideoText = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  isMultiColumn,
 }) => {
   const [setting, setSetting] = useState({});
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "video-text",
       title: "Video + Text",
       content: {

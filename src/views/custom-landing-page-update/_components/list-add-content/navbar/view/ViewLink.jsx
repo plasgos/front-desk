@@ -84,6 +84,7 @@ const ViewLink = forwardRef(
                         : titleColor,
                       "--text-color-hover-header": hoverTitleColor,
                       fontSize: mobileView?.value ? 18 : 15,
+                      whiteSpace: "nowrap",
                     }}
                     className="navbarHeaderTextColor"
                   >

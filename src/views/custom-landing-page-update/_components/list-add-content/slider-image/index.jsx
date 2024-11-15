@@ -111,6 +111,7 @@ const SliderImage = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  isMultiColumn,
 }) => {
   const [isSelectVariant, setIsSelectVariant] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState(
@@ -137,8 +138,12 @@ const SliderImage = ({
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "slider-image",
       title: "Slide Gambar",
       content: initialContents,

@@ -21,6 +21,7 @@ const ListFeature = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  isMultiColumn,
 }) => {
   const [setting, setSetting] = useState({});
   const [listIconVisible, setListIconVisible] = useState(false);
@@ -48,8 +49,13 @@ const ListFeature = ({
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "list-feature",
       title: "List Fitur",
       content: {

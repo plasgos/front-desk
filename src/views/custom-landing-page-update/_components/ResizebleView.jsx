@@ -3,7 +3,7 @@ import React, { forwardRef, useEffect, useState } from "react";
 const ResizableView = forwardRef(
   (
     {
-      id,
+      id: draggingId,
       pageSetting,
       children,
       dimensions,
@@ -17,15 +17,18 @@ const ResizableView = forwardRef(
   ) => {
     const [idSection, setIdSection] = useState(undefined);
 
+    const isParent = (id) => id.startsWith("parent-");
+    const isParentDragging = isDragging && isParent(draggingId);
+
     useEffect(() => {
-      if (isDragging && id) {
-        setIdSection(id);
+      if (isDragging && draggingId) {
+        setIdSection(draggingId);
       } else if (!isDragging && idSection !== undefined) {
         handleContentFocus(idSection);
       }
 
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isDragging, id, idSection]);
+    }, [isDragging, draggingId, idSection]);
 
     return (
       <div
@@ -39,10 +42,10 @@ const ResizableView = forwardRef(
           flex: isSelectedView === "laptop" ? "1 1 0%" : "initial",
           transition: "transform 0.4s ease 0s",
           transformOrigin: "center top",
-          minHeight: isDragging ? "200%" : "100%",
+          minHeight: isParentDragging ? "200%" : "100%",
           border: "1px solid black",
           backgroundColor: pageSetting.bgColor,
-          transform: isDragging ? "scale(0.5)" : "scale(1)",
+          transform: isParentDragging ? "scale(0.5)" : "scale(1)",
         }}
       >
         <div

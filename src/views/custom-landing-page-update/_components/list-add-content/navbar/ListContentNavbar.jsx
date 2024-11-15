@@ -23,24 +23,24 @@ export const listContentsNavbarOption = [
     icon: <RiMenuAddLine style={{ marginRight: 5 }} size={24} />,
     action: (setAddContent) => setAddContent("menu"),
   },
-  {
-    name: "big-menu",
-    title: "Menu Besar",
-    icon: <TiThMenuOutline style={{ marginRight: 5 }} size={24} />,
-    action: (setAddContent) => setAddContent("big-menu"),
-  },
-  {
-    name: "menu-content",
-    title: "Menu Konten",
-    icon: <BsMenuDown style={{ marginRight: 5 }} size={24} />,
-    action: (setAddContent) => setAddContent("menu-content"),
-  },
-  {
-    name: "search-product",
-    title: "Pencarian Produk",
-    icon: <SlMagnifier style={{ marginRight: 5 }} size={24} />,
-    action: (setAddContent) => setAddContent("search-product"),
-  },
+  // {
+  //   name: "big-menu",
+  //   title: "Menu Besar",
+  //   icon: <TiThMenuOutline style={{ marginRight: 5 }} size={24} />,
+  //   action: (setAddContent) => setAddContent("big-menu"),
+  // },
+  // {
+  //   name: "menu-content",
+  //   title: "Menu Konten",
+  //   icon: <BsMenuDown style={{ marginRight: 5 }} size={24} />,
+  //   action: (setAddContent) => setAddContent("menu-content"),
+  // },
+  // {
+  //   name: "search-product",
+  //   title: "Pencarian Produk",
+  //   icon: <SlMagnifier style={{ marginRight: 5 }} size={24} />,
+  //   action: (setAddContent) => setAddContent("search-product"),
+  // },
   {
     name: "divider",
     title: "Pemisah",

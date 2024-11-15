@@ -46,6 +46,7 @@ const MultiColumn = ({
   sectionMultiColumnBeforeEdit,
   currentSectionMultiColumn,
   handleColumnFocus,
+  isMultiColumn,
 }) => {
   const {
     isAddColumnSection,
@@ -205,8 +206,12 @@ const MultiColumn = ({
     let uniqueIdColumn1 = newId();
     let uniqueIdColumn2 = newId();
 
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "multi-column",
       title: "Multi Kolom",
       column: [

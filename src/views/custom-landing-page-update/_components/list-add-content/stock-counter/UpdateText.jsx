@@ -26,8 +26,6 @@ const UpdateText = ({
     fontSize: fontSizeProps,
   } = currentSection?.content?.text || {};
 
-  const { currentStock } = currentSection?.content?.design || {};
-
   const [textShadow, setTextShadow] = useState(textShadowOptions[0]);
   const [fontSize, setFontSize] = useState(fontSizeOptions[3]);
   const [editorHtml, setEditorHtml] = useState(
@@ -38,7 +36,6 @@ const UpdateText = ({
   const [textColor, setTextColor] = useState(textColorProps || "#000000");
 
   const [editorHtmlValue] = useDebounce(editorHtml, 300);
-
   useEffect(() => {
     if (editorHtmlValue) {
       //   handleChangeTitle("text", editorHtmlValue);
@@ -47,13 +44,6 @@ const UpdateText = ({
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [editorHtmlValue]);
-
-  useEffect(() => {
-    if (currentStock) {
-      handleChangeText(editorHtmlValue);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentStock]);
 
   useEffect(() => {
     const currentTextShadowOption = textShadowOptions.find(
@@ -82,8 +72,6 @@ const UpdateText = ({
   }, [currentSection]);
 
   const handleChangeText = (value) => {
-    const replacedContent = value.replace(/{{stock}}/g, currentStock);
-
     setPreviewSection((arr) =>
       arr.map((item) => {
         return String(item.id) === currentSection.id
@@ -93,7 +81,7 @@ const UpdateText = ({
                 ...item.content,
                 text: {
                   ...item.content.text,
-                  text: replacedContent,
+                  text: value,
                 },
               },
             }
@@ -181,7 +169,9 @@ const UpdateText = ({
 
       <CustomReactQuill
         value={editorHtml}
-        onChange={(html) => setEditorHtml(html)}
+        onChange={(html) => {
+          setEditorHtml(html);
+        }}
         version="full"
       />
     </div>

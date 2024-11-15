@@ -9,11 +9,12 @@ const ViewStockCounter = forwardRef(
     const { elementRef, getClassName, duration } =
       useAnimatedVisibility(content);
 
+    const { currentStock, maxStock } = content?.content?.design;
+
     const cleanContent = content?.content?.text?.text
       .replace(/<p>/g, "<div>")
-      .replace(/<\/p>/g, "</div>");
-
-    const { currentStock, maxStock } = content?.content?.design;
+      .replace(/<\/p>/g, "</div>")
+      .replace(/{{stock}}/g, currentStock);
 
     const widhtPercentage = (currentStock / maxStock) * 100;
     return (

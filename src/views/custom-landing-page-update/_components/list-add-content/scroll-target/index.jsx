@@ -17,6 +17,7 @@ const ScrollTarget = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  isMultiColumn,
 }) => {
   const [name, setName] = useState(currentSection?.content?.name || "");
   const [isCopiedLink, setIsCopiedLink] = useState(false);
@@ -105,8 +106,12 @@ const ScrollTarget = ({
       if (name && !hasAddedContent) {
         const handleAddContent = () => {
           let uniqueId = createUniqueID(previewSection);
+
+          const id = isMultiColumn
+            ? `multi-column-${uniqueId}`
+            : `parent-${uniqueId}`;
           let payload = {
-            id: uniqueId,
+            id,
             name: "scroll-target",
             title: "Scrol Target",
             content: {

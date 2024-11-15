@@ -26,6 +26,7 @@ const Quote = ({
   isShowContent,
   isEditing,
   currentSection,
+  isMultiColumn,
 }) => {
   const [setting, setSetting] = useState({});
 
@@ -47,8 +48,13 @@ const Quote = ({
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "quote",
       title: "Quote",
       content: {

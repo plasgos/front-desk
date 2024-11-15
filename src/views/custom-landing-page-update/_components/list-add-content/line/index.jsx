@@ -13,6 +13,7 @@ const Line = ({
   isEditing = false,
   sectionBeforeEdit,
   currentSection,
+  isMultiColumn,
 }) => {
   const [variantLine, setVariantLine] = useState(
     isEditing ? currentSection.content?.variant : "Stripe - Barber"
@@ -22,8 +23,13 @@ const Line = ({
   const [setting, setSetting] = useState({});
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "line",
       title: "Garis",
       content: {

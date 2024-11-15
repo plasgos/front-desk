@@ -91,6 +91,7 @@ const FloatingContent = ({
   setPreviewFloatingSection,
   handleSectionContentFocus,
   handleColumnFocus,
+  isMultiColumn,
 }) => {
   const [popUpSections, setPopUpSections] = useState(
     isEditingSection ? [...(currentSection?.content || [])] : [initialSection]
@@ -200,9 +201,11 @@ const FloatingContent = ({
 
   const onAddContent = () => {
     let uniqueId = createUniqueID(previewFloatingSection);
-
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
     let payload = {
-      id: uniqueId,
+      id,
       name: "floating-content",
       title: "Floating Content",
       content: popUpSections,

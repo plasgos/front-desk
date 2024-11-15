@@ -152,7 +152,7 @@ const UpdateContent = ({
             handleSectionContentFocus(value)
           }
           isContainer={false}
-          isMulticolumn={true}
+          isMultiColumn={true}
           pageSetting={pageSetting}
           setPreviewFloatingSection={setPreviewFloatingSection}
           previewFloatingSection={previewFloatingSection}

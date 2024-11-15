@@ -78,6 +78,7 @@ const SalesNotification = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  isMultiColumn,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -217,8 +218,13 @@ const SalesNotification = ({
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewFloatingSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "sales-notification",
       title: "Sales Notification",
       content: [

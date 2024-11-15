@@ -39,6 +39,7 @@ const Multicolumn = ({
   previewFloatingSection,
   handleColumnFocus,
   handleSectionContentFocus,
+  isMultiColumn,
 }) => {
   const [activeTab, setActiveTab] = useState("column");
   const [setting, setSetting] = useState({});
@@ -366,8 +367,12 @@ const Multicolumn = ({
       },
     ];
 
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "multi-column",
       title: "Multi Kolom",
       content: columns,

@@ -55,10 +55,15 @@ const ViewMenu = forwardRef(
 
     useEffect(() => {
       if (iconPack && iconPack.length > 0) {
-        const iconToSet = {
-          prefix: "fas",
-          iconName: "chevron-down",
-        };
+        const iconToSet = isShowMenu
+          ? {
+              prefix: "fas",
+              iconName: "chevron-up",
+            }
+          : {
+              prefix: "fas",
+              iconName: "chevron-down",
+            };
 
         if (iconToSet && Object.keys(iconToSet).length > 0) {
           const iconExists = iconPack.some(
@@ -68,7 +73,7 @@ const ViewMenu = forwardRef(
           setIcon(iconExists ? iconToSet : {});
         }
       }
-    }, [iconPack]);
+    }, [iconPack, isShowMenu]);
 
     return (
       <>
@@ -106,6 +111,7 @@ const ViewMenu = forwardRef(
                   : titleColor,
                 "--text-color-hover-header": hoverTitleColor,
                 fontSize: mobileView?.value ? 18 : 15,
+                whiteSpace: "nowrap",
               }}
             >
               <div

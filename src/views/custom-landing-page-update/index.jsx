@@ -78,6 +78,7 @@ const CustomLandingPage = () => {
   const [editing, setEditing] = useState("");
   const [isAddContent, setIsAddContent] = useState(false);
   const [previewSection, setPreviewSection] = useState([]);
+  console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
   const [previewFloatingSection, setPreviewFloatingSection] = useState([]);
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
   const [sectionFloatingBeforeEdit, setSectionFloatingBeforeEdit] = useState(
@@ -529,6 +530,20 @@ const CustomLandingPage = () => {
     );
   };
 
+  const [isVisibleSidebarNav, setIsVisibleSidebarNav] = useState(false);
+
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (previewNavbar[0]?.sidebar?.isShowSidebar) {
+      setIsVisibleSidebarNav(true); // Tampilkan sidebar di DOM
+      setTimeout(() => setIsAnimating(true), 10); // Mulai transisi masuk setelah rendering
+    } else {
+      setIsAnimating(false); // Mulai transisi keluar
+      setTimeout(() => setIsVisibleSidebarNav(false), 300); // Hapus dari DOM setelah transisi selesai
+    }
+  }, [previewNavbar]);
+
   return (
     <>
       <div
@@ -822,13 +837,14 @@ const CustomLandingPage = () => {
             isDragging={isDragging}
             handleContentFocus={handleContentFocus}
           >
-            {previewNavbar[0]?.sidebar?.isShowSidebar && (
+            {isVisibleSidebarNav && (
               <SidebarMenu
                 previewNavbar={previewNavbar}
                 renderViewNavbar={renderViewNavbar}
                 sidebar={previewNavbar[0]?.sidebar}
                 logo={previewNavbar[0]?.logo}
                 toggleSidebar={toggleSidebar}
+                isAnimating={isAnimating}
               />
             )}
 

@@ -72,6 +72,7 @@ const CountDown = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  isMultiColumn,
 }) => {
   const [isSelectVariant, setIsSelectVariant] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState(
@@ -100,8 +101,13 @@ const CountDown = ({
     const years = futureDate.year(); // Tahun
 
     let uniqueId = createUniqueID(previewSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "countdown",
       title: "Countdown",
       content: {

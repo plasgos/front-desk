@@ -43,6 +43,7 @@ const Buttons = ({
   currentSection,
   handleSectionContentFocus,
   hiddenFocused,
+  isMultiColumn,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -153,8 +154,13 @@ const Buttons = ({
 
   const onAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "button",
       title: "Tombol",
       content: [

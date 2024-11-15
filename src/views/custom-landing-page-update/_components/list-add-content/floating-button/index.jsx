@@ -41,6 +41,7 @@ const FloatingButton = ({
   previewFloatingSection,
   setPreviewFloatingSection,
   handleSectionContentFocus,
+  isMultiColumn,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -161,8 +162,13 @@ const FloatingButton = ({
 
   const onAddContent = () => {
     let uniqueId = createUniqueID(previewFloatingSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "floating-button",
       title: "Floating Button",
       content: [

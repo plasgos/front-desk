@@ -32,6 +32,7 @@ const FloatingButtonCircle = ({
   previewFloatingSection,
   setPreviewFloatingSection,
   handleSectionContentFocus,
+  isMultiColumn,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -165,8 +166,12 @@ const FloatingButtonCircle = ({
 
   const onAddContent = () => {
     let uniqueId = createUniqueID(previewFloatingSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
     let payload = {
-      id: uniqueId,
+      id,
       name: "floating-button-circle",
       title: "Floating Button Circle",
       content: [

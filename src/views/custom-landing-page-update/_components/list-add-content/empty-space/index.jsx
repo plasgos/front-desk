@@ -11,6 +11,7 @@ const EmptySpace = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  isMultiColumn,
 }) => {
   const [height, setHeight] = useState(currentSection?.content?.height || 120);
 
@@ -75,8 +76,13 @@ const EmptySpace = ({
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "empty-space",
       title: "Empty Space",
       content: {

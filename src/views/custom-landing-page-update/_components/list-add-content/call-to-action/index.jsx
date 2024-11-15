@@ -19,6 +19,7 @@ const CallToAction = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  isMultiColumn,
 }) => {
   const [setting, setSetting] = useState({});
 
@@ -34,8 +35,13 @@ const CallToAction = ({
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "call-to-action",
       title: "Call To Action",
       content: [

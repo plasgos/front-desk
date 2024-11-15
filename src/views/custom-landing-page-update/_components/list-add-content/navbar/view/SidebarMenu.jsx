@@ -6,6 +6,7 @@ const SidebarMenu = ({
   logo,
   previewNavbar,
   renderViewNavbar,
+  isAnimating,
 }) => {
   const { bgColor, lineColor, textColor, isShowSidebar } = sidebar;
 
@@ -18,9 +19,9 @@ const SidebarMenu = ({
     <div>
       <div
         style={{ zIndex: 9999, backgroundColor: bgColor }}
-        className={`tw-absolute tw-p-3 tw-top-0 tw-right-0 tw-h-full tw-w-64  tw-text-white tw-transform tw-transition-transform tw-duration-300 ${
-          isShowSidebar ? "tw-translate-x-0" : "tw-translate-x-full"
-        }`}
+        className={`tw-absolute tw-p-3 tw-top-0 tw-right-0 tw-h-full tw-w-64  tw-text-white tw-transform tw-ease-in-out tw-transition-all tw-duration-300
+           ${isAnimating ? "tw-translate-x-0  " : "tw-translate-x-full"}
+        `}
       >
         <div className="tw-flex tw-w-full tw-items-center tw-justify-between tw-mb-2">
           <div style={{ maxWidth: "170px" }}>
@@ -65,7 +66,7 @@ const SidebarMenu = ({
         </div>
       </div>
 
-      {isShowSidebar && (
+      {isAnimating && (
         <div
           style={{ zIndex: 999 }}
           onClick={() => toggleSidebar(false)}

@@ -131,6 +131,7 @@ const ViewButtonUpdate = forwardRef(
           backgroundColor: content.background.bgColor || "",
           position: "relative",
           zIndex: 1,
+          flexWrap: "wrap",
         }}
         className={`tw-flex ${
           content.wrapperStyle.flexDirection
@@ -197,7 +198,7 @@ const ViewButtonUpdate = forwardRef(
                 }),
               }}
               key={section.id}
-              className={`${
+              className={`  ${
                 content.wrapperStyle.flexDirection === "tw-flex-row" &&
                 `tw-mx-${content.wrapperStyle.marginX}`
               } ${
@@ -223,7 +224,7 @@ const ViewButtonUpdate = forwardRef(
                   ...buttonColorClass,
                   color: section.content.style.textColor,
                 }}
-                className={`${roundedClass} ${sizeClasses} hover:tw-bg-opacity-80 ${shadowClass}  tw-inline-block tw-cursor-pointer`}
+                className={`${roundedClass} ${sizeClasses} hover:tw-bg-opacity-80 ${shadowClass}  tw-inline-block tw-cursor-pointer tw-whitespace-nowrap`}
               >
                 <div className="tw-flex tw-justify-center tw-items-center">
                   <div>

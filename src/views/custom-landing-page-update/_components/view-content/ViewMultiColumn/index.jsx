@@ -26,7 +26,6 @@ const ViewMultiColumn = forwardRef(
     const { combineColumnInMobileView } = content.wrapperStyle;
 
     const parentMultiColumnRef = useRef(null); // Referensi ke elemen parent
-    console.log("🚀 ~ parentMultiColumnRef:", parentMultiColumnRef);
     const [containerWidthMultiColumn, setContainerWidthMultiColumn] =
       useState(0);
 

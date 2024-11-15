@@ -32,6 +32,7 @@ const ColumnTextAndImages = ({
   currentSection,
   handleSectionContentFocus,
   hiddenFocused,
+  isMultiColumn,
 }) => {
   const [isAddContent, setIsAddContent] = useState(false);
   const [isEditingContent, setIsEditingContent] = useState(false);
@@ -87,8 +88,12 @@ const ColumnTextAndImages = ({
   const onAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
 
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "column-text-and-image",
       title: "Column Text And Image",
       content: [

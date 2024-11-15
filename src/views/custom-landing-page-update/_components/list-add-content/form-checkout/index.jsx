@@ -31,6 +31,7 @@ const FormCheckout = ({
   currentSection,
   handleSectionContentFocus,
   hiddenFocused,
+  isMultiColumn,
 }) => {
   const [activeTab, setActiveTab] = useState("form");
   const [isAddContent, setIsAddContent] = useState(false);
@@ -224,8 +225,13 @@ const FormCheckout = ({
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "form-checkout",
       title: "Formulir Checkout",
       content: [],

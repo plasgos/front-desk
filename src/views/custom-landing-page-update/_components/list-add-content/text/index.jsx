@@ -28,6 +28,7 @@ const Text = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  isMultiColumn,
 }) => {
   const [editorHtml, setEditorHtml] = useState(
     currentSection?.content?.editorHtml || "Type your text here"
@@ -102,8 +103,13 @@ const Text = ({
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
+
     let payload = {
-      id: uniqueId,
+      id,
       name: "text",
       title: "Teks",
       content: {

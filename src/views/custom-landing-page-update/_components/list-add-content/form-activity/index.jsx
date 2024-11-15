@@ -41,6 +41,7 @@ const FormActivity = ({
   isEditingSection = false,
   sectionBeforeEdit,
   currentSection,
+  isMultiColumn,
 }) => {
   const [selectedVariant, setSelectedVariant] = useState(
     flattenedOptions.find(
@@ -92,8 +93,12 @@ const FormActivity = ({
 
   const handleAddContent = () => {
     let uniqueId = createUniqueID(previewSection);
+
+    const id = isMultiColumn
+      ? `multi-column-${uniqueId}`
+      : `parent-${uniqueId}`;
     let payload = {
-      id: uniqueId,
+      id,
       name: "form-activity",
       title: "Formulir Kegiatan",
       content: {

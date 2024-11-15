@@ -170,6 +170,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         ) : null}
 
@@ -180,6 +181,7 @@ const ListContent = ({
             isShowContent={isShowContent}
             handleSectionContentFocus={handleSectionContentFocus}
             hiddenFocused={isPopUpSection}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -188,6 +190,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -198,6 +201,7 @@ const ListContent = ({
             isShowContent={isShowContent}
             handleSectionContentFocus={handleSectionContentFocus}
             hiddenFocused={isPopUpSection}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -206,6 +210,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -216,6 +221,7 @@ const ListContent = ({
             isShowContent={isShowContent}
             handleSectionContentFocus={handleSectionContentFocus}
             hiddenFocused={isPopUpSection}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -226,6 +232,7 @@ const ListContent = ({
             isShowContent={isShowContent}
             handleSectionContentFocus={handleSectionContentFocus}
             hiddenFocused={isPopUpSection}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -234,6 +241,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -242,6 +250,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -250,6 +259,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -260,6 +270,7 @@ const ListContent = ({
             isShowContent={isShowContent}
             handleSectionContentFocus={handleSectionContentFocus}
             hiddenFocused={isPopUpSection}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -270,6 +281,7 @@ const ListContent = ({
             isShowContent={isShowContent}
             handleSectionContentFocus={handleSectionContentFocus}
             hiddenFocused={isPopUpSection}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -279,6 +291,7 @@ const ListContent = ({
             setPreviewFloatingSection={setPreviewFloatingSection}
             isShowContent={isShowContent}
             handleSectionContentFocus={handleSectionContentFocus}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -287,6 +300,7 @@ const ListContent = ({
             previewFloatingSection={previewFloatingSection}
             setPreviewFloatingSection={setPreviewFloatingSection}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -297,6 +311,7 @@ const ListContent = ({
             isShowContent={isShowContent}
             handleSectionContentFocus={handleSectionContentFocus}
             handleColumnFocus={handleColumnFocus}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -305,6 +320,7 @@ const ListContent = ({
             previewFloatingSection={previewFloatingSection}
             setPreviewFloatingSection={setPreviewFloatingSection}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -315,6 +331,7 @@ const ListContent = ({
             isShowContent={isShowContent}
             handleSectionContentFocus={handleSectionContentFocus}
             handleColumnFocus={handleColumnFocus}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -323,6 +340,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -331,6 +349,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -345,6 +364,7 @@ const ListContent = ({
             handleSectionFocus={handleColumnFocus}
             pageSetting={pageSetting}
             handleColumnFocus={handleColumnFocus}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -353,6 +373,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -361,6 +382,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -369,6 +391,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -378,6 +401,7 @@ const ListContent = ({
             setPreviewFloatingSection={setPreviewFloatingSection}
             isShowContent={isShowContent}
             handleSectionContentFocus={handleSectionContentFocus}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -386,6 +410,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -394,6 +419,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -406,6 +432,7 @@ const ListContent = ({
             previewFloatingSection={previewFloatingSection}
             setPreviewFloatingSection={setPreviewFloatingSection}
             handleColumnFocus={handleColumnFocus}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -414,6 +441,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -422,6 +450,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -430,6 +459,7 @@ const ListContent = ({
             previewSection={previewSection}
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
@@ -440,6 +470,7 @@ const ListContent = ({
             isShowContent={isShowContent}
             handleSectionFocus={handleColumnFocus}
             handleSectionContentFocus={handleSectionContentFocus}
+            isMultiColumn={isMultiColumn || isPopUpSection}
           />
         )}
 
