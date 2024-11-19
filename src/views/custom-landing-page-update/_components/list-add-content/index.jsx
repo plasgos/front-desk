@@ -211,6 +211,7 @@ const ListContent = ({
             setPreviewSection={(value) => setPreviewSection(value)}
             isShowContent={isShowContent}
             isMultiColumn={isMultiColumn || isPopUpSection}
+            setPreviewFloatingSection={setPreviewFloatingSection}
           />
         )}
 

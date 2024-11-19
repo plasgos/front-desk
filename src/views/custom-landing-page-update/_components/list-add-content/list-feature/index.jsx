@@ -172,7 +172,7 @@ const ListFeature = ({
             overflowY: "auto",
             height: "calc(100vh - 110px)",
           }}
-          className="p-3"
+          className={`${listIconVisible ? "p-0" : "p-3"}`}
         >
           <CTabPane className="p-1" data-tab="konten">
             <ContentTab

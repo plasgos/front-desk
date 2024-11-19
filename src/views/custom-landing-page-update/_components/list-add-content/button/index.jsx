@@ -179,7 +179,11 @@ const Buttons = ({
             icon: "",
             image: "",
           },
-          target: {},
+          target: {
+            localPage: {
+              value: "home",
+            },
+          },
         },
         {
           id: createUniqueID([{ id: createUniqueID([]) }]),
@@ -196,7 +200,11 @@ const Buttons = ({
             icon: "",
             image: "",
           },
-          target: {},
+          target: {
+            localPage: {
+              value: "home",
+            },
+          },
         },
       ],
       wrapperStyle: {

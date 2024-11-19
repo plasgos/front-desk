@@ -479,7 +479,7 @@ const FAQ = ({
               overflowY: "auto",
               height: "calc(100vh - 110px)",
             }}
-            className="p-3"
+            className={`${isListIconVisible ? "p-0" : "p-3"}`}
           >
             <CTabPane className="p-1" data-tab="faqs">
               {!isAddContent && !isEditingContent && (

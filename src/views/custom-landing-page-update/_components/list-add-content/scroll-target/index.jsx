@@ -18,6 +18,7 @@ const ScrollTarget = ({
   sectionBeforeEdit,
   currentSection,
   isMultiColumn,
+  setPreviewFloatingSection,
 }) => {
   const [name, setName] = useState(currentSection?.content?.name || "");
   const [isCopiedLink, setIsCopiedLink] = useState(false);
@@ -124,9 +125,6 @@ const ScrollTarget = ({
           setPreviewSection((prevSections) => [...prevSections, payload]);
           setSetting(payload);
           setHasAddedContent(true);
-          dispatch(
-            setOptionsScrollTarget({ id: uniqueId, value: name, label: name })
-          );
         };
 
         handleAddContent();
@@ -156,6 +154,39 @@ const ScrollTarget = ({
         label: name,
       })
     );
+
+    if (isEditingSection) {
+      const updateScrollTarget = (sections) =>
+        sections.map((section) => {
+          if (Array.isArray(section.content)) {
+            return {
+              ...section,
+              content: section.content.map((contentItem) => {
+                const { target } = contentItem || {};
+
+                if (target?.scrollTarget?.id === contentIdToCheck) {
+                  return {
+                    ...contentItem,
+                    target: {
+                      scrollTarget: {
+                        id: contentIdToCheck,
+                        value: name,
+                        label: name,
+                      },
+                    },
+                  };
+                }
+                return contentItem;
+              }),
+            };
+          }
+          return section;
+        });
+
+      setPreviewSection((section) => updateScrollTarget(section));
+      setPreviewFloatingSection((section) => updateScrollTarget(section));
+    }
+
     isShowContent(false);
   };
 

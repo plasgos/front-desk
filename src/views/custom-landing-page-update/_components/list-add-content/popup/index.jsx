@@ -26,6 +26,7 @@ import SelectOptions from "../../common/SelectOptions";
 import { useRenderEditSection } from "../../hooks/useRenderEditSection";
 import { ListSectionContent } from "../../ListSectionContent";
 import { roundedButtonOptions } from "../floating-button/UpdateContent";
+import Confirmation from "../../common/Confirmation";
 
 const shownOnWhenOptions = [
   { value: "clickButton", label: "Klik Tombol" },
@@ -397,22 +398,10 @@ const PopUp = ({
   return (
     <div>
       {!isAddContent && !isEditingContent && (
-        <div className="d-flex justify-content-end align-items-center border-bottom p-2">
-          <div>
-            <CButton
-              onClick={handleCancel}
-              color="primary"
-              variant="outline"
-              className="mx-2"
-            >
-              Batal
-            </CButton>
-
-            <CButton onClick={handleConfirm} color="primary">
-              Selesai
-            </CButton>
-          </div>
-        </div>
+        <Confirmation
+          handleCancel={handleCancel}
+          handleConfirm={handleConfirm}
+        />
       )}
 
       {isAddContent ? (

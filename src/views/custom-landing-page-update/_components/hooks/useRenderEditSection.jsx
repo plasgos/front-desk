@@ -129,6 +129,7 @@ export function useRenderEditSection({
             isShowContent={(value) => setEditing(value)}
             sectionBeforeEdit={sectionBeforeEdit}
             isEditingSection={true}
+            setPreviewFloatingSection={setPreviewFloatingSection}
           />
         );
       }

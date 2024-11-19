@@ -76,7 +76,7 @@ const initialContent = [
         iconSize: 20,
         image: "",
         imageSize: 50,
-        target: {},
+        target: { localPage: { value: "home" } },
       },
     ],
     wrapperStyle: {
@@ -97,7 +97,7 @@ const initialContent = [
         iconSize: 20,
         image: "",
         imageSize: 50,
-        target: {},
+        target: { localPage: { value: "home" } },
       },
     ],
     wrapperStyle: {
@@ -122,7 +122,7 @@ const initialContent = [
         iconSize: 20,
         image: "",
         imageSize: 50,
-        target: {},
+        target: { localPage: { value: "home" } },
         shownOnWhen: "alwaysVisible",
       },
       {
@@ -132,7 +132,7 @@ const initialContent = [
         iconSize: 20,
         image: "",
         imageSize: 50,
-        target: {},
+        target: { localPage: { value: "home" } },
         shownOnWhen: "alwaysVisible",
       },
       {
@@ -142,7 +142,7 @@ const initialContent = [
         iconSize: 20,
         image: "",
         imageSize: 50,
-        target: {},
+        target: { localPage: { value: "home" } },
         shownOnWhen: "alwaysVisible",
       },
     ],

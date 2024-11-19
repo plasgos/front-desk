@@ -45,7 +45,7 @@ const IconTab = ({
 
   useEffect(() => {
     if (iconPack && iconPack.length > 0) {
-      const iconToSet = currentSection?.iconStyle?.icon;
+      const iconToSet = currentSection?.iconStyle?.icon || {};
 
       if (iconToSet && Object.keys(iconToSet).length > 0) {
         const iconExists = iconPack.some(

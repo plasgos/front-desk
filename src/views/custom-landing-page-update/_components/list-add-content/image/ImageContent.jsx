@@ -1,23 +1,15 @@
 import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
 import Input from "../../common/Input";
 
 import image from "../../../../../assets/action-figure.jpg";
-import { useSCrollTargetChange } from "../../../../../hooks/useScrolltargetChange";
-import { useUrlChange } from "../../../../../hooks/useUrlChange";
-import { useWhatAppsChange } from "../../../../../hooks/useWhatAppsChange";
 import Checkbox from "../../common/Checkbox";
 import ColorPicker from "../../common/ColorPicker";
 import InputRangeWithNumber from "../../common/InputRangeWithNumber";
-import ScrollTargetInput from "../../common/ScrollTargetSelect";
 import SelectOptions from "../../common/SelectOptions";
-import UrlInput from "../../common/UrlInput";
-import WhatsAppInput from "../../common/WhatAppsInput";
-import FacebookPixel from "../../FacebookPixel";
+import TargetOptions from "../../common/TargetOptions";
 import { shadowOptions } from "../../SelectOptions";
-import { setIsOpenPopup } from "../../../../../redux/modules/custom-landing-page/reducer";
 
 const ImageContent = ({
   setPreviewSection,
@@ -26,10 +18,6 @@ const ImageContent = ({
   isEditingContent,
   selectedVariant,
 }) => {
-  const { optionsScrollTarget, optionsTarget } = useSelector(
-    (state) => state.customLandingPage
-  );
-
   const [imageUrl, setImageUrl] = useState(currentContent?.image || image);
 
   const [isDownloadImage, setIsDownloadImage] = useState(
@@ -53,29 +41,6 @@ const ImageContent = ({
 
   const [altValue] = useDebounce(alt, 300);
 
-  const [selectedOption, setSelectedOption] = useState(
-    optionsTarget[0].options[0]
-  );
-
-  const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChange(
-    setPreviewSection,
-    currentSection.id,
-    currentContent
-  );
-
-  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
-    useWhatAppsChange(setPreviewSection, currentSection.id, currentContent);
-
-  const {
-    selectedOptionScrollTarget,
-    setSelectedOptionScrollTarget,
-    handleChangeScrollTarget,
-  } = useSCrollTargetChange(
-    setPreviewSection,
-    currentSection.id,
-    currentContent
-  );
-
   useEffect(() => {
     const currentShadowOption = shadowOptions.find(
       (opt) => opt.value === currentSection?.wrapperStyle?.shadow
@@ -85,84 +50,6 @@ const ImageContent = ({
       setShadow(currentShadowOption);
     }
   }, [currentSection]);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (
-      selectedOption &&
-      selectedOption.value &&
-      selectedOption?.value.includes("Pop Up")
-    ) {
-      const payload = {
-        ...selectedOption,
-        isShowPopup: false,
-      };
-
-      dispatch(setIsOpenPopup(payload));
-
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
-            ? {
-                ...item,
-                content: item.content.map((contentItem) =>
-                  String(contentItem.id) === currentContent?.id
-                    ? {
-                        ...contentItem,
-                        target: {
-                          popup: payload,
-                        },
-                      }
-                    : contentItem
-                ),
-              }
-            : item
-        )
-      );
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOption]);
-
-  useEffect(() => {
-    if (isEditingContent) {
-      const existingGroup = optionsTarget.find(
-        (group) => group.label === "Kegiatan"
-      );
-
-      if (existingGroup) {
-        const currentTargetOption = existingGroup.options.find(
-          (opt) => opt.id === currentContent.target?.popup?.id
-        );
-
-        if (currentTargetOption) {
-          setSelectedOption(currentTargetOption);
-        }
-      }
-    }
-  }, [isEditingContent, optionsTarget, currentContent]);
-
-  useEffect(() => {
-    if (isEditingContent) {
-      const currentTargetOption = optionsTarget
-        .flatMap((group) => group.options)
-        .find((opt) => {
-          const targetType = currentContent?.target;
-          return (
-            (targetType?.scrollTarget && opt.value === "scroll-target") ||
-            (targetType?.url && opt.value === "url") ||
-            (targetType?.whatApps && opt.value === "whatApps")
-          );
-        });
-
-      if (currentTargetOption) {
-        setSelectedOption(currentTargetOption);
-      }
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEditingContent, optionsTarget]);
 
   const handleChangeContent = (key, value) => {
     setPreviewSection((arr) =>
@@ -261,127 +148,6 @@ const ImageContent = ({
     }
     handleChangeWrapperStyle(key, newValue);
   };
-
-  const handleChangeOptions = (selectedOptionValue) => {
-    setSelectedOption(selectedOptionValue);
-    if (!selectedOptionValue.value) {
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
-            ? {
-                ...item,
-                content: item.content.map((contentItem) =>
-                  contentItem.id === currentContent.id
-                    ? {
-                        ...contentItem,
-                        target: {},
-                      }
-                    : contentItem
-                ),
-              }
-            : item
-        )
-      );
-      setSelectedOptionScrollTarget(undefined);
-    }
-
-    setWhatApps({});
-    setUrl({});
-    setSelectedOptionScrollTarget(undefined);
-  };
-
-  useEffect(() => {
-    if (isEditingContent) {
-      if (
-        selectedOption &&
-        selectedOption.value === "scroll-target" &&
-        selectedOptionScrollTarget &&
-        optionsScrollTarget
-      ) {
-        const updatedOption = optionsScrollTarget.find(
-          (option) => option.id === selectedOptionScrollTarget.id
-        );
-        setPreviewSection((arr) =>
-          arr.map((item) =>
-            String(item.id) === currentSection.id
-              ? {
-                  ...item,
-                  content: item.content.map((contentItem) =>
-                    String(contentItem.id) === String(currentContent.id)
-                      ? {
-                          ...contentItem,
-                          target: {
-                            scrollTarget: {
-                              ...contentItem.target.scrollTarget,
-                              value: updatedOption.value,
-                              label: updatedOption.label,
-                            },
-                          },
-                        }
-                      : contentItem
-                  ),
-                }
-              : item
-          )
-        );
-        setSelectedOptionScrollTarget(updatedOption);
-      }
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEditingContent, optionsScrollTarget, selectedOption]);
-
-  useEffect(() => {
-    if (
-      (!isEditingContent &&
-        selectedOption &&
-        selectedOption.value === "scroll-target") ||
-      (isEditingContent &&
-        selectedOption &&
-        selectedOption.value === "scroll-target" &&
-        !currentContent.target?.scrollTarget?.value)
-    ) {
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection.id
-            ? {
-                ...item,
-                content: item.content.map((contentItem) => {
-                  return String(contentItem.id) === String(currentContent.id)
-                    ? {
-                        ...contentItem,
-                        target: {
-                          scrollTarget: optionsScrollTarget[0],
-                        },
-                      }
-                    : contentItem;
-                }),
-              }
-            : item
-        )
-      );
-      setSelectedOptionScrollTarget(optionsScrollTarget[0]);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOption]);
-
-  useEffect(() => {
-    if (isEditingContent) {
-      const currentScrollTarget = optionsScrollTarget.find(
-        (opt) => opt.id === currentContent.target?.scrollTarget?.id
-      );
-
-      if (currentScrollTarget) {
-        setSelectedOptionScrollTarget(currentScrollTarget);
-      }
-    }
-  }, [
-    currentContent,
-    isEditingContent,
-    optionsScrollTarget,
-    setSelectedOptionScrollTarget,
-  ]);
 
   return (
     <div style={{ paddingBottom: 30 }}>
@@ -487,59 +253,12 @@ const ImageContent = ({
         </>
       )}
 
-      <form>
-        <SelectOptions
-          label="Target"
-          options={optionsTarget}
-          onChange={handleChangeOptions}
-          value={selectedOption}
-          width="100"
-          positionShown="top"
-        />
-        {selectedOption?.value === "url" && (
-          <UrlInput
-            id="urlOpenNewTabListImg"
-            url={url}
-            handleUrlChange={(newValue) => {
-              setUrl((prevValue) => ({
-                ...prevValue,
-                url: newValue,
-              }));
-            }}
-            handleUrlOpenNewTabChange={handleUrlOpenNewTabChange}
-          />
-        )}
-
-        {selectedOption?.value === "whatApps" && (
-          <WhatsAppInput
-            id="waOpenNewTabListImg"
-            whatApps={whatApps}
-            handlePhoneNumberChange={(newValue) => {
-              setWhatApps((prevValue) => ({
-                ...prevValue,
-                phoneNumber: newValue,
-              }));
-            }}
-            handleMessageChange={(newValue) => {
-              setWhatApps((prevValue) => ({
-                ...prevValue,
-                message: newValue,
-              }));
-            }}
-            handleUrlOpenNewTabWaChange={handleUrlOpenNewTabWaChange}
-          />
-        )}
-
-        {selectedOption?.value === "scroll-target" && (
-          <ScrollTargetInput
-            optionsScrollTarget={optionsScrollTarget}
-            handleChangeScrollTarget={handleChangeScrollTarget}
-            selectedOptionScrollTarget={selectedOptionScrollTarget}
-          />
-        )}
-      </form>
-
-      {selectedOption.value !== undefined && <FacebookPixel />}
+      <TargetOptions
+        setPreviewSection={setPreviewSection}
+        sectionId={currentSection?.id}
+        currentContent={currentContent}
+        isEditingContent={isEditingContent}
+      />
     </div>
   );
 };

@@ -111,6 +111,8 @@ export default (state = initialState, action) => {
           )
         : [...state.optionsScrollTarget, action.payload];
 
+      console.log("🚀 ~ updatedOptions:", updatedOptions);
+
       return {
         ...state,
         optionsScrollTarget: updatedOptions,
@@ -358,9 +360,65 @@ export default (state = initialState, action) => {
         },
       };
 
+    // case types.SET_POP_UP_CLICK_OPTION:
+    //   const updatedOptionsPopUp = (() => {
+    //     // Cek apakah grup "Kegiatan" sudah ada
+    //     const existingGroup = state.optionsTarget.find(
+    //       (group) => group.label === "Kegiatan"
+    //     );
+
+    //     if (existingGroup) {
+    //       // Jika grup "Kegiatan" sudah ada
+    //       return state.optionsTarget.map((group) => {
+    //         if (group.label === "Kegiatan") {
+    //           // Buat array baru untuk opsi yang diperbarui
+    //           const updatedOptions = group.options.map((option) => {
+    //             // Cek apakah ada opsi baru dengan ID yang sama
+    //             const newOption = action.payload.options.find(
+    //               (opt) => opt.id === option.id
+    //             );
+
+    //             // Jika opsi baru ditemukan, kembalikan opsi baru, jika tidak, kembalikan opsi yang lama
+    //             return newOption ? newOption : option;
+    //           });
+
+    //           // Tambahkan opsi baru yang belum ada
+    //           const newOptions = action.payload.options.filter(
+    //             (newOpt) => !group.options.some((opt) => opt.id === newOpt.id)
+    //           );
+
+    //           // Gabungkan opsi yang diperbarui dengan opsi baru
+    //           return {
+    //             ...group,
+    //             options: [...updatedOptions, ...newOptions],
+    //           };
+    //         }
+
+    //         // Kembalikan grup lain tanpa perubahan
+    //         return group;
+    //       });
+    //     } else {
+    //       // Jika grup "Kegiatan" belum ada, tambahkan grup baru
+    //       return [
+    //         ...state.optionsTarget,
+    //         {
+    //           label: action.payload.label,
+    //           options: action.payload.options,
+    //         },
+    //       ];
+    //     }
+    //   })();
+
+    //   console.log("🚀 ~ updatedOptionsPopUp:", updatedOptionsPopUp);
+
+    //   return {
+    //     ...state,
+    //     optionsTarget: updatedOptionsPopUp,
+    //   };
+
     case types.SET_POP_UP_CLICK_OPTION:
       const updatedOptionsPopUp = (() => {
-        // Cek apakah grup "Kegiatan" sudah ada
+        // Cari grup "Kegiatan" di dalam state.optionsTarget
         const existingGroup = state.optionsTarget.find(
           (group) => group.label === "Kegiatan"
         );
@@ -369,26 +427,26 @@ export default (state = initialState, action) => {
           // Jika grup "Kegiatan" sudah ada
           return state.optionsTarget.map((group) => {
             if (group.label === "Kegiatan") {
-              // Buat array baru untuk opsi yang diperbarui
+              // Perbarui opsi yang ada dalam grup "Kegiatan"
               const updatedOptions = group.options.map((option) => {
-                // Cek apakah ada opsi baru dengan ID yang sama
+                // Cari opsi baru dengan ID yang sama
                 const newOption = action.payload.options.find(
                   (opt) => opt.id === option.id
                 );
 
-                // Jika opsi baru ditemukan, kembalikan opsi baru, jika tidak, kembalikan opsi yang lama
+                // Jika ditemukan opsi baru, gunakan opsi baru, jika tidak, gunakan opsi lama
                 return newOption ? newOption : option;
               });
 
-              // Tambahkan opsi baru yang belum ada
+              // Filter opsi baru yang belum ada di grup "Kegiatan"
               const newOptions = action.payload.options.filter(
                 (newOpt) => !group.options.some((opt) => opt.id === newOpt.id)
               );
 
-              // Gabungkan opsi yang diperbarui dengan opsi baru
+              // Gabungkan opsi baru di bagian atas dengan opsi yang sudah diperbarui
               return {
                 ...group,
-                options: [...updatedOptions, ...newOptions],
+                options: [...updatedOptions, ...newOptions], // newOptions di bagian atas
               };
             }
 
@@ -398,16 +456,14 @@ export default (state = initialState, action) => {
         } else {
           // Jika grup "Kegiatan" belum ada, tambahkan grup baru
           return [
-            ...state.optionsTarget,
             {
               label: action.payload.label,
               options: action.payload.options,
             },
+            ...state.optionsTarget,
           ];
         }
       })();
-
-      console.log("🚀 ~ updatedOptionsPopUp:", updatedOptionsPopUp);
 
       return {
         ...state,

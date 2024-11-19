@@ -2,16 +2,8 @@ import { CButton } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { createUniqueID } from "../../../../../../../lib/unique-id";
 
-import { useSelector } from "react-redux";
 import image from "../../../../../../../assets/anteraja logo.png";
-import ScrollTargetInput from "../../../../common/ScrollTargetSelect";
-import SelectOptions from "../../../../common/SelectOptions";
-import UrlInput from "../../../../common/UrlInput";
-import WhatsAppInput from "../../../../common/WhatAppsInput";
-import FacebookPixel from "../../../../FacebookPixel";
-import { useScrollTargetChange } from "../../hooks/useScrollTargetChange";
-import { useUrlChange } from "../../hooks/useUrlChange";
-import { useWhatAppsChange } from "../../hooks/useWhatAppsChange";
+import TargetOptionNavbarFooter from "../../common/TargetOptionNavbarFooter";
 
 const UpdateContent = ({
   currentSection,
@@ -20,13 +12,6 @@ const UpdateContent = ({
   setPreviewSection,
   isEditingContent,
 }) => {
-  const { optionsScrollTarget, optionsTarget } = useSelector(
-    (state) => state.customLandingPage
-  );
-
-  const [selectedOption, setSelectedOption] = useState(
-    optionsTarget[0].options[0]
-  );
   const [imageUrl, setImageUrl] = useState(
     isEditingContent ? selectedContent?.image : image
   );
@@ -38,32 +23,6 @@ const UpdateContent = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditingContent]);
-
-  const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChange(
-    setPreviewSection,
-    currentSection?.id,
-    currentContent?.id,
-    isEditingContent ? selectedContent : setting
-  );
-
-  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
-    useWhatAppsChange(
-      setPreviewSection,
-      currentSection?.id,
-      currentContent?.id,
-      isEditingContent ? selectedContent : setting
-    );
-
-  const {
-    selectedOptionScrollTarget,
-    setSelectedOptionScrollTarget,
-    handleChangeScrollTarget,
-  } = useScrollTargetChange(
-    setPreviewSection,
-    currentSection?.id,
-    currentContent?.id,
-    isEditingContent ? selectedContent : setting
-  );
 
   const contentIdToCheck = isEditingContent ? selectedContent.id : setting.id;
 
@@ -95,137 +54,6 @@ const UpdateContent = ({
 
     setSetting(payload);
   };
-
-  useEffect(() => {
-    if (isEditingContent) {
-      if (
-        selectedOption &&
-        selectedOption.value === "scroll-target" &&
-        selectedOptionScrollTarget &&
-        optionsScrollTarget
-      ) {
-        const updatedOption = optionsScrollTarget.find(
-          (option) => option.id === selectedOptionScrollTarget.id
-        );
-
-        setPreviewSection((arr) =>
-          arr.map((item) =>
-            String(item.id) === currentSection?.id
-              ? {
-                  ...item,
-                  content: item.content.map((content) =>
-                    content.id === currentContent?.id
-                      ? {
-                          ...content,
-                          content: content.content.map((contentItem) => {
-                            return String(contentItem.id) ===
-                              String(contentIdToCheck)
-                              ? {
-                                  ...contentItem,
-                                  target: {
-                                    scrollTarget: {
-                                      ...contentItem.target.scrollTarget,
-                                      value: updatedOption.value,
-                                      label: updatedOption.label,
-                                    },
-                                  },
-                                }
-                              : contentItem;
-                          }),
-                        }
-                      : content
-                  ),
-                }
-              : item
-          )
-        );
-
-        setSelectedOptionScrollTarget(updatedOption);
-      }
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEditingContent, optionsScrollTarget, selectedOption]);
-
-  useEffect(() => {
-    if (isEditingContent) {
-      const currentTargetOption = optionsTarget
-        .flatMap((group) => group.options)
-        .find((opt) => {
-          const targetType = selectedContent?.target;
-          return (
-            (targetType?.scrollTarget && opt.value === "scroll-target") ||
-            (targetType?.url && opt.value === "url") ||
-            (targetType?.whatApps && opt.value === "whatApps")
-          );
-        });
-
-      if (currentTargetOption) {
-        setSelectedOption(currentTargetOption);
-      }
-    }
-  }, [isEditingContent, selectedContent, optionsTarget]);
-
-  useEffect(() => {
-    if (
-      (!isEditingContent &&
-        selectedOption &&
-        selectedOption.value === "scroll-target") ||
-      (isEditingContent &&
-        selectedOption &&
-        selectedOption.value === "scroll-target" &&
-        !selectedContent.target?.scrollTarget?.value)
-    ) {
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection?.id
-            ? {
-                ...item,
-                content: item.content.map((content) =>
-                  content.id === currentContent?.id
-                    ? {
-                        ...content,
-                        content: content.content.map((contentItem) => {
-                          return String(contentItem.id) ===
-                            String(contentIdToCheck)
-                            ? {
-                                ...contentItem,
-                                target: {
-                                  scrollTarget: optionsScrollTarget[0],
-                                },
-                              }
-                            : contentItem;
-                        }),
-                      }
-                    : content
-                ),
-              }
-            : item
-        )
-      );
-
-      setSelectedOptionScrollTarget(optionsScrollTarget[0]);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOption]);
-
-  useEffect(() => {
-    if (isEditingContent) {
-      const currentScrollTarget = optionsScrollTarget.find(
-        (opt) => opt.id === selectedContent?.target?.scrollTarget?.id
-      );
-
-      if (currentScrollTarget) {
-        setSelectedOptionScrollTarget(currentScrollTarget);
-      }
-    }
-  }, [
-    isEditingContent,
-    optionsScrollTarget,
-    selectedContent,
-    setSelectedOptionScrollTarget,
-  ]);
 
   const handleFileUpload = () => {
     const input = document.createElement("input");
@@ -275,42 +103,6 @@ const UpdateContent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imageUrl]);
 
-  const handleChangeOptions = (selectedOptionValue) => {
-    setSelectedOption(selectedOptionValue);
-    if (!selectedOptionValue.value) {
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection?.id
-            ? {
-                ...item,
-                content: item.content.map((content) =>
-                  content.id === currentContent?.id
-                    ? {
-                        ...content,
-                        content: content.content.map((contentItem) => {
-                          return String(contentItem.id) ===
-                            String(contentIdToCheck)
-                            ? {
-                                ...contentItem,
-                                target: {},
-                              }
-                            : contentItem;
-                        }),
-                      }
-                    : content
-                ),
-              }
-            : item
-        )
-      );
-      setSelectedOptionScrollTarget(undefined);
-    }
-
-    setWhatApps({});
-    setSelectedOptionScrollTarget(undefined);
-    setUrl({});
-  };
-
   return (
     <div
       style={{ overflowY: "auto", height: "calc(100vh - 110px)" }}
@@ -342,59 +134,14 @@ const UpdateContent = ({
         </CButton>
       </div>
 
-      <form>
-        <SelectOptions
-          label="Target"
-          options={optionsTarget}
-          onChange={handleChangeOptions}
-          value={selectedOption}
-          width="100"
-        />
-
-        {selectedOption?.value === "url" && (
-          <UrlInput
-            id="urlOpenNewTabText&Img"
-            url={url}
-            handleUrlChange={(newValue) => {
-              setUrl((prevValue) => ({
-                ...prevValue,
-                url: newValue,
-              }));
-            }}
-            handleUrlOpenNewTabChange={handleUrlOpenNewTabChange}
-          />
-        )}
-
-        {selectedOption?.value === "whatApps" && (
-          <WhatsAppInput
-            id="waOpenNewTabText&Img"
-            whatApps={whatApps}
-            handlePhoneNumberChange={(newValue) => {
-              setWhatApps((prevValue) => ({
-                ...prevValue,
-                phoneNumber: newValue,
-              }));
-            }}
-            handleMessageChange={(newValue) => {
-              setWhatApps((prevValue) => ({
-                ...prevValue,
-                message: newValue,
-              }));
-            }}
-            handleUrlOpenNewTabWaChange={handleUrlOpenNewTabWaChange}
-          />
-        )}
-
-        {selectedOption?.value === "scroll-target" && (
-          <ScrollTargetInput
-            optionsScrollTarget={optionsScrollTarget}
-            handleChangeScrollTarget={handleChangeScrollTarget}
-            selectedOptionScrollTarget={selectedOptionScrollTarget}
-          />
-        )}
-      </form>
-
-      {selectedOption.value !== undefined && <FacebookPixel />}
+      <TargetOptionNavbarFooter
+        setPreviewSection={setPreviewSection}
+        sectionId={currentSection?.id}
+        currentContent={currentContent}
+        contentIdToCheck={contentIdToCheck}
+        isEditingContent={isEditingContent}
+        selectedContent={isEditingContent ? selectedContent : setting}
+      />
     </div>
   );
 };

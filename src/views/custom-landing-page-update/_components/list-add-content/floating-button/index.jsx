@@ -187,7 +187,11 @@ const FloatingButton = ({
             icon: "",
             image: "",
           },
-          target: {},
+          target: {
+            localPage: {
+              value: "home",
+            },
+          },
         },
         {
           id: createUniqueID([{ id: createUniqueID([]) }]),
@@ -204,7 +208,11 @@ const FloatingButton = ({
             icon: "",
             image: "",
           },
-          target: {},
+          target: {
+            localPage: {
+              value: "home",
+            },
+          },
         },
       ],
       wrapperStyle: {

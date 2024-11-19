@@ -71,8 +71,13 @@ const DesignTab = ({
   };
 
   useEffect(() => {
-    if (iconPack && iconPack.length > 0 && Object.keys(icon).length > 0) {
-      const iconToSet = currentSection?.variant?.style?.icon;
+    if (
+      iconPack &&
+      iconPack.length > 0 &&
+      icon &&
+      Object.keys(icon).length > 0
+    ) {
+      const iconToSet = currentSection?.variant?.style?.icon || {};
 
       if (Object.keys(iconToSet).length > 0) {
         const iconExists = iconPack.some(

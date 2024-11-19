@@ -183,7 +183,11 @@ const FloatingButtonCircle = ({
           icon: { prefix: "fab", iconName: "whatsapp" },
           iconColor: "#ffffff",
           image: "",
-          target: {},
+          target: {
+            localPage: {
+              value: "home",
+            },
+          },
         },
       ],
       wrapperStyle: {

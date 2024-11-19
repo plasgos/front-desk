@@ -39,7 +39,6 @@ const ResizableView = forwardRef(
           height: dimensions.height,
           maxHeight: dimensions.height,
           overflowY: "auto",
-          flex: isSelectedView === "laptop" ? "1 1 0%" : "initial",
           transition: "transform 0.4s ease 0s",
           transformOrigin: "center top",
           minHeight: isParentDragging ? "200%" : "100%",

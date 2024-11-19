@@ -134,7 +134,9 @@ const Menu = ({
           iconSize: 20,
           image: "",
           imageSize: 50,
-          target: {},
+          target: {
+            localPage: { value: "home" },
+          },
           shownOnWhen: "alwaysVisible",
         },
         {
@@ -144,7 +146,9 @@ const Menu = ({
           iconSize: 20,
           image: "",
           imageSize: 50,
-          target: {},
+          target: {
+            localPage: { value: "home" },
+          },
           shownOnWhen: "alwaysVisible",
         },
         {
@@ -154,7 +158,9 @@ const Menu = ({
           iconSize: 20,
           image: "",
           imageSize: 50,
-          target: {},
+          target: {
+            localPage: { value: "home" },
+          },
           shownOnWhen: "alwaysVisible",
         },
       ],

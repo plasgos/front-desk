@@ -73,8 +73,24 @@ const initialContent = [
     name: "list-logo",
     title: "Daftar Logo",
     content: [
-      { id: createUniqueID([]), image: jnt, target: {} },
-      { id: createUniqueID([]), image: jne, target: {} },
+      {
+        id: createUniqueID([]),
+        image: jnt,
+        target: {
+          localPage: {
+            value: "home",
+          },
+        },
+      },
+      {
+        id: createUniqueID([]),
+        image: jne,
+        target: {
+          localPage: {
+            value: "home",
+          },
+        },
+      },
     ],
     wrapperStyle: {
       title: "Metode Pengiriman",
@@ -97,7 +113,11 @@ const initialContent = [
         iconSize: 20,
         image: "",
         imageSize: 50,
-        target: {},
+        target: {
+          localPage: {
+            value: "home",
+          },
+        },
       },
       {
         id: createUniqueID([]),
@@ -106,7 +126,11 @@ const initialContent = [
         iconSize: 20,
         image: "",
         imageSize: 50,
-        target: {},
+        target: {
+          localPage: {
+            value: "home",
+          },
+        },
       },
       {
         id: createUniqueID([]),
@@ -115,7 +139,11 @@ const initialContent = [
         iconSize: 20,
         image: "",
         imageSize: 50,
-        target: {},
+        target: {
+          localPage: {
+            value: "home",
+          },
+        },
       },
       {
         id: createUniqueID([]),
@@ -124,7 +152,11 @@ const initialContent = [
         iconSize: 20,
         image: "",
         imageSize: 50,
-        target: {},
+        target: {
+          localPage: {
+            value: "home",
+          },
+        },
       },
     ],
     wrapperStyle: {

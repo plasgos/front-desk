@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useDebounce } from "use-debounce";
 import { useFontAwesomeIconPack } from "../../../../../../hooks/useFontAwesomePack";
 import { createUniqueID } from "../../../../../../lib/unique-id";
@@ -9,15 +8,8 @@ import IconPicker from "../../../common/IconPicker";
 import IconUploader from "../../../common/IconUploader";
 import Input from "../../../common/Input";
 import InputRangeWithNumber from "../../../common/InputRangeWithNumber";
-import ScrollTargetInput from "../../../common/ScrollTargetSelect";
 import SelectOptions from "../../../common/SelectOptions";
-import UrlInput from "../../../common/UrlInput";
-import WhatsAppInput from "../../../common/WhatAppsInput";
-import FacebookPixel from "../../../FacebookPixel";
-import { localPageTargetOptions } from "../../../SelectOptions";
-import { useScrollTargetChange } from "../../footer/hooks/useScrollTargetChange";
-import { useUrlChange } from "../../footer/hooks/useUrlChange";
-import { useWhatAppsChange } from "../../footer/hooks/useWhatAppsChange";
+import TargetOptionNavbarFooter from "../../footer/common/TargetOptionNavbarFooter";
 
 export const shownOnWhenOptions = [
   { value: "alwaysShown", label: "Selalu Terlihat" },
@@ -40,10 +32,6 @@ const Link = ({
   currentSection,
   currentContent,
 }) => {
-  const { optionsScrollTarget, optionsTarget } = useSelector(
-    (state) => state.customLandingPage
-  );
-
   const [setting, setSetting] = useState({});
   const [selectedCurrentSection, setSelectedCurrentSection] = useState({});
 
@@ -56,10 +44,6 @@ const Link = ({
     : selectedCurrentSection?.content?.length > 0
     ? selectedCurrentSection.content[0]
     : null;
-
-  const [selectedOption, setSelectedOption] = useState(
-    optionsTarget[0].options[0]
-  );
 
   const [title, setTitle] = useState(
     currentContent?.wrapperStyle?.title || "Keranjang"
@@ -80,36 +64,6 @@ const Link = ({
   );
   const [imageSize, setImageSize] = useState(
     contentItemIdToCheck?.imageSize || 50
-  );
-
-  const [localPageTarget, setLocalPageTarget] = useState(
-    localPageTargetOptions[0]
-  );
-
-  const { url, setUrl, handleUrlOpenNewTabChange } = useUrlChange(
-    setPreviewSection,
-    currentSection?.id,
-    contentIdToCheck,
-    contentItemIdToCheck
-  );
-
-  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
-    useWhatAppsChange(
-      setPreviewSection,
-      currentSection?.id,
-      contentIdToCheck,
-      contentItemIdToCheck
-    );
-
-  const {
-    selectedOptionScrollTarget,
-    setSelectedOptionScrollTarget,
-    handleChangeScrollTarget,
-  } = useScrollTargetChange(
-    setPreviewSection,
-    currentSection?.id,
-    contentIdToCheck,
-    contentItemIdToCheck
   );
 
   const iconPack = useFontAwesomeIconPack();
@@ -247,138 +201,6 @@ const Link = ({
   };
 
   useEffect(() => {
-    if (isEditingSection) {
-      if (
-        selectedOption &&
-        selectedOption.value === "scroll-target" &&
-        selectedOptionScrollTarget &&
-        optionsScrollTarget
-      ) {
-        const updatedOption = optionsScrollTarget.find(
-          (option) => option.id === selectedOptionScrollTarget.id
-        );
-
-        setPreviewSection((arr) =>
-          arr.map((item) =>
-            String(item.id) === currentSection?.id
-              ? {
-                  ...item,
-                  content: item.content.map((content) =>
-                    content.id === contentIdToCheck
-                      ? {
-                          ...content,
-                          content: content.content.map((contentItem) => {
-                            return String(contentItem.id) ===
-                              String(contentItemIdToCheck?.id)
-                              ? {
-                                  ...contentItem,
-                                  target: {
-                                    scrollTarget: {
-                                      ...contentItem.target.scrollTarget,
-                                      value: updatedOption.value,
-                                      label: updatedOption.label,
-                                    },
-                                  },
-                                }
-                              : contentItem;
-                          }),
-                        }
-                      : content
-                  ),
-                }
-              : item
-          )
-        );
-
-        setSelectedOptionScrollTarget(updatedOption);
-      }
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isEditingSection, optionsScrollTarget, selectedOption]);
-
-  useEffect(() => {
-    if (isEditingSection) {
-      const currentTargetOption = optionsTarget
-        .flatMap((group) => group.options)
-        .find((opt) => {
-          const targetType = contentItemIdToCheck?.target;
-          return (
-            (targetType?.scrollTarget && opt.value === "scroll-target") ||
-            (targetType?.url && opt.value === "url") ||
-            (targetType?.whatApps && opt.value === "whatApps") ||
-            (targetType?.localPage && opt.value === "local-page")
-          );
-        });
-
-      if (currentTargetOption) {
-        setSelectedOption(currentTargetOption);
-      }
-    }
-  }, [optionsTarget, isEditingSection, contentItemIdToCheck]);
-
-  useEffect(() => {
-    if (
-      (!isEditingSection &&
-        selectedOption &&
-        selectedOption.value === "scroll-target") ||
-      (isEditingSection &&
-        selectedOption &&
-        selectedOption.value === "scroll-target" &&
-        !contentItemIdToCheck.target?.scrollTarget?.value)
-    ) {
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection?.id
-            ? {
-                ...item,
-                content: item.content.map((content) =>
-                  content.id === contentIdToCheck
-                    ? {
-                        ...content,
-                        content: content.content.map((contentItem) => {
-                          return String(contentItem.id) ===
-                            String(contentItemIdToCheck?.id)
-                            ? {
-                                ...contentItem,
-                                target: {
-                                  scrollTarget: optionsScrollTarget[0],
-                                },
-                              }
-                            : contentItem;
-                        }),
-                      }
-                    : content
-                ),
-              }
-            : item
-        )
-      );
-
-      setSelectedOptionScrollTarget(optionsScrollTarget[0]);
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOption]);
-
-  useEffect(() => {
-    if (isEditingSection) {
-      const currentScrollTarget = optionsScrollTarget.find(
-        (opt) => opt.id === contentItemIdToCheck?.target?.scrollTarget?.id
-      );
-
-      if (currentScrollTarget) {
-        setSelectedOptionScrollTarget(currentScrollTarget);
-      }
-    }
-  }, [
-    contentItemIdToCheck,
-    isEditingSection,
-    optionsScrollTarget,
-    setSelectedOptionScrollTarget,
-  ]);
-
-  useEffect(() => {
     if (!isEditingSection) {
       let section = previewSection.find(
         (section) => section.id === currentSection?.id
@@ -419,53 +241,7 @@ const Link = ({
     if (currentTypeView) {
       setTypeView(currentTypeView);
     }
-
-    const currentlocalPageTarget = localPageTargetOptions
-      .flatMap((group) => group.options)
-      .find(
-        (opt) => opt.value === contentItemIdToCheck?.target?.localPage?.value
-      );
-
-    if (currentlocalPageTarget) {
-      setLocalPageTarget(currentlocalPageTarget);
-    }
   }, [contentItemIdToCheck, currentContent]);
-
-  const handleChangeOptions = (selectedOptionValue) => {
-    setSelectedOption(selectedOptionValue);
-    if (!selectedOptionValue.value) {
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection?.id
-            ? {
-                ...item,
-                content: item.content.map((content) =>
-                  content.id === contentIdToCheck
-                    ? {
-                        ...content,
-                        content: content.content.map((contentItem) => {
-                          return String(contentItem.id) ===
-                            String(contentItemIdToCheck?.id)
-                            ? {
-                                ...contentItem,
-                                target: {},
-                              }
-                            : contentItem;
-                        }),
-                      }
-                    : content
-                ),
-              }
-            : item
-        )
-      );
-      setSelectedOptionScrollTarget(undefined);
-    }
-
-    setWhatApps({});
-    setSelectedOptionScrollTarget(undefined);
-    setUrl({});
-  };
 
   const handleChangeContent = (key, value) => {
     if (!isEditingSection) {
@@ -524,7 +300,9 @@ const Link = ({
           iconSize: 20,
           image: "",
           imageSize: 50,
-          target: {},
+          target: {
+            localPage: { value: "home" },
+          },
         },
       ],
       wrapperStyle: {
@@ -632,80 +410,6 @@ const Link = ({
       setImageSize(newValue);
     }
     handleChangeContent(key, newValue);
-  };
-
-  useEffect(() => {
-    if (
-      (!isEditingSection &&
-        selectedOption &&
-        selectedOption.value === "local-page") ||
-      (isEditingSection &&
-        selectedOption &&
-        selectedOption.value === "local-page" &&
-        !contentItemIdToCheck.target?.localPage?.value)
-    ) {
-      setPreviewSection((arr) =>
-        arr.map((item) =>
-          String(item.id) === currentSection?.id
-            ? {
-                ...item,
-                content: item.content.map((content) =>
-                  content.id === contentIdToCheck
-                    ? {
-                        ...content,
-                        content: content.content.map((contentItem) => {
-                          return String(contentItem.id) ===
-                            String(contentItemIdToCheck?.id)
-                            ? {
-                                ...contentItem,
-                                target: {
-                                  localPage:
-                                    localPageTargetOptions[0].options[0].value,
-                                },
-                              }
-                            : contentItem;
-                        }),
-                      }
-                    : content
-                ),
-              }
-            : item
-        )
-      );
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOption]);
-
-  const handleChangeLocalPage = (value) => {
-    setPreviewSection((arr) =>
-      arr.map((item) =>
-        String(item.id) === currentSection?.id
-          ? {
-              ...item,
-              content: item.content.map((content) =>
-                String(content.id) === String(contentIdToCheck)
-                  ? {
-                      ...content,
-                      content: content.content.map((contentItem) =>
-                        contentItem.id === contentItemIdToCheck.id
-                          ? {
-                              ...contentItem,
-                              target: {
-                                localPage: {
-                                  value,
-                                },
-                              },
-                            }
-                          : contentItem
-                      ),
-                    }
-                  : content
-              ),
-            }
-          : item
-      )
-    );
   };
 
   const handleRemoveIcon = () => {
@@ -874,74 +578,13 @@ const Link = ({
 
             <h5>Link</h5>
 
-            <form>
-              <div style={{ gap: 10 }} className="d-flex align-items-center">
-                <SelectOptions
-                  label="Target"
-                  options={optionsTarget}
-                  onChange={handleChangeOptions}
-                  value={selectedOption}
-                  width="50"
-                />
-
-                {selectedOption?.value === "local-page" && (
-                  <SelectOptions
-                    label="Link Ke"
-                    options={localPageTargetOptions}
-                    onChange={(selectedOption) => {
-                      setLocalPageTarget(selectedOption);
-                      handleChangeLocalPage(selectedOption.value);
-                    }}
-                    value={localPageTarget}
-                    width="50"
-                  />
-                )}
-              </div>
-
-              {selectedOption?.value === "url" && (
-                <UrlInput
-                  id="urlOpenNewTabText&Img"
-                  url={url}
-                  handleUrlChange={(newValue) => {
-                    setUrl((prevValue) => ({
-                      ...prevValue,
-                      url: newValue,
-                    }));
-                  }}
-                  handleUrlOpenNewTabChange={handleUrlOpenNewTabChange}
-                />
-              )}
-
-              {selectedOption?.value === "whatApps" && (
-                <WhatsAppInput
-                  id="waOpenNewTabText&Img"
-                  whatApps={whatApps}
-                  handlePhoneNumberChange={(newValue) => {
-                    setWhatApps((prevValue) => ({
-                      ...prevValue,
-                      phoneNumber: newValue,
-                    }));
-                  }}
-                  handleMessageChange={(newValue) => {
-                    setWhatApps((prevValue) => ({
-                      ...prevValue,
-                      message: newValue,
-                    }));
-                  }}
-                  handleUrlOpenNewTabWaChange={handleUrlOpenNewTabWaChange}
-                />
-              )}
-
-              {selectedOption?.value === "scroll-target" && (
-                <ScrollTargetInput
-                  optionsScrollTarget={optionsScrollTarget}
-                  handleChangeScrollTarget={handleChangeScrollTarget}
-                  selectedOptionScrollTarget={selectedOptionScrollTarget}
-                />
-              )}
-            </form>
-
-            {selectedOption.value !== undefined && <FacebookPixel />}
+            <TargetOptionNavbarFooter
+              setPreviewSection={setPreviewSection}
+              sectionId={currentSection?.id}
+              currentContentId={contentIdToCheck}
+              selectedContent={contentItemIdToCheck}
+              isEditingContent={isEditingSection}
+            />
           </div>
         )}
       </div>

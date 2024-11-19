@@ -1,60 +1,23 @@
-import {
-  CButton,
-  CCard,
-  CCardBody,
-  CNav,
-  CNavItem,
-  CNavLink,
-  CTabContent,
-  CTabPane,
-  CTabs,
-} from "@coreui/react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useDragLayer } from "react-dnd";
-import { IoIosPhonePortrait, IoIosTabletPortrait } from "react-icons/io";
-import { IoAdd } from "react-icons/io5";
-import { MdLaptopMac } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import {
   removeOptionScrollTarget,
   removePopupOption,
   removePopupOptionShown,
 } from "../../redux/modules/custom-landing-page/reducer";
-import DesignTabControl from "./_components/DesignTabControl";
 import { ListSectionContent } from "./_components/ListSectionContent";
 import ModalConfirmation from "./_components/ModalConfirmation";
-import Input from "./_components/common/Input";
 import { UnDraggabelList } from "./_components/common/UnDraggabaleList";
 import { useRenderEditSection } from "./_components/hooks/useRenderEditSection";
 import { useRenderViewSections } from "./_components/hooks/useRenderViewSections";
-import ListContent from "./_components/list-add-content/";
 
-import { FaChevronLeft } from "react-icons/fa6";
-import ResizableView from "./_components/ResizebleView";
-import FooterAndNavbarControl from "./_components/common/FooterAndNavbarControl";
+import MenuContent from "./_components/MenuContent";
+import ViewRenderer from "./_components/ViewRenderer";
 import { useRenderViewFooter } from "./_components/hooks/useRenderViewFooter";
-import Footer, {
-  initialFooterSection,
-} from "./_components/list-add-content/footer";
-import Navbar, {
-  initialNavbarSection,
-} from "./_components/list-add-content/navbar";
-import ViewFooter from "./_components/view-content/ViewFooter";
-import ViewNavbar from "./_components/view-content/ViewNavbar";
 import { useRenderViewNavbar } from "./_components/hooks/useRenderViewNavbar";
-import SidebarMenu from "./_components/list-add-content/navbar/view/SidebarMenu";
-
-const landingPage = {
-  detail: {
-    contents: [],
-  },
-};
-
-const viewIcon = {
-  laptop: <MdLaptopMac size={20} />,
-  tablet: <IoIosTabletPortrait size={20} />,
-  phone: <IoIosPhonePortrait size={20} />,
-};
+import { initialFooterSection } from "./_components/list-add-content/footer";
+import { initialNavbarSection } from "./_components/list-add-content/navbar";
 
 const CustomLandingPage = () => {
   const [pageSetting, setPageSetting] = useState({
@@ -64,22 +27,24 @@ const CustomLandingPage = () => {
   });
   const [isResizing, setIsResizing] = useState(false);
   const [previewNavbar, setPreviewNavbar] = useState(initialNavbarSection);
-  const [navbarIsVisible, setNavbarIsVisible] = useState(false);
-  const [isEditNavbar, setIsEditNavbar] = useState(false);
+  console.log("🚀 ~ CustomLandingPage ~ previewNavbar:", previewNavbar);
 
-  const [footerIsVisble, setFooterIsVisble] = useState(false);
-  const [isEditFooter, setIsEditFooter] = useState(false);
   const [previewFooter, setPreviewFooter] = useState(initialFooterSection);
-  const [isHideSideBar, setIsHideSideBar] = useState(false);
+  console.log("🚀 ~ CustomLandingPage ~ previewFooter:", previewFooter);
+
   const [isPreview, setIsPreview] = useState(true);
   // const [shouldSave, setShouldSave] = useState(false);
   const [isSelectedView, setIsSelectedView] = useState("laptop");
-  const [sections, setSections] = useState(landingPage.detail.contents || []); //final section save to db
+
   const [editing, setEditing] = useState("");
-  const [isAddContent, setIsAddContent] = useState(false);
+
   const [previewSection, setPreviewSection] = useState([]);
   console.log("🚀 ~ CustomLandingPage ~ previewSection:", previewSection);
   const [previewFloatingSection, setPreviewFloatingSection] = useState([]);
+  console.log(
+    "🚀 ~ CustomLandingPage ~ previewFloatingSection:",
+    previewFloatingSection
+  );
   const [sectionBeforeEdit, setSectionBeforeEdit] = useState([]);
   const [sectionFloatingBeforeEdit, setSectionFloatingBeforeEdit] = useState(
     []
@@ -216,8 +181,6 @@ const CustomLandingPage = () => {
     };
   }, [timers]);
 
-  const viewTypes = Object.keys(viewIcon);
-
   // const [strViewContent, setStrViewContent] = useState({});
 
   const { renderViewSections } = useRenderViewSections({
@@ -263,7 +226,6 @@ const CustomLandingPage = () => {
 
   const { renderViewNavbar } = useRenderViewNavbar({
     id,
-    setPreviewSection,
     isDragging,
     isResizing,
     focusedIndexSectionContent,
@@ -374,34 +336,49 @@ const CustomLandingPage = () => {
     [previewFloatingSection]
   );
 
-  // const { landingPageSection } = useSelector(
-  //   (state) => state.customLandingPage
-  // );
-
   const removeSection = useCallback(
     (sectionId) => {
-      setPreviewSection((prev) => {
-        // Hapus section berdasarkan index
-        const updatedPreviewSection = prev.filter(
-          (section) => section.id !== sectionId
-        );
+      setPreviewSection((prev) =>
+        prev.filter((section) => section.id !== sectionId)
+      );
 
-        // Perbarui section yang tersisa dengan mereset target jika ID cocok dengan ID dari optionsScrolltarget
-        return updatedPreviewSection.map((section) => {
+      const updateScrollTarget = (sections) =>
+        sections.map((section) => {
           if (Array.isArray(section.content)) {
             return {
               ...section,
               content: section.content.map((contentItem) => {
-                return contentItem?.target?.scrollTarget?.id === sectionId
-                  ? { ...contentItem, target: {} }
-                  : contentItem;
+                const { target } = contentItem || {};
+
+                // Jika target.scrollTarget.id cocok dengan sectionId
+                if (target?.scrollTarget?.id === sectionId) {
+                  // Jika section.name mengandung 'button'
+                  if (section.name?.toLowerCase().includes("button")) {
+                    return {
+                      ...contentItem,
+                      target: {
+                        localPage: { value: "home" },
+                      },
+                    };
+                  }
+
+                  // Jika tidak mengandung 'button'
+                  return {
+                    ...contentItem,
+                    target: {},
+                  };
+                }
+
+                return contentItem;
               }),
             };
-          } else {
-            return section;
           }
+
+          return section;
         });
-      });
+
+      setPreviewSection((prev) => updateScrollTarget(prev));
+      setPreviewFloatingSection((prev) => updateScrollTarget(prev));
 
       // Dispatch untuk menghapus option scroll target
       dispatch(removeOptionScrollTarget(sectionId));
@@ -411,32 +388,40 @@ const CustomLandingPage = () => {
 
   const removeSectionFloating = useCallback(
     (sectionId) => {
-      // Hapus section dari preview floating section
-      setPreviewFloatingSection((prev) =>
-        prev.filter((section) => section.id !== sectionId)
-      );
-
-      // Reset target popup di section utama yang merujuk ke floating section
-      setPreviewSection((prevSections) =>
-        prevSections.map((section) => {
+      // Fungsi utility untuk mereset target popup pada section utama
+      const resetPopupTarget = (sections) =>
+        sections.map((section) => {
           if (Array.isArray(section.content)) {
             return {
               ...section,
               content: section.content.map((contentItem) => {
                 const { target } = contentItem || {};
-
                 // Reset target jika popup.id cocok dengan sectionId
                 if (target?.popup?.id === sectionId) {
-                  return { ...contentItem, target: {} };
+                  return {
+                    ...contentItem,
+                    target: {
+                      localPage: { value: "home" },
+                    },
+                  };
                 }
                 return contentItem;
               }),
             };
           }
           return section;
-        })
+        });
+
+      // Hapus section dari preview floating section
+      setPreviewFloatingSection((prev) =>
+        prev.filter((section) => section.id !== sectionId)
       );
 
+      // Reset target popup di section utama
+      setPreviewSection((prev) => resetPopupTarget(prev));
+      setPreviewFloatingSection((prev) => resetPopupTarget(prev));
+
+      // Dispatch untuk menghapus opsi popup
       dispatch(removePopupOption(sectionId));
       dispatch(removePopupOptionShown(sectionId));
     },
@@ -477,45 +462,11 @@ const CustomLandingPage = () => {
     [editSection, handleContentFocus, moveSection, removeSection]
   );
 
-  const handleAddContent = () => {
-    setIsAddContent(true);
-  };
-
   const handleChangeTitlePage = (value) => {
     setPageSetting((prev) => ({
       ...prev,
       title: value,
     }));
-  };
-
-  const handleHideSideBar = () => {
-    setIsHideSideBar((prev) => !prev);
-  };
-
-  const handleToggleFooter = () => {
-    const newFooterVisibility = !footerIsVisble;
-
-    setFooterIsVisble(newFooterVisibility);
-
-    setPreviewFooter((arr) =>
-      arr.map((section) => ({
-        ...section,
-        isShowFooter: newFooterVisibility,
-      }))
-    );
-  };
-
-  const handleToggleNavbar = () => {
-    const newNavbarVisibility = !navbarIsVisible;
-
-    setNavbarIsVisible(newNavbarVisibility);
-
-    setPreviewNavbar((arr) =>
-      arr.map((section) => ({
-        ...section,
-        isShowNavbar: newNavbarVisibility,
-      }))
-    );
   };
 
   const toggleSidebar = (value) => {
@@ -553,337 +504,56 @@ const CustomLandingPage = () => {
           overflow: "hidden",
         }}
       >
-        <aside
-          className={`${
-            !isHideSideBar ? "" : "animate__animated animate__slideOutLeft"
-          }`}
-          style={{
-            width: isHideSideBar ? "0px" : "410px",
-            transition: "width 0.3s ease",
-            backgroundColor: "#fff",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            position: "relative",
-            top: 0,
-            left: 0,
-            height: "100vh",
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: "#fff",
-            }}
-          >
-            {!editing && !isAddContent && !isEditFooter && !isEditNavbar && (
-              <>
-                <div className="d-flex justify-content-end align-items-center border-bottom p-3">
-                  <div>
-                    <CButton
-                      onClick={toggleModal}
-                      color="primary"
-                      variant="outline"
-                      className="mx-2"
-                    >
-                      Kembali
-                    </CButton>
+        {/* sidebar */}
+        <MenuContent
+          editing={editing}
+          toggleModal={toggleModal}
+          pageSetting={pageSetting}
+          setPageSetting={(value) => setPageSetting(value)}
+          handleChangeTitlePage={handleChangeTitlePage}
+          isSelectedView={isSelectedView}
+          setIsSelectedView={setIsSelectedView}
+          previewSection={previewSection}
+          setPreviewSection={setPreviewSection}
+          previewFloatingSection={previewFloatingSection}
+          setPreviewFloatingSection={setPreviewFloatingSection}
+          previewNavbar={previewNavbar}
+          setPreviewNavbar={setPreviewNavbar}
+          previewFooter={previewFooter}
+          setPreviewFooter={setPreviewFooter}
+          renderEditSection={renderEditSection}
+          renderListContent={renderListContent}
+          renderListSectionFloating={renderListSectionFloating}
+          handleContentFocus={handleContentFocus}
+          handleSectionContentFocus={handleSectionContentFocus}
+          handleColumnFocus={handleColumnFocus}
+        />
 
-                    <CButton color="primary">Simpan</CButton>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-
-          <div
-            style={{
-              flex: 1,
-            }}
-          >
-            {!editing && !isAddContent && !isEditFooter && !isEditNavbar && (
-              <CTabs activeTab="konten">
-                <CNav variant="tabs">
-                  <CNavItem>
-                    <CNavLink data-tab="konten">Kolom</CNavLink>
-                  </CNavItem>
-                  <CNavItem>
-                    <CNavLink data-tab="desain">Desain</CNavLink>
-                  </CNavItem>
-                </CNav>
-
-                <CTabContent
-                  style={{
-                    overflowY: "auto",
-                    height: "calc(100vh - 140px)",
-                    backgroundColor: "#F5F5F5",
-                  }}
-                >
-                  <CTabPane data-tab="konten">
-                    <div
-                      style={{
-                        backgroundColor: "white",
-                        boxShadow: "0 4px 2px -2px rgba(0, 0, 0, 0.1)",
-                      }}
-                      className=" w-100 p-3 mb-3 border-bottom   "
-                    >
-                      <Input
-                        label="Nama halaman"
-                        placeholder="Masukan judul di sini"
-                        type="text"
-                        value={pageSetting.title}
-                        onChange={(e) => handleChangeTitlePage(e.target.value)}
-                      />
-                    </div>
-
-                    <div style={{ padding: "0px 20px" }}>
-                      <FooterAndNavbarControl
-                        label="Navigasi"
-                        isVisible={navbarIsVisible}
-                        toggleVisible={handleToggleNavbar}
-                        editSection={() => setIsEditNavbar(true)}
-                        handleFocus={() =>
-                          handleContentFocus(previewNavbar[0]?.id)
-                        }
-                      />
-
-                      {previewSection.map((section, index) =>
-                        renderListContent(section, index)
-                      )}
-
-                      <CCard
-                        style={{ cursor: "pointer", marginBottom: 8 }}
-                        onClick={handleAddContent}
-                      >
-                        <CCardBody className="p-1">
-                          <div className="d-flex align-items-center ">
-                            <IoAdd
-                              style={{
-                                cursor: "pointer",
-                                margin: "0px 10px 0px 6px",
-                              }}
-                              size={18}
-                            />
-
-                            <div>Tambah Konten</div>
-                          </div>
-                        </CCardBody>
-                      </CCard>
-
-                      <FooterAndNavbarControl
-                        label="Footer"
-                        isVisible={footerIsVisble}
-                        toggleVisible={handleToggleFooter}
-                        editSection={() => setIsEditFooter(true)}
-                        handleFocus={() =>
-                          handleContentFocus(previewFooter[0]?.id)
-                        }
-                      />
-
-                      {previewFloatingSection.map((section, index) =>
-                        renderListSectionFloating(section, index)
-                      )}
-                    </div>
-                  </CTabPane>
-                  <CTabPane data-tab="desain">
-                    <DesignTabControl
-                      previewSection={previewSection}
-                      setPreviewSection={(value) => setPreviewSection(value)}
-                      previewFloatingSection={previewFloatingSection}
-                      setPreviewFloatingSection={(value) =>
-                        setPreviewFloatingSection(value)
-                      }
-                      pageSetting={pageSetting}
-                      setPageSetting={(value) => setPageSetting(value)}
-                    />
-                  </CTabPane>
-                </CTabContent>
-              </CTabs>
-            )}
-
-            {editing && (
-              <div>
-                {previewSection.map((section) => (
-                  <div key={section.id}>{renderEditSection(section)}</div>
-                ))}
-
-                {previewFloatingSection.map((section) => (
-                  <div key={section.id}>{renderEditSection(section)}</div>
-                ))}
-              </div>
-            )}
-
-            {isAddContent && (
-              <ListContent
-                previewSection={previewSection}
-                setPreviewSection={(value) => setPreviewSection(value)}
-                sections={sections}
-                setSections={(value) => setSections(value)}
-                isShowContent={(value) => setIsAddContent(value)}
-                previewFloatingSection={previewFloatingSection}
-                setPreviewFloatingSection={setPreviewFloatingSection}
-                handleColumnFocus={handleColumnFocus}
-                handleSectionContentFocus={handleSectionContentFocus}
-                pageSetting={pageSetting}
-              />
-            )}
-
-            {isEditNavbar && (
-              <div>
-                <Navbar
-                  previewSection={previewNavbar}
-                  setPreviewSection={setPreviewNavbar}
-                  isShowContent={(value) => setIsEditNavbar(value)}
-                  pageSetting={pageSetting}
-                  setPageSetting={(value) => setPageSetting(value)}
-                  handleSectionContentFocus={handleSectionContentFocus}
-                />
-              </div>
-            )}
-
-            {isEditFooter && (
-              <div>
-                <Footer
-                  previewSection={previewFooter}
-                  setPreviewSection={setPreviewFooter}
-                  isShowContent={(value) => setIsEditFooter(value)}
-                  pageSetting={pageSetting}
-                  setPageSetting={(value) => setPageSetting(value)}
-                  handleSectionContentFocus={handleSectionContentFocus}
-                />
-              </div>
-            )}
-          </div>
-
-          <div
-            style={{
-              zIndex: 10,
-              backgroundColor: "white",
-              width: "100%",
-              position: "absolute",
-              bottom: 0,
-            }}
-            className="d-flex justify-content-between align-items-center border rounded-sm p-2 shadow-sm "
-          >
-            <div
-              className="d-flex align-items-center "
-              style={{ cursor: "pointer" }}
-            >
-              {viewTypes.map((view) => (
-                <div
-                  key={view}
-                  onClick={() => setIsSelectedView(view)}
-                  style={{
-                    backgroundColor:
-                      isSelectedView === view ? "#fa541c" : "transparent",
-                  }}
-                  className="border p-1 px-2 "
-                >
-                  {React.cloneElement(viewIcon[view], {
-                    color: isSelectedView === view ? "white" : "black",
-                  })}
-                </div>
-              ))}
-            </div>
-            <CButton
-              onClick={handleHideSideBar}
-              active={isHideSideBar}
-              variant="outline"
-              color="primary"
-            >
-              <FaChevronLeft size={14} />
-            </CButton>
-          </div>
-        </aside>
-
-        {isHideSideBar && (
-          <div
-            style={{
-              position: "absolute",
-              left: 20,
-              bottom: 20,
-              zIndex: 9999,
-            }}
-          >
-            <CButton
-              onClick={handleHideSideBar}
-              active={isHideSideBar}
-              variant="outline"
-              color="primary"
-            >
-              <FaChevronLeft size={14} />
-            </CButton>
-          </div>
-        )}
-
-        <main
-          style={{
-            flex: 1,
-            backgroundColor: "#f0f0f0",
-            position: "relative",
-            display: "flex",
-            flexDirection: "column",
-            overflow: "hidden",
-          }}
-        >
-          <ResizableView
-            id={id}
-            previewSection={previewSection}
-            pageSetting={pageSetting}
-            ref={containerRef}
-            dimensions={dimensions}
-            isSelectedView={isSelectedView}
-            isResizing={isResizing}
-            handleMouseDown={handleMouseDown}
-            isDragging={isDragging}
-            handleContentFocus={handleContentFocus}
-          >
-            {isVisibleSidebarNav && (
-              <SidebarMenu
-                previewNavbar={previewNavbar}
-                renderViewNavbar={renderViewNavbar}
-                sidebar={previewNavbar[0]?.sidebar}
-                logo={previewNavbar[0]?.logo}
-                toggleSidebar={toggleSidebar}
-                isAnimating={isAnimating}
-              />
-            )}
-
-            <ViewNavbar
-              previewNavbar={previewNavbar}
-              setPreviewNavbar={setPreviewNavbar}
-              focusedIndex={focusedIndex}
-              setRef={setRef}
-              renderViewNavbar={renderViewNavbar}
-              widthContainer={dimensions.width}
-            />
-            <div
-              style={{
-                width: "100%",
-                maxWidth: pageSetting.maxWidth,
-                margin: "0px auto",
-                paddingTop:
-                  previewNavbar[0]?.variant?.style?.position === "absolute"
-                    ? 70
-                    : 0,
-              }}
-            >
-              {previewSection.map((item, index) => (
-                <div key={item.id}>{renderViewSections(item, index)}</div>
-              ))}
-
-              {previewFloatingSection.map((item, index) => (
-                <div key={item.id}>{renderViewSections(item, index)}</div>
-              ))}
-            </div>
-
-            <ViewFooter
-              previewFooter={previewFooter}
-              focusedIndex={focusedIndex}
-              setRef={setRef}
-              renderViewFooter={renderViewFooter}
-            />
-          </ResizableView>
-        </main>
+        {/* Preview Landingpage */}
+        <ViewRenderer
+          id={id}
+          containerRef={containerRef}
+          previewSection={previewSection}
+          dimensions={dimensions}
+          isSelectedView={isSelectedView}
+          isResizing={isResizing}
+          handleMouseDown={handleMouseDown}
+          isDragging={isDragging}
+          handleContentFocus={handleContentFocus}
+          pageSetting={pageSetting}
+          previewNavbar={previewNavbar}
+          setPreviewNavbar={setPreviewNavbar}
+          focusedIndex={focusedIndex}
+          renderViewNavbar={renderViewNavbar}
+          renderViewSections={renderViewSections}
+          renderViewFooter={renderViewFooter}
+          isVisibleSidebarNav={isVisibleSidebarNav}
+          toggleSidebar={toggleSidebar}
+          isAnimating={isAnimating}
+          previewFloatingSection={previewFloatingSection}
+          previewFooter={previewFooter}
+          setRef={setRef}
+        />
       </div>
 
       <ModalConfirmation
