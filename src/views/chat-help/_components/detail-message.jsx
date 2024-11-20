@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { BsCheck2All } from "react-icons/bs";
 import { IoMdSend } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { replyHelpChat } from "../../../redux/modules/chat-help/reducer";
+import { replyHelpChat } from "../../../modules/chat-help/reducer";
 
 export default function DetailMessage({ selectedChat }) {
   const [replyChat, setReplyChat] = useState("");

@@ -12,7 +12,7 @@ import {
   CLink,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import { setSidebar } from "../redux/modules/sidebar/reducer";
+import { setSidebar } from "../modules/sidebar/reducer";
 
 // routes config
 import routes from "../routes";

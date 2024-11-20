@@ -13,7 +13,7 @@ import {
 } from "@coreui/react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getProducts } from "../../../../redux/modules/product/reducer";
+import { getProducts } from "../../../../modules/product/reducer";
 import { formatPrice } from "../../../../lib";
 import { defaultImgSquare200 } from "../../../../lib/product";
 

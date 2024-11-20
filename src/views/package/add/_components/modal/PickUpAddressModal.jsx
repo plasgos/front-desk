@@ -16,8 +16,8 @@ import Skeleton from "react-loading-skeleton";
 import {
   setSender,
   setWarehouseId,
-} from "../../../../../redux/modules/package/reducer";
-import { resetCheckCosts } from "../../../../../redux/modules/shipping/reducer";
+} from "../../../../../modules/package/reducer";
+import { resetCheckCosts } from "../../../../../modules/shipping/reducer";
 
 export const PickUpAddressModal = () => {
   const dispatch = useDispatch();

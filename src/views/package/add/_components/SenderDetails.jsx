@@ -2,11 +2,8 @@ import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { PickUpAddressModal } from "./modal/PickUpAddressModal";
 import { useDispatch, useSelector } from "react-redux";
-import { getWarehouses } from "../../../../redux/modules/warehouse/reducer";
-import {
-  setSender,
-  setWarehouseId,
-} from "../../../../redux/modules/package/reducer";
+import { getWarehouses } from "../../../../modules/warehouse/reducer";
+import { setSender, setWarehouseId } from "../../../../modules/package/reducer";
 import { CBadge, CButton } from "@coreui/react";
 
 const Card = () => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CatalogProductsModal } from "./modal/CatalogProductsModal";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { getProducts } from "../../../redux/modules/products/actions/actions";
+import { getProducts } from "../../../modules/products/actions/actions";
 import { formatPrice } from "../../../lib/format-price";
 
 import { Dimension } from "./Dimension";

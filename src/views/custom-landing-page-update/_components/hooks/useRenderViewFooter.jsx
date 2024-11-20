@@ -1,10 +1,10 @@
 import React, { useCallback } from "react";
-import ViewText from "../list-add-content/footer/view/Text";
-import ViewNewsletter from "../list-add-content/footer/view/ViewNewsletter";
-import ViewListLogo from "../list-add-content/footer/view/ViewListLogo";
-import ViewGroupLinks from "../list-add-content/footer/view/ViewGroupLinks";
-import ViewAddress from "../list-add-content/footer/view/ViewAddress";
-import ViewSocialLink from "../list-add-content/footer/view/ViewSocilaLink";
+import ViewText from "../add/footer/view/Text";
+import ViewNewsletter from "../add/footer/view/ViewNewsletter";
+import ViewListLogo from "../add/footer/view/ViewListLogo";
+import ViewGroupLinks from "../add/footer/view/ViewGroupLinks";
+import ViewAddress from "../add/footer/view/ViewAddress";
+import ViewSocialLink from "../add/footer/view/ViewSocilaLink";
 
 export const useRenderViewFooter = ({
   id,

@@ -20,8 +20,8 @@ import { formatPrice, checkObjectFilled } from "../../../../lib";
 import {
   checkCosts,
   resetCheckCosts,
-} from "../../../../redux/modules/shipping/reducer";
-import { setShipping, setCOD } from "../../../../redux/modules/package/reducer";
+} from "../../../../modules/shipping/reducer";
+import { setShipping, setCOD } from "../../../../modules/package/reducer";
 
 function codFee(value, fee, min_fee) {
   let total = value * fee;

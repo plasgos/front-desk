@@ -10,7 +10,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { icons } from "./assets/icons";
 
 import { Provider } from "react-redux";
-import { store, persistor } from "./redux/store";
+import { store, persistor } from "./store/store";
 
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";

@@ -17,9 +17,9 @@ import { MdLaptopMac } from "react-icons/md";
 import FooterAndNavbarControl from "./common/FooterAndNavbarControl";
 import Input from "./common/Input";
 import DesignTabControl from "./DesignTabControl";
-import ListContent from "./list-add-content";
-import Footer from "./list-add-content/footer";
-import Navbar from "./list-add-content/navbar";
+import ListContent from "./add";
+import Footer from "./add/footer";
+import Navbar from "./add/navbar";
 
 const MenuContent = ({
   editing,

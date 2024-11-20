@@ -5,7 +5,7 @@ import {
   removeOptionScrollTarget,
   removePopupOption,
   removePopupOptionShown,
-} from "../../redux/modules/custom-landing-page/reducer";
+} from "../../modules/custom-landing-page/reducer";
 import { ListSectionContent } from "./_components/ListSectionContent";
 import ModalConfirmation from "./_components/ModalConfirmation";
 import { UnDraggabelList } from "./_components/common/UnDraggabaleList";
@@ -16,8 +16,8 @@ import MenuContent from "./_components/MenuContent";
 import ViewRenderer from "./_components/ViewRenderer";
 import { useRenderViewFooter } from "./_components/hooks/useRenderViewFooter";
 import { useRenderViewNavbar } from "./_components/hooks/useRenderViewNavbar";
-import { initialFooterSection } from "./_components/list-add-content/footer";
-import { initialNavbarSection } from "./_components/list-add-content/navbar";
+import { initialFooterSection } from "./_components/add/footer";
+import { initialNavbarSection } from "./_components/add/navbar";
 
 const CustomLandingPage = () => {
   const [pageSetting, setPageSetting] = useState({

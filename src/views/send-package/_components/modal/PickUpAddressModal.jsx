@@ -15,7 +15,7 @@ import {
   resetExpeditions,
   resetSummary,
   setSelectSender,
-} from "../../../../redux/modules/packages/actions/actions";
+} from "../../../../modules/packages/actions/actions";
 
 export const PickUpAddressModal = ({
   address,

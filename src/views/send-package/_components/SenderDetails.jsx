@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { FaEdit } from "react-icons/fa";
 import { PickUpAddressModal } from "./modal/PickUpAddressModal";
 import { useDispatch, useSelector } from "react-redux";
-import { getWarehouses } from "../../../redux/modules/warehouses/actions/actions";
-import { setOrigin } from "../../../redux/modules/packages/actions/actions";
+import { getWarehouses } from "../../../modules/warehouses/actions/actions";
+import { setOrigin } from "../../../modules/packages/actions/actions";
 import { CBadge, CButton } from "@coreui/react";
 
 export const SenderDetails = () => {

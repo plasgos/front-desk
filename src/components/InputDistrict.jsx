@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 //
 import { useSelector, useDispatch } from "react-redux";
-import * as actions from "../redux/modules/addresses/actions/actions";
+import * as actions from "../modules/addresses/actions/actions";
 import AsyncSelect from "react-select/async";
 
 export const InputDistrict = ({ onSelectDistrict }) => {

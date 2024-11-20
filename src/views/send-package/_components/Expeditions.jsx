@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 
 import { formatPrice } from "../../../lib/format-price";
 
-import { setSelectCourir } from "../../../redux/modules/packages/actions/actions";
+import { setSelectCourir } from "../../../modules/packages/actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { CButton } from "@coreui/react";
 

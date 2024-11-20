@@ -9,8 +9,8 @@ import {
 } from "@coreui/react";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setAddressStore } from "../../../redux/modules/orders/actions/actions";
-import { setCheckoutSelectSender } from "../../../redux/modules/checkout/actions/actions";
+import { setAddressStore } from "../../../modules/orders/actions/actions";
+import { setCheckoutSelectSender } from "../../../modules/checkout/actions/actions";
 
 export const SenderModal = ({
   order,

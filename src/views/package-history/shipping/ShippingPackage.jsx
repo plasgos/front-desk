@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import LayoutPackageHistory from "../LayoutPackageHistory";
 import { useDispatch, useSelector } from "react-redux";
-import { getHistoryShipped } from "../../../redux/modules/package/reducer";
+import { getHistoryShipped } from "../../../modules/package/reducer";
 import { TablePackageHistory } from "../_components/TablePackageHistory";
 import { FilterSection } from "../_components/FilterSection";
 

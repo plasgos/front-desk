@@ -10,11 +10,11 @@ import {
   CRow,
 } from "@coreui/react";
 
-import { getOrders } from "../../redux/modules/orders/actions/actions";
+import { getOrders } from "../../modules/orders/actions/actions";
 
-import { setCheckoutOrders } from "../../redux/modules/checkout/actions/actions";
+import { setCheckoutOrders } from "../../modules/checkout/actions/actions";
 
-import { setTotalPrice } from "../../redux/modules/total-price/actions/actions";
+import { setTotalPrice } from "../../modules/total-price/actions/actions";
 
 import { Shipping } from "./Shipping";
 import { useDispatch, useSelector } from "react-redux";

@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
-import ViewLink from "../list-add-content/navbar/view/ViewLink";
-import ViewDivider from "../list-add-content/navbar/view/ViewDivider";
-import ViewMenu from "../list-add-content/navbar/view/ViewMenu";
+import ViewLink from "../add/navbar/view/ViewLink";
+import ViewDivider from "../add/navbar/view/ViewDivider";
+import ViewMenu from "../add/navbar/view/ViewMenu";
 
 export const useRenderViewNavbar = ({
   id,

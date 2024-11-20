@@ -4,7 +4,7 @@ import { useDrag, useDrop } from "react-dnd";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoCloseOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
 
-import { dataListContent } from "./list-add-content/DataListContent";
+import { dataListContent } from "./add/DataListContent";
 
 export const ItemTypes = {
   CARD: "card",

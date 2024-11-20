@@ -27,7 +27,7 @@ import {
   setRemoveItem,
   setItemValue,
   setDetail,
-} from "../../../../../redux/modules/package/reducer";
+} from "../../../../../modules/package/reducer";
 import { formatPrice } from "../../../../../lib";
 import { defaultImgSquare200 } from "../../../../../lib/product";
 

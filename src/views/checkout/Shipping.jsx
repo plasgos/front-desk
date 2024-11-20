@@ -7,9 +7,9 @@ import {
 import React, { useEffect, useState } from "react";
 import { formatPrice } from "../../lib/format-price";
 import { useDispatch, useSelector } from "react-redux";
-import * as actions from "../../redux/modules/costs/actions/actions";
+import * as actions from "../../modules/costs/actions/actions";
 
-import { setCheckoutShipping } from "../../redux/modules/checkout/actions/actions";
+import { setCheckoutShipping } from "../../modules/checkout/actions/actions";
 
 export const Shipping = ({ storeId }) => {
   const [courirs, setCourirs] = useState([]);

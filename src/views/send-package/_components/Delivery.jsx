@@ -5,7 +5,7 @@ import {
   getShippingCost,
   setPickUpOptions,
   setSelectCourir,
-} from "../../../redux/modules/packages/actions/actions";
+} from "../../../modules/packages/actions/actions";
 import { RiErrorWarningFill } from "react-icons/ri";
 import { CButton } from "@coreui/react";
 import { FaShippingFast } from "react-icons/fa";

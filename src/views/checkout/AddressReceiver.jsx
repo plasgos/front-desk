@@ -12,9 +12,9 @@ import {
 } from "@coreui/react";
 import { useDispatch, useSelector } from "react-redux";
 
-import * as actions from "../../redux/modules/addresses/actions/actions";
+import * as actions from "../../modules/addresses/actions/actions";
 
-import { setCheckoutReceiver } from "../../redux/modules/checkout/actions/actions";
+import { setCheckoutReceiver } from "../../modules/checkout/actions/actions";
 import { ReceiverModal } from "./modal/ReceiverModal";
 
 export const AddressReceiver = () => {

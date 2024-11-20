@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setCheckoutPayment } from "../../../redux/modules/checkout/actions/actions";
+import { setCheckoutPayment } from "../../../modules/checkout/actions/actions";
 import {
   CButton,
   CModal,
