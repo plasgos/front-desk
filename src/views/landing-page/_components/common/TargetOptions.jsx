@@ -4,13 +4,13 @@ import { localPageTargetOptions } from "../SelectOptions";
 
 import { useSCrollTargetChange } from "../../../../hooks/useScrolltargetChange";
 import { useUrlChange } from "../../../../hooks/useUrlChange";
-import { useWhatAppsChange } from "../../../../hooks/useWhatAppsChange";
+import { useWhatsappsChange } from "../../../../hooks/useWhatsAppChange";
 import { setIsOpenPopup } from "../../../../modules/custom-landing-page/reducer";
 import FacebookPixel from "../FacebookPixel";
 import ScrollTargetInput from "./ScrollTargetSelect";
 import SelectOptions from "./SelectOptions";
 import UrlInput from "./UrlInput";
-import WhatsAppInput from "./WhatAppsInput";
+import WhatsAppInput from "./WhatsAppInput";
 
 const TargetOptions = ({
   setPreviewSection,
@@ -55,8 +55,8 @@ const TargetOptions = ({
     currentContent
   );
 
-  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
-    useWhatAppsChange(setPreviewSection, sectionId, currentContent);
+  const { whatsapp, setWhatApps, handleUrlOpenNewTabWaChange } =
+    useWhatsappsChange(setPreviewSection, sectionId, currentContent);
 
   const {
     selectedOptionScrollTarget,
@@ -167,7 +167,7 @@ const TargetOptions = ({
         return (
           (targetType?.scrollTarget && opt.value === "scroll-target") ||
           (targetType?.url && opt.value === "url") ||
-          (targetType?.whatApps && opt.value === "whatApps") ||
+          (targetType?.whatsapp && opt.value === "whatsapp") ||
           (targetType?.localPage && opt.value === "local-page") ||
           (targetType?.popup && opt.value.includes("Pop Up"))
         );
@@ -342,10 +342,10 @@ const TargetOptions = ({
           />
         )}
 
-        {selectedOption?.value === "whatApps" && (
+        {selectedOption?.value === "whatsapp" && (
           <WhatsAppInput
             id="waOpenNewTabText&Img"
-            whatApps={whatApps}
+            whatsapp={whatsapp}
             handlePhoneNumberChange={(newValue) => {
               setWhatApps((prevValue) => ({
                 ...prevValue,

@@ -32,8 +32,8 @@ const typeOptions = [
     },
   },
   {
-    value: "whatapps",
-    label: "WhatApps",
+    value: "whatsapp",
+    label: "whatsapp",
     icon: {
       iconName: "whatsapp",
       prefix: "fab",
@@ -207,7 +207,7 @@ const UpdateContent = ({
   const placeholder =
     selectedType.value === "address"
       ? "Jl Layur 31 Jakarta Timur"
-      : selectedType.value === "phone" || selectedType.value === "whatapps"
+      : selectedType.value === "phone" || selectedType.value === "whatsapp"
       ? "+629898123212"
       : "john@email.com";
 

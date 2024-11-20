@@ -1,30 +1,30 @@
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 
-export const useWhatAppsChange = (
+export const useWhatsappChange = (
   setPreviewSection,
   currentSectionId,
   currentContentId,
   selectedSectionToEdit
 ) => {
-  const [whatApps, setWhatApps] = useState(
-    selectedSectionToEdit?.target?.whatApps || {}
+  const [whatsapp, setWhatApps] = useState(
+    selectedSectionToEdit?.target?.whatsapp || {}
   );
 
-  const [whatAppsPhoneNumberValue] = useDebounce(whatApps.phoneNumber, 300);
+  const [whatAppsPhoneNumberValue] = useDebounce(whatsapp.phoneNumber, 300);
 
-  const [whatAppsMessageValue] = useDebounce(whatApps.message, 300);
+  const [whatAppsMessageValue] = useDebounce(whatsapp.message, 300);
 
   useEffect(() => {
     if (
       whatAppsPhoneNumberValue !==
-      selectedSectionToEdit?.target?.whatApps?.phoneNumber
+      selectedSectionToEdit?.target?.whatsapp?.phoneNumber
     ) {
       handlePhoneNumberChange(whatAppsPhoneNumberValue);
     }
 
     if (
-      whatAppsMessageValue !== selectedSectionToEdit?.target?.whatApps?.message
+      whatAppsMessageValue !== selectedSectionToEdit?.target?.whatsapp?.message
     ) {
       handleMessageChange(whatAppsMessageValue);
     }
@@ -47,8 +47,8 @@ export const useWhatAppsChange = (
                           ? {
                               ...contentItem,
                               target: {
-                                whatApps: {
-                                  ...contentItem.target.whatApps,
+                                whatsapp: {
+                                  ...contentItem.target.whatsapp,
                                   phoneNumber: value,
                                 },
                               },
@@ -79,8 +79,8 @@ export const useWhatAppsChange = (
                           ? {
                               ...contentItem,
                               target: {
-                                whatApps: {
-                                  ...contentItem.target.whatApps,
+                                whatsapp: {
+                                  ...contentItem.target.whatsapp,
                                   message: value,
                                 },
                               },
@@ -116,8 +116,8 @@ export const useWhatAppsChange = (
                           ? {
                               ...contentItem,
                               target: {
-                                whatApps: {
-                                  ...contentItem.target.whatApps,
+                                whatsapp: {
+                                  ...contentItem.target.whatsapp,
                                   isOpenNewTab: value,
                                 },
                               },
@@ -134,7 +134,7 @@ export const useWhatAppsChange = (
   };
 
   return {
-    whatApps,
+    whatsapp,
     setWhatApps,
     handlePhoneNumberChange,
     handleMessageChange,

@@ -17,9 +17,7 @@ const Register = React.lazy(() => import("./views/pages/register/Register"));
 const Page404 = React.lazy(() => import("./views/pages/page404/Page404"));
 const Page500 = React.lazy(() => import("./views/pages/page500/Page500"));
 
-const CustomLandingPage = React.lazy(() =>
-  import("./views/custom-landing-page-update")
-);
+const LandingPage = React.lazy(() => import("./views/landing-page"));
 
 const App = () => {
   const { logged_in } = useSelector((state) => state.login);
@@ -43,9 +41,9 @@ const App = () => {
             />
 
             <Route
-              path="/custom-landing-pag"
+              path="/landing-page"
               name="Custom Landing Page"
-              render={(props) => <CustomLandingPage {...props} />}
+              render={(props) => <LandingPage {...props} />}
             />
 
             <Redirect from="/" to="/login" />
@@ -72,9 +70,9 @@ const App = () => {
               render={(props) => <Page500 {...props} />}
             />
             <Route
-              path="/custom-landing-page-update"
-              name="Custom Landing Page"
-              render={(props) => <CustomLandingPage {...props} />}
+              path="/landing-page"
+              name="Landing Page"
+              render={(props) => <LandingPage {...props} />}
             />
             <Route
               path="/"
