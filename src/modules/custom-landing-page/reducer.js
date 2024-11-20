@@ -17,7 +17,7 @@ const initialState = {
     },
     {
       label: "Chat",
-      options: [{ value: "whatApps", label: "Whatapps" }],
+      options: [{ value: "whatsapp", label: "whatsapp" }],
     },
   ],
   optionsScrollTarget: [

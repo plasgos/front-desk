@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useUrlChange } from "../hooks/useUrlChange";
-import { useWhatAppsChange } from "../hooks/useWhatAppsChange";
+import { useWhatsappChange } from "../hooks/useWhatsAppChange";
 import { localPageTargetOptions } from "../../../SelectOptions";
 import { useScrollTargetChange } from "../hooks/useScrollTargetChange";
-import WhatsAppInput from "../../../common/WhatAppsInput";
+import WhatsAppInput from "../../../common/WhatsAppInput";
 import UrlInput from "../../../common/UrlInput";
 import ScrollTargetInput from "../../../common/ScrollTargetSelect";
 import SelectOptions from "../../../common/SelectOptions";
@@ -48,8 +48,8 @@ const TargetOptionNavbarFooter = ({
     selectedContent
   );
 
-  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
-    useWhatAppsChange(
+  const { whatsapp, setWhatApps, handleUrlOpenNewTabWaChange } =
+    useWhatsappChange(
       setPreviewSection,
       sectionId,
       currentContentId,
@@ -197,7 +197,7 @@ const TargetOptionNavbarFooter = ({
         return (
           (targetType?.scrollTarget && opt.value === "scroll-target") ||
           (targetType?.url && opt.value === "url") ||
-          (targetType?.whatApps && opt.value === "whatApps") ||
+          (targetType?.whatsapp && opt.value === "whatsapp") ||
           (targetType?.localPage && opt.value === "local-page")
         );
       });
@@ -347,10 +347,10 @@ const TargetOptionNavbarFooter = ({
           />
         )}
 
-        {selectedOption?.value === "whatApps" && (
+        {selectedOption?.value === "whatsapp" && (
           <WhatsAppInput
             id="waOpenNewTabText&Img"
-            whatApps={whatApps}
+            whatsapp={whatsapp}
             handlePhoneNumberChange={(newValue) => {
               setWhatApps((prevValue) => ({
                 ...prevValue,

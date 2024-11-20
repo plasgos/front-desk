@@ -13,14 +13,14 @@ export const handleButtonSectionClick = (target, containerRef, dispatch) => {
       target.url.isOpenNewTab ? "_blank" : "_self",
       target.url.isOpenNewTab ? "noopener noreferrer" : ""
     );
-  } else if (target?.whatApps?.phoneNumber) {
+  } else if (target?.whatsapp?.phoneNumber) {
     const waLink = `https://wa.me/+62${
-      target.whatApps.phoneNumber
-    }?text=${encodeURIComponent(target.whatApps.message)}`;
+      target.whatsapp.phoneNumber
+    }?text=${encodeURIComponent(target.whatsapp.message)}`;
     window.open(
       waLink,
-      target.whatApps.isOpenNewTab ? "_blank" : "_self",
-      target.whatApps.isOpenNewTab ? "noopener noreferrer" : ""
+      target.whatsapp.isOpenNewTab ? "_blank" : "_self",
+      target.whatsapp.isOpenNewTab ? "noopener noreferrer" : ""
     );
   } else if (target?.scrollTarget?.value) {
     const targetId = target.scrollTarget.value;

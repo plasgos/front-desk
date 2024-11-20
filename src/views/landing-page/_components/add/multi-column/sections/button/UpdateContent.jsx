@@ -11,11 +11,11 @@ import ColorPicker from "../../../../common/ColorPicker";
 import SelectOptions from "../../../../common/SelectOptions";
 import Input from "../../../../common/Input";
 import UrlInput from "../../../../common/UrlInput";
-import WhatsAppInput from "../../../../common/WhatAppsInput";
+import WhatsAppInput from "../../../../common/WhatsAppInput";
 import ScrollTargetInput from "../../../../common/ScrollTargetSelect";
 import FacebookPixel from "../../../../FacebookPixel";
 import { useUrlChangeMultiColumn } from "../../hooks/useUrlChangeMulitColumn";
-import { useWhatAppsChangeMultiColumn } from "../../hooks/useWhatAppsChangeMultiColumn";
+import { useWhatsappsChangeMultiColumn } from "../../hooks/useWhatsappsChangeMultiColumn";
 import { useSCrollTargetChangeMultiColumn } from "../../hooks/useScrolltargetChangeMultiColumn";
 import { addContentBySectionId } from "../../helper/addContentBySectionId";
 
@@ -110,8 +110,8 @@ const UpdateContent = ({
     isEditingContent ? currentContent : setting
   );
 
-  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
-    useWhatAppsChangeMultiColumn(
+  const { whatsapp, setWhatApps, handleUrlOpenNewTabWaChange } =
+    useWhatsappsChangeMultiColumn(
       sectionId,
       columnId,
       setPreviewSection,
@@ -251,7 +251,7 @@ const UpdateContent = ({
           return (
             (targetType?.scrollTarget && opt.value === "scroll-target") ||
             (targetType?.url && opt.value === "url") ||
-            (targetType?.whatApps && opt.value === "whatApps")
+            (targetType?.whatsapp && opt.value === "whatsapp")
           );
         });
 
@@ -765,10 +765,10 @@ const UpdateContent = ({
               />
             )}
 
-            {selectedOption?.value === "whatApps" && (
+            {selectedOption?.value === "whatsapp" && (
               <WhatsAppInput
                 id="waOpenNewTabBtn"
-                whatApps={whatApps}
+                whatsapp={whatsapp}
                 handlePhoneNumberChange={(newValue) => {
                   setWhatApps((prevValue) => ({
                     ...prevValue,

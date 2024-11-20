@@ -11,12 +11,12 @@ import InputRangeWithNumber from "../../../../common/InputRangeWithNumber";
 import ScrollTargetInput from "../../../../common/ScrollTargetSelect";
 import SelectOptions from "../../../../common/SelectOptions";
 import UrlInput from "../../../../common/UrlInput";
-import WhatsAppInput from "../../../../common/WhatAppsInput";
+import WhatsAppInput from "../../../../common/WhatsAppInput";
 import FacebookPixel from "../../../../FacebookPixel";
 import { shadowOptions } from "../../../../SelectOptions";
 import { useSCrollTargetChangeMultiColumn } from "../../hooks/useScrolltargetChangeMultiColumn";
 import { useUrlChangeMultiColumn } from "../../hooks/useUrlChangeMulitColumn";
-import { useWhatAppsChangeMultiColumn } from "../../hooks/useWhatAppsChangeMultiColumn";
+import { useWhatsappsChangeMultiColumn } from "../../hooks/useWhatsappsChangeMultiColumn";
 import { changeContentBySectionId } from "../../helper/changeContentBySectionId";
 import { changeWrapperStyleMultiColumn } from "../../helper/changeWrapperStyleMultiColumn";
 
@@ -69,8 +69,8 @@ const ImageContent = ({
     currentContent
   );
 
-  const { whatApps, setWhatApps, handleUrlOpenNewTabWaChange } =
-    useWhatAppsChangeMultiColumn(
+  const { whatsapp, setWhatApps, handleUrlOpenNewTabWaChange } =
+    useWhatsappsChangeMultiColumn(
       sectionId,
       columnId,
       setPreviewSection,
@@ -109,7 +109,7 @@ const ImageContent = ({
           return (
             (targetType?.scrollTarget && opt.value === "scroll-target") ||
             (targetType?.url && opt.value === "url") ||
-            (targetType?.whatApps && opt.value === "whatApps")
+            (targetType?.whatsapp && opt.value === "whatsapp")
           );
         });
 
@@ -487,10 +487,10 @@ const ImageContent = ({
           />
         )}
 
-        {selectedOption?.value === "whatApps" && (
+        {selectedOption?.value === "whatsapp" && (
           <WhatsAppInput
             id="waOpenNewTabListImg"
-            whatApps={whatApps}
+            whatsapp={whatsapp}
             handlePhoneNumberChange={(newValue) => {
               setWhatApps((prevValue) => ({
                 ...prevValue,
