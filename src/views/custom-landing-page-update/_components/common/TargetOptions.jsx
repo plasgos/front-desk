@@ -5,7 +5,7 @@ import { localPageTargetOptions } from "../SelectOptions";
 import { useSCrollTargetChange } from "../../../../hooks/useScrolltargetChange";
 import { useUrlChange } from "../../../../hooks/useUrlChange";
 import { useWhatAppsChange } from "../../../../hooks/useWhatAppsChange";
-import { setIsOpenPopup } from "../../../../redux/modules/custom-landing-page/reducer";
+import { setIsOpenPopup } from "../../../../modules/custom-landing-page/reducer";
 import FacebookPixel from "../FacebookPixel";
 import ScrollTargetInput from "./ScrollTargetSelect";
 import SelectOptions from "./SelectOptions";

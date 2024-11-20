@@ -18,7 +18,7 @@ import {
   setProducts,
   setTotalPrice,
   setTotalWeightEachProduct,
-} from "../../../../redux/modules/packages/actions/actions";
+} from "../../../../modules/packages/actions/actions";
 import { useDispatch } from "react-redux";
 import { ListSelectedProducts } from "../ListSelectedProducts";
 import { FaRegEdit } from "react-icons/fa";

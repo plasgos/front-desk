@@ -10,7 +10,7 @@ import {
 } from "@coreui/react";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setCheckoutReceiver } from "../../../redux/modules/checkout/actions/actions";
+import { setCheckoutReceiver } from "../../../modules/checkout/actions/actions";
 
 export const ReceiverModal = ({
   address,

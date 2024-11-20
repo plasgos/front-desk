@@ -203,7 +203,7 @@ export const optionsFbPixelEvent = [
       { value: "initiate-checkout", label: "Initiate Checkout" },
       { value: "purchase", label: "Purchase" },
       { value: "search", label: "Search" },
-      { value: "view-content", label: "View Content" },
+      { value: "view", label: "View Content" },
     ],
   },
   {

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 //
 import { useSelector, useDispatch } from "react-redux";
 import AsyncSelect from "react-select/async";
-import { getSubdistrict } from "../../../../redux/modules/addresses/actions/actions";
+import { getSubdistrict } from "../../../../modules/addresses/actions/actions";
 
 export const SelectDistrict = ({
   onSelectDistrict,

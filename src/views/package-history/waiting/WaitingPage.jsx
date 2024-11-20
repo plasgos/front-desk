@@ -3,7 +3,7 @@ import LayoutPackageHistory from "../LayoutPackageHistory";
 import { TablePackageHistory } from "../_components/TablePackageHistory";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getHistoryWaitingPickup } from "../../../redux/modules/package/reducer";
+import { getHistoryWaitingPickup } from "../../../modules/package/reducer";
 import { FilterSection } from "../_components/FilterSection";
 
 import moment from "moment";

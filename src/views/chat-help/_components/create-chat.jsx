@@ -7,7 +7,7 @@ import {
 } from "@coreui/react";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createHelpChat } from "../../../redux/modules/chat-help/reducer";
+import { createHelpChat } from "../../../modules/chat-help/reducer";
 
 export default function CreateChat() {
   const [modal, setModal] = useState(false);

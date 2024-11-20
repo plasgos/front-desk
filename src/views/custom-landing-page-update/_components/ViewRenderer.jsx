@@ -1,8 +1,8 @@
 import React from "react";
 import ResizableView from "./ResizebleView";
-import SidebarMenu from "./list-add-content/navbar/view/SidebarMenu";
-import ViewNavbar from "./view-content/ViewNavbar";
-import ViewFooter from "./view-content/ViewFooter";
+import SidebarMenu from "./add/navbar/view/SidebarMenu";
+import ViewNavbar from "./view/ViewNavbar";
+import ViewFooter from "./view/ViewFooter";
 
 const ViewRenderer = ({
   id,

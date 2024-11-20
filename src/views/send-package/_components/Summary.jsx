@@ -9,7 +9,7 @@ import {
   resetSummary,
   setBilledByReceiverBeforeCustomCod,
   setSummary,
-} from "../../../redux/modules/packages/actions/actions";
+} from "../../../modules/packages/actions/actions";
 import { TbReportMoney } from "react-icons/tb";
 import { useDebounce } from "use-debounce";
 import { DetailsShippingOrders } from "./modal/DetailsShippingOrders";

@@ -5,7 +5,7 @@ import {
   resetExpeditions,
   resetSummary,
   setDestination,
-} from "../../../redux/modules/packages/actions/actions";
+} from "../../../modules/packages/actions/actions";
 import { InputDistrict } from "../../../components/InputDistrict";
 
 import { useDebounce } from "use-debounce";

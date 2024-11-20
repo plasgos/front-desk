@@ -1,7 +1,7 @@
 import { CCard, CCardBody } from "@coreui/react";
 import React, { useEffect, useState } from "react";
 import { IoCloseOutline, IoMenu, IoSettingsOutline } from "react-icons/io5";
-import { dataListContent } from "../list-add-content/DataListContent";
+import { dataListContent } from "../add/DataListContent";
 
 export const ItemTypes = {
   CARD: "card",

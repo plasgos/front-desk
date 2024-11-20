@@ -6,7 +6,7 @@ import {
   getHelpChat,
   getHelpTopic,
   resetHelpChat,
-} from "../../redux/modules/chat-help/reducer";
+} from "../../modules/chat-help/reducer";
 import ListChat from "./_components/list-chat";
 import CreateChat from "./_components/create-chat";
 import DetailMessage from "./_components/detail-message";

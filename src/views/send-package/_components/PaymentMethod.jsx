@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPaymentMethod } from "../../../redux/modules/packages/actions/actions";
+import { setPaymentMethod } from "../../../modules/packages/actions/actions";
 import { Expeditions } from "./Expeditions";
 
 export const PaymentMethod = ({ filteredData }) => {

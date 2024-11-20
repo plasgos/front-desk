@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 
-import { setReceiver } from "../../../../redux/modules/package/reducer";
+import { setReceiver } from "../../../../modules/package/reducer";
 import { InputDistrict } from "../../../../components";
-import { resetCheckCosts } from "../../../../redux/modules/shipping/reducer";
+import { resetCheckCosts } from "../../../../modules/shipping/reducer";
 
 // import { useDebounce } from "use-debounce";
 

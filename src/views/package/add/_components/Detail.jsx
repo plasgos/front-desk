@@ -13,11 +13,11 @@ import { useDispatch, useSelector } from "react-redux";
 //   setDimension,
 //   setNotesPackage,
 //   setTotalWeightOrders,
-// } from "../../../redux/modules/packages/actions/actions";
+// } from "../../../modules/packages/actions/actions";
 // import { useDebounce } from "use-debounce";
 import { formatPrice } from "../../../../lib";
-import { setDetail } from "../../../../redux/modules/package/reducer";
-import { resetCheckCosts } from "../../../../redux/modules/shipping/reducer";
+import { setDetail } from "../../../../modules/package/reducer";
+import { resetCheckCosts } from "../../../../modules/shipping/reducer";
 
 export const Detail = () => {
   const dispatch = useDispatch();

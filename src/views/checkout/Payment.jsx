@@ -7,7 +7,7 @@ import mandiri from "../../assets/mandiri.png";
 
 import { PaymentModal } from "./modal/PaymentModal";
 import { useDispatch } from "react-redux";
-import { setCheckoutPayment } from "../../redux/modules/checkout/actions/actions";
+import { setCheckoutPayment } from "../../modules/checkout/actions/actions";
 
 const paymentMethod = [
   {

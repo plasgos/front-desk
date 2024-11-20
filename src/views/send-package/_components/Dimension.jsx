@@ -7,7 +7,7 @@ import {
   resetSummary,
   setDimension,
   setNotesPackage,
-} from "../../../redux/modules/packages/actions/actions";
+} from "../../../modules/packages/actions/actions";
 import { useDebounce } from "use-debounce";
 
 export const Dimension = ({ selectedProduct }) => {
